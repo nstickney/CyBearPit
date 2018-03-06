@@ -2,17 +2,17 @@ package is.stma.judgebean.model.scoreable;
 
 import is.stma.judgebean.model.AEntity;
 import is.stma.judgebean.model.Contest;
+import is.stma.judgebean.model.Team;
 import is.stma.judgebean.model.poll.APoll;
 
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
-public abstract class AScoreable extends AEntity {
+public abstract class AScoreable<P extends APoll> extends AEntity {
 
     /* Abstract Methods ----------------------------------------------------- */
-    public abstract APoll createPoll();
+    public abstract P createPoll();
 
     /* Overrides ------------------------------------------------------------ */
     @Override

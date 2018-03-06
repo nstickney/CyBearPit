@@ -201,6 +201,19 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.jboss.shrinkwrap.resolver</groupId>
+            <artifactId>shrinkwrap-resolver-impl-maven</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/dnsjava/dnsjava -->
+        <dependency>
+            <groupId>dnsjava</groupId>
+            <artifactId>dnsjava</artifactId>
+            <version>2.1.8</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -262,6 +275,13 @@
                     <artifactId>wildfly-arquillian-container-remote</artifactId>
                     <version>8.2.1.Final</version>
                     <scope>test</scope>
+                </dependency>
+
+                <!-- https://mvnrepository.com/artifact/dnsjava/dnsjava -->
+                <dependency>
+                    <groupId>dnsjava</groupId>
+                    <artifactId>dnsjava</artifactId>
+                    <version>2.1.8</version>
                 </dependency>
             </dependencies>
         </profile>

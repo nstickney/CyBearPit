@@ -4,15 +4,12 @@ import is.stma.judgebean.model.AEntity;
 import is.stma.judgebean.model.scoreable.AScoreable;
 import is.stma.judgebean.model.PollResult;
 
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
-public abstract class APoll extends AEntity {
+public abstract class APoll<S extends AScoreable> extends AEntity {
 
     /* Abstract Methods ----------------------------------------------------- */
-    public abstract int doPoll();
+    public abstract void doPoll();
 
     /* Overrides ------------------------------------------------------------ */
     @Override
@@ -23,18 +20,21 @@ public abstract class APoll extends AEntity {
     /* Fields --------------------------------------------------------------- */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "contest_id")
-    private AScoreable scoreable;
+    private S scoreable;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "result_id")
     private PollResult result;
 
+    @Column
+    private String pollOutput = "";
+
     /* Getters and Setters -------------------------------------------------- */
-    public AScoreable getScoreable() {
+    public S getScoreable() {
         return scoreable;
     }
 
-    void setScoreable(AScoreable scoreable) {
+    void setScoreable(S scoreable) {
         this.scoreable = scoreable;
     }
 
@@ -42,5 +42,15 @@ public abstract class APoll extends AEntity {
         return result;
     }
 
+    void setResult(PollResult result) {
+        this.result = result;
+    }
+
+    public String getPollOutput() {
+        return pollOutput;
+    }
     /* Methods -------------------------------------------------------------- */
+    void appendOutput(String toAppend) {
+        pollOutput += toAppend;
+    }
 }

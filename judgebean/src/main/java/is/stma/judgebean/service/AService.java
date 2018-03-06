@@ -14,9 +14,9 @@ import java.util.logging.Logger;
 
 import static is.stma.judgebean.util.EntityUtility.prefix;
 
-public abstract class AService<Entity extends AEntity,
-        Repository extends EntityRepository<Entity, String>,
-        Validator extends AValidator<Entity>> {
+public abstract class AService<E extends AEntity,
+        R extends EntityRepository<E, String>,
+        V extends AValidator<E>> {
 
     /* Injects ----------------------------------------------------------------------- */
     @Inject
@@ -26,14 +26,14 @@ public abstract class AService<Entity extends AEntity,
     private EntityManager em;
 
     /* Abstract Methods -------------------------------------------------------------- */
-    abstract Repository getRepo();
+    abstract R getRepo();
 
-    abstract Event<Entity> getEvent();
+    abstract Event<E> getEvent();
 
-    abstract Validator getValidator();
+    abstract V getValidator();
 
     /* Service Methods --------------------------------------------------------------- */
-    public Entity create(Entity entity) throws BusinessRuleException {
+    public E create(E entity) throws BusinessRuleException {
         getValidator().validate(entity, AValidator.Target.CREATE);
         log.log(Level.INFO, "Creating " + prefix(entity));
         entity = getRepo().save(entity);
@@ -41,15 +41,15 @@ public abstract class AService<Entity extends AEntity,
         return entity;
     }
 
-    public List<Entity> readAll() {
+    public List<E> readAll() {
         return getRepo().findAll();
     }
 
-    public Entity readById(String id) {
+    public E readById(String id) {
         return getRepo().findBy(id);
     }
 
-    public Entity update(Entity entity) throws BusinessRuleException {
+    public E update(E entity) throws BusinessRuleException {
         em.detach(entity);
         log.log(Level.INFO, "Updating " + prefix(getRepo().findBy(entity.getId())));
         getValidator().validate(entity, AValidator.Target.UPDATE);
@@ -59,7 +59,7 @@ public abstract class AService<Entity extends AEntity,
         return entity;
     }
 
-    public void delete(Entity entity) throws BusinessRuleException {
+    public void delete(E entity) throws BusinessRuleException {
         getValidator().validate(entity, AValidator.Target.DELETE);
         log.log(Level.INFO, "Deleting " + prefix(entity));
         getRepo().remove(entity);

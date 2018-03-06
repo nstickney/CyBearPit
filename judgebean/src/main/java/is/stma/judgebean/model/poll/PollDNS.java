@@ -2,12 +2,20 @@ package is.stma.judgebean.model.poll;
 
 import is.stma.judgebean.model.scoreable.ScoreableDNS;
 
-public class PollDNS extends APoll {
+import static is.stma.judgebean.util.DNSUtil.forwardLookup;
+
+public class PollDNS extends APoll<ScoreableDNS> {
 
     /* Overrides ------------------------------------------------------------ */
     @Override
-    public int doPoll() {
-        return 0;
+    public void doPoll() {
+        System.out.println("HOST = " + getScoreable().getHostAddress() + ":" + getScoreable().getHostPort());
+        System.out.println("QUERY = " + getScoreable().getDnsQuery());
+        String response = forwardLookup(getScoreable().getHostAddress(),
+                getScoreable().getHostPort(),
+                getScoreable().getDnsQuery());
+        System.out.println("RESPONSE = " + response);
+        appendOutput(response);
     }
 
     /* Fields --------------------------------------------------------------- */

@@ -15,55 +15,55 @@ import static is.stma.judgebean.util.EntityUtility.prefix;
 /**
  * Provides the default operations for modeled entities (CRUD)
  *
- * @param <Entity>    The class of AEntity to control
- * @param <Validator> The class of AValidator matched to <Entity>
- * @param <Service>   The class of AService matched to <Entity>
+ * @param <E> The class of AEntity to control
+ * @param <V> The class of AValidator matched to <E>
+ * @param <S> The class of AService matched to <E>
  */
-abstract class AEntityController<Entity extends AEntity,
-        Validator extends AValidator<Entity>,
-        Service extends AService<Entity, EntityRepository<Entity, String>, Validator>> extends AController {
+abstract class AEntityController<E extends AEntity,
+        V extends AValidator<E>,
+        S extends AService<E, EntityRepository<E, String>, V>> extends AController {
 
     /* Abstract Methods -------------------------------------------------------------- */
 
     /**
-     * Get a non-persistent, new <Entity> instance
+     * Get a non-persistent, new <E> instance
      *
-     * @return instance of <Entity>
+     * @return instance of <E>
      */
-    abstract Entity getNew();
+    abstract E getNew();
 
     /**
-     * Set the referenced new <Entity>
+     * Set the referenced new <E>
      *
-     * @param entity instance of <Entity> to reference
+     * @param entity instance of <E> to reference
      */
-    abstract void setNew(Entity entity);
+    abstract void setNew(E entity);
 
     /**
-     * Get the controller's @Inject <Entity> Service
+     * Get the controller's @Inject <E> Service
      *
      * @return the Service
      */
-    abstract Service getService();
+    abstract S getService();
 
     /**
-     * Update the given <Entity>; class implementations must call doUpdate(entity)
+     * Update the given <E>; class implementations must call doUpdate(entity)
      *
-     * @param entity the <Entity> to update
+     * @param entity the <E> to update
      */
-    abstract void update(Entity entity);
+    abstract void update(E entity);
 
     /**
-     * Delete the given <Entity>; class implementations must call doDelete(entity)
+     * Delete the given <E>; class implementations must call doDelete(entity)
      *
-     * @param entity the <Entity> to delete
+     * @param entity the <E> to delete
      */
-    abstract void delete(Entity entity);
+    abstract void delete(E entity);
 
     /* Controlled Methods ------------------------------------------------------------ */
 
     /**
-     * Persist the <Entity> from getNew()
+     * Persist the <E> from getNew()
      */
     public void create() {
         try {
@@ -78,11 +78,11 @@ abstract class AEntityController<Entity extends AEntity,
     }
 
     /**
-     * Do the actual update of the given <Entity>
+     * Do the actual update of the given <E>
      *
-     * @param entity the <Entity> to update
+     * @param entity the <E> to update
      */
-    void doUpdate(Entity entity) {
+    void doUpdate(E entity) {
         try {
             entity = getService().update(entity);
             facesContext.addMessage(null, new FacesMessage(
@@ -94,11 +94,11 @@ abstract class AEntityController<Entity extends AEntity,
     }
 
     /**
-     * Do the actual deletion of the given <Entity>
+     * Do the actual deletion of the given <E>
      *
-     * @param entity the <Entity> to delete
+     * @param entity the <E> to delete
      */
-    void doDelete(Entity entity) {
+    void doDelete(E entity) {
         try {
             String deleted = prefix(entity);
             getService().delete(entity);
@@ -112,16 +112,16 @@ abstract class AEntityController<Entity extends AEntity,
     }
 
     /**
-     * Search for an <Entity> where the string representation matches some query
+     * Search for an <E> where the string representation matches some query
      *
      * @param q the query to match
-     * @return a List of <Entity> objects which match the query
+     * @return a List of <E> objects which match the query
      */
-    public List<Entity> search(String q) {
-        List<Entity> allEntitys = getService().readAll();
-        List<Entity> filteredEntitys = new ArrayList<>();
+    public List<E> search(String q) {
+        List<E> allEntitys = getService().readAll();
+        List<E> filteredEntitys = new ArrayList<>();
 
-        for (Entity c : allEntitys) {
+        for (E c : allEntitys) {
             if (c.getName().toLowerCase().contains(q.toLowerCase())) {
                 filteredEntitys.add(c);
             }
