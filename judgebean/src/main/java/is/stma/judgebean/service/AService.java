@@ -1,7 +1,7 @@
 package is.stma.judgebean.service;
 
 import is.stma.judgebean.model.AEntity;
-import is.stma.judgebean.util.BusinessRuleException;
+import is.stma.judgebean.validator.ValidationException;
 import is.stma.judgebean.validator.AValidator;
 import org.apache.deltaspike.data.api.EntityRepository;
 
@@ -33,7 +33,7 @@ public abstract class AService<E extends AEntity,
     abstract V getValidator();
 
     /* Service Methods --------------------------------------------------------------- */
-    public E create(E entity) throws BusinessRuleException {
+    public E create(E entity) throws ValidationException {
         getValidator().validate(entity, AValidator.Target.CREATE);
         log.log(Level.INFO, "Creating " + prefix(entity));
         entity = getRepo().save(entity);
@@ -49,7 +49,7 @@ public abstract class AService<E extends AEntity,
         return getRepo().findBy(id);
     }
 
-    public E update(E entity) throws BusinessRuleException {
+    public E update(E entity) throws ValidationException {
         em.detach(entity);
         log.log(Level.INFO, "Updating " + prefix(getRepo().findBy(entity.getId())));
         getValidator().validate(entity, AValidator.Target.UPDATE);
@@ -59,7 +59,7 @@ public abstract class AService<E extends AEntity,
         return entity;
     }
 
-    public void delete(E entity) throws BusinessRuleException {
+    public void delete(E entity) throws ValidationException {
         getValidator().validate(entity, AValidator.Target.DELETE);
         log.log(Level.INFO, "Deleting " + prefix(entity));
         getRepo().remove(entity);

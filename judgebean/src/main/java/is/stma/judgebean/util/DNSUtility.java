@@ -7,9 +7,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import java.util.stream.Stream;
-import org.xbill.DNS.Type;
 
-public class DNSUtil {
+import static org.xbill.DNS.Type.*;
+
+public class DNSUtility {
 
     /**
      * Runs a forward lookup for A records on the given query at the specified
@@ -26,10 +27,10 @@ public class DNSUtil {
         try {
             SimpleResolver resolver = new SimpleResolver(hostAddress);
             resolver.setPort(hostPort);
-            Lookup lookup = new Lookup(query, Type.A);
+            Lookup lookup = new Lookup(query, A);
             Record[] records = lookup.run();
             if (null == records) {
-                return "ERROR: No results returned.";
+                return "ERROR: No results returned";
             }
             List<String> addresses = Stream.of(records)
                     .filter(it -> it instanceof ARecord)
@@ -37,7 +38,7 @@ public class DNSUtil {
                     .collect(Collectors.toList());
             return addresses.get(0);
         } catch (UnknownHostException | TextParseException e) {
-            return "ERROR: Resolution failed.";
+            return "ERROR: Resolution failed";
         }
 
     }

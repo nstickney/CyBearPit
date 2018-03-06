@@ -63,7 +63,7 @@ public class MemberResourceRESTService {
     private MemberRepository repository;
 
     @Inject
-    MemberRegistration registration;
+    private MemberRegistration registration;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -91,7 +91,7 @@ public class MemberResourceRESTService {
     @Produces(MediaType.APPLICATION_JSON)
     public Response createMember(Member member) {
 
-        Response.ResponseBuilder builder = null;
+        Response.ResponseBuilder builder;
 
         try {
             // Validates member using bean validation
@@ -173,7 +173,7 @@ public class MemberResourceRESTService {
      * @param email The email to check
      * @return True if the email already exists, and false otherwise
      */
-    public boolean emailAlreadyExists(String email) {
+    private boolean emailAlreadyExists(String email) {
         Member member = null;
         try {
             member = repository.findByEmail(email);

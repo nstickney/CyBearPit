@@ -1,10 +1,10 @@
-package is.stma.judgebean.util;
+package is.stma.judgebean.validator;
 
-public class BusinessRuleException extends Exception {
+public class ValidationException extends Exception {
 
     private final String message;
 
-    public BusinessRuleException(String message) {
+    public ValidationException(String message) {
         this.message = message;
     }
 

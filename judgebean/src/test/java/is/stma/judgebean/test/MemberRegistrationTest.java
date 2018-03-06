@@ -17,9 +17,6 @@
 package is.stma.judgebean.test;
 
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import java.util.logging.Logger;
 
 import javax.inject.Inject;
@@ -49,13 +46,13 @@ public class MemberRegistrationTest {
     }
 
     @Inject
-    MemberRegistration memberRegistration;
+    private MemberRegistration memberRegistration;
 
     @Inject
-    Logger log;
+    private Logger log;
 
     @Test
-    public void testRegister() throws Exception {
+    public void testRegister() {
         Member newMember = new Member();
         newMember.setName("Jane Doe");
         newMember.setEmail("jane@mailinator.com");

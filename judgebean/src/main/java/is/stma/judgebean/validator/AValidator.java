@@ -1,7 +1,6 @@
 package is.stma.judgebean.validator;
 
 import is.stma.judgebean.model.AEntity;
-import is.stma.judgebean.util.BusinessRuleException;
 import org.apache.deltaspike.data.api.EntityRepository;
 
 import javax.inject.Inject;
@@ -21,15 +20,15 @@ public abstract class AValidator<E extends AEntity> {
     final DateFormat df = DateFormat.getDateInstance();
 
     /* Abstract Methods -------------------------------------------------------------- */
-    public abstract EntityRepository<E, String> getRepo();
+    abstract EntityRepository<E, String> getRepo();
 
     abstract void runBusinessRules(E entity, Target target)
-            throws BusinessRuleException;
+            throws ValidationException;
 
-    abstract void checkBeforeDelete(E entity) throws BusinessRuleException;
+    abstract void checkBeforeDelete(E entity) throws ValidationException;
 
     /* Methods ----------------------------------------------------------------------- */
-    public void validate(E entity, Target target) throws BusinessRuleException {
+    public void validate(E entity, Target target) throws ValidationException {
 
         boolean collision = !isUuidUnique(entity);
 
@@ -55,8 +54,8 @@ public abstract class AValidator<E extends AEntity> {
         return (getRepo().findBy(entity.getId()) == null);
     }
 
-    void errorOut(String details) throws BusinessRuleException {
+    void errorOut(String details) throws ValidationException {
         log.log(Level.WARNING, details);
-        throw new BusinessRuleException(details);
+        throw new ValidationException(details);
     }
 }

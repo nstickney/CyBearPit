@@ -1,6 +1,5 @@
 package is.stma.judgebean.model.scoreable;
 
-import is.stma.judgebean.model.poll.APoll;
 import is.stma.judgebean.model.poll.PollDNS;
 
 import javax.enterprise.inject.Model;
@@ -26,22 +25,13 @@ public class ScoreableDNS extends AScoreable<PollDNS> {
     private String dnsQuery;
 
     @Column(nullable = false)
-    private String expectedAnswer;
+    private String expected;
 
     @Column(nullable = false)
-    private boolean checkUCP = true;
+    private boolean reverseCheck = false;
 
     @Column(nullable = false)
-    private boolean checkTCP = false;
-
-    @Column(nullable = false)
-    private boolean checkForward = true;
-
-    @Column(nullable = false)
-    private boolean checkReverse = false;
-
-    @Column(nullable = false)
-    private boolean checkRecursive = false;
+    private boolean recursiveCheck = false;
 
     /* Getters and Setters -------------------------------------------------- */
     public String getHostAddress() {
@@ -68,13 +58,29 @@ public class ScoreableDNS extends AScoreable<PollDNS> {
         this.dnsQuery = dnsQuery;
     }
 
-    public String getExpectedAnswer() {
-        return expectedAnswer;
+    public String getExpected() {
+        return expected;
+    }
+    public void setExpected(String expected) {
+        this.expected = expected;
     }
 
-    public void setExpectedAnswer(String expectedAnswer) {
-        this.expectedAnswer = expectedAnswer;
+    public boolean isReverseCheck() {
+        return reverseCheck;
     }
+
+    public void setReverseCheck(boolean reverseCheck) {
+        this.reverseCheck = reverseCheck;
+    }
+
+    public boolean isRecursiveCheck() {
+        return recursiveCheck;
+    }
+
+    public void setRecursiveCheck(boolean recursiveCheck) {
+        this.recursiveCheck = recursiveCheck;
+    }
+
 
     /* Methods -------------------------------------------------------------- */
 }
