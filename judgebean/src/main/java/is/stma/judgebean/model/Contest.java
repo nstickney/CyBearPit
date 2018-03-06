@@ -1,5 +1,7 @@
 package is.stma.judgebean.model;
 
+import is.stma.judgebean.model.scoreable.AScoreable;
+
 import javax.enterprise.inject.Model;
 import javax.persistence.Column;
 import javax.persistence.OneToMany;
@@ -17,7 +19,7 @@ public class Contest extends AEntity {
     private List<Team> teams = new ArrayList<>();
 
     @OneToMany(mappedBy = "contest")
-    private List<Scoreable> scoreables = new ArrayList<>();
+    private List<AScoreable> scoreables = new ArrayList<>();
 
     /* Overrides ------------------------------------------------------------ */
     @Override

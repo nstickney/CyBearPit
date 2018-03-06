@@ -5,6 +5,9 @@ import java.util.UUID;
 
 public abstract class AEntity {
 
+    /* Abstract Methods ----------------------------------------------------- */
+    public abstract String getName();
+
     /* Fields --------------------------------------------------------------- */
     @Id
     private final String id;
@@ -23,7 +26,5 @@ public abstract class AEntity {
     public String getId() {
         return id;
     }
-
-    public abstract String getName();
 
 }

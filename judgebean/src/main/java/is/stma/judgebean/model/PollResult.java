@@ -1,5 +1,7 @@
 package is.stma.judgebean.model;
 
+import is.stma.judgebean.model.poll.APoll;
+
 import javax.enterprise.inject.Model;
 import javax.persistence.Column;
 import javax.persistence.FetchType;
@@ -8,7 +10,6 @@ import javax.persistence.OneToOne;
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Digits;
-import java.math.BigDecimal;
 
 @Model
 public class PollResult extends AEntity {
@@ -16,7 +17,7 @@ public class PollResult extends AEntity {
     /* Fields --------------------------------------------------------------- */
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "poll_id")
-    private Poll poll;
+    private APoll poll;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id")
@@ -26,7 +27,7 @@ public class PollResult extends AEntity {
     @DecimalMin("-1.00")
     @DecimalMax("1.00")
     @Digits(integer = 1, fraction = 2)
-    private BigDecimal points;
+    private Float points;
 
     /* Overrides ------------------------------------------------------------ */
     @Override
