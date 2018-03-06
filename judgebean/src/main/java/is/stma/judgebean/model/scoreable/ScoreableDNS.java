@@ -1,20 +1,32 @@
 package is.stma.judgebean.model.scoreable;
 
+import is.stma.judgebean.model.AEntity;
 import is.stma.judgebean.model.poll.PollDNS;
+import org.xbill.DNS.Type;
 
-import javax.enterprise.inject.Model;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 
-@Model
-public class ScoreableDNS extends AScoreable<PollDNS> {
+@Entity
+public class ScoreableDNS extends AEntity implements IScoreable {
+
+    private static int DEFAULT_DNS_TIMEOUT = 3;
 
     /* Overrides ------------------------------------------------------------ */
+    @Override
+    public String getName() {
+        return name;
+    }
+
     @Override
     public PollDNS createPoll() {
         return new PollDNS(this);
     }
 
     /* Fields --------------------------------------------------------------- */
+    @Column(nullable = false, unique = true)
+    private String name;
+
     @Column(nullable = false)
     private String hostAddress;
 
@@ -22,16 +34,22 @@ public class ScoreableDNS extends AScoreable<PollDNS> {
     private int hostPort = 53;
 
     @Column(nullable = false)
-    private String dnsQuery;
+    private String query;
 
     @Column(nullable = false)
     private String expected;
 
     @Column(nullable = false)
-    private boolean reverseCheck = false;
+    private boolean tcp = false;
 
     @Column(nullable = false)
-    private boolean recursiveCheck = false;
+    private int type = Type.A;
+
+    @Column(nullable = false)
+    private boolean recursive = false;
+
+    @Column(nullable = false)
+    private int timeout = DEFAULT_DNS_TIMEOUT;
 
     /* Getters and Setters -------------------------------------------------- */
     public String getHostAddress() {
@@ -50,12 +68,12 @@ public class ScoreableDNS extends AScoreable<PollDNS> {
         this.hostPort = hostPort;
     }
 
-    public String getDnsQuery() {
-        return dnsQuery;
+    public String getQuery() {
+        return query;
     }
 
-    public void setDnsQuery(String dnsQuery) {
-        this.dnsQuery = dnsQuery;
+    public void setQuery(String query) {
+        this.query = query;
     }
 
     public String getExpected() {
@@ -65,20 +83,28 @@ public class ScoreableDNS extends AScoreable<PollDNS> {
         this.expected = expected;
     }
 
-    public boolean isReverseCheck() {
-        return reverseCheck;
+    public boolean isTcp() {
+        return tcp;
     }
 
-    public void setReverseCheck(boolean reverseCheck) {
-        this.reverseCheck = reverseCheck;
+    public void setTcp(boolean tcp) {
+        this.tcp = tcp;
     }
 
-    public boolean isRecursiveCheck() {
-        return recursiveCheck;
+    public int getType() {
+        return type;
     }
 
-    public void setRecursiveCheck(boolean recursiveCheck) {
-        this.recursiveCheck = recursiveCheck;
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    public boolean isRecursive() {
+        return recursive;
+    }
+
+    public void setRecursive(boolean recursive) {
+        this.recursive = recursive;
     }
 
 

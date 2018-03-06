@@ -32,10 +32,7 @@ import is.stma.judgebean.service.MemberRegistration;
 // Read more about the @Model stereotype in this FAQ:
 // http://www.cdi-spec.org/faq/#accordion6
 @Model
-public class MemberController {
-
-    @Inject
-    private FacesContext facesContext;
+public class MemberController extends AController {
 
     @Inject
     private MemberRegistration memberRegistration;

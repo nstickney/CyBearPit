@@ -32,7 +32,7 @@ public class MemberRepository {
     @Inject
     private EntityManager em;
 
-    public Member findById(Long id) {
+    public Member findById(String id) {
         return em.find(Member.class, id);
     }
 

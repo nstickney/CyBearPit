@@ -3,11 +3,8 @@ package is.stma.judgebean.util;
 import org.xbill.DNS.*;
 
 import java.net.UnknownHostException;
-import java.util.List;
-import java.util.stream.Collectors;
 
-import java.util.stream.Stream;
-
+import static org.xbill.DNS.ReverseMap.fromAddress;
 import static org.xbill.DNS.Type.*;
 
 public class DNSUtility {
@@ -21,24 +18,38 @@ public class DNSUtility {
      * @param hostAddress address or hostname of DNS server to query
      * @param hostPort server port of the DNS server to query
      * @param query query to send to the DNS server
+     * @param tcp whether to use TCP for the query or not
+     * @param type the type of record to ask for
+     * @param recursive whether to request recursion or not (TODO: Unimplemented)
      * @return top (first) response from the server, or ERROR
      */
-    public static String forwardLookup(String hostAddress, int hostPort, String query) {
+    public static String forwardLookup(String hostAddress, int hostPort, String query,
+                                       boolean tcp, int type, boolean recursive) {
         try {
+            // Set up the resolution options
             SimpleResolver resolver = new SimpleResolver(hostAddress);
             resolver.setPort(hostPort);
-            Lookup lookup = new Lookup(query, A);
+            resolver.setTCP(tcp);
+            Lookup lookup;
+            if (PTR == type) {
+                lookup = new Lookup(fromAddress(query), PTR);
+            } else {
+                lookup = new Lookup(query, type);
+            }
+            lookup.setResolver(resolver);
+            lookup.setCache(null);
+
+            // Execute the query and return the result
             Record[] records = lookup.run();
             if (null == records) {
-                return "ERROR: No results returned";
+                return "ERROR: " + lookup.getErrorString();
+            } else if (records.length < 1) {
+                return "ERROR: no results returned";
             }
-            List<String> addresses = Stream.of(records)
-                    .filter(it -> it instanceof ARecord)
-                    .map(it -> ((ARecord) it).getAddress().getHostAddress())
-                    .collect(Collectors.toList());
-            return addresses.get(0);
+            return records[0].toString();
+
         } catch (UnknownHostException | TextParseException e) {
-            return "ERROR: Resolution failed";
+            return "ERROR: resolution failed";
         }
 
     }
