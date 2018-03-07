@@ -2,9 +2,9 @@ package is.stma.judgebean.test;
 
 import is.stma.judgebean.model.AEntity;
 import is.stma.judgebean.model.poll.IPoll;
-import is.stma.judgebean.model.poll.PollDNS;
-import is.stma.judgebean.model.scoreable.IScoreable;
-import is.stma.judgebean.model.scoreable.ScoreableDNS;
+import is.stma.judgebean.model.poll.DNSPoll;
+import is.stma.judgebean.model.scoreable.IScorer;
+import is.stma.judgebean.model.scoreable.DNSScorer;
 import is.stma.judgebean.util.DNSUtility;
 import is.stma.judgebean.util.Resources;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -20,9 +20,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.xbill.DNS.Type;
 
-import javax.inject.Inject;
 import java.io.File;
-import java.util.logging.Logger;
 
 @RunWith(Arquillian.class)
 public class DNSUtilityTest {
@@ -35,71 +33,71 @@ public class DNSUtilityTest {
 
         return ShrinkWrap.create(WebArchive.class, "pollDNSTest.war")
                 .addClasses(AEntity.class, DNSUtility.class, Resources.class,
-                        IScoreable.class, ScoreableDNS.class,
-                        IPoll.class, PollDNS.class)
+                        IScorer.class, DNSScorer.class,
+                        IPoll.class, DNSPoll.class)
                 .addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml")
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsWebInfResource("test-ds.xml") // Deploy test datasource
                 .addAsLibraries(files); // Add necessary stuff from pom.xml
     }
 
-    private ScoreableDNS scoreable;
+    private DNSScorer dns;
 
     @Before
     public void setUp() {
-        scoreable = new ScoreableDNS();
-        scoreable.setHostAddress("9.9.9.9");
-        scoreable.setQuery("baylor.edu");
+        dns = new DNSScorer();
+        dns.setHostAddress("9.9.9.9");
+        dns.setQuery("baylor.edu");
     }
 
-    private String check(ScoreableDNS s) {
-        PollDNS poll = s.createPoll();
+    private String check(DNSScorer s) {
+        DNSPoll poll = s.createPoll();
         poll.doPoll();
         return poll.getPollOutput();
     }
 
     @Test
-    public void testForwardLookup() {
-        Assert.assertTrue(check(scoreable).contains("129.62.3.230"));
+    public void testARecordLookup() {
+        Assert.assertEquals(dns.getQuery() + "./129.62.3.230", check(dns));
     }
 
     @Test
-    public void testReverseLookup() {
-        scoreable.setQuery("69.171.239.12");
-        scoreable.setType(Type.PTR);
-        Assert.assertTrue(check(scoreable).contains("a.ns.facebook.com"));
+    public void testPTRRecordLookup() {
+        dns.setQuery("69.171.239.12");
+        dns.setType(Type.PTR);
+        Assert.assertEquals("a.ns.facebook.com.", check(dns));
     }
 
     @Test
-    public void testTxtLookup() {
-        scoreable.setQuery("baylor.edu");
-        scoreable.setType(Type.TXT);
+    public void testTXTRecordLookup() {
+        dns.setQuery("baylor.edu");
+        dns.setType(Type.TXT);
         // TODO: This test is terrible; need a server/record pair that responds
         // with exactly one TXT record to properly check.
-        Assert.assertTrue(check(scoreable).length() > 0);
+        Assert.assertTrue(check(dns).length() > 0);
     }
 
     @Test
     public void testNoResults() {
-        scoreable.setQuery("baylor.ccdc");
-        Assert.assertEquals("ERROR: host not found", check(scoreable));
+        dns.setQuery("baylor.ccdc");
+        Assert.assertEquals("ERROR: type not found", check(dns));
     }
 
     @Test
     public void testNoSuchIP() {
-        scoreable.setHostAddress("129.62.148.39");
-        Assert.assertEquals("ERROR: network error", check(scoreable));
+        dns.setHostAddress("129.62.148.39");
+        Assert.assertEquals("ERROR: timed out", check(dns));
     }
 
     @Test
     public void testBadIP() {
-        scoreable.setHostAddress("256.0.0.1");
-        Assert.assertEquals("ERROR: resolution failed", check(scoreable));
+        dns.setHostAddress("256.0.0.1");
+        Assert.assertEquals("ERROR: resolution failed", check(dns));
     }
 
     @Test
     public void testBadHostname() {
-        scoreable.setHostAddress("ns1.baylor.ccdc");
-        Assert.assertEquals("ERROR: resolution failed", check(scoreable));
+        dns.setHostAddress("ns1.baylor.ccdc");
+        Assert.assertEquals("ERROR: resolution failed", check(dns));
     }
 }

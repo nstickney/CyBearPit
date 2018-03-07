@@ -1,46 +1,44 @@
 package is.stma.judgebean.model.poll;
 
 import is.stma.judgebean.model.AEntity;
-import is.stma.judgebean.model.scoreable.ScoreableDNS;
+import is.stma.judgebean.model.scoreable.DNSScorer;
 
 import javax.persistence.*;
 
 import static is.stma.judgebean.util.DNSUtility.forwardLookup;
 
-public class PollDNS extends AEntity implements IPoll {
+public class DNSPoll extends AEntity implements IPoll {
 
     /* Overrides ------------------------------------------------------------ */
     @Override
     public String getName() {
-        return scoreable.getName() + ": " + getId();
+        return dns.getName() + ": " + getId();
     }
 
     @Override
     public void doPoll() {
-        String response = forwardLookup(getScoreable().getHostAddress(),
-                getScoreable().getHostPort(),
-                getScoreable().getQuery(),
-                getScoreable().isTcp(),
-                getScoreable().getType(),
-                getScoreable().isRecursive());
+        String response = forwardLookup(getDns().getHostAddress(), getDns().getHostPort(),
+                getDns().getQuery(), getDns().isTcp(), getDns().getType(), getDns().isRecursive(),
+                getDns().getTimeout());
         pollOutput += response;
+
     }
 
     /* Fields --------------------------------------------------------------- */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "contest_id")
-    private ScoreableDNS scoreable;
+    private DNSScorer dns;
 
     @Column
     private String pollOutput = "";
 
     /* Getters and Setters -------------------------------------------------- */
-    public ScoreableDNS getScoreable() {
-        return scoreable;
+    public DNSScorer getDns() {
+        return dns;
     }
 
-    void setScoreable(ScoreableDNS scoreable) {
-        this.scoreable = scoreable;
+    void setDns(DNSScorer dns) {
+        this.dns = dns;
     }
 
     public String getPollOutput() {
@@ -48,7 +46,7 @@ public class PollDNS extends AEntity implements IPoll {
     }
 
     /* Methods -------------------------------------------------------------- */
-    public PollDNS(ScoreableDNS dns) {
-        this.scoreable = dns;
+    public DNSPoll(DNSScorer dns) {
+        this.dns = dns;
     }
 }

@@ -1,16 +1,16 @@
 package is.stma.judgebean.model.scoreable;
 
 import is.stma.judgebean.model.AEntity;
-import is.stma.judgebean.model.poll.PollDNS;
+import is.stma.judgebean.model.poll.DNSPoll;
 import org.xbill.DNS.Type;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
-public class ScoreableDNS extends AEntity implements IScoreable {
+public class DNSScorer extends AEntity implements IScorer {
 
-    private static int DEFAULT_DNS_TIMEOUT = 3;
+    private final static int DEFAULT_DNS_TIMEOUT = 3;
 
     /* Overrides ------------------------------------------------------------ */
     @Override
@@ -19,8 +19,8 @@ public class ScoreableDNS extends AEntity implements IScoreable {
     }
 
     @Override
-    public PollDNS createPoll() {
-        return new PollDNS(this);
+    public DNSPoll createPoll() {
+        return new DNSPoll(this);
     }
 
     /* Fields --------------------------------------------------------------- */
@@ -107,6 +107,12 @@ public class ScoreableDNS extends AEntity implements IScoreable {
         this.recursive = recursive;
     }
 
+    public int getTimeout() {
+        return timeout;
+    }
 
+    public void setTimeout(int timeout) {
+        this.timeout = timeout;
+    }
     /* Methods -------------------------------------------------------------- */
 }
