@@ -1,7 +1,7 @@
 package is.stma.judgebean.model.poll;
 
 import is.stma.judgebean.model.AEntity;
-import is.stma.judgebean.model.scoreable.DNSScorer;
+import is.stma.judgebean.model.scoring.ScoringDNS;
 
 import javax.persistence.*;
 
@@ -27,17 +27,17 @@ public class DNSPoll extends AEntity implements _Poll {
     /* Fields --------------------------------------------------------------- */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "contest_id")
-    private DNSScorer dns;
+    private ScoringDNS dns;
 
     @Column
     private String pollOutput = "";
 
     /* Getters and Setters -------------------------------------------------- */
-    public DNSScorer getDns() {
+    public ScoringDNS getDns() {
         return dns;
     }
 
-    void setDns(DNSScorer dns) {
+    void setDns(ScoringDNS dns) {
         this.dns = dns;
     }
 
@@ -46,7 +46,7 @@ public class DNSPoll extends AEntity implements _Poll {
     }
 
     /* Methods -------------------------------------------------------------- */
-    public DNSPoll(DNSScorer dns) {
+    public DNSPoll(ScoringDNS dns) {
         this.dns = dns;
     }
 }

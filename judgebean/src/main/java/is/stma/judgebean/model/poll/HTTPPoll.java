@@ -1,7 +1,7 @@
 package is.stma.judgebean.model.poll;
 
 import is.stma.judgebean.model.AEntity;
-import is.stma.judgebean.model.scoreable.HTTPScorer;
+import is.stma.judgebean.model.scoring.ScoringHTTP;
 
 import javax.persistence.Column;
 import javax.persistence.FetchType;
@@ -23,17 +23,17 @@ public class HTTPPoll extends AEntity implements _Poll {
     /* Fields --------------------------------------------------------------- */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "contest_id")
-    private HTTPScorer http;
+    private ScoringHTTP http;
 
     @Column
     private String pollOutput = "";
 
     /* Getters and Setters -------------------------------------------------- */
-    public HTTPScorer getHttp() {
+    public ScoringHTTP getHttp() {
         return http;
     }
 
-    void setHttp(HTTPScorer http) {
+    void setHttp(ScoringHTTP http) {
         this.http = http;
     }
 
@@ -42,7 +42,7 @@ public class HTTPPoll extends AEntity implements _Poll {
     }
 
     /* Methods -------------------------------------------------------------- */
-    public HTTPPoll(HTTPScorer http) {
+    public HTTPPoll(ScoringHTTP http) {
         this.http = http;
     }
 }

@@ -3,8 +3,8 @@ package is.stma.judgebean.test;
 import is.stma.judgebean.model.AEntity;
 import is.stma.judgebean.model.poll._Poll;
 import is.stma.judgebean.model.poll.DNSPoll;
-import is.stma.judgebean.model.scoreable._Scorer;
-import is.stma.judgebean.model.scoreable.DNSScorer;
+import is.stma.judgebean.model.scoring._Scoring;
+import is.stma.judgebean.model.scoring.ScoringDNS;
 import is.stma.judgebean.util.DNSUtility;
 import is.stma.judgebean.util.EMProducer;
 import is.stma.judgebean.util.Resources;
@@ -37,7 +37,7 @@ public class DNSUtilityTest {
 
         return ShrinkWrap.create(WebArchive.class, "pollDNSTest.war")
                 .addClasses(AEntity.class, DNSUtility.class, EMProducer.class, Resources.class,
-                        _Scorer.class, DNSScorer.class,
+                        _Scoring.class, ScoringDNS.class,
                         _Poll.class, DNSPoll.class)
                 .addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml")
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
@@ -45,16 +45,16 @@ public class DNSUtilityTest {
                 .addAsLibraries(files); // Add necessary stuff from pom.xml
     }
 
-    private DNSScorer dns;
+    private ScoringDNS dns;
 
     @Before
     public void setUp() {
-        dns = new DNSScorer();
+        dns = new ScoringDNS();
         dns.setHostAddress("9.9.9.9");
         dns.setQuery("baylor.edu");
     }
 
-    private String check(DNSScorer s) {
+    private String check(ScoringDNS s) {
         DNSPoll poll = s.createPoll();
         poll.doPoll();
         return poll.getPollOutput();

@@ -1,4 +1,4 @@
-package is.stma.judgebean.model.scoreable;
+package is.stma.judgebean.model.scoring;
 
 import is.stma.judgebean.model.AEntity;
 import is.stma.judgebean.model.poll.DNSPoll;
@@ -8,7 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
-public class DNSScorer extends AEntity implements _Scorer {
+public class ScoringDNS extends AEntity implements _Scoring {
 
     private final static int DEFAULT_DNS_TIMEOUT = 3;
 

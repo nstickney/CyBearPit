@@ -1,8 +1,8 @@
-package is.stma.judgebean.model.scoreable;
+package is.stma.judgebean.model.scoring;
 
 import is.stma.judgebean.model.poll._Poll;
 
-public interface _Scorer {
+public interface _Scoring {
 
     /* Abstract Methods ----------------------------------------------------- */
     _Poll createPoll();

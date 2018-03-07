@@ -30,7 +30,7 @@
         </div>
 
         <h:form id="reg">
-            <h2>Member Registration</h2>
+            <h2>Team Registration</h2>
             <p>Enforces annotation-based constraints defined on the model class.</p>
             <h:panelGrid columns="3" columnClasses="titleCell">
                 <h:outputLabel for="name" value="Name:" />
@@ -51,7 +51,7 @@
                 </h:panelGrid>
             </p>
         </h:form>
-        <h2>Members</h2>
+        <h2>Teams</h2>
         <h:panelGroup rendered="#{empty teams}">
             <em>No registered teams.</em>
         </h:panelGroup>
@@ -71,7 +71,7 @@
             </h:column>
             <h:column>
                 <f:facet name="header">REST URL</f:facet>
-                <a href="#{request.contextPath}/rest/teams/#{_team.id}">/rest/members/#{_team.id}</a>
+                <a href="#{request.contextPath}/rest/teams/#{_team.id}">/rest/teams/#{_team.id}</a>
             </h:column>
             <f:facet name="footer">
             REST URL for all teams: <a href="#{request.contextPath}/rest/teams">/rest/teams</a>

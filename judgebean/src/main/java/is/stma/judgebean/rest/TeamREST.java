@@ -33,7 +33,7 @@ import java.util.*;
 /**
  * JAX-RS Example
  * <p/>
- * This class produces a RESTful service to read/write the contents of the members table.
+ * This class produces a RESTful service to read/write the contents of the teams table.
  */
 @Path("/teams")
 @RequestScoped
@@ -69,13 +69,13 @@ public class TeamREST extends AbstractREST {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createMember(Team team) {
+    public Response createTeam(Team team) {
 
         Response.ResponseBuilder builder;
 
         try {
             // Validates team using bean validation
-            validateMember(team);
+            validateTeam(team);
 
             service.create(team);
 
@@ -113,7 +113,7 @@ public class TeamREST extends AbstractREST {
      * @throws ConstraintViolationException If Bean Validation errors exist
      * @throws ValidationException If team with the same email already exists
      */
-    private void validateMember(Team team) throws ValidationException {
+    private void validateTeam(Team team) throws ValidationException {
         // Create a bean validator and check for issues.
         Set<ConstraintViolation<Team>> violations = validator.validate(team);
 
