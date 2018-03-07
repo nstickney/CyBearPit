@@ -7,6 +7,7 @@ import is.stma.judgebean.model.scoreable.IScorer;
 import is.stma.judgebean.model.scoreable.DNSScorer;
 import is.stma.judgebean.util.DNSUtility;
 import is.stma.judgebean.util.Resources;
+import org.hamcrest.core.IsEqual;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.Archive;
@@ -21,6 +22,9 @@ import org.junit.runner.RunWith;
 import org.xbill.DNS.Type;
 
 import java.io.File;
+
+import static org.hamcrest.CoreMatchers.anyOf;
+import static org.hamcrest.CoreMatchers.equalTo;
 
 @RunWith(Arquillian.class)
 public class DNSUtilityTest {
@@ -80,13 +84,13 @@ public class DNSUtilityTest {
     @Test
     public void testNoResults() {
         dns.setQuery("baylor.ccdc");
-        Assert.assertEquals("ERROR: type not found", check(dns));
+        Assert.assertThat(check(dns), anyOf(equalTo("ERROR: host not found"), equalTo("ERROR: type not found")));
     }
 
     @Test
     public void testNoSuchIP() {
         dns.setHostAddress("129.62.148.39");
-        Assert.assertEquals("ERROR: timed out", check(dns));
+        Assert.assertThat(check(dns), anyOf(equalTo("ERROR: network error"), equalTo("ERROR: timed out")));
     }
 
     @Test

@@ -51,13 +51,7 @@ import is.stma.judgebean.service.MemberRegistration;
  */
 @Path("/members")
 @RequestScoped
-public class MemberREST {
-
-    @Inject
-    private Logger log;
-
-    @Inject
-    private Validator validator;
+public class MemberREST extends AREST {
 
     @Inject
     private MemberRepository repository;
