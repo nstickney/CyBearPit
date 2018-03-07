@@ -28,7 +28,7 @@ import java.util.List;
 import is.stma.judgebean.model.Member;
 
 @RequestScoped
-public class MemberListProducer {
+public class MemberListProducer extends AbstractEntityListProducer<Member> {
 
     @Inject
     private MemberRepo memberRepository;
@@ -41,12 +41,8 @@ public class MemberListProducer {
         return members;
     }
 
-    public void onMemberListChanged(@Observes(notifyObserver = Reception.IF_EXISTS) final Member member) {
-        retrieveAllMembersOrderedByName();
-    }
-
     @PostConstruct
-    public void retrieveAllMembersOrderedByName() {
+    public void retrieveAll() {
         members = memberRepository.findAllOrderByNameAsc();
     }
 }

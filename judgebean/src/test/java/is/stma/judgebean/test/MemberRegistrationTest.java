@@ -23,6 +23,7 @@ import javax.inject.Inject;
 
 import is.stma.judgebean.model.AEntity;
 import is.stma.judgebean.model.Member;
+import is.stma.judgebean.util.EMProducer;
 import is.stma.judgebean.util.Resources;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -40,7 +41,7 @@ public class MemberRegistrationTest {
     @Deployment
     public static Archive<?> createTestArchive() {
         return ShrinkWrap.create(WebArchive.class, "test.war")
-                .addClasses(AEntity.class, Resources.class,
+                .addClasses(AEntity.class, EMProducer.class, Resources.class,
                         Member.class, MemberRegistration.class)
                 .addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml")
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")

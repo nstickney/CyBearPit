@@ -21,15 +21,12 @@
         http://xmlns.jcp.org/xml/ns/persistence
         http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
    <persistence-unit name="primary">
-      <!-- If you are running in a production environment, add a managed 
-         data source, this example data source is just for development and testing! -->
-      <!-- The datasource is deployed as WEB-INF/judgebean-ds.xml, you
-         can find it in the source at src/main/webapp/WEB-INF/judgebean-ds.xml -->
-      <jta-data-source>java:jboss/datasources/judgebeanDS</jta-data-source>
+      <jta-data-source>java:/JudgeBeanDS</jta-data-source>
       <properties>
          <!-- Properties for Hibernate -->
          <property name="hibernate.hbm2ddl.auto" value="create-drop" />
          <property name="hibernate.show_sql" value="false" />
+         <property name="hibernate.enable_lazy_load_no_trans" value="true"/>
       </properties>
    </persistence-unit>
 </persistence>

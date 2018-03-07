@@ -6,6 +6,7 @@ import is.stma.judgebean.model.poll.DNSPoll;
 import is.stma.judgebean.model.scoreable._Scorer;
 import is.stma.judgebean.model.scoreable.DNSScorer;
 import is.stma.judgebean.util.DNSUtility;
+import is.stma.judgebean.util.EMProducer;
 import is.stma.judgebean.util.Resources;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -35,7 +36,7 @@ public class DNSUtilityTest {
                 .importRuntimeDependencies().resolve().withTransitivity().asFile();
 
         return ShrinkWrap.create(WebArchive.class, "pollDNSTest.war")
-                .addClasses(AEntity.class, DNSUtility.class, Resources.class,
+                .addClasses(AEntity.class, DNSUtility.class, EMProducer.class, Resources.class,
                         _Scorer.class, DNSScorer.class,
                         _Poll.class, DNSPoll.class)
                 .addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml")

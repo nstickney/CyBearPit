@@ -4,6 +4,7 @@ import is.stma.judgebean.model.AEntity;
 import org.apache.deltaspike.data.api.EntityRepository;
 
 import javax.inject.Inject;
+import javax.validation.ValidationException;
 import java.text.DateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;

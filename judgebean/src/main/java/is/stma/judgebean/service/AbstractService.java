@@ -2,12 +2,12 @@ package is.stma.judgebean.service;
 
 import is.stma.judgebean.model.AEntity;
 import is.stma.judgebean.validator.AbstractValidator;
-import is.stma.judgebean.validator.ValidationException;
 import org.apache.deltaspike.data.api.EntityRepository;
 
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.validation.ValidationException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,21 +18,21 @@ public abstract class AbstractService<E extends AEntity,
         R extends EntityRepository<E, String>,
         V extends AbstractValidator<E>> {
 
-    /* Injects ----------------------------------------------------------------------- */
+    /* Injects -------------------------------------------------------------- */
     @Inject
     private Logger log;
 
     @Inject
     private EntityManager em;
 
-    /* Abstract Methods -------------------------------------------------------------- */
+    /* Abstract Methods ----------------------------------------------------- */
     abstract R getRepo();
 
     abstract Event<E> getEvent();
 
     abstract V getValidator();
 
-    /* Service Methods --------------------------------------------------------------- */
+    /* Service Methods ------------------------------------------------------ */
     public E create(E entity) throws ValidationException {
         getValidator().validate(entity, AbstractValidator.Target.CREATE);
         log.log(Level.INFO, "Creating " + prefix(entity));
