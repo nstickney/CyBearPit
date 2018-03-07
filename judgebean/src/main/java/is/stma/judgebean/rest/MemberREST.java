@@ -72,7 +72,7 @@ public class MemberREST {
     }
 
     @GET
-    @Path("/{id:[0-9][0-9]*}")
+    @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Member lookupMemberById(@PathParam("id") String id) {
         Member member = repository.findById(id);
