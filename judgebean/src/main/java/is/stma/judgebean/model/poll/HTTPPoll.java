@@ -1,7 +1,6 @@
 package is.stma.judgebean.model.poll;
 
 import is.stma.judgebean.model.AEntity;
-import is.stma.judgebean.model.scoreable.DNSScorer;
 import is.stma.judgebean.model.scoreable.HTTPScorer;
 
 import javax.persistence.Column;
@@ -9,7 +8,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-public class HTTPPoll extends AEntity implements IPoll {
+public class HTTPPoll extends AEntity implements _Poll {
 
     /* Overrides ------------------------------------------------------------ */
     @Override

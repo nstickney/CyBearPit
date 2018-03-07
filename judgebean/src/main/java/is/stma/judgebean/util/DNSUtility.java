@@ -59,8 +59,8 @@ public class DNSUtility {
                 case AAAA: return ((AAAARecord) records[0]).getAddress().toString();
                 case CNAME: return ((CNAMERecord) records[0]).getAlias().toString();
                 case DNAME: return ((DNAMERecord) records[0]).getAlias().toString();
-                case MX: return ((MXRecord) records[0]).getAdditionalName().toString();
-                case NS: return ((NSRecord) records[0]).getAdditionalName().toString();
+                case MX: return records[0].getAdditionalName().toString();
+                case NS: return records[0].getAdditionalName().toString();
                 case PTR: return ((PTRRecord) records[0]).getTarget().toString();
                 case SOA: return ((SOARecord) records[0]).getHost().toString();
                 case TXT: return (String)((TXTRecord) records[0]).getStrings().get(0);

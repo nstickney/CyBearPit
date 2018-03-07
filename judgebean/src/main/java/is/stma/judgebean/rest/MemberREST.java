@@ -21,7 +21,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Logger;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -29,7 +28,6 @@ import javax.persistence.NoResultException;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
-import javax.validation.Validator;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -40,7 +38,7 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import is.stma.judgebean.data.MemberRepository;
+import is.stma.judgebean.data.MemberRepo;
 import is.stma.judgebean.model.Member;
 import is.stma.judgebean.service.MemberRegistration;
 
@@ -51,10 +49,10 @@ import is.stma.judgebean.service.MemberRegistration;
  */
 @Path("/members")
 @RequestScoped
-public class MemberREST extends AREST {
+public class MemberREST extends AbstractREST {
 
     @Inject
-    private MemberRepository repository;
+    private MemberRepo repository;
 
     @Inject
     private MemberRegistration registration;
@@ -62,7 +60,7 @@ public class MemberREST extends AREST {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Member> listAllMembers() {
-        return repository.findAllOrderedByName();
+        return repository.findAllOrderByNameAsc();
     }
 
     @GET

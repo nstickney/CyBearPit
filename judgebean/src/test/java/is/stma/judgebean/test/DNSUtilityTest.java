@@ -1,13 +1,12 @@
 package is.stma.judgebean.test;
 
 import is.stma.judgebean.model.AEntity;
-import is.stma.judgebean.model.poll.IPoll;
+import is.stma.judgebean.model.poll._Poll;
 import is.stma.judgebean.model.poll.DNSPoll;
-import is.stma.judgebean.model.scoreable.IScorer;
+import is.stma.judgebean.model.scoreable._Scorer;
 import is.stma.judgebean.model.scoreable.DNSScorer;
 import is.stma.judgebean.util.DNSUtility;
 import is.stma.judgebean.util.Resources;
-import org.hamcrest.core.IsEqual;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.Archive;
@@ -37,8 +36,8 @@ public class DNSUtilityTest {
 
         return ShrinkWrap.create(WebArchive.class, "pollDNSTest.war")
                 .addClasses(AEntity.class, DNSUtility.class, Resources.class,
-                        IScorer.class, DNSScorer.class,
-                        IPoll.class, DNSPoll.class)
+                        _Scorer.class, DNSScorer.class,
+                        _Poll.class, DNSPoll.class)
                 .addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml")
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsWebInfResource("test-ds.xml") // Deploy test datasource

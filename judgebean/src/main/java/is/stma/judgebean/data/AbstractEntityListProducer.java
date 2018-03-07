@@ -10,7 +10,7 @@ import javax.enterprise.event.Reception;
  *
  * @param <E> the class of AbstractEntity to produce a list of
  */
-abstract class AEntityListProducer<E extends AEntity> {
+abstract class AbstractEntityListProducer<E extends AEntity> {
 
     /**
      * Pull all <E> instances from the repository

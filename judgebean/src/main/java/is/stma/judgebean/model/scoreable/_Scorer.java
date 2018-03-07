@@ -1,9 +1,9 @@
 package is.stma.judgebean.model.scoreable;
 
-import is.stma.judgebean.model.poll.IPoll;
+import is.stma.judgebean.model.poll._Poll;
 
-public interface IScorer {
+public interface _Scorer {
 
     /* Abstract Methods ----------------------------------------------------- */
-    IPoll createPoll();
+    _Poll createPoll();
 }

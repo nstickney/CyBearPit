@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 /**
  * Provides necessary injects for all JFS-based controllers
  */
-abstract class AController {
+abstract class AbstractController {
 
     /* Injects -------------------------------------------------------------- */
     /**

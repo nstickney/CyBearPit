@@ -2,13 +2,12 @@ package is.stma.judgebean.model.scoreable;
 
 import is.stma.judgebean.model.AEntity;
 import is.stma.judgebean.model.poll.HTTPPoll;
-import org.xbill.DNS.Type;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
-public class HTTPScorer extends AEntity implements IScorer {
+public class HTTPScorer extends AEntity implements _Scorer {
 
     private final static int DEFAULT_HTTP_TIMEOUT = 3;
 

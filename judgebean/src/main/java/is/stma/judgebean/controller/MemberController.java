@@ -20,7 +20,6 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.inject.Model;
 import javax.enterprise.inject.Produces;
 import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -32,7 +31,7 @@ import is.stma.judgebean.service.MemberRegistration;
 // Read more about the @Model stereotype in this FAQ:
 // http://www.cdi-spec.org/faq/#accordion6
 @Model
-public class MemberController extends AController {
+public class MemberController extends AbstractController {
 
     @Inject
     private MemberRegistration memberRegistration;

@@ -1,6 +1,6 @@
 package is.stma.judgebean.model.poll;
 
-public interface IPoll {
+public interface _Poll {
 
     /* Abstract Methods ----------------------------------------------------- */
     void doPoll();

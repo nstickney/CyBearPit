@@ -8,7 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
-public class DNSScorer extends AEntity implements IScorer {
+public class DNSScorer extends AEntity implements _Scorer {
 
     private final static int DEFAULT_DNS_TIMEOUT = 3;
 

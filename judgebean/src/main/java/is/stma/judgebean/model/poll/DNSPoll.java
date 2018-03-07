@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 import static is.stma.judgebean.util.DNSUtility.forwardLookup;
 
-public class DNSPoll extends AEntity implements IPoll {
+public class DNSPoll extends AEntity implements _Poll {
 
     /* Overrides ------------------------------------------------------------ */
     @Override

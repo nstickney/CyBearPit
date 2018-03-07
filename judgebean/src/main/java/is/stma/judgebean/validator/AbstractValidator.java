@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 
 import static is.stma.judgebean.util.EntityUtility.prefix;
 
-public abstract class AValidator<E extends AEntity> {
+public abstract class AbstractValidator<E extends AEntity> {
 
     /* Injects ----------------------------------------------------------------------- */
     @Inject

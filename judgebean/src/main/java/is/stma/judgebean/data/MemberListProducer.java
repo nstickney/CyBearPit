@@ -31,7 +31,7 @@ import is.stma.judgebean.model.Member;
 public class MemberListProducer {
 
     @Inject
-    private MemberRepository memberRepository;
+    private MemberRepo memberRepository;
 
     private List<Member> members;
 
@@ -47,6 +47,6 @@ public class MemberListProducer {
 
     @PostConstruct
     public void retrieveAllMembersOrderedByName() {
-        members = memberRepository.findAllOrderedByName();
+        members = memberRepository.findAllOrderByNameAsc();
     }
 }
