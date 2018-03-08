@@ -1,6 +1,6 @@
 package is.stma.judgebean.data;
 
-import is.stma.judgebean.model.AEntity;
+import is.stma.judgebean.model.AbstractEntity;
 
 import javax.enterprise.event.Observes;
 import javax.enterprise.event.Reception;
@@ -10,7 +10,7 @@ import javax.enterprise.event.Reception;
  *
  * @param <E> the class of AbstractEntity to produce a list of
  */
-abstract class AbstractEntityListProducer<E extends AEntity> {
+abstract class AbstractEntityListProducer<E extends AbstractEntity> {
 
     /**
      * Pull all <E> instances from the repository

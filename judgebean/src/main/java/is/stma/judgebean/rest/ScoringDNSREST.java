@@ -17,10 +17,10 @@
 package is.stma.judgebean.rest;
 
 import is.stma.judgebean.data.AbstractRepo;
-import is.stma.judgebean.data.TeamRepo;
-import is.stma.judgebean.model.Team;
-import is.stma.judgebean.rules.TeamRules;
-import is.stma.judgebean.service.TeamService;
+import is.stma.judgebean.data.ScoringDNSRepo;
+import is.stma.judgebean.model.scoring.ScoringDNS;
+import is.stma.judgebean.rules.ScoringDNSRules;
+import is.stma.judgebean.service.ScoringDNSService;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -32,50 +32,50 @@ import java.util.List;
 /**
  * JAX-RS Example
  * <p/>
- * This class produces a RESTful service to read/write the contents of the teams table.
+ * This class produces a RESTful service to read/write the contents of the scoringDNSs table.
  */
-@Path("/teams")
+@Path("/scoring/dns")
 @RequestScoped
-public class TeamREST extends AbstractREST<Team, AbstractRepo<Team>, TeamRules, TeamService> {
+public class ScoringDNSREST extends AbstractREST<ScoringDNS, AbstractRepo<ScoringDNS>, ScoringDNSRules, ScoringDNSService> {
 
     @Inject
-    private TeamRepo repository;
+    private ScoringDNSRepo repository;
 
     @Inject
-    private TeamRules rules;
+    private ScoringDNSRules rules;
     
     @Inject
-    private TeamService service;
+    private ScoringDNSService service;
 
-    TeamRepo getRepo() {
+    ScoringDNSRepo getRepo() {
         return repository;
     }
 
-    TeamRules getRules() {
+    ScoringDNSRules getRules() {
         return rules;
     }
 
-    TeamService getService() {
+    ScoringDNSService getService() {
         return service;
     }
 
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Team lookupTeamById(@PathParam("id") String id) {
+    public ScoringDNS lookupScoringDNSById(@PathParam("id") String id) {
         return lookupById(id);
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Team> listAll() {
+    public List<ScoringDNS> listAll() {
         return getRepo().findAllOrderByNameAsc();
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createTeam(Team entity) {
+    public Response createScoringDNS(ScoringDNS entity) {
         return createEntity(entity);
     }
 }

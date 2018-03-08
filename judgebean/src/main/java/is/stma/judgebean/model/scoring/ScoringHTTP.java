@@ -1,13 +1,13 @@
 package is.stma.judgebean.model.scoring;
 
-import is.stma.judgebean.model.AEntity;
+import is.stma.judgebean.model.AbstractEntity;
 import is.stma.judgebean.model.poll.HTTPPoll;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
-public class ScoringHTTP extends AEntity implements _Scoring {
+public class ScoringHTTP extends AbstractEntity implements _Scoring {
 
     private final static int DEFAULT_HTTP_TIMEOUT = 3;
 

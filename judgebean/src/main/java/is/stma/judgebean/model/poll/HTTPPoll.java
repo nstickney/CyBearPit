@@ -1,6 +1,6 @@
 package is.stma.judgebean.model.poll;
 
-import is.stma.judgebean.model.AEntity;
+import is.stma.judgebean.model.AbstractEntity;
 import is.stma.judgebean.model.scoring.ScoringHTTP;
 
 import javax.persistence.Column;
@@ -8,7 +8,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-public class HTTPPoll extends AEntity implements _Poll {
+public class HTTPPoll extends AbstractEntity implements _Poll {
 
     /* Overrides ------------------------------------------------------------ */
     @Override

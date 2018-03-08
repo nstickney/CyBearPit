@@ -1,8 +1,8 @@
 package is.stma.judgebean.controller;
 
-import is.stma.judgebean.model.Team;
-import is.stma.judgebean.rules.TeamRules;
-import is.stma.judgebean.service.TeamService;
+import is.stma.judgebean.model.Contest;
+import is.stma.judgebean.rules.ContestRules;
+import is.stma.judgebean.service.ContestService;
 
 import javax.enterprise.inject.Model;
 import javax.enterprise.inject.Produces;
@@ -10,44 +10,44 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 @Model
-public class TeamController extends AbstractEntityController<Team, TeamRules,
-        TeamService> {
+public class ContestController extends AbstractEntityController<Contest, ContestRules,
+        ContestService> {
 
     /* Injects ----------------------------------------------------------------------- */
     @Inject
-    private TeamService service;
+    private ContestService service;
 
     /* Produces ---------------------------------------------------------------------- */
-    private Team newTeam;
+    private Contest newContest;
 
     /* Override Methods -------------------------------------------------------------- */
     @Override
     @Produces
-    @Named("newTeam")
-    Team getNew() {
-        if (newTeam == null) {
-            newTeam = new Team();
+    @Named("newContest")
+    Contest getNew() {
+        if (newContest == null) {
+            newContest = new Contest();
         }
-        return newTeam;
+        return newContest;
     }
 
     @Override
-    void setNew(Team entity) {
-        newTeam = entity;
+    void setNew(Contest entity) {
+        newContest = entity;
     }
 
     @Override
-    TeamService getService() {
+    ContestService getService() {
         return service;
     }
 
     @Override
-    public void update(Team entity) {
+    public void update(Contest entity) {
         doUpdate(entity);
     }
 
     @Override
-    public void delete(Team entity) {
+    public void delete(Contest entity) {
         doDelete(entity);
     }
 }

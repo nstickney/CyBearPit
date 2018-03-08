@@ -3,7 +3,7 @@ package is.stma.judgebean.model;
 import javax.persistence.*;
 
 @Entity
-public class Team extends AEntity {
+public class Team extends AbstractEntity {
 
     /* Fields --------------------------------------------------------------- */
     @Column(nullable = false, unique = true)

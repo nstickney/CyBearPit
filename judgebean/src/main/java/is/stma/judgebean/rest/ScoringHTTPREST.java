@@ -17,10 +17,10 @@
 package is.stma.judgebean.rest;
 
 import is.stma.judgebean.data.AbstractRepo;
-import is.stma.judgebean.data.TeamRepo;
-import is.stma.judgebean.model.Team;
-import is.stma.judgebean.rules.TeamRules;
-import is.stma.judgebean.service.TeamService;
+import is.stma.judgebean.data.ScoringHTTPRepo;
+import is.stma.judgebean.model.scoring.ScoringHTTP;
+import is.stma.judgebean.rules.ScoringHTTPRules;
+import is.stma.judgebean.service.ScoringHTTPService;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -32,50 +32,50 @@ import java.util.List;
 /**
  * JAX-RS Example
  * <p/>
- * This class produces a RESTful service to read/write the contents of the teams table.
+ * This class produces a RESTful service to read/write the contents of the scoringHTTPs table.
  */
-@Path("/teams")
+@Path("/scoring/http")
 @RequestScoped
-public class TeamREST extends AbstractREST<Team, AbstractRepo<Team>, TeamRules, TeamService> {
+public class ScoringHTTPREST extends AbstractREST<ScoringHTTP, AbstractRepo<ScoringHTTP>, ScoringHTTPRules, ScoringHTTPService> {
 
     @Inject
-    private TeamRepo repository;
+    private ScoringHTTPRepo repository;
 
     @Inject
-    private TeamRules rules;
+    private ScoringHTTPRules rules;
     
     @Inject
-    private TeamService service;
+    private ScoringHTTPService service;
 
-    TeamRepo getRepo() {
+    ScoringHTTPRepo getRepo() {
         return repository;
     }
 
-    TeamRules getRules() {
+    ScoringHTTPRules getRules() {
         return rules;
     }
 
-    TeamService getService() {
+    ScoringHTTPService getService() {
         return service;
     }
 
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Team lookupTeamById(@PathParam("id") String id) {
+    public ScoringHTTP lookupScoringHTTPById(@PathParam("id") String id) {
         return lookupById(id);
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Team> listAll() {
+    public List<ScoringHTTP> listAll() {
         return getRepo().findAllOrderByNameAsc();
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createTeam(Team entity) {
+    public Response createScoringHTTP(ScoringHTTP entity) {
         return createEntity(entity);
     }
 }

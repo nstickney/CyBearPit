@@ -1,6 +1,6 @@
 package is.stma.judgebean.test;
 
-import is.stma.judgebean.model.AEntity;
+import is.stma.judgebean.model.AbstractEntity;
 import is.stma.judgebean.model.poll._Poll;
 import is.stma.judgebean.model.poll.DNSPoll;
 import is.stma.judgebean.model.scoring._Scoring;
@@ -36,7 +36,7 @@ public class DNSUtilityTest {
                 .importRuntimeDependencies().resolve().withTransitivity().asFile();
 
         return ShrinkWrap.create(WebArchive.class, "pollDNSTest.war")
-                .addClasses(AEntity.class, DNSUtility.class, EMProducer.class, Resources.class,
+                .addClasses(AbstractEntity.class, DNSUtility.class, EMProducer.class, Resources.class,
                         _Scoring.class, ScoringDNS.class,
                         _Poll.class, DNSPoll.class)
                 .addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml")

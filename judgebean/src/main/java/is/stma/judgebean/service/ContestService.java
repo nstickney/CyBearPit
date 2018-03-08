@@ -1,40 +1,40 @@
 package is.stma.judgebean.service;
 
 import is.stma.judgebean.data.AbstractRepo;
-import is.stma.judgebean.data.TeamRepo;
-import is.stma.judgebean.model.Team;
-import is.stma.judgebean.rules.TeamRules;
+import is.stma.judgebean.data.ContestRepo;
+import is.stma.judgebean.model.Contest;
+import is.stma.judgebean.rules.ContestRules;
 
 import javax.ejb.Stateless;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
 
 @Stateless
-public class TeamService extends AbstractService<Team, AbstractRepo<Team>,
-        TeamRules> {
+public class ContestService extends AbstractService<Contest, AbstractRepo<Contest>,
+        ContestRules> {
 
     /* Injects ----------------------------------------------------------------------- */
     @Inject
-    private TeamRepo repo;
+    private ContestRepo repo;
 
     @Inject
-    private Event<Team> event;
+    private Event<Contest> event;
 
     @Inject
-    private TeamRules validator;
+    private ContestRules validator;
 
     @Override
-    AbstractRepo<Team> getRepo() {
+    AbstractRepo<Contest> getRepo() {
         return repo;
     }
 
     @Override
-    Event<Team> getEvent() {
+    Event<Contest> getEvent() {
         return event;
     }
 
     @Override
-    TeamRules getValidator() {
+    ContestRules getValidator() {
         return validator;
     }
 }

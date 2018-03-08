@@ -1,6 +1,6 @@
-package is.stma.judgebean.validator;
+package is.stma.judgebean.rules;
 
-import is.stma.judgebean.model.AEntity;
+import is.stma.judgebean.model.AbstractEntity;
 import org.apache.deltaspike.data.api.EntityRepository;
 
 import javax.inject.Inject;
@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 
 import static is.stma.judgebean.util.EntityUtility.prefix;
 
-public abstract class AbstractValidator<E extends AEntity> {
+public abstract class AbstractRules<E extends AbstractEntity> {
 
     /* Injects ----------------------------------------------------------------------- */
     @Inject

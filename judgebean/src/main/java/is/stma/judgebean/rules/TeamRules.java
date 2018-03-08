@@ -1,4 +1,4 @@
-package is.stma.judgebean.validator;
+package is.stma.judgebean.rules;
 
 import is.stma.judgebean.data.TeamRepo;
 import is.stma.judgebean.model.Team;
@@ -9,7 +9,7 @@ import javax.inject.Inject;
 import javax.validation.ValidationException;
 
 @Model
-public class TeamValidator extends AbstractValidator<Team> {
+public class TeamRules extends AbstractRules<Team> {
 
     @Inject
     private TeamRepo repo;

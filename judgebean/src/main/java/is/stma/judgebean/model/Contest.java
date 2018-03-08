@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Contest extends AEntity {
+public class Contest extends AbstractEntity {
 
     /* Fields --------------------------------------------------------------- */
     @Column(nullable = false, unique = true)

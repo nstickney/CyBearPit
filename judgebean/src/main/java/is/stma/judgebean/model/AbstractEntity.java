@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.UUID;
 
 @MappedSuperclass
-public abstract class AEntity implements Serializable {
+public abstract class AbstractEntity implements Serializable {
 
     /* Abstract Methods ----------------------------------------------------- */
     public abstract String getName();
@@ -16,12 +16,12 @@ public abstract class AEntity implements Serializable {
     private final String id;
 
     /* Constructor ---------------------------------------------------------- */
-    public AEntity() {
+    public AbstractEntity() {
         this.id = UUID.randomUUID().toString();
     }
 
     /* Comparison ----------------------------------------------------------- */
-    public boolean equalByUUID(AEntity other) {
+    public boolean equalByUUID(AbstractEntity other) {
         return getId().equals(other.getId());
     }
 

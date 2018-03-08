@@ -17,10 +17,10 @@
 package is.stma.judgebean.rest;
 
 import is.stma.judgebean.data.AbstractRepo;
-import is.stma.judgebean.data.TeamRepo;
-import is.stma.judgebean.model.Team;
-import is.stma.judgebean.rules.TeamRules;
-import is.stma.judgebean.service.TeamService;
+import is.stma.judgebean.data.ContestRepo;
+import is.stma.judgebean.model.Contest;
+import is.stma.judgebean.rules.ContestRules;
+import is.stma.judgebean.service.ContestService;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -32,50 +32,50 @@ import java.util.List;
 /**
  * JAX-RS Example
  * <p/>
- * This class produces a RESTful service to read/write the contents of the teams table.
+ * This class produces a RESTful service to read/write the contents of the contests table.
  */
-@Path("/teams")
+@Path("/contests")
 @RequestScoped
-public class TeamREST extends AbstractREST<Team, AbstractRepo<Team>, TeamRules, TeamService> {
+public class ContestREST extends AbstractREST<Contest, AbstractRepo<Contest>, ContestRules, ContestService> {
 
     @Inject
-    private TeamRepo repository;
+    private ContestRepo repository;
 
     @Inject
-    private TeamRules rules;
+    private ContestRules rules;
     
     @Inject
-    private TeamService service;
+    private ContestService service;
 
-    TeamRepo getRepo() {
+    ContestRepo getRepo() {
         return repository;
     }
 
-    TeamRules getRules() {
+    ContestRules getRules() {
         return rules;
     }
 
-    TeamService getService() {
+    ContestService getService() {
         return service;
     }
 
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Team lookupTeamById(@PathParam("id") String id) {
+    public Contest lookupContestById(@PathParam("id") String id) {
         return lookupById(id);
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Team> listAll() {
+    public List<Contest> listAll() {
         return getRepo().findAllOrderByNameAsc();
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createTeam(Team entity) {
+    public Response createContest(Contest entity) {
         return createEntity(entity);
     }
 }

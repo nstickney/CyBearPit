@@ -1,9 +1,9 @@
 package is.stma.judgebean.controller;
 
-import is.stma.judgebean.model.AEntity;
+import is.stma.judgebean.data.AbstractRepo;
+import is.stma.judgebean.model.AbstractEntity;
+import is.stma.judgebean.rules.AbstractRules;
 import is.stma.judgebean.service.AbstractService;
-import is.stma.judgebean.validator.AbstractValidator;
-import org.apache.deltaspike.data.api.EntityRepository;
 
 import javax.faces.application.FacesMessage;
 import java.util.ArrayList;
@@ -15,13 +15,13 @@ import static is.stma.judgebean.util.EntityUtility.prefix;
 /**
  * Provides the default operations for modeled entities (CRUD)
  *
- * @param <E> The class of AEntity to control
- * @param <V> The class of AbstractValidator matched to <E>
+ * @param <E> The class of AbstractEntity to control
+ * @param <V> The class of AbstractRules matched to <E>
  * @param <S> The class of AbstractService matched to <E>
  */
-abstract class AbstractEntityController<E extends AEntity,
-        V extends AbstractValidator<E>,
-        S extends AbstractService<E, EntityRepository<E, String>, V>> extends AbstractController {
+abstract class AbstractEntityController<E extends AbstractEntity,
+        V extends AbstractRules<E>,
+        S extends AbstractService<E, AbstractRepo<E>, V>> extends AbstractController {
 
     /* Abstract Methods -------------------------------------------------------------- */
 

@@ -1,13 +1,13 @@
 package is.stma.judgebean.model.poll;
 
-import is.stma.judgebean.model.AEntity;
+import is.stma.judgebean.model.AbstractEntity;
 import is.stma.judgebean.model.scoring.ScoringDNS;
 
 import javax.persistence.*;
 
 import static is.stma.judgebean.util.DNSUtility.forwardLookup;
 
-public class DNSPoll extends AEntity implements _Poll {
+public class DNSPoll extends AbstractEntity implements _Poll {
 
     /* Overrides ------------------------------------------------------------ */
     @Override

@@ -1,8 +1,8 @@
 package is.stma.judgebean.service;
 
-import is.stma.judgebean.model.AEntity;
-import is.stma.judgebean.validator.AbstractValidator;
-import org.apache.deltaspike.data.api.EntityRepository;
+import is.stma.judgebean.data.AbstractRepo;
+import is.stma.judgebean.model.AbstractEntity;
+import is.stma.judgebean.rules.AbstractRules;
 
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
@@ -14,9 +14,9 @@ import java.util.logging.Logger;
 
 import static is.stma.judgebean.util.EntityUtility.prefix;
 
-public abstract class AbstractService<E extends AEntity,
-        R extends EntityRepository<E, String>,
-        V extends AbstractValidator<E>> {
+public abstract class AbstractService<E extends AbstractEntity,
+        R extends AbstractRepo<E>,
+        V extends AbstractRules<E>> {
 
     /* Injects -------------------------------------------------------------- */
     @Inject
@@ -34,7 +34,7 @@ public abstract class AbstractService<E extends AEntity,
 
     /* Service Methods ------------------------------------------------------ */
     public E create(E entity) throws ValidationException {
-        getValidator().validate(entity, AbstractValidator.Target.CREATE);
+        getValidator().validate(entity, AbstractRules.Target.CREATE);
         log.log(Level.INFO, "Creating " + prefix(entity));
         entity = getRepo().save(entity);
         getEvent().fire(entity);
@@ -52,7 +52,7 @@ public abstract class AbstractService<E extends AEntity,
     public E update(E entity) throws ValidationException {
         em.detach(entity);
         log.log(Level.INFO, "Updating " + prefix(getRepo().findBy(entity.getId())));
-        getValidator().validate(entity, AbstractValidator.Target.UPDATE);
+        getValidator().validate(entity, AbstractRules.Target.UPDATE);
         entity = getRepo().save(entity);
         log.log(Level.INFO, "Updated " + prefix(entity));
         getEvent().fire(entity);
@@ -60,7 +60,7 @@ public abstract class AbstractService<E extends AEntity,
     }
 
     public void delete(E entity) throws ValidationException {
-        getValidator().validate(entity, AbstractValidator.Target.DELETE);
+        getValidator().validate(entity, AbstractRules.Target.DELETE);
         log.log(Level.INFO, "Deleting " + prefix(entity));
         getRepo().remove(entity);
         getEvent().fire(entity);

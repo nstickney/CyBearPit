@@ -1,6 +1,6 @@
 package is.stma.judgebean.model.scoring;
 
-import is.stma.judgebean.model.AEntity;
+import is.stma.judgebean.model.AbstractEntity;
 import is.stma.judgebean.model.poll.DNSPoll;
 import org.xbill.DNS.Type;
 
@@ -8,7 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
-public class ScoringDNS extends AEntity implements _Scoring {
+public class ScoringDNS extends AbstractEntity implements _Scoring {
 
     private final static int DEFAULT_DNS_TIMEOUT = 3;
 
