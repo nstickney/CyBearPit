@@ -1,9 +1,6 @@
 package is.stma.judgebean.model;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +12,9 @@ public class Resource extends AbstractEntity {
 
     @ManyToMany(mappedBy = "resources", cascade = CascadeType.ALL)
     private List<Team> teams = new ArrayList<>();
+
+    @OneToMany(mappedBy = "resource")
+    private List<ResourceParameter> parameters = new ArrayList<>();
 
     @Override
     public String getName() {

@@ -214,6 +214,22 @@
             <version>2.1.8</version>
         </dependency>
 
+        <!-- Java Server Faces -->
+        <dependency>
+            <groupId>org.jboss.spec.javax.faces</groupId>
+            <artifactId>jboss-jsf-api_2.2_spec</artifactId>
+            <version>2.2.14</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- BootFaces! -->
+        <dependency>
+            <groupId>net.bootsfaces</groupId>
+            <artifactId>bootsfaces</artifactId>
+            <version>1.2.0</version>
+            <scope>compile</scope>
+        </dependency>
+
     </dependencies>
 
     <build>
