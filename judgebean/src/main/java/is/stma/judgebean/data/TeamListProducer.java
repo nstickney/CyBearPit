@@ -13,19 +13,19 @@ import java.util.List;
 public class TeamListProducer extends AbstractEntityListProducer<Team> {
 
     @Inject
-    private TeamRepo teamRepo;
+    private TeamRepo repo;
 
-    private List<Team> teams;
+    private List<Team> entities;
 
     @Produces
-    @Named
-    public List<Team> getTeams() {
-        return teams;
+    @Named("teams")
+    public List<Team> getEntities() {
+        return entities;
     }
 
     @Override
     @PostConstruct
     void retrieveAll() {
-        teams = teamRepo.findAllOrderByNameAsc();
+        entities = repo.findAllOrderByNameAsc();
     }
 }

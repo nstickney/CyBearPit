@@ -1,22 +1,17 @@
 package is.stma.judgebean.test;
 
 import is.stma.judgebean.data.AbstractRepo;
-import is.stma.judgebean.data.ContestRepo;
 import is.stma.judgebean.data.TeamRepo;
 import is.stma.judgebean.model.AbstractEntity;
 import is.stma.judgebean.model.Contest;
 import is.stma.judgebean.model.Team;
-import is.stma.judgebean.model.scoring.ScoringDNS;
-import is.stma.judgebean.model.scoring._Scoring;
 import is.stma.judgebean.rules.AbstractRules;
-import is.stma.judgebean.rules.ContestRules;
 import is.stma.judgebean.rules.TeamRules;
 import is.stma.judgebean.service.AbstractService;
-import is.stma.judgebean.service.ContestService;
 import is.stma.judgebean.service.TeamService;
 import is.stma.judgebean.util.EMProducer;
 import is.stma.judgebean.util.EntityUtility;
-import is.stma.judgebean.util.Resources;
+import is.stma.judgebean.util.LogProducer;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -46,7 +41,7 @@ public class TeamServiceTest {
                         AbstractRepo.class, TeamRepo.class,
                         AbstractService.class, TeamService.class,
                         AbstractRules.class, TeamRules.class,
-                        EntityUtility.class, EMProducer.class, Resources.class)
+                        EntityUtility.class, EMProducer.class, LogProducer.class)
                 .addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml")
                 .addAsResource("META-INF/apache-deltaspike.properties")
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")

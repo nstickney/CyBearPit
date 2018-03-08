@@ -1,6 +1,6 @@
 package is.stma.judgebean.data;
 
-import is.stma.judgebean.model.Contest;
+import is.stma.judgebean.model.ResourceParameter;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
@@ -10,16 +10,16 @@ import javax.inject.Named;
 import java.util.List;
 
 @RequestScoped
-public class ContestListProducer extends AbstractEntityListProducer<Contest> {
+public class ResourceParameterListProducer extends AbstractEntityListProducer<ResourceParameter> {
 
     @Inject
-    private ContestRepo repo;
+    private ResourceParameterRepo repo;
 
-    private List<Contest> entities;
+    private List<ResourceParameter> entities;
 
     @Produces
-    @Named("contests")
-    public List<Contest> getEntities() {
+    @Named("resourceParameters")
+    public List<ResourceParameter> getEntities() {
         return entities;
     }
 

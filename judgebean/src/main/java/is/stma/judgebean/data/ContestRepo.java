@@ -9,6 +9,4 @@ import java.util.List;
 @Repository(forEntity = Contest.class)
 public interface ContestRepo extends AbstractRepo<Contest> {
 
-    List<Contest> findAllOrderByNameAsc();
-
 }

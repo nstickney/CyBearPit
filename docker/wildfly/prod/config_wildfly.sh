@@ -36,14 +36,16 @@ $JBOSS_CLI -c << EOF
 batch
 
 echo "Connection URL: " $CONNECTION_URL
+
 echo "  => Adding MySQL module"
 module add --name=com.mysql --resources=/opt/jboss/wildfly/mysql-connector-java-5.1.45-bin.jar --dependencies=javax.api,javax.transaction.api
+
 echo "  => Configuring MySQL driver"
 /subsystem=datasources/jdbc-driver=mysql:add(driver-name=mysql,driver-module-name=com.mysql)
+
 echo "  => Creating MySQL datasource " $JUDGEBEAN_DS
 data-source add --name=$JUDGEBEAN_DB --driver-name=mysql --jndi-name=$JUDGEBEAN_DS --connection-url=jdbc:mysql://$DB_HOST:$DB_PORT/$JUDGEBEAN_DB --user-name=$DB_USER --password=$DB_PWD
 
-# Execute the batch
 run-batch
 EOF
 

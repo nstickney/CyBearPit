@@ -254,6 +254,7 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <build>
+                <finalName>ROOT</finalName>
                 <plugins>
                     <plugin>
                         <artifactId>maven-surefire-plugin</artifactId>

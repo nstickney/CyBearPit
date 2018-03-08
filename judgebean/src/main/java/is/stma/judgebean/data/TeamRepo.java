@@ -10,8 +10,6 @@ import java.util.List;
 @Repository(forEntity = Team.class)
 public interface TeamRepo extends AbstractRepo<Team> {
 
-    List<Team> findAllOrderByNameAsc();
-
     @Query("select t from Team t where t.contest.id = ?1")
     List<Team> findByContest(String contestId);
 

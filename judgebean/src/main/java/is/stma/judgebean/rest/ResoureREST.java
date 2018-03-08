@@ -17,10 +17,10 @@
 package is.stma.judgebean.rest;
 
 import is.stma.judgebean.data.AbstractRepo;
-import is.stma.judgebean.data.ScoringDNSRepo;
-import is.stma.judgebean.model.scoring.ScoringDNS;
-import is.stma.judgebean.rules.ScoringDNSRules;
-import is.stma.judgebean.service.ScoringDNSService;
+import is.stma.judgebean.data.ResourceRepo;
+import is.stma.judgebean.model.Resource;
+import is.stma.judgebean.rules.ResourceRules;
+import is.stma.judgebean.service.ResourceService;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -32,50 +32,50 @@ import java.util.List;
 /**
  * JAX-RS Example
  * <p/>
- * This class produces a RESTful service to read/write the contents of the scoringDNSs table.
+ * This class produces a RESTful service to read/write the contents of the resources table.
  */
-@Path("/scoring/dns")
+@Path("/resources")
 @RequestScoped
-public class ScoringDNSREST extends AbstractREST<ScoringDNS, AbstractRepo<ScoringDNS>, ScoringDNSRules, ScoringDNSService> {
+public class ResoureREST extends AbstractREST<Resource, AbstractRepo<Resource>, ResourceRules, ResourceService> {
 
     @Inject
-    private ScoringDNSRepo repository;
+    private ResourceRepo repo;
 
     @Inject
-    private ScoringDNSRules rules;
+    private ResourceRules rules;
     
     @Inject
-    private ScoringDNSService service;
+    private ResourceService service;
 
-    ScoringDNSRepo getRepo() {
-        return repository;
+    ResourceRepo getRepo() {
+        return repo;
     }
 
-    ScoringDNSRules getRules() {
+    ResourceRules getRules() {
         return rules;
     }
 
-    ScoringDNSService getService() {
+    ResourceService getService() {
         return service;
     }
 
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public ScoringDNS lookupScoringDNSById(@PathParam("id") String id) {
+    public Resource lookupResourceById(@PathParam("id") String id) {
         return lookupById(id);
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<ScoringDNS> listAll() {
+    public List<Resource> listAll() {
         return getRepo().findAllOrderByNameAsc();
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createScoringDNS(ScoringDNS entity) {
+    public Response createResource(Resource entity) {
         return createEntity(entity);
     }
 }

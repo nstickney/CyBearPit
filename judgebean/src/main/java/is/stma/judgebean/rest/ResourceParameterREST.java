@@ -17,10 +17,10 @@
 package is.stma.judgebean.rest;
 
 import is.stma.judgebean.data.AbstractRepo;
-import is.stma.judgebean.data.ScoringHTTPRepo;
-import is.stma.judgebean.model.scoring.ScoringHTTP;
-import is.stma.judgebean.rules.ScoringHTTPRules;
-import is.stma.judgebean.service.ScoringHTTPService;
+import is.stma.judgebean.data.ResourceParameterRepo;
+import is.stma.judgebean.model.ResourceParameter;
+import is.stma.judgebean.rules.ResourceParameterRules;
+import is.stma.judgebean.service.ResourceParameterService;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -32,50 +32,50 @@ import java.util.List;
 /**
  * JAX-RS Example
  * <p/>
- * This class produces a RESTful service to read/write the contents of the scoringHTTPs table.
+ * This class produces a RESTful service to read/write the contents of the resourceParameters table.
  */
-@Path("/scoring/http")
+@Path("/resourceParameters")
 @RequestScoped
-public class ScoringHTTPREST extends AbstractREST<ScoringHTTP, AbstractRepo<ScoringHTTP>, ScoringHTTPRules, ScoringHTTPService> {
+public class ResourceParameterREST extends AbstractREST<ResourceParameter, AbstractRepo<ResourceParameter>, ResourceParameterRules, ResourceParameterService> {
 
     @Inject
-    private ScoringHTTPRepo repository;
+    private ResourceParameterRepo repo;
 
     @Inject
-    private ScoringHTTPRules rules;
+    private ResourceParameterRules rules;
     
     @Inject
-    private ScoringHTTPService service;
+    private ResourceParameterService service;
 
-    ScoringHTTPRepo getRepo() {
-        return repository;
+    ResourceParameterRepo getRepo() {
+        return repo;
     }
 
-    ScoringHTTPRules getRules() {
+    ResourceParameterRules getRules() {
         return rules;
     }
 
-    ScoringHTTPService getService() {
+    ResourceParameterService getService() {
         return service;
     }
 
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public ScoringHTTP lookupScoringHTTPById(@PathParam("id") String id) {
+    public ResourceParameter lookupResourceParameterById(@PathParam("id") String id) {
         return lookupById(id);
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<ScoringHTTP> listAll() {
+    public List<ResourceParameter> listAll() {
         return getRepo().findAllOrderByNameAsc();
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createScoringHTTP(ScoringHTTP entity) {
+    public Response createResourceParameter(ResourceParameter entity) {
         return createEntity(entity);
     }
 }

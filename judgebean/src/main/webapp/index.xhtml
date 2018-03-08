@@ -56,7 +56,7 @@
             <em>No registered teams.</em>
         </h:panelGroup>
         <h:dataTable var="_team" value="#{teams}" rendered="#{not empty teams}"
-            styleClass="simpletablestyle">
+                     styleClass="simpletablestyle">
             <h:column>
                 <f:facet name="header">Id</f:facet>
                 #{_team.id}

@@ -1,6 +1,6 @@
 package is.stma.judgebean.data;
 
-import is.stma.judgebean.model.scoring.ScoringDNS;
+import is.stma.judgebean.model.Resource;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
@@ -10,22 +10,22 @@ import javax.inject.Named;
 import java.util.List;
 
 @RequestScoped
-public class ScoringDNSListProducer extends AbstractEntityListProducer<ScoringDNS> {
+public class ResourceListProducer extends AbstractEntityListProducer<Resource> {
 
     @Inject
-    private ScoringDNSRepo scoringDNSRepo;
+    private ResourceRepo repo;
 
-    private List<ScoringDNS> teams;
+    private List<Resource> entities;
 
     @Produces
-    @Named
-    public List<ScoringDNS> getScoringDNSs() {
-        return teams;
+    @Named("resources")
+    public List<Resource> getEntities() {
+        return entities;
     }
 
     @Override
     @PostConstruct
     void retrieveAll() {
-        teams = scoringDNSRepo.findAllOrderByNameAsc();
+        entities = repo.findAllOrderByNameAsc();
     }
 }

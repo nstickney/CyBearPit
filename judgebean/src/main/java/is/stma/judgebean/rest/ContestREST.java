@@ -39,7 +39,7 @@ import java.util.List;
 public class ContestREST extends AbstractREST<Contest, AbstractRepo<Contest>, ContestRules, ContestService> {
 
     @Inject
-    private ContestRepo repository;
+    private ContestRepo repo;
 
     @Inject
     private ContestRules rules;
@@ -48,7 +48,7 @@ public class ContestREST extends AbstractREST<Contest, AbstractRepo<Contest>, Co
     private ContestService service;
 
     ContestRepo getRepo() {
-        return repository;
+        return repo;
     }
 
     ContestRules getRules() {

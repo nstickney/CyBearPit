@@ -17,7 +17,7 @@ if [[ "$(docker images -q judgebean-wildfly 2> /dev/null)" == "" ]]; then
     docker build --no-cache --force-rm -t judgebean-wildfly .    
 fi
 
-# Run the container, forwarding ports 80 (to 8080) and 91 (to 9990)
+# Run the container, forwarding ports 80 (to 8080) and 81 (to 9990)
 docker run --name=judgebean-wildfly \
 	-p 80:8080 \
 	-p 81:9990 \

@@ -39,7 +39,7 @@ import java.util.List;
 public class TeamREST extends AbstractREST<Team, AbstractRepo<Team>, TeamRules, TeamService> {
 
     @Inject
-    private TeamRepo repository;
+    private TeamRepo repo;
 
     @Inject
     private TeamRules rules;
@@ -48,7 +48,7 @@ public class TeamREST extends AbstractREST<Team, AbstractRepo<Team>, TeamRules, 
     private TeamService service;
 
     TeamRepo getRepo() {
-        return repository;
+        return repo;
     }
 
     TeamRules getRules() {
