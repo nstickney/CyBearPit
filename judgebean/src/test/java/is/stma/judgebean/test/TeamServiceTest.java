@@ -4,6 +4,7 @@ import is.stma.judgebean.data.AbstractRepo;
 import is.stma.judgebean.data.TeamRepo;
 import is.stma.judgebean.model.AbstractEntity;
 import is.stma.judgebean.model.Contest;
+import is.stma.judgebean.model.Resource;
 import is.stma.judgebean.model.Team;
 import is.stma.judgebean.rules.AbstractRules;
 import is.stma.judgebean.rules.TeamRules;
@@ -30,6 +31,16 @@ import java.util.logging.Logger;
 @RunWith(Arquillian.class)
 public class TeamServiceTest {
 
+    @Inject
+    private Logger log;
+
+    @Inject
+    private TeamService service;
+
+    private Team newTeam;
+
+    private Team checkTeam;
+
     @Deployment
     public static WebArchive createDeployment() {
 
@@ -37,7 +48,7 @@ public class TeamServiceTest {
                 .importRuntimeDependencies().resolve().withTransitivity().asFile();
 
         return ShrinkWrap.create(WebArchive.class, "teamServiceTest.war")
-                .addClasses(AbstractEntity.class, Team.class, Contest.class,
+                .addClasses(AbstractEntity.class, Team.class, Contest.class, Resource.class,
                         AbstractRepo.class, TeamRepo.class,
                         AbstractService.class, TeamService.class,
                         AbstractRules.class, TeamRules.class,
@@ -48,15 +59,6 @@ public class TeamServiceTest {
                 .addAsWebInfResource("test-ds.xml") // Deploy test datasource
                 .addAsLibraries(files); // Add necessary stuff from pom.xml
     }
-
-    @Inject
-    private Logger log;
-
-    @Inject
-    private TeamService service;
-
-    private Team newTeam;
-    private Team checkTeam;
 
     @Before
     public void setUp() {
@@ -73,9 +75,16 @@ public class TeamServiceTest {
         Assert.assertTrue(newTeam.equals(checkTeam));
     }
 
-    //TODO: This exception is too broad - need to narrowly tailor!
     @Test(expected = Exception.class)
     public void testNonUniqueUUID() {
+        checkTeam = newTeam;
+        checkTeam.setFlag("We Copied You!");
+        service.create(checkTeam);
+    }
+
+    //TODO: This exception is too broad - need to narrowly tailor!
+    @Test(expected = Exception.class)
+    public void testNonUniqueFlag() {
         checkTeam = new Team();
         checkTeam.setFlag("BMG");
         service.create(checkTeam);

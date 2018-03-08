@@ -2,7 +2,6 @@ package is.stma.judgebean.rest;
 
 import is.stma.judgebean.data.AbstractRepo;
 import is.stma.judgebean.model.AbstractEntity;
-import is.stma.judgebean.model.Team;
 import is.stma.judgebean.rules.AbstractRules;
 import is.stma.judgebean.service.AbstractService;
 
@@ -12,7 +11,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
 import javax.validation.Validator;
-import javax.ws.rs.*;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -24,7 +23,7 @@ import java.util.logging.Logger;
 abstract class AbstractREST<E extends AbstractEntity,
         R extends AbstractRepo<E>,
         V extends AbstractRules<E>,
-        S extends AbstractService<E,R,V>> {
+        S extends AbstractService<E, R, V>> {
 
     @Inject
     Logger log;

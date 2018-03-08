@@ -13,14 +13,11 @@ import static is.stma.judgebean.util.EntityUtility.prefix;
 
 public abstract class AbstractRules<E extends AbstractEntity> {
 
-    /* Injects ----------------------------------------------------------------------- */
+    final DateFormat df = DateFormat.getDateInstance();
+
     @Inject
     Logger log;
 
-    /* Fields ------------------------------------------------------------------------ */
-    final DateFormat df = DateFormat.getDateInstance();
-
-    /* Abstract Methods -------------------------------------------------------------- */
     abstract EntityRepository<E, String> getRepo();
 
     abstract void runBusinessRules(E entity, Target target)
@@ -28,7 +25,6 @@ public abstract class AbstractRules<E extends AbstractEntity> {
 
     abstract void checkBeforeDelete(E entity) throws ValidationException;
 
-    /* Methods ----------------------------------------------------------------------- */
     public void validate(E entity, Target target) throws ValidationException {
 
         boolean collision = !isUuidUnique(entity);
@@ -46,11 +42,6 @@ public abstract class AbstractRules<E extends AbstractEntity> {
         }
     }
 
-    /* Enum Type --------------------------------------------------------------------- */
-    public enum Target {
-        CREATE, UPDATE, DELETE
-    }
-
     private boolean isUuidUnique(E entity) {
         return (getRepo().findBy(entity.getId()) == null);
     }
@@ -58,5 +49,9 @@ public abstract class AbstractRules<E extends AbstractEntity> {
     void errorOut(String details) throws ValidationException {
         log.log(Level.WARNING, details);
         throw new ValidationException(details);
+    }
+
+    public enum Target {
+        CREATE, UPDATE, DELETE
     }
 }

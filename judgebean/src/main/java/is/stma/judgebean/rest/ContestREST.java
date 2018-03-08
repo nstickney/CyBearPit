@@ -43,7 +43,7 @@ public class ContestREST extends AbstractREST<Contest, AbstractRepo<Contest>, Co
 
     @Inject
     private ContestRules rules;
-    
+
     @Inject
     private ContestService service;
 

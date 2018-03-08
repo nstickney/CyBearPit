@@ -16,12 +16,9 @@
  */
 package is.stma.judgebean.util;
 
-import java.util.logging.Logger;
-
-import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.InjectionPoint;
-import javax.faces.context.FacesContext;
+import java.util.logging.Logger;
 
 public class LogProducer {
 

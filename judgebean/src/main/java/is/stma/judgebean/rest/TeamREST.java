@@ -43,7 +43,7 @@ public class TeamREST extends AbstractREST<Team, AbstractRepo<Team>, TeamRules, 
 
     @Inject
     private TeamRules rules;
-    
+
     @Inject
     private TeamService service;
 

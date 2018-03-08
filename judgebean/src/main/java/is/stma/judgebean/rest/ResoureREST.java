@@ -43,7 +43,7 @@ public class ResoureREST extends AbstractREST<Resource, AbstractRepo<Resource>, 
 
     @Inject
     private ResourceRules rules;
-    
+
     @Inject
     private ResourceService service;
 

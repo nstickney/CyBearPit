@@ -13,14 +13,11 @@ import javax.inject.Named;
 public class TeamController extends AbstractEntityController<Team, TeamRules,
         TeamService> {
 
-    /* Injects ----------------------------------------------------------------------- */
     @Inject
     private TeamService service;
 
-    /* Produces ---------------------------------------------------------------------- */
     private Team newTeam;
 
-    /* Override Methods -------------------------------------------------------------- */
     @Override
     @Produces
     @Named("newTeam")

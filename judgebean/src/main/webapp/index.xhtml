@@ -16,38 +16,38 @@
     limitations under the License.
 -->
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:f="http://java.sun.com/jsf/core"
-    xmlns:h="http://java.sun.com/jsf/html"
-    template="/WEB-INF/templates/default.xhtml">
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                template="/WEB-INF/templates/default.xhtml">
     <ui:define name="content">
         <h1>Welcome to WildFly!</h1>
 
         <div>
             <p>You have successfully deployed a Java EE 7 Enterprise Application.</p>
             <h3>Your application can run on:</h3>
-            <img src="resources/gfx/wildfly_400x130.jpg" />
+            <img src="resources/gfx/wildfly_400x130.jpg"/>
         </div>
 
         <h:form id="reg">
             <h2>Team Registration</h2>
             <p>Enforces annotation-based constraints defined on the model class.</p>
             <h:panelGrid columns="3" columnClasses="titleCell">
-                <h:outputLabel for="name" value="Name:" />
-                <h:inputText id="name" value="#{newTeam.name}" />
-                <h:message for="name" errorClass="invalid" />
+                <h:outputLabel for="name" value="Name:"/>
+                <h:inputText id="name" value="#{newTeam.name}"/>
+                <h:message for="name" errorClass="invalid"/>
 
-                <h:outputLabel for="email" value="Email:" />
-                <h:inputText id="email" value="#{newTeam.flag}" />
-                <h:message for="email" errorClass="invalid" />
+                <h:outputLabel for="email" value="Email:"/>
+                <h:inputText id="email" value="#{newTeam.flag}"/>
+                <h:message for="email" errorClass="invalid"/>
             </h:panelGrid>
 
             <p>
                 <h:panelGrid columns="2">
                     <h:commandButton id="register" action="#{teamController.create}"
-                        value="Register" styleClass="register" />
+                                     value="Register" styleClass="register"/>
                     <h:messages styleClass="messages" errorClass="invalid" infoClass="valid"
-                        warnClass="warning" globalOnly="true" />
+                                warnClass="warning" globalOnly="true"/>
                 </h:panelGrid>
             </p>
         </h:form>
@@ -74,7 +74,7 @@
                 <a href="#{request.contextPath}/rest/teams/#{_team.id}">/rest/teams/#{_team.id}</a>
             </h:column>
             <f:facet name="footer">
-            REST URL for all teams: <a href="#{request.contextPath}/rest/teams">/rest/teams</a>
+                REST URL for all teams: <a href="#{request.contextPath}/rest/teams">/rest/teams</a>
             </f:facet>
         </h:dataTable>
     </ui:define>

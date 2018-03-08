@@ -13,14 +13,11 @@ import javax.inject.Named;
 public class ResourceParameterController extends AbstractEntityController<ResourceParameter, ResourceParameterRules,
         ResourceParameterService> {
 
-    /* Injects ----------------------------------------------------------------------- */
     @Inject
     private ResourceParameterService service;
 
-    /* Produces ---------------------------------------------------------------------- */
     private ResourceParameter newResourceParameter;
 
-    /* Override Methods -------------------------------------------------------------- */
     @Override
     @Produces
     @Named("newResourceParameter")

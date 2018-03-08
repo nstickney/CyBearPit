@@ -23,8 +23,6 @@ abstract class AbstractEntityController<E extends AbstractEntity,
         V extends AbstractRules<E>,
         S extends AbstractService<E, AbstractRepo<E>, V>> extends AbstractController {
 
-    /* Abstract Methods -------------------------------------------------------------- */
-
     /**
      * Get a non-persistent, new <E> instance
      *
@@ -59,8 +57,6 @@ abstract class AbstractEntityController<E extends AbstractEntity,
      * @param entity the <E> to delete
      */
     abstract void delete(E entity);
-
-    /* Controlled Methods ------------------------------------------------------------ */
 
     /**
      * Persist the <E> from getNew()
@@ -128,8 +124,6 @@ abstract class AbstractEntityController<E extends AbstractEntity,
         }
         return filteredEntitys;
     }
-
-    /* Utility Methods --------------------------------------------------------------- */
 
     /**
      * Handle a Throwable by logging the error message and pushing it to the FacesContext

@@ -7,7 +7,6 @@ import is.stma.judgebean.service.TeamService;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
 @ApplicationScoped
 public class Judge {

@@ -13,7 +13,6 @@ import javax.inject.Inject;
 public class ResourceService extends AbstractService<Resource, AbstractRepo<Resource>,
         ResourceRules> {
 
-    /* Injects ----------------------------------------------------------------------- */
     @Inject
     private ResourceRepo repo;
 

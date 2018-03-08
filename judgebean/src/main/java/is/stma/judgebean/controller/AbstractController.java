@@ -9,7 +9,6 @@ import java.util.logging.Logger;
  */
 abstract class AbstractController {
 
-    /* Injects -------------------------------------------------------------- */
     /**
      * The FacesContext currently in use
      */

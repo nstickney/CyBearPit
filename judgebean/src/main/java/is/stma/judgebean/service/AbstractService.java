@@ -18,21 +18,18 @@ public abstract class AbstractService<E extends AbstractEntity,
         R extends AbstractRepo<E>,
         V extends AbstractRules<E>> {
 
-    /* Injects -------------------------------------------------------------- */
     @Inject
     private Logger log;
 
     @Inject
     private EntityManager em;
 
-    /* Abstract Methods ----------------------------------------------------- */
     abstract R getRepo();
 
     abstract Event<E> getEvent();
 
     abstract V getValidator();
 
-    /* Service Methods ------------------------------------------------------ */
     public E create(E entity) throws ValidationException {
         getValidator().validate(entity, AbstractRules.Target.CREATE);
         log.log(Level.INFO, "Creating " + prefix(entity));

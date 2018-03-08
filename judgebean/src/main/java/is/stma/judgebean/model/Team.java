@@ -1,11 +1,12 @@
 package is.stma.judgebean.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Team extends AbstractEntity {
 
-    /* Fields --------------------------------------------------------------- */
     @Column(nullable = false, unique = true)
     private String name;
 
@@ -16,13 +17,19 @@ public class Team extends AbstractEntity {
     @JoinColumn(name = "contest_id")
     private Contest contest;
 
-    /* Overrides ------------------------------------------------------------ */
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "team_resources",
+            joinColumns = {@JoinColumn(name = "resource_id",
+                    referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "team_id",
+                    referencedColumnName = "id")})
+    private List<Resource> resources = new ArrayList<>();
+
     @Override
     public String getName() {
         return name;
     }
 
-    /* Getters and Setters -------------------------------------------------- */
     public void setName(String name) {
         this.name = name;
     }
@@ -43,5 +50,4 @@ public class Team extends AbstractEntity {
         this.contest = contest;
     }
 
-    /* Methods -------------------------------------------------------------- */
 }

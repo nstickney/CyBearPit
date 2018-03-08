@@ -13,7 +13,6 @@ import javax.inject.Inject;
 public class ContestService extends AbstractService<Contest, AbstractRepo<Contest>,
         ContestRules> {
 
-    /* Injects ----------------------------------------------------------------------- */
     @Inject
     private ContestRepo repo;
 

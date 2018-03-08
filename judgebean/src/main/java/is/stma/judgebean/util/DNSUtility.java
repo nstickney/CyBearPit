@@ -24,17 +24,16 @@ public class DNSUtility {
      * first record of any given type is returned.
      *
      * @param hostAddress address or hostname of DNS server to query
-     * @param hostPort server port of the DNS server to query
-     * @param query query to send to the DNS server
-     * @param tcp whether to use TCP for the query or not
-     * @param type the type of record to ask for
-     * @param recursive whether to request recursion (TODO: Unimplemented)
-     * @param timeout length of the timeout in seconds
+     * @param hostPort    server port of the DNS server to query
+     * @param query       query to send to the DNS server
+     * @param tcp         whether to use TCP for the query or not
+     * @param type        the type of record to ask for
+     * @param recursive   whether to request recursion (TODO: Unimplemented)
+     * @param timeout     length of the timeout in seconds
      * @return top (first) response from the server, or ERROR
      */
-    public static String lookup(String hostAddress, int hostPort, String query,
-                                       boolean tcp, int type, boolean recursive,
-                                       int timeout) {
+    public static String lookup(String hostAddress, int hostPort, String query, int type,
+                                boolean tcp, boolean recursive, int timeout) {
         try {
 
             // Set up the resolution options
@@ -44,7 +43,7 @@ public class DNSUtility {
             } else {
                 resolver = new SimpleResolver(hostAddress);
             }
-            
+
             if (0 == hostPort) {
                 resolver.setPort(DEFAULT_DNS_PORT);
             } else if (0 < hostPort && hostPort < 65535) {
@@ -52,9 +51,9 @@ public class DNSUtility {
             } else {
                 return "ERROR: port " + hostPort + " does not exist";
             }
-            
+
             resolver.setTCP(tcp);
-            
+
             if (0 == timeout) {
                 resolver.setTimeout(DEFAULT_DNS_TIMEOUT);
             } else if (0 < timeout && timeout < MAX_DNS_TIMEOUT) {
@@ -62,7 +61,7 @@ public class DNSUtility {
             } else {
                 resolver.setTimeout(MAX_DNS_TIMEOUT);
             }
-            
+
             // Do the lookup
             Lookup lookup;
             if (PTR == type) {
@@ -83,15 +82,24 @@ public class DNSUtility {
 
             // Filter supported types
             switch (type) {
-                case A: return ((ARecord) records[0]).getAddress().toString();
-                case AAAA: return ((AAAARecord) records[0]).getAddress().toString();
-                case CNAME: return ((CNAMERecord) records[0]).getAlias().toString();
-                case DNAME: return ((DNAMERecord) records[0]).getAlias().toString();
-                case MX: return records[0].getAdditionalName().toString();
-                case NS: return records[0].getAdditionalName().toString();
-                case PTR: return ((PTRRecord) records[0]).getTarget().toString();
-                case SOA: return ((SOARecord) records[0]).getHost().toString();
-                case TXT: return (String)((TXTRecord) records[0]).getStrings().get(0);
+                case A:
+                    return ((ARecord) records[0]).getAddress().toString();
+                case AAAA:
+                    return ((AAAARecord) records[0]).getAddress().toString();
+                case CNAME:
+                    return ((CNAMERecord) records[0]).getAlias().toString();
+                case DNAME:
+                    return ((DNAMERecord) records[0]).getAlias().toString();
+                case MX:
+                    return records[0].getAdditionalName().toString();
+                case NS:
+                    return records[0].getAdditionalName().toString();
+                case PTR:
+                    return ((PTRRecord) records[0]).getTarget().toString();
+                case SOA:
+                    return ((SOARecord) records[0]).getHost().toString();
+                case TXT:
+                    return (String) ((TXTRecord) records[0]).getStrings().get(0);
             }
 
             return records[0].toString();
@@ -102,18 +110,18 @@ public class DNSUtility {
     }
 
     public static String lookup(String query) {
-        return lookup(DEFAULT_DNS_ADDRESS, DEFAULT_DNS_PORT, query, DEFAULT_DNS_TCP, DEFAULT_DNS_TYPE, DEFAULT_DNS_RECURSIVE, DEFAULT_DNS_TIMEOUT);
+        return lookup(DEFAULT_DNS_ADDRESS, DEFAULT_DNS_PORT, query, DEFAULT_DNS_TYPE, DEFAULT_DNS_TCP, DEFAULT_DNS_RECURSIVE, DEFAULT_DNS_TIMEOUT);
     }
 
     public static String lookup(String hostAddress, String query) {
-        return lookup(hostAddress, DEFAULT_DNS_PORT, query, DEFAULT_DNS_TCP, DEFAULT_DNS_TYPE, DEFAULT_DNS_RECURSIVE, DEFAULT_DNS_TIMEOUT);
+        return lookup(hostAddress, DEFAULT_DNS_PORT, query, DEFAULT_DNS_TYPE, DEFAULT_DNS_TCP, DEFAULT_DNS_RECURSIVE, DEFAULT_DNS_TIMEOUT);
     }
 
     public static String lookup(String query, int type) {
-        return lookup(DEFAULT_DNS_ADDRESS, DEFAULT_DNS_PORT, query, DEFAULT_DNS_TCP, type, DEFAULT_DNS_RECURSIVE, DEFAULT_DNS_TIMEOUT);
+        return lookup(DEFAULT_DNS_ADDRESS, DEFAULT_DNS_PORT, query, type, DEFAULT_DNS_TCP, DEFAULT_DNS_RECURSIVE, DEFAULT_DNS_TIMEOUT);
     }
 
     public static String lookup(String hostAddress, String query, int type) {
-        return lookup(hostAddress, DEFAULT_DNS_PORT, query, DEFAULT_DNS_TCP, type, DEFAULT_DNS_RECURSIVE, DEFAULT_DNS_TIMEOUT);
+        return lookup(hostAddress, DEFAULT_DNS_PORT, query, type, DEFAULT_DNS_TCP, DEFAULT_DNS_RECURSIVE, DEFAULT_DNS_TIMEOUT);
     }
 }

@@ -1,20 +1,30 @@
 package is.stma.judgebean.model;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class ResourceParameter extends AbstractEntity {
 
-    /* Fields --------------------------------------------------------------- */
+    @ManyToOne
+    private Resource resource;
 
-    /* Overrides ------------------------------------------------------------ */
     @Override
     public String getName() {
         return getId();
     }
 
-    /* Getters and Setters -------------------------------------------------- */
+    public enum ParameterTag {
 
-    /* Methods -------------------------------------------------------------- */
+        // These tags can apply to any kind of resource
+        TYPE, HOST, PORT, CHECK_FLAG,
+
+        // These flags apply only to DNS resources
+        QUERY, RECORD_TYPE, TCP, RECURSIVE, TIMEOUT, CHECK_DEFAULT
+    }
+
+    public enum ResourceTag {
+        DNS, HTTP
+    }
+
 }

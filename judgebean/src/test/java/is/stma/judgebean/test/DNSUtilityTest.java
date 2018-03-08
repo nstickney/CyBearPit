@@ -19,12 +19,14 @@ import org.xbill.DNS.Type;
 
 import java.io.File;
 
-import static is.stma.judgebean.util.DNSUtility.*;
+import static is.stma.judgebean.util.DNSUtility.lookup;
 import static org.hamcrest.CoreMatchers.anyOf;
 import static org.hamcrest.CoreMatchers.equalTo;
 
 @RunWith(Arquillian.class)
 public class DNSUtilityTest {
+
+    private String query = "baylor.edu";
 
     @Deployment
     public static Archive<?> createTestArchive() {
@@ -39,8 +41,6 @@ public class DNSUtilityTest {
                 .addAsWebInfResource("test-ds.xml") // Deploy test datasource
                 .addAsLibraries(files); // Add necessary stuff from pom.xml
     }
-
-    private String query = "baylor.edu";
 
     @Before
     public void setUp() {

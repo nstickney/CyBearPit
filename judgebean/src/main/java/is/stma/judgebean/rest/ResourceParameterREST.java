@@ -43,7 +43,7 @@ public class ResourceParameterREST extends AbstractREST<ResourceParameter, Abstr
 
     @Inject
     private ResourceParameterRules rules;
-    
+
     @Inject
     private ResourceParameterService service;
 

@@ -13,14 +13,11 @@ import javax.inject.Named;
 public class ContestController extends AbstractEntityController<Contest, ContestRules,
         ContestService> {
 
-    /* Injects ----------------------------------------------------------------------- */
     @Inject
     private ContestService service;
 
-    /* Produces ---------------------------------------------------------------------- */
     private Contest newContest;
 
-    /* Override Methods -------------------------------------------------------------- */
     @Override
     @Produces
     @Named("newContest")

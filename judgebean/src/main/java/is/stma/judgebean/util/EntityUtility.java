@@ -9,7 +9,7 @@ import java.util.Date;
 public class EntityUtility {
 
     public static String prefix(AbstractEntity entity) {
-        return entity.getClass().getSimpleName() + " " + entity.getId().substring(0,5)
+        return entity.getClass().getSimpleName() + " " + entity.getId().substring(0, 5)
                 + ": " + entity.getName();
     }
 

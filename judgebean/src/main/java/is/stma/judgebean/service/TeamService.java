@@ -13,7 +13,6 @@ import javax.inject.Inject;
 public class TeamService extends AbstractService<Team, AbstractRepo<Team>,
         TeamRules> {
 
-    /* Injects ----------------------------------------------------------------------- */
     @Inject
     private TeamRepo repo;
 
