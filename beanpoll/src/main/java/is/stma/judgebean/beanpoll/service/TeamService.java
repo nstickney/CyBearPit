@@ -20,7 +20,7 @@ public class TeamService extends AbstractService<Team, AbstractRepo<Team>,
     private Event<Team> event;
 
     @Inject
-    private TeamRules validator;
+    private TeamRules rules;
 
     @Override
     AbstractRepo<Team> getRepo() {
@@ -33,7 +33,7 @@ public class TeamService extends AbstractService<Team, AbstractRepo<Team>,
     }
 
     @Override
-    TeamRules getValidator() {
-        return validator;
+    TeamRules getRules() {
+        return rules;
     }
 }

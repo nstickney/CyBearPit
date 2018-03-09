@@ -1,23 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:b="http://bootsfaces.net/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
                 template="/WEB-INF/templates/default.xhtml">
-    <ui:define name="title">Control Panel</ui:define>
+
+    <!-- Page title and content header string -->
+    <ui:define name="title">Authentication</ui:define>
+
+    <!-- Main body content -->
     <ui:define name="content">
-        <b:container>
-            <b:tabView style="margin-bottom:1em">
-                <b:tab title="Contests">
-                    <ui:include src="contests.xhtml"/>
-                </b:tab>
-                <b:tab title="Resources">
-                    <ui:include src="resources.xhtml"/>
-                </b:tab>
-                <b:tab title="Teams">
-                    <ui:include src="teams.xhtml"/>
-                </b:tab>
-            </b:tabView>
-        </b:container>
+        <b:tab title="Log In">
+            <h:form>
+                <b:row>
+                    <h:outputLabel value="Username:" for="username"/>
+                    <h:inputText value="#{sessionController.username}" id="username" class="form-control"/>
+                </b:row>
+                <b:row>
+                    <h:outputLabel value="Password:" for="password"/>
+                    <h:inputSecret value="#{sessionController.password}" id="password" class="form-control"/>
+                </b:row>
+                <b:row>
+                    <h:commandButton action="#{sessionController.authenticate()}" value="Log In" />
+                </b:row>
+                <b:row>
+                    <h:messages styleClass="messages" showDetail="true"/>
+                </b:row>
+            </h:form>
+        </b:tab>
     </ui:define>
 </ui:composition>

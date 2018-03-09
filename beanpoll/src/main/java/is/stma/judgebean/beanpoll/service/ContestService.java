@@ -20,7 +20,7 @@ public class ContestService extends AbstractService<Contest, AbstractRepo<Contes
     private Event<Contest> event;
 
     @Inject
-    private ContestRules validator;
+    private ContestRules rules;
 
     @Override
     AbstractRepo<Contest> getRepo() {
@@ -33,7 +33,7 @@ public class ContestService extends AbstractService<Contest, AbstractRepo<Contes
     }
 
     @Override
-    ContestRules getValidator() {
-        return validator;
+    ContestRules getRules() {
+        return rules;
     }
 }

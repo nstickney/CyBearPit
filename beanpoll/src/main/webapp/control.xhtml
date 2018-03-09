@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/WEB-INF/templates/default.xhtml">
+
+    <!-- Must be administrative user to view the control page -->
+    <f:metadata>
+        <f:viewAction action="#{sessionController.checkAdmin()}" />
+    </f:metadata>
+
+    <!-- Page title and content header string -->
+    <ui:define name="title">Control Panel</ui:define>
+
+    <!-- Main body content -->
+    <ui:define name="content">
+
+        <b:tab title="Contests">
+            <ui:include src="contests.xhtml"/>
+        </b:tab>
+        <b:tab title="Injects">
+            <ui:include src="injects.xhtml"/>
+        </b:tab>
+        <b:tab title="Resources">
+            <ui:include src="resources.xhtml"/>
+        </b:tab>
+        <b:tab title="Teams">
+            <ui:include src="teams.xhtml"/>
+        </b:tab>
+    </ui:define>
+</ui:composition>

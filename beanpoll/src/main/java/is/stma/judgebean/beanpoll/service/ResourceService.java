@@ -20,7 +20,7 @@ public class ResourceService extends AbstractService<Resource, AbstractRepo<Reso
     private Event<Resource> event;
 
     @Inject
-    private ResourceRules validator;
+    private ResourceRules rules;
 
     @Override
     AbstractRepo<Resource> getRepo() {
@@ -33,7 +33,7 @@ public class ResourceService extends AbstractService<Resource, AbstractRepo<Reso
     }
 
     @Override
-    ResourceRules getValidator() {
-        return validator;
+    ResourceRules getRules() {
+        return rules;
     }
 }

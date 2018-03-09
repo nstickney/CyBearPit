@@ -1,8 +1,8 @@
 package is.stma.judgebean.beanpoll.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Team extends AbstractEntity {
@@ -13,8 +13,17 @@ public class Team extends AbstractEntity {
     @Column(unique = true)
     private String flag;
 
+    @OneToOne(mappedBy = "team")
+    private User user;
+
     @ManyToOne
     private Contest contest;
+
+    @ManyToMany
+    @JoinTable(name = "team_resources",
+        joinColumns = {@JoinColumn(name = "team_id", referencedColumnName = "id")},
+        inverseJoinColumns = {@JoinColumn(name = "resource_id", referencedColumnName = "id")})
+    private List<Resource> resources = new ArrayList<>();
 
     @Override
     public String getName() {

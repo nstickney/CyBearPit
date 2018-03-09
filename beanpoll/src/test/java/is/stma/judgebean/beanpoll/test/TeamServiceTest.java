@@ -45,7 +45,8 @@ public class TeamServiceTest {
                 .importRuntimeDependencies().resolve().withTransitivity().asFile();
 
         return ShrinkWrap.create(WebArchive.class, "teamServiceTest.war")
-                .addClasses(AbstractEntity.class, Team.class, Contest.class, Resource.class, ResourceParameter.class,
+                .addClasses(AbstractEntity.class, Team.class,
+                        Contest.class, Resource.class, ResourceParameter.class, User.class, Task.class,
                         AbstractRepo.class, TeamRepo.class,
                         AbstractService.class, TeamService.class,
                         AbstractRules.class, TeamRules.class,

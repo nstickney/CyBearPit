@@ -28,10 +28,10 @@ public abstract class AbstractService<E extends AbstractEntity,
 
     abstract Event<E> getEvent();
 
-    abstract V getValidator();
+    abstract V getRules();
 
     public E create(E entity) throws ValidationException {
-        getValidator().validate(entity, AbstractRules.Target.CREATE);
+        getRules().validate(entity, AbstractRules.Target.CREATE);
         log.log(Level.INFO, "Creating " + prefix(entity));
         entity = getRepo().save(entity);
         getEvent().fire(entity);
@@ -49,7 +49,7 @@ public abstract class AbstractService<E extends AbstractEntity,
     public E update(E entity) throws ValidationException {
         em.detach(entity);
         log.log(Level.INFO, "Updating " + prefix(getRepo().findBy(entity.getId())));
-        getValidator().validate(entity, AbstractRules.Target.UPDATE);
+        getRules().validate(entity, AbstractRules.Target.UPDATE);
         entity = getRepo().save(entity);
         log.log(Level.INFO, "Updated " + prefix(entity));
         getEvent().fire(entity);
@@ -57,7 +57,7 @@ public abstract class AbstractService<E extends AbstractEntity,
     }
 
     public void delete(E entity) throws ValidationException {
-        getValidator().validate(entity, AbstractRules.Target.DELETE);
+        getRules().validate(entity, AbstractRules.Target.DELETE);
         log.log(Level.INFO, "Deleting " + prefix(entity));
         getRepo().remove(entity);
         getEvent().fire(entity);

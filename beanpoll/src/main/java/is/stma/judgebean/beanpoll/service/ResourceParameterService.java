@@ -20,7 +20,7 @@ public class ResourceParameterService extends AbstractService<ResourceParameter,
     private Event<ResourceParameter> event;
 
     @Inject
-    private ResourceParameterRules validator;
+    private ResourceParameterRules rules;
 
     @Override
     AbstractRepo<ResourceParameter> getRepo() {
@@ -33,7 +33,7 @@ public class ResourceParameterService extends AbstractService<ResourceParameter,
     }
 
     @Override
-    ResourceParameterRules getValidator() {
-        return validator;
+    ResourceParameterRules getRules() {
+        return rules;
     }
 }

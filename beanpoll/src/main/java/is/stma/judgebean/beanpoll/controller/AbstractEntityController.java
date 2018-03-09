@@ -21,7 +21,7 @@ import static is.stma.judgebean.beanpoll.util.EntityUtility.prefix;
  */
 abstract class AbstractEntityController<E extends AbstractEntity,
         V extends AbstractRules<E>,
-        S extends AbstractService<E, AbstractRepo<E>, V>> extends AbstractController {
+        S extends AbstractService<E, AbstractRepo<E>, V>> extends AbstractFacesController {
 
     /**
      * Get a non-persistent, new <E> instance
@@ -131,7 +131,7 @@ abstract class AbstractEntityController<E extends AbstractEntity,
      * @param t   the Throwable to handle
      * @param msg the detailed message
      */
-    private void errorOut(Throwable t, String msg) {
+    void errorOut(Throwable t, String msg) {
 
         // Default to general error message that registration failed.
         String errorMsg = "Action failed. See server log for more information";

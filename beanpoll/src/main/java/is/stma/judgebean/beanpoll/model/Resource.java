@@ -19,6 +19,9 @@ public class Resource extends AbstractEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private Contest contest;
 
+    @ManyToMany(mappedBy = "resources")
+    private List<Team> teams;
+
     @OneToMany(mappedBy = "resource")
     private List<ResourceParameter> parameters = new ArrayList<>();
 
