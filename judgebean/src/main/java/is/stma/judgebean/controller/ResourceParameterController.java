@@ -1,5 +1,6 @@
 package is.stma.judgebean.controller;
 
+import is.stma.judgebean.model.Resource;
 import is.stma.judgebean.model.ResourceParameter;
 import is.stma.judgebean.rules.ResourceParameterRules;
 import is.stma.judgebean.service.ResourceParameterService;
@@ -46,5 +47,14 @@ public class ResourceParameterController extends AbstractEntityController<Resour
     @Override
     public void delete(ResourceParameter entity) {
         doDelete(entity);
+    }
+
+    /**
+     * Creates and attaches all the necessary parameters for a given resource
+     *
+     * @param resource resource to parameterize
+     */
+    public void parameterize(Resource resource) {
+
     }
 }

@@ -1,8 +1,8 @@
 package is.stma.judgebean.model;
 
-import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Team extends AbstractEntity {
@@ -12,7 +12,7 @@ public class Team extends AbstractEntity {
 
     @Column(unique = true)
     private String flag;
-    
+
     @ManyToOne
     private Contest contest;
 

@@ -1,6 +1,8 @@
 package is.stma.judgebean.model;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +11,9 @@ public class Contest extends AbstractEntity {
 
     @Column(nullable = false, unique = true)
     private String name;
+
+    @Column
+    public ContestState state = ContestState.STOPPED;
 
     @OneToMany(mappedBy = "contest")
     private List<Resource> resources = new ArrayList<>();
@@ -39,5 +44,9 @@ public class Contest extends AbstractEntity {
 
     public void setTeams(List<Team> teams) {
         this.teams = teams;
+    }
+
+    public enum ContestState {
+        RUNNING, STOPPED
     }
 }

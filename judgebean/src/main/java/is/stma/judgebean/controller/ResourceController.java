@@ -1,6 +1,7 @@
 package is.stma.judgebean.controller;
 
 import is.stma.judgebean.model.Resource;
+import is.stma.judgebean.model.ResourceParameter;
 import is.stma.judgebean.rules.ResourceRules;
 import is.stma.judgebean.service.ResourceService;
 
@@ -13,17 +14,15 @@ import javax.inject.Named;
 public class ResourceController extends AbstractEntityController<Resource, ResourceRules,
         ResourceService> {
 
-    /* Injects ----------------------------------------------------------------------- */
     @Inject
     private ResourceService service;
 
-    /* Produces ---------------------------------------------------------------------- */
+    @Inject
+    private ResourceParameterController parameterController;
+
     private Resource newResource;
 
-    /* Override Methods -------------------------------------------------------------- */
     @Override
-    @Produces
-    @Named("newResource")
     Resource getNew() {
         if (newResource == null) {
             newResource = new Resource();
@@ -49,5 +48,23 @@ public class ResourceController extends AbstractEntityController<Resource, Resou
     @Override
     public void delete(Resource entity) {
         doDelete(entity);
+    }
+
+    @Produces
+    @Named("newDNS")
+    Resource getNewDNS() {
+        Resource newDNS = getNew();
+        newDNS.setTag(Resource.DNS);
+        parameterController.parameterize(newDNS);
+        return newDNS;
+    }
+
+    @Produces
+    @Named("newHTTP")
+    Resource getNewHTTP() {
+        Resource newHTTP = getNew();
+        newHTTP.setTag(Resource.HTTP);
+        parameterController.parameterize(newHTTP);
+        return newHTTP;
     }
 }

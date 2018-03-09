@@ -18,27 +18,27 @@
 --
 
 -- You can use this file to load seed data into the database using SQL statements
-insert into Contest (id, name) values ('C0', 'Cyber Patriot')
-insert into Contest (id, name) values ('C1', 'CCDC')
-insert into Contest (id, name) values ('C2', 'CDX')
-insert into Team (id, name, flag, contest_id) values ('T0', 'Blue Man Group', 'Ready, Go!', 'C0')
-insert into Team (id, name, flag, contest_id) values ('T1', 'Bala Morgab', 'BMG', 'C0')
-insert into Team (id, name, flag, contest_id) values ('T2', 'General Motors Bicyclists', 'GMb', 'C1')
-insert into Team (id, name, flag, contest_id) values ('T3', 'Greater Midwest Baseball', 'GMB', 'C1')
-insert into Team (id, name, flag, contest_id) values ('T4', 'Totally Unrelated People', '123456', 'C2')
-insert into Team (id, name, flag, contest_id) values ('T5', 'Totally Unrelated People', '123456', 'C2')
-insert into Team (id, name, flag, contest_id) values ('T6', 'Totally Unrelated People', '123456', 'C0')
-insert into Team (id, name, flag) values ('T7', 'Totally Unrelated People', '123456')
-insert into Resource (id, name, contest_id) values ('R0', 'T0 DNS', 'C0')
-insert into Resource (id, name, contest_id) values ('R1', 'T1 DNS', 'C0')
-insert into Resource (id, name, contest_id) values ('R2', 'T0 HTTP', 'C0')
-insert into Resource (id, name, contest_id) values ('R3', 'T1 HTTP', 'C0')
-insert into Resource (id, name, contest_id) values ('R4', 'T2 DNS', 'C1')
-insert into Resource (id, name, contest_id) values ('R5', 'T3 DNS', 'C1')
-insert into Resource (id, name, contest_id) values ('R6', 'T2 HTTP', 'C1')
-insert into Resource (id, name, contest_id) values ('R7', 'T3 HTTP', 'C1')
-insert into Resource (id, name, contest_id) values ('R8', 'T4 DNS', 'C2')
-insert into Resource (id, name, contest_id) values ('R9', 'T5 DNS', 'C2')
-insert into Resource (id, name, contest_id) values ('R10', 'T4 HTTP', 'C2')
-insert into Resource (id, name, contest_id) values ('R11', 'T5 HTTP', 'C2')
-insert into Resource (id, name) values ('R12', 'Extra HTTP')
+insert into Contest (id, name) values ('C0', 'Cyber Patriot');
+insert into Contest (id, name) values ('C1', 'CCDC');
+insert into Contest (id, name) values ('C2', 'CDX');
+insert into Team (id, name, flag, contest_id) values ('T0', 'Blue Man Group', 'Ready, Go!', 'C0');
+insert into Team (id, name, flag, contest_id) values ('T1', 'Bala Morgab', 'BMG', 'C0');
+insert into Team (id, name, flag, contest_id) values ('T2', 'General Motors Bicyclists', 'GMb', 'C1');
+insert into Team (id, name, flag, contest_id) values ('T3', 'Greater Midwest Baseball', 'GMB', 'C1');
+insert into Team (id, name, flag, contest_id) values ('T4', 'Totally Unrelated People', '123456', 'C2');
+insert into Team (id, name, flag, contest_id) values ('T5', 'Totally Unrelated People', '123456', 'C2');
+insert into Team (id, name, flag, contest_id) values ('T6', 'Totally Unrelated People', '123456', 'C0');
+insert into Team (id, name, flag) values ('T7', 'Totally Unrelated People', '123456');
+insert into Resource (id, name, tag, contest_id) values ('R0', 'Nameserver A0', 'DNS', 'C0');
+insert into Resource (id, name, tag, contest_id) values ('R1', 'Nameserver B0', 'DNS', 'C0');
+insert into Resource (id, name, tag, contest_id) values ('R2', 'Webserver A0', 'HTTP', 'C0');
+insert into Resource (id, name, tag, contest_id) values ('R3', 'Webserver B0', 'HTTP', 'C0');
+insert into Resource (id, name, tag, contest_id) values ('R4', 'Nameserver A1', 'DNS', 'C1');
+insert into Resource (id, name, tag, contest_id) values ('R5', 'Nameserver B1', 'DNS', 'C1');
+insert into Resource (id, name, tag, contest_id) values ('R6', 'Webserver A1', 'HTTP', 'C1');
+insert into Resource (id, name, tag, contest_id) values ('R7', 'Webserver B1', 'HTTP', 'C1');
+insert into Resource (id, name, tag, contest_id) values ('R8', 'Nameserver A2', 'DNS', 'C2');
+insert into Resource (id, name, tag, contest_id) values ('R9', 'Nameserver B2', 'DNS', 'C2');
+insert into Resource (id, name, tag, contest_id) values ('R10', 'Webserver A2', 'HTTP', 'C2');
+insert into Resource (id, name, tag, contest_id) values ('R11', 'Webserver B2', 'HTTP', 'C2');
+insert into Resource (id, name, tag) values ('R12', 'Webserver', 'HTTP');

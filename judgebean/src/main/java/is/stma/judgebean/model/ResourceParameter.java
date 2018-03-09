@@ -1,13 +1,23 @@
 package is.stma.judgebean.model;
 
+import is.stma.judgebean.util.DNSUtility;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.Null;
 
 @Entity
 public class ResourceParameter extends AbstractEntity {
 
     @ManyToOne
     private Resource resource;
+
+    @Column(nullable = false)
+    private ParameterTag tag = ParameterTag.HOST;
+
+    @Column
+    private String value = null;
 
     @Override
     public String getName() {
@@ -21,10 +31,6 @@ public class ResourceParameter extends AbstractEntity {
 
         // These flags apply only to DNS resources
         QUERY, RECORD_TYPE, TCP, RECURSIVE, TIMEOUT, CHECK_DEFAULT
-    }
-
-    public enum ResourceTag {
-        DNS, HTTP
     }
 
 }

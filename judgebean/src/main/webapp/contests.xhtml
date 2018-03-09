@@ -2,7 +2,10 @@
              xmlns:ui="http://java.sun.com/jsf/facelets"
              xmlns:b="http://bootsfaces.net/ui">
 
-    <ui:repeat var="_contest" value="#{contests}">
-        <b:panel col-lg="6" title="#{_contest.name}" collapsed="#{true}"/>
+    <!--Option to create a new contest-->
+    <b:panel col-lg="6" title="Create a New Contest" look="info" collapsed="#{true}"/>
+
+    <ui:repeat var="_c" value="#{contests}">
+        <b:panel col-lg="6" title="#{_c.name}" collapsed="#{true}"/>
     </ui:repeat>
 </ui:fragment>
