@@ -1,0 +1,16 @@
+<ui:fragment xmlns="http://www.w3.org/1999/xhtml"
+             xmlns:ui="http://java.sun.com/jsf/facelets"
+             xmlns:b="http://bootsfaces.net/ui">
+
+    <!--Show the unassigned resources first-->
+    <ui:repeat var="_resource" value="#{unassignedResources}">
+        <b:panel look="warning" col-lg="6" title="#{_resource.name}" collapsed="#{true}"/>
+    </ui:repeat>
+
+    <!--The remaining resources are grouped by contest-->
+    <ui:repeat value="#{contests}" var="_contest">
+        <ui:repeat var="_resource" value="#{_contest.resources}">
+            <b:panel col-lg="6" title="#{_contest.name}: #{_resource.name}" collapsed="#{true}"/>
+        </ui:repeat>
+    </ui:repeat>
+</ui:fragment>

@@ -18,38 +18,17 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:b="http://bootsfaces.net/ui">
 <h:head>
     <title>judgebean</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <h:outputStylesheet name="css/screen.css"/>
 </h:head>
 <h:body>
-    <div id="container">
-        <div class="dualbrand">
-            <img src="resources/gfx/dualbrand_logo.png" alt="dualbrand"/>
-        </div>
-        <div id="content">
-            <ui:insert name="content">
-                [Template content will be inserted here]
-            </ui:insert>
-        </div>
-        <div id="aside">
-            <p>Learn more about JBoss WildFly.</p>
-            <ul>
-                <li><a
-                        href="https://github.com/wildfly/quickstart/blob/master/guide/Introduction.asciidoc">Getting
-                    Started Developing Applications Guide</a></li>
-                <li><a href="http://www.wildfly.org/">Community
-                    Project Information</a></li>
-            </ul>
-        </div>
-        <div id="footer">
-            <p>
-                This project was generated from a Maven archetype from
-                WildFly.<br/>
-            </p>
-        </div>
-    </div>
+    <b:panel><b:container><h1>JudgeBean Control Panel</h1></b:container></b:panel>
+    <ui:insert name="content">
+        [Template content will be inserted here]
+    </ui:insert>
 </h:body>
 </html>

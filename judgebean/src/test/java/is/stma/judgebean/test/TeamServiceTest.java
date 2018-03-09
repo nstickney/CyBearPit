@@ -2,10 +2,7 @@ package is.stma.judgebean.test;
 
 import is.stma.judgebean.data.AbstractRepo;
 import is.stma.judgebean.data.TeamRepo;
-import is.stma.judgebean.model.AbstractEntity;
-import is.stma.judgebean.model.Contest;
-import is.stma.judgebean.model.Resource;
-import is.stma.judgebean.model.Team;
+import is.stma.judgebean.model.*;
 import is.stma.judgebean.rules.AbstractRules;
 import is.stma.judgebean.rules.TeamRules;
 import is.stma.judgebean.service.AbstractService;
@@ -48,7 +45,7 @@ public class TeamServiceTest {
                 .importRuntimeDependencies().resolve().withTransitivity().asFile();
 
         return ShrinkWrap.create(WebArchive.class, "teamServiceTest.war")
-                .addClasses(AbstractEntity.class, Team.class, Contest.class, Resource.class,
+                .addClasses(AbstractEntity.class, Team.class, Contest.class, Resource.class, ResourceParameter.class,
                         AbstractRepo.class, TeamRepo.class,
                         AbstractService.class, TeamService.class,
                         AbstractRules.class, TeamRules.class,

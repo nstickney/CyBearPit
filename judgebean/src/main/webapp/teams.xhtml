@@ -1,0 +1,10 @@
+<ui:fragment xmlns="http://www.w3.org/1999/xhtml"
+             xmlns:ui="http://java.sun.com/jsf/facelets"
+             xmlns:b="http://bootsfaces.net/ui">
+
+    <ui:repeat var="_team" value="#{teams}">
+        <b:panel col-lg="6" title="#{_team.name}" collapsed="#{true}">
+            Flag: #{_team.flag}
+        </b:panel>
+    </ui:repeat>
+</ui:fragment>

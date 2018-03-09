@@ -23,6 +23,12 @@ public class ResourceListProducer extends AbstractEntityListProducer<Resource> {
         return entities;
     }
 
+    @Produces
+    @Named("unassignedResources")
+    public List<Resource> findUnassignedResources() {
+        return repo.findUnassigned();
+    }
+
     @Override
     @PostConstruct
     void retrieveAll() {

@@ -1,9 +1,12 @@
 package is.stma.judgebean.data;
 
+import is.stma.judgebean.model.Resource;
 import is.stma.judgebean.model.Team;
 import org.apache.deltaspike.data.api.Query;
 import org.apache.deltaspike.data.api.Repository;
 
+import javax.enterprise.inject.Produces;
+import javax.inject.Named;
 import java.util.List;
 
 @SuppressWarnings("CdiManagedBeanInconsistencyInspection")
@@ -12,5 +15,8 @@ public interface TeamRepo extends AbstractRepo<Team> {
 
     @Query("select t from Team t where t.contest.id = ?1")
     List<Team> findByContest(String contestId);
+
+    @Query("SELECT t FROM Team t WHERE t.contest_id IS NULL")
+    List<Team> findUnassigned();
 
 }

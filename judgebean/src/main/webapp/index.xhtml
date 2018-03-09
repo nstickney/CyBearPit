@@ -1,27 +1,22 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:b="http://bootsfaces.net/ui" xmlns:f="http://java.sun.com/jsf/core">
+<?xml version="1.0" encoding="UTF-8"?>
 
-<h:head>
-<style>
-    .nav-tabs>li.active>a, .nav-tabs>li.active>a:hover, .nav-tabs>li.active>a:focus {background-color:#ddd !important; }
-</style>
-</h:head>
-<h:body>
-    <b:container>
-        <b:tabView style="dd">
-            <b:tab title="large">
-                <div style="height: 10px" />
-                <ui:include src="medium.xhtml" />
-            </b:tab>
-            <b:tab title="medium (default)">
-                <div style="height: 10px" />
-                <ui:include src="medium.xhtml" />
-            </b:tab>
-            <b:tab title="small">
-                <div style="height: 10px" />
-                <ui:include src="medium.xhtml" />
-            </b:tab>
-        </b:tabView>
-    </b:container>
-</h:body>
-</html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:b="http://bootsfaces.net/ui"
+                template="/WEB-INF/templates/default.xhtml">
+    <ui:define name="content">
+        <b:container>
+            <b:tabView style="margin-bottom:1em">
+                <b:tab title="Contests">
+                    <ui:include src="contests.xhtml"/>
+                </b:tab>
+                <b:tab title="Resources">
+                    <ui:include src="resources.xhtml"/>
+                </b:tab>
+                <b:tab title="Teams">
+                    <ui:include src="teams.xhtml"/>
+                </b:tab>
+            </b:tabView>
+        </b:container>
+    </ui:define>
+</ui:composition>

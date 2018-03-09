@@ -23,6 +23,12 @@ public class TeamListProducer extends AbstractEntityListProducer<Team> {
         return entities;
     }
 
+    @Produces
+    @Named("unassignedTeams")
+    public List<Team> findUnassignedTeams() {
+        return repo.findUnassigned();
+    }
+
     @Override
     @PostConstruct
     void retrieveAll() {

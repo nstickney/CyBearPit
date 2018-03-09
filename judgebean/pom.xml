@@ -38,6 +38,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
+        <jboss-bom.version>8.2.2.Final</jboss-bom.version>
         <deltaspike.version>1.8.1</deltaspike.version>
         <maven-war-plugin.version>3.2.0</maven-war-plugin.version>
         <maven.compiler.target>${java.version}</maven.compiler.target>
@@ -56,14 +57,21 @@
             <dependency>
                 <groupId>org.wildfly.bom</groupId>
                 <artifactId>jboss-javaee-7.0-with-tools</artifactId>
-                <version>8.2.2.Final</version>
+                <version>${jboss-bom.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>org.wildfly.bom</groupId>
                 <artifactId>jboss-javaee-7.0-with-hibernate</artifactId>
-                <version>8.2.2.Final</version>
+                <version>${jboss-bom.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.spec</groupId>
+                <artifactId>jboss-javaee-7.0</artifactId>
+                <version>RELEASE</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

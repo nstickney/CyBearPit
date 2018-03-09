@@ -10,8 +10,8 @@ public class Resource extends AbstractEntity {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @ManyToMany(mappedBy = "resources", cascade = CascadeType.ALL)
-    private List<Team> teams = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Contest contest;
 
     @OneToMany(mappedBy = "resource")
     private List<ResourceParameter> parameters = new ArrayList<>();
@@ -25,4 +25,19 @@ public class Resource extends AbstractEntity {
         this.name = name;
     }
 
+    public Contest getContest() {
+        return contest;
+    }
+
+    public void setContest(Contest contest) {
+        this.contest = contest;
+    }
+
+    public List<ResourceParameter> getParameters() {
+        return parameters;
+    }
+
+    public void setParameters(List<ResourceParameter> parameters) {
+        this.parameters = parameters;
+    }
 }

@@ -12,18 +12,9 @@ public class Team extends AbstractEntity {
 
     @Column(unique = true)
     private String flag;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "contest_id")
+    
+    @ManyToOne
     private Contest contest;
-
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "team_resources",
-            joinColumns = {@JoinColumn(name = "resource_id",
-                    referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "team_id",
-                    referencedColumnName = "id")})
-    private List<Resource> resources = new ArrayList<>();
 
     @Override
     public String getName() {
