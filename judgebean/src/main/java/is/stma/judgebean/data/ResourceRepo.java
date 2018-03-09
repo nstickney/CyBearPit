@@ -12,7 +12,4 @@ import java.util.List;
 @Repository(forEntity = Resource.class)
 public interface ResourceRepo extends AbstractRepo<Resource> {
 
-    @Query("SELECT r FROM Resource r WHERE r.contest_id IS NULL")
-    List<Resource> findUnassigned();
-
 }

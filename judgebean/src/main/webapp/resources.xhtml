@@ -3,8 +3,8 @@
              xmlns:b="http://bootsfaces.net/ui">
 
     <!--Show the unassigned resources first-->
-    <ui:repeat var="_resource" value="#{unassignedResources}">
-        <b:panel look="warning" col-lg="6" title="#{_resource.name}" collapsed="#{true}"/>
+    <ui:repeat var="_ur" value="#{unassignedResources}">
+        <b:panel look="warning" col-lg="6" title="#{_ur.name}" collapsed="#{true}"/>
     </ui:repeat>
 
     <!--The remaining resources are grouped by contest-->

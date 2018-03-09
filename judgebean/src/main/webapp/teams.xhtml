@@ -2,9 +2,19 @@
              xmlns:ui="http://java.sun.com/jsf/facelets"
              xmlns:b="http://bootsfaces.net/ui">
 
-    <ui:repeat var="_team" value="#{teams}">
-        <b:panel col-lg="6" title="#{_team.name}" collapsed="#{true}">
+    <!--Unassigned teams first-->
+    <ui:repeat var="_team" value="#{unassignedTeams}">
+        <b:panel col-lg="6" title="#{_team.name}" look="warning" collapsed="#{true}">
             Flag: #{_team.flag}
         </b:panel>
+    </ui:repeat>
+
+    <!--Now print the rest of the teams, ordered by contest-->
+    <ui:repeat var="_contest" value="#{contests}">
+        <ui:repeat var="_team" value="#{_contest.teams}">
+            <b:panel col-lg="6" title="#{_contest.name}: #{_team.name}" collapsed="#{true}">
+                Flag: #{_team.flag}
+            </b:panel>
+        </ui:repeat>
     </ui:repeat>
 </ui:fragment>

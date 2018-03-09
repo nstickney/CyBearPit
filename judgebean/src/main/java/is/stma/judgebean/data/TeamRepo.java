@@ -16,7 +16,4 @@ public interface TeamRepo extends AbstractRepo<Team> {
     @Query("select t from Team t where t.contest.id = ?1")
     List<Team> findByContest(String contestId);
 
-    @Query("SELECT t FROM Team t WHERE t.contest_id IS NULL")
-    List<Team> findUnassigned();
-
 }
