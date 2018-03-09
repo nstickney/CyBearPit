@@ -25,7 +25,7 @@
 *.sdf
 *.tax2010
 *.vcf
-*.xml
+# *.xml ## Needed for pom.xml, arquillian.xml, etc
 
 ### Database ###
 *.accdb
@@ -33,7 +33,7 @@
 *.dbf
 *.mdb
 *.pdb
-*.sql
+# *.sql ## Needed for import.sql
 *.sqlite3
 
 ### Eclipse ###
