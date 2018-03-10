@@ -12,11 +12,14 @@ public class Contest extends AbstractEntity {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @Column
-    public ContestState state = ContestState.STOPPED;
+    @Column(nullable = false)
+    private boolean running = false;
 
     @OneToMany(mappedBy = "contest")
     private List<Resource> resources = new ArrayList<>();
+
+    @OneToMany(mappedBy = "contest")
+    private List<Task> tasks = new ArrayList<>();
 
     @OneToMany(mappedBy = "contest")
     private List<Team> teams = new ArrayList<>();
@@ -30,6 +33,14 @@ public class Contest extends AbstractEntity {
         this.name = name;
     }
 
+    public boolean isRunning() {
+        return running;
+    }
+
+    public void setRunning(boolean running) {
+        this.running = running;
+    }
+
     public List<Resource> getResources() {
         return resources;
     }
@@ -38,15 +49,19 @@ public class Contest extends AbstractEntity {
         this.resources = resources;
     }
 
+    public List<Task> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
+    }
+
     public List<Team> getTeams() {
         return teams;
     }
 
     public void setTeams(List<Team> teams) {
         this.teams = teams;
-    }
-
-    public enum ContestState {
-        RUNNING, STOPPED
     }
 }

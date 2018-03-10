@@ -22,6 +22,7 @@ public class UserRules extends AbstractRules<User> {
     @Override
     public void runBusinessRules(User entity, Target target)
             throws ValidationException {
+
     }
 
     @Override

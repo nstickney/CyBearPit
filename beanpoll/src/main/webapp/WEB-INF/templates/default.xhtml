@@ -23,15 +23,24 @@
 <h:head>
     <title>BeanPoll: <ui:insert name="title"/></title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <h:outputStylesheet name="css/charter.css"/>
     <link rel="shortcut icon" href="resources/gfx/favicon.ico"/>
 </h:head>
-<h:body>
-    <b:panel><b:container><h1>
-        <b:image style="height: 5rem; margin: 0 2rem; vertical-align: center;" value="resources/gfx/favicon.ico"/>
-        <ui:insert name="title"/>
-    </h1></b:container></b:panel>
+<h:body style="font: 16px 'Charter'">
+
+    <!-- A growl handler for all messages -->
+    <b:growl id="growlMsg" globalOnly="true" placementFrom="top" show-detail="true" show-summary="true"
+             allowDismiss="true" delay="5000" escape="true"/>
+
+    <!-- The page header -->
+    <b:container style="height: 12rem; padding: 0; margin: 0 auto">
+        <b:image style="height: 12rem; margin: 0 2rem; vertical-align: -2rem;" value="resources/gfx/favicon.ico"/>
+        <span style="font-size: 5rem; font-variant: small-caps"><ui:insert name="title"/></span>
+    </b:container>
+
+    <!-- The page main content (tabs) -->
     <b:container>
-        <b:tabView style="margin-bottom:1em">
+        <b:tabView style="margin-bottom:2rem" activeIndex="1">
             <ui:insert name="content"/>
         </b:tabView>
     </b:container>

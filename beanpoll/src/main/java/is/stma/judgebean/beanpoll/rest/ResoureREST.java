@@ -18,9 +18,9 @@ package is.stma.judgebean.beanpoll.rest;
 
 import is.stma.judgebean.beanpoll.data.AbstractRepo;
 import is.stma.judgebean.beanpoll.data.ResourceRepo;
-import is.stma.judgebean.beanpoll.service.ResourceService;
 import is.stma.judgebean.beanpoll.model.Resource;
 import is.stma.judgebean.beanpoll.rules.ResourceRules;
+import is.stma.judgebean.beanpoll.service.ResourceService;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;

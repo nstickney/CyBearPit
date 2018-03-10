@@ -20,9 +20,9 @@ public class Team extends AbstractEntity {
     private Contest contest;
 
     @ManyToMany
-    @JoinTable(name = "team_resources",
-        joinColumns = {@JoinColumn(name = "team_id", referencedColumnName = "id")},
-        inverseJoinColumns = {@JoinColumn(name = "resource_id", referencedColumnName = "id")})
+    @JoinTable(name = "TeamResources",
+            joinColumns = {@JoinColumn(name = "team_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "resource_id", referencedColumnName = "id")})
     private List<Resource> resources = new ArrayList<>();
 
     @Override

@@ -2,6 +2,7 @@ package is.stma.judgebean.beanpoll.rules;
 
 import is.stma.judgebean.beanpoll.model.AbstractEntity;
 import is.stma.judgebean.beanpoll.util.EntityUtility;
+import is.stma.judgebean.beanpoll.util.RulesUtility;
 import org.apache.deltaspike.data.api.EntityRepository;
 
 import javax.inject.Inject;
@@ -37,6 +38,7 @@ public abstract class AbstractRules<E extends AbstractEntity> {
         if (target == Target.DELETE) {
             checkBeforeDelete(entity);
         } else {
+            RulesUtility.sanitizeString(entity.getName());
             runBusinessRules(entity, target);
         }
     }

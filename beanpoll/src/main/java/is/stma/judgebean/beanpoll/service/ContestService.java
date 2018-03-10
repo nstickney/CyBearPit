@@ -1,9 +1,9 @@
 package is.stma.judgebean.beanpoll.service;
 
-import is.stma.judgebean.beanpoll.rules.ContestRules;
 import is.stma.judgebean.beanpoll.data.AbstractRepo;
 import is.stma.judgebean.beanpoll.data.ContestRepo;
 import is.stma.judgebean.beanpoll.model.Contest;
+import is.stma.judgebean.beanpoll.rules.ContestRules;
 
 import javax.ejb.Stateless;
 import javax.enterprise.event.Event;

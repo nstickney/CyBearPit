@@ -3,9 +3,11 @@ package is.stma.judgebean.beanpoll.controller;
 import is.stma.judgebean.beanpoll.model.User;
 import is.stma.judgebean.beanpoll.service.UserService;
 
+import javax.ejb.EJBException;
 import javax.enterprise.inject.Model;
 import javax.faces.application.FacesMessage;
 import javax.inject.Inject;
+import javax.persistence.NoResultException;
 
 @Model
 public class SessionController extends AbstractFacesController {
@@ -17,11 +19,11 @@ public class SessionController extends AbstractFacesController {
     private static final String LOGIN_SUCCESS = "Welcome to BeanPoll";
 
     private static final String LOGIN_PAGE = "index.xhtml";
-    private static final String ADMIN_PAGE = "admin.xhtml";
+    private static final String ADMIN_PAGE = "control.xhtml";
     private static final String TEAM_PAGE = "team.xhtml";
 
     @Inject
-    private SessionUserBean bean;
+    private SessionBean bean;
 
     @Inject
     private UserService userService;
@@ -46,27 +48,33 @@ public class SessionController extends AbstractFacesController {
         this.password = password;
     }
 
-    public boolean checkAuthenticated() {
+    private boolean isAuthenticated() {
         return null != bean.getSessionUser();
     }
 
-    public boolean checkAdmin() {
-        return checkAuthenticated() && bean.getSessionUser().isAdmin();
+    private boolean isAdmin() {
+        return isAuthenticated() && bean.getSessionUser().isAdmin();
     }
 
-    public boolean checkTeamExists() {
-        return checkAuthenticated() && null != bean.getSessionUser().getTeam();
+    private boolean hasTeam() {
+        return isAuthenticated() && null != bean.getSessionUser().getTeam();
     }
 
     public String authenticate() {
 
         // Early fail if username or password is empty
-        if (null  == username || username.isEmpty() || null == password || password.isEmpty()) {
+        if (null == username || username.isEmpty() || null == password || password.isEmpty()) {
             return failAuthentication(LOGIN_BLANK);
         }
 
-        // Find the user in question
-        User checkUser = userService.getByUsername(username);
+        // Find the user in question, or fail gracefully
+        User checkUser;
+        try {
+            checkUser = userService.getByName(username);
+        } catch (NoResultException | EJBException e) {
+            errorOut(e, LOGIN_INCORRECT);
+            return LOGIN_PAGE;
+        }
 
         // Authenticate only if the username and password match a user in the database
         if (null != checkUser && checkUser.checkPassword(password)) {
@@ -87,8 +95,35 @@ public class SessionController extends AbstractFacesController {
     }
 
     private String failAuthentication(String summary) {
+        bean.setSessionUser(null);
         facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, LOGIN_FAILURE, summary));
         facesContext.getExternalContext().getFlash().setKeepMessages(true);
         return LOGIN_PAGE;
+    }
+
+    public String checkAdminNavigation() {
+        if (isAdmin()) {
+            return null;
+        }
+        return LOGIN_PAGE;
+    }
+
+    public String checkTeamNavigation() {
+        if (hasTeam()) {
+            return null;
+        }
+        return LOGIN_PAGE;
+    }
+
+    public String checkLoginNavigation() {
+        if (isAuthenticated()) {
+            if (hasTeam()) {
+                return TEAM_PAGE;
+            }
+            if (isAdmin()) {
+                return ADMIN_PAGE;
+            }
+        }
+        return null;
     }
 }

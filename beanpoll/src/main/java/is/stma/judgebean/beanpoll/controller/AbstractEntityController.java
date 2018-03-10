@@ -1,14 +1,13 @@
 package is.stma.judgebean.beanpoll.controller;
 
-import is.stma.judgebean.beanpoll.service.AbstractService;
 import is.stma.judgebean.beanpoll.data.AbstractRepo;
 import is.stma.judgebean.beanpoll.model.AbstractEntity;
 import is.stma.judgebean.beanpoll.rules.AbstractRules;
+import is.stma.judgebean.beanpoll.service.AbstractService;
 
 import javax.faces.application.FacesMessage;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 
 import static is.stma.judgebean.beanpoll.util.EntityUtility.prefix;
 
@@ -114,43 +113,12 @@ abstract class AbstractEntityController<E extends AbstractEntity,
      * @return a List of <E> objects which match the query
      */
     public List<E> search(String q) {
-        List<E> allEntitys = getService().readAll();
-        List<E> filteredEntitys = new ArrayList<>();
-
-        for (E c : allEntitys) {
+        List<E> filteredEntities = new ArrayList<>();
+        for (E c : getService().readAll()) {
             if (c.getName().toLowerCase().contains(q.toLowerCase())) {
-                filteredEntitys.add(c);
+                filteredEntities.add(c);
             }
         }
-        return filteredEntitys;
-    }
-
-    /**
-     * Handle a Throwable by logging the error message and pushing it to the FacesContext
-     *
-     * @param t   the Throwable to handle
-     * @param msg the detailed message
-     */
-    void errorOut(Throwable t, String msg) {
-
-        // Default to general error message that registration failed.
-        String errorMsg = "Action failed. See server log for more information";
-
-        // Find a better error message if possible
-        if (t != null) {
-
-            // Start with the exception and recurse to find the root cause
-            while (t != null) {
-                // Get the message from the Throwable class instance
-                errorMsg = t.getLocalizedMessage();
-                t = t.getCause();
-            }
-        }
-
-        // Log and send the message
-        log.log(Level.WARNING, "CONTROLLER: " + msg);
-        log.log(Level.WARNING, "CAUSE: " + errorMsg);
-        facesContext.addMessage(null,
-                new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMsg, msg));
+        return filteredEntities;
     }
 }

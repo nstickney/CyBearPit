@@ -1,17 +1,14 @@
 package is.stma.judgebean.beanpoll.controller;
 
-import is.stma.judgebean.beanpoll.model.User;
-import is.stma.judgebean.beanpoll.service.TeamService;
 import is.stma.judgebean.beanpoll.model.Team;
 import is.stma.judgebean.beanpoll.rules.TeamRules;
-import is.stma.judgebean.beanpoll.util.HashUtility;
+import is.stma.judgebean.beanpoll.service.TeamService;
 
 import javax.enterprise.inject.Model;
 import javax.enterprise.inject.Produces;
 import javax.faces.application.FacesMessage;
 import javax.inject.Inject;
 import javax.inject.Named;
-
 import java.util.UUID;
 
 import static is.stma.judgebean.beanpoll.util.EntityUtility.prefix;
@@ -55,8 +52,8 @@ public class TeamController extends AbstractEntityController<Team, TeamRules,
     @Override
     public void create() {
         try {
-            String teamString = getNew().getName().replaceAll("[^A-Za-z0-9]+", "");
-            userController.getNew().setUsername(teamString);
+            String teamString = getNew().getName();
+            userController.getNew().setName(teamString);
             userController.getNew().setSalt(UUID.randomUUID().toString());
             userController.getNew().setHashedPassword(teamString);
             userController.create();

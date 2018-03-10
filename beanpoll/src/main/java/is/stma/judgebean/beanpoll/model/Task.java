@@ -2,9 +2,7 @@ package is.stma.judgebean.beanpoll.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import java.util.ArrayList;
-import java.util.List;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Task extends AbstractEntity {
@@ -17,6 +15,9 @@ public class Task extends AbstractEntity {
 
     @Column(nullable = false)
     private String description;
+
+    @ManyToOne
+    private Contest contest;
 
     @Override
     public String getName() {
@@ -41,5 +42,13 @@ public class Task extends AbstractEntity {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Contest getContest() {
+        return contest;
+    }
+
+    public void setContest(Contest contest) {
+        this.contest = contest;
     }
 }

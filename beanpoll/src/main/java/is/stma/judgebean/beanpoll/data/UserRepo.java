@@ -7,6 +7,6 @@ import org.apache.deltaspike.data.api.Repository;
 @Repository(forEntity = User.class)
 public interface UserRepo extends AbstractRepo<User> {
 
-    User findByUsername(String username);
+    User findByName(String name);
 
 }

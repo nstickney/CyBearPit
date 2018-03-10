@@ -17,10 +17,10 @@
 package is.stma.judgebean.beanpoll.rest;
 
 import is.stma.judgebean.beanpoll.data.AbstractRepo;
-import is.stma.judgebean.beanpoll.service.TeamService;
 import is.stma.judgebean.beanpoll.data.TeamRepo;
 import is.stma.judgebean.beanpoll.model.Team;
 import is.stma.judgebean.beanpoll.rules.TeamRules;
+import is.stma.judgebean.beanpoll.service.TeamService;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;

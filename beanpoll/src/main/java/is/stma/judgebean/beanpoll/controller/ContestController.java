@@ -1,8 +1,8 @@
 package is.stma.judgebean.beanpoll.controller;
 
+import is.stma.judgebean.beanpoll.model.Contest;
 import is.stma.judgebean.beanpoll.rules.ContestRules;
 import is.stma.judgebean.beanpoll.service.ContestService;
-import is.stma.judgebean.beanpoll.model.Contest;
 
 import javax.enterprise.inject.Model;
 import javax.enterprise.inject.Produces;

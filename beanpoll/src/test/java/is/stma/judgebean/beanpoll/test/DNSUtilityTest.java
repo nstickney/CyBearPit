@@ -19,7 +19,6 @@ import org.xbill.DNS.Type;
 
 import java.io.File;
 
-import static is.stma.judgebean.beanpoll.util.DNSUtility.lookup;
 import static org.hamcrest.CoreMatchers.anyOf;
 import static org.hamcrest.CoreMatchers.equalTo;
 

@@ -2,6 +2,7 @@
 
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:b="http://bootsfaces.net/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 template="/WEB-INF/templates/default.xhtml">
@@ -11,21 +12,39 @@
 
     <!-- Main body content -->
     <ui:define name="content">
+
+        <!-- Redirect logged-in users to the appropriate page -->
+        <f:metadata>
+            <f:viewAction action="#{sessionController.checkLoginNavigation()}"/>
+        </f:metadata>
+
         <b:tab title="Log In">
             <h:form>
                 <b:row>
-                    <h:outputLabel value="Username:" for="username"/>
-                    <h:inputText value="#{sessionController.username}" id="username" class="form-control"/>
+                    <b:column col-md="2">
+                        <h:outputLabel value="Username:" for="username"/>
+                    </b:column>
+                    <b:column col-md="4">
+                        <b:inputText value="#{sessionController.username}" id="username" class="form-control">
+                            <f:facet name="prepend"><b:icon name="user"/></f:facet>
+                        </b:inputText>
+                    </b:column>
                 </b:row>
                 <b:row>
-                    <h:outputLabel value="Password:" for="password"/>
-                    <h:inputSecret value="#{sessionController.password}" id="password" class="form-control"/>
+                    <b:column col-md="2">
+                        <h:outputLabel value="Password:" for="password"/>
+                    </b:column>
+                    <b:column col-md="4">
+                        <b:inputSecret value="#{sessionController.password}" id="password" class="form-control">
+                            <f:facet name="prepend"><b:iconAwesome name="key"/></f:facet>
+                        </b:inputSecret>
+                    </b:column>
                 </b:row>
                 <b:row>
-                    <h:commandButton action="#{sessionController.authenticate()}" value="Log In" />
-                </b:row>
-                <b:row>
-                    <h:messages styleClass="messages" showDetail="true"/>
+                    <b:column col-md="2"/>
+                    <b:column col-md="2">
+                        <b:commandButton action="#{sessionController.authenticate()}" value="Log In" look="success"/>
+                    </b:column>
                 </b:row>
             </h:form>
         </b:tab>

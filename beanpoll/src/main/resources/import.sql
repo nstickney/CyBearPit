@@ -18,10 +18,10 @@
 --
 
 -- You can use this file to load seed data into the database using SQL statements
-insert into User (id, name, salt, hashedPassword, admin) values ('UA', 'beanpoll', 'judgebean', '5b3e7edc200002b7fed70adf88ab38d03fae57d990fa07e3f4154b0c60834112', true);
-insert into Contest (id, name) values ('C0', 'Cyber Patriot');
-insert into Contest (id, name) values ('C1', 'CCDC');
-insert into Contest (id, name) values ('C2', 'CDX');
+insert into User (id, name, salt, hashedPassword, admin) values ('UA', 'beanpoll', 'judgebean', '8def98492aa109f7809c63eb747d41f768c6635430fbf6bf3e0951730287608c', true);
+insert into Contest (id, name, running) values ('C0', 'Cyber Patriot', false);
+insert into Contest (id, name, running) values ('C1', 'CCDC', false);
+insert into Contest (id, name, running) values ('C2', 'CDX', false);
 insert into Team (id, name, flag, contest_id) values ('T0', 'Blue Man Group', 'Ready, Go!', 'C0');
 insert into Team (id, name, flag, contest_id) values ('T1', 'Bala Morgab', 'BMG', 'C0');
 insert into Team (id, name, flag, contest_id) values ('T2', 'General Motors Bicyclists', 'GMb', 'C1');

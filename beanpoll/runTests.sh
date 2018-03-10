@@ -10,3 +10,9 @@ cd "$NOWDIR" || exit
 
 # Run the tests
 mvn clean test -Parq-wildfly-remote
+
+# Kill the container
+printf '%s\n' " => Stopping WildFly-Arquillian container"
+docker stop judgebean-arqtest-wildfly
+docker rm judgebean-arqtest-wildfly
+

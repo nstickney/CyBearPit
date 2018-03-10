@@ -10,13 +10,13 @@ import javax.persistence.OneToOne;
 public class User extends AbstractEntity {
 
     @Column(nullable = false, unique = true)
-    private String username;
+    private String name;
 
     @Column(nullable = false)
     private String salt;
 
     @Column(nullable = false)
-    private byte[] hashedPassword;
+    private String hashedPassword;
 
     @Column(nullable = false)
     private boolean admin;
@@ -26,15 +26,11 @@ public class User extends AbstractEntity {
 
     @Override
     public String getName() {
-        return getUsername();
+        return name;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getSalt() {
@@ -45,15 +41,15 @@ public class User extends AbstractEntity {
         this.salt = salt;
     }
 
-    public byte[] getHashedPassword() {
+    public String getHashedPassword() {
         return hashedPassword;
     }
 
-    public void setHashedPassword(byte[] hashedPassword) {
+    public void setHashedPassword(String hashedPassword) {
         this.hashedPassword = hashedPassword;
     }
 
-    public void setHashedPassword(String password) {
+    public void setPassword(String password) {
         this.hashedPassword = HashUtility.getHash(salt + password);
     }
 

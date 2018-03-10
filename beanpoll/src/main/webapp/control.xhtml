@@ -6,28 +6,31 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 template="/WEB-INF/templates/default.xhtml">
 
-    <!-- Must be administrative user to view the control page -->
-    <f:metadata>
-        <f:viewAction action="#{sessionController.checkAdmin()}" />
-    </f:metadata>
-
     <!-- Page title and content header string -->
     <ui:define name="title">Control Panel</ui:define>
 
     <!-- Main body content -->
     <ui:define name="content">
 
-        <b:tab title="Contests">
-            <ui:include src="contests.xhtml"/>
+        <!-- Must be administrative user to view the control page -->
+        <f:metadata>
+            <f:viewAction action="#{sessionController.checkAdminNavigation()}"/>
+        </f:metadata>
+
+        <b:tab title="Account">
+            <ui:include src="WEB-INF/includes/admin/account.xhtml"/>
         </b:tab>
-        <b:tab title="Injects">
-            <ui:include src="injects.xhtml"/>
+        <b:tab title="Contests">
+            <ui:include src="WEB-INF/includes/admin/contests.xhtml"/>
         </b:tab>
         <b:tab title="Resources">
-            <ui:include src="resources.xhtml"/>
+            <ui:include src="WEB-INF/includes/admin/resources.xhtml"/>
+        </b:tab>
+        <b:tab title="Tasks">
+            <ui:include src="WEB-INF/includes/admin/tasks.xhtml"/>
         </b:tab>
         <b:tab title="Teams">
-            <ui:include src="teams.xhtml"/>
+            <ui:include src="WEB-INF/includes/admin/teams.xhtml"/>
         </b:tab>
     </ui:define>
 </ui:composition>

@@ -1,15 +1,16 @@
 package is.stma.judgebean.beanpoll.test;
 
 import is.stma.judgebean.beanpoll.data.AbstractRepo;
-import is.stma.judgebean.beanpoll.model.*;
-import is.stma.judgebean.beanpoll.service.AbstractService;
-import is.stma.judgebean.beanpoll.service.TeamService;
 import is.stma.judgebean.beanpoll.data.TeamRepo;
+import is.stma.judgebean.beanpoll.model.*;
 import is.stma.judgebean.beanpoll.rules.AbstractRules;
 import is.stma.judgebean.beanpoll.rules.TeamRules;
+import is.stma.judgebean.beanpoll.service.AbstractService;
+import is.stma.judgebean.beanpoll.service.TeamService;
 import is.stma.judgebean.beanpoll.util.EMProducer;
 import is.stma.judgebean.beanpoll.util.EntityUtility;
 import is.stma.judgebean.beanpoll.util.LogProducer;
+import is.stma.judgebean.beanpoll.util.RulesUtility;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -50,7 +51,7 @@ public class TeamServiceTest {
                         AbstractRepo.class, TeamRepo.class,
                         AbstractService.class, TeamService.class,
                         AbstractRules.class, TeamRules.class,
-                        EntityUtility.class, EMProducer.class, LogProducer.class)
+                        EntityUtility.class, EMProducer.class, LogProducer.class, RulesUtility.class)
                 .addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml")
                 .addAsResource("META-INF/apache-deltaspike.properties")
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")

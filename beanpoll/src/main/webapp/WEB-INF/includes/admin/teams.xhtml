@@ -1,0 +1,25 @@
+<ui:fragment xmlns="http://www.w3.org/1999/xhtml"
+             xmlns:ui="http://java.sun.com/jsf/facelets"
+             xmlns:b="http://bootsfaces.net/ui">
+
+    <!--Option to create a new team-->
+    <b:panel col-lg="6" title="Create a New Team" look="primary" collapsed="#{true}">
+        Flag: #{newTeam.flag}
+    </b:panel>
+
+    <!--Unassigned teams first-->
+    <ui:repeat var="_uteam" value="#{unassignedTeams}">
+        <b:panel col-lg="6" title="Unassigned: #{_uteam.name}" look="info" collapsed="#{true}">
+            Flag: #{_uteam.flag}
+        </b:panel>
+    </ui:repeat>
+
+    <!--Now print the rest of the teams, ordered by contest-->
+    <ui:repeat var="_contest" value="#{contests}">
+        <ui:repeat var="_team" value="#{_contest.teams}">
+            <b:panel col-lg="6" title="#{_contest.name}: #{_team.name}" collapsed="#{true}">
+                Flag: #{_team.flag}
+            </b:panel>
+        </ui:repeat>
+    </ui:repeat>
+</ui:fragment>

@@ -1,9 +1,9 @@
 package is.stma.judgebean.beanpoll.rest;
 
 import is.stma.judgebean.beanpoll.data.AbstractRepo;
-import is.stma.judgebean.beanpoll.service.AbstractService;
 import is.stma.judgebean.beanpoll.model.AbstractEntity;
 import is.stma.judgebean.beanpoll.rules.AbstractRules;
+import is.stma.judgebean.beanpoll.service.AbstractService;
 
 import javax.inject.Inject;
 import javax.persistence.MappedSuperclass;

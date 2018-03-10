@@ -37,7 +37,7 @@ public class UserService extends AbstractService<User, AbstractRepo<User>,
         return rules;
     }
 
-    public User getByUsername(String username) {
-        return repo.findByUsername(username);
+    public User getByName(String name) {
+        return repo.findByName(name);
     }
 }

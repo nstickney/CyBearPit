@@ -1,8 +1,8 @@
 package is.stma.judgebean.beanpoll.controller;
 
-import is.stma.judgebean.beanpoll.service.ResourceService;
 import is.stma.judgebean.beanpoll.model.Resource;
 import is.stma.judgebean.beanpoll.rules.ResourceRules;
+import is.stma.judgebean.beanpoll.service.ResourceService;
 
 import javax.enterprise.inject.Model;
 import javax.enterprise.inject.Produces;

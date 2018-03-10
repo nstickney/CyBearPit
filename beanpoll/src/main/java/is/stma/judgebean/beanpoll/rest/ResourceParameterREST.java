@@ -17,10 +17,10 @@
 package is.stma.judgebean.beanpoll.rest;
 
 import is.stma.judgebean.beanpoll.data.AbstractRepo;
-import is.stma.judgebean.beanpoll.service.ResourceParameterService;
 import is.stma.judgebean.beanpoll.data.ResourceParameterRepo;
 import is.stma.judgebean.beanpoll.model.ResourceParameter;
 import is.stma.judgebean.beanpoll.rules.ResourceParameterRules;
+import is.stma.judgebean.beanpoll.service.ResourceParameterService;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;

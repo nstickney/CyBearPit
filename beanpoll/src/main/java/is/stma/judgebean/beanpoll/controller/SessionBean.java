@@ -8,9 +8,9 @@ import java.io.Serializable;
 
 @Named
 @ConversationScoped
-public class SessionUserBean implements Serializable {
+public class SessionBean implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 721057087394449169L;
 
     private User sessionUser = null;
 
@@ -23,14 +23,14 @@ public class SessionUserBean implements Serializable {
     }
 
     public String checkAuthenticationStatus() {
-        if(sessionUser == null) {
+        if (sessionUser == null) {
             return "login.xhtml";
         }
         return null;
     }
 
     public String isAdmin() {
-        if(sessionUser != null && sessionUser.isAdmin()) {
+        if (sessionUser != null && sessionUser.isAdmin()) {
             return null;
         }
         return "login.xhtml";

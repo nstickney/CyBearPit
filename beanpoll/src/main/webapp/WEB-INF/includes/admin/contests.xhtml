@@ -1,0 +1,17 @@
+<ui:fragment xmlns="http://www.w3.org/1999/xhtml"
+             xmlns:ui="http://java.sun.com/jsf/facelets"
+             xmlns:b="http://bootsfaces.net/ui">
+
+    <!-- Option to create a new contest -->
+    <b:panel col-lg="6" title="Create a New Contest" look="primary" collapsed="#{true}"/>
+
+    <!-- Show running contests first -->
+    <ui:repeat var="_rcontest" value="#{runningContests}">
+        <b:panel col-lg="6" title="#{_rcontest.name}" collapsed="#{true}" look="success"/>
+    </ui:repeat>
+
+    <!-- Then show stopped contests -->
+    <ui:repeat var="_scontest" value="#{stoppedContests}">
+        <b:panel col-lg="6" title="#{_scontest.name}" collapsed="#{true}"/>
+    </ui:repeat>
+</ui:fragment>
