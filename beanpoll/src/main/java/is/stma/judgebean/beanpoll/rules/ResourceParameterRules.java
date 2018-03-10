@@ -1,8 +1,8 @@
 package is.stma.judgebean.beanpoll.rules;
 
+import is.stma.judgebean.beanpoll.data.AbstractRepo;
 import is.stma.judgebean.beanpoll.data.ResourceParameterRepo;
 import is.stma.judgebean.beanpoll.model.ResourceParameter;
-import org.apache.deltaspike.data.api.EntityRepository;
 
 import javax.enterprise.inject.Model;
 import javax.inject.Inject;
@@ -15,7 +15,7 @@ public class ResourceParameterRules extends AbstractRules<ResourceParameter> {
     private ResourceParameterRepo repo;
 
     @Override
-    public EntityRepository<ResourceParameter, String> getRepo() {
+    public AbstractRepo<ResourceParameter> getRepo() {
         return repo;
     }
 

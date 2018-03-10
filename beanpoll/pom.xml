@@ -208,6 +208,22 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/javax.transaction/jta -->
+        <dependency>
+            <groupId>javax.transaction</groupId>
+            <artifactId>jta</artifactId>
+            <version>1.1</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>5.2.14.Final</version>
+            <scope>test</scope>
+        </dependency>
+
         <!-- https://mvnrepository.com/artifact/dnsjava/dnsjava -->
         <dependency>
             <groupId>dnsjava</groupId>
@@ -287,6 +303,22 @@
                     <scope>test</scope>
                 </dependency>
 
+                <!-- https://mvnrepository.com/artifact/javax.transaction/jta -->
+                <dependency>
+                    <groupId>javax.transaction</groupId>
+                    <artifactId>jta</artifactId>
+                    <version>1.1</version>
+                    <scope>test</scope>
+                </dependency>
+
+                <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
+                <dependency>
+                    <groupId>org.hibernate</groupId>
+                    <artifactId>hibernate-core</artifactId>
+                    <version>5.2.14.Final</version>
+                    <scope>test</scope>
+                </dependency>
+
                 <!-- https://mvnrepository.com/artifact/dnsjava/dnsjava -->
                 <dependency>
                     <groupId>dnsjava</groupId>
@@ -294,6 +326,7 @@
                     <version>2.1.8</version>
                 </dependency>
             </dependencies>
+
         </profile>
 
         <profile>

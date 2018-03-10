@@ -7,10 +7,10 @@ import java.util.List;
 @Entity
 public class Team extends AbstractEntity {
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String name;
 
-    @Column(unique = true)
+    @Column
     private String flag;
 
     @OneToOne(mappedBy = "team")

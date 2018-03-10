@@ -1,9 +1,9 @@
 package is.stma.judgebean.beanpoll.rules;
 
+import is.stma.judgebean.beanpoll.data.AbstractRepo;
 import is.stma.judgebean.beanpoll.model.AbstractEntity;
 import is.stma.judgebean.beanpoll.util.EntityUtility;
 import is.stma.judgebean.beanpoll.util.StringUtility;
-import org.apache.deltaspike.data.api.EntityRepository;
 
 import javax.inject.Inject;
 import javax.validation.ValidationException;
@@ -18,7 +18,7 @@ public abstract class AbstractRules<E extends AbstractEntity> {
     @Inject
     Logger log;
 
-    abstract EntityRepository<E, String> getRepo();
+    abstract AbstractRepo<E> getRepo();
 
     abstract void runBusinessRules(E entity, Target target)
             throws ValidationException;

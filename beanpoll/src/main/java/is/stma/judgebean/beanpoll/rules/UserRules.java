@@ -1,8 +1,8 @@
 package is.stma.judgebean.beanpoll.rules;
 
+import is.stma.judgebean.beanpoll.data.AbstractRepo;
 import is.stma.judgebean.beanpoll.data.UserRepo;
 import is.stma.judgebean.beanpoll.model.User;
-import org.apache.deltaspike.data.api.EntityRepository;
 
 import javax.enterprise.inject.Model;
 import javax.inject.Inject;
@@ -15,7 +15,7 @@ public class UserRules extends AbstractRules<User> {
     private UserRepo repo;
 
     @Override
-    public EntityRepository<User, String> getRepo() {
+    public AbstractRepo<User> getRepo() {
         return repo;
     }
 

@@ -1,8 +1,8 @@
 package is.stma.judgebean.beanpoll.rules;
 
+import is.stma.judgebean.beanpoll.data.AbstractRepo;
 import is.stma.judgebean.beanpoll.data.ContestRepo;
 import is.stma.judgebean.beanpoll.model.Contest;
-import org.apache.deltaspike.data.api.EntityRepository;
 
 import javax.enterprise.inject.Model;
 import javax.inject.Inject;
@@ -15,7 +15,7 @@ public class ContestRules extends AbstractRules<Contest> {
     private ContestRepo repo;
 
     @Override
-    public EntityRepository<Contest, String> getRepo() {
+    public AbstractRepo<Contest> getRepo() {
         return repo;
     }
 

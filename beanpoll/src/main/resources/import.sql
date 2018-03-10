@@ -27,8 +27,8 @@ insert into Team (id, name, flag, contest_id) values ('T1', 'Bala Morgab', 'BMG'
 insert into Team (id, name, flag, contest_id) values ('T2', 'General Motors Bicyclists', 'GMb', 'C1');
 insert into Team (id, name, flag, contest_id) values ('T3', 'Greater Midwest Baseball', 'GMB', 'C1');
 insert into Team (id, name, flag, contest_id) values ('T4', 'Totally Unrelated People', '123456', 'C2');
-insert into Team (id, name, flag, contest_id) values ('T5', 'Totally Unrelated People, 2', '123456', 'C2');
-insert into Team (id, name, flag, contest_id) values ('T6', 'Totally Unrelated People, 3', '123456', 'C0');
+insert into Team (id, name, flag, contest_id) values ('T5', 'Totally Unrelated People, 2', '234567', 'C2');
+insert into Team (id, name, flag, contest_id) values ('T6', 'Totally Unrelated People, 3', '345678', 'C0');
 insert into Team (id, name, flag) values ('T7', 'Totally Unrelated People', '123456');
 insert into Resource (id, name, tag, contest_id) values ('R0', 'Nameserver A0', 'DNS', 'C0');
 insert into Resource (id, name, tag, contest_id) values ('R1', 'Nameserver B0', 'DNS', 'C0');

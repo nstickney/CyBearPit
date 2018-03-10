@@ -7,6 +7,7 @@ import is.stma.judgebean.beanpoll.rules.AbstractRules;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.validation.ValidationException;
 import java.util.List;
 import java.util.logging.Level;
@@ -48,7 +49,11 @@ public abstract class AbstractService<E extends AbstractEntity,
 
     public E update(E entity) throws ValidationException {
         em.detach(entity);
-        log.log(Level.INFO, "Updating " + prefix(getRepo().findBy(entity.getId())));
+        try {
+            log.log(Level.INFO, "Updating " + prefix(getRepo().findBy(entity.getId())));
+        } catch (NoResultException | NullPointerException e) {
+            throw new ValidationException("Cannot update nonexistent entity");
+        }
         getRules().validate(entity, AbstractRules.Target.UPDATE);
         entity = getRepo().save(entity);
         log.log(Level.INFO, "Updated " + prefix(entity));

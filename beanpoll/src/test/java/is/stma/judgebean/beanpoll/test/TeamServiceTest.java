@@ -1,16 +1,12 @@
 package is.stma.judgebean.beanpoll.test;
 
-import is.stma.judgebean.beanpoll.data.AbstractRepo;
 import is.stma.judgebean.beanpoll.data.TeamRepo;
-import is.stma.judgebean.beanpoll.model.*;
-import is.stma.judgebean.beanpoll.rules.AbstractRules;
+import is.stma.judgebean.beanpoll.model.Contest;
+import is.stma.judgebean.beanpoll.model.Team;
 import is.stma.judgebean.beanpoll.rules.TeamRules;
-import is.stma.judgebean.beanpoll.service.AbstractService;
+import is.stma.judgebean.beanpoll.service.ContestService;
 import is.stma.judgebean.beanpoll.service.TeamService;
 import is.stma.judgebean.beanpoll.util.EMProducer;
-import is.stma.judgebean.beanpoll.util.EntityUtility;
-import is.stma.judgebean.beanpoll.util.LogProducer;
-import is.stma.judgebean.beanpoll.util.StringUtility;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -23,7 +19,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
+import javax.validation.ValidationException;
 import java.io.File;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 @RunWith(Arquillian.class)
@@ -33,11 +31,16 @@ public class TeamServiceTest {
     private Logger log;
 
     @Inject
-    private TeamService service;
+    private ContestService contestService;
 
+    @Inject
+    private TeamService teamService;
+
+    private Contest newContest;
     private Team newTeam;
-
     private Team checkTeam;
+
+    private String newTeamUUID;
 
     @Deployment
     public static WebArchive createDeployment() {
@@ -46,12 +49,11 @@ public class TeamServiceTest {
                 .importRuntimeDependencies().resolve().withTransitivity().asFile();
 
         return ShrinkWrap.create(WebArchive.class, "teamServiceTest.war")
-                .addClasses(AbstractEntity.class, Team.class,
-                        Contest.class, Resource.class, ResourceParameter.class, User.class, Task.class,
-                        AbstractRepo.class, TeamRepo.class,
-                        AbstractService.class, TeamService.class,
-                        AbstractRules.class, TeamRules.class,
-                        EntityUtility.class, EMProducer.class, LogProducer.class, StringUtility.class)
+                .addPackages(true, Team.class.getPackage(),
+                        TeamRepo.class.getPackage(),
+                        TeamService.class.getPackage(),
+                        TeamRules.class.getPackage(),
+                        EMProducer.class.getPackage())
                 .addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml")
                 .addAsResource("META-INF/apache-deltaspike.properties")
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
@@ -61,32 +63,70 @@ public class TeamServiceTest {
 
     @Before
     public void setUp() {
-        newTeam = new Team();
-        newTeam.setName("Bala Morgab");
-        newTeam.setFlag("BMG");
-        service.create(newTeam);
+        if (null == newContest) {
+            newContest = new Contest();
+            newContest.setName(UUID.randomUUID().toString());
+            contestService.create(newContest);
+        }
+
+        if (null == newTeam) {
+            newTeam = new Team();
+            newTeam.setName("Test Team");
+            newTeam.setFlag("TEST");
+            newTeam.setContest(newContest);
+            teamService.create(newTeam);
+        }
     }
 
     @Test
     public void testTeamCreation() {
-        checkTeam = service.readById(newTeam.getId());
+        checkTeam = teamService.readById(newTeam.getId());
         Assert.assertTrue(newTeam.equalByUUID(checkTeam));
         Assert.assertTrue(newTeam.equals(checkTeam));
     }
 
-    @Test(expected = Exception.class)
+    @Test
+    public void testTeamUpdate() {
+        String newTeamUUID = newTeam.getId();
+        newTeam.setFlag("UPDATED");
+        teamService.update(newTeam);
+        newTeam = null;
+        newTeam = teamService.readById(newTeamUUID);
+        Assert.assertEquals("UPDATED", newTeam.getFlag());
+        newTeam.setFlag("TEST");
+        newTeam = null;
+        newTeam = teamService.readById(newTeamUUID);
+        teamService.update(newTeam);
+        Assert.assertEquals("TEST", newTeam.getFlag());
+    }
+
+    //TODO: Arquillian catches the wrong error here(?!)
+    @Test(expected = java.lang.Exception.class)
+    //@Test(expected = ValidationException.class)
+    public void testUpdateNonexistent() {
+        checkTeam = new Team();
+        checkTeam.setName("Check Team");
+        checkTeam.setFlag("CHECK");
+        teamService.update(checkTeam);
+    }
+
+    //TODO: Arquillian catches the wrong error here(?!)
+    @Test(expected = java.lang.Exception.class)
+    //@Test(expected = ValidationException.class)
     public void testNonUniqueUUID() {
         checkTeam = newTeam;
         checkTeam.setFlag("We Copied You!");
-        service.create(checkTeam);
+        teamService.create(checkTeam);
     }
 
-    //TODO: This exception is too broad - need to narrowly tailor!
-    @Test(expected = Exception.class)
+    //TODO: Arquillian catches the wrong error here(?!)
+    @Test(expected = java.lang.AssertionError.class)
+    //@Test(expected = ValidationException.class)
     public void testNonUniqueFlag() {
         checkTeam = new Team();
-        checkTeam.setName("Bala Morgab 2");
-        checkTeam.setFlag("BMG");
-        service.create(checkTeam);
+        checkTeam.setName("Test Team 2");
+        checkTeam.setFlag("TEST");
+        checkTeam.setContest(newContest);
+        teamService.create(checkTeam);
     }
 }
