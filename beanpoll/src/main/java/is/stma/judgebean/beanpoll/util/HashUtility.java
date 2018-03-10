@@ -33,6 +33,9 @@ public class HashUtility {
     }
 
     public static boolean checkHash(String string, String hash) {
+        System.out.println("Checking " + string);
+        System.out.println("Hashes to " + getHash(string));
+        System.out.println("Against " + hash);
         return null != string && null != hash && Objects.equals(getHash(string), hash);
     }
 }

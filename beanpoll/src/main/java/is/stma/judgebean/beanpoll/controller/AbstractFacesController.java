@@ -49,6 +49,6 @@ abstract class AbstractFacesController {
         log.log(Level.WARNING, "CONTROLLER: " + msg);
         log.log(Level.WARNING, "CAUSE: " + errorMsg);
         facesContext.addMessage(null,
-                new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMsg, msg));
+                new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, errorMsg));
     }
 }

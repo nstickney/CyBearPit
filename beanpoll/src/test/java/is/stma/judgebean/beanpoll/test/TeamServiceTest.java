@@ -10,7 +10,7 @@ import is.stma.judgebean.beanpoll.service.TeamService;
 import is.stma.judgebean.beanpoll.util.EMProducer;
 import is.stma.judgebean.beanpoll.util.EntityUtility;
 import is.stma.judgebean.beanpoll.util.LogProducer;
-import is.stma.judgebean.beanpoll.util.RulesUtility;
+import is.stma.judgebean.beanpoll.util.StringUtility;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -51,7 +51,7 @@ public class TeamServiceTest {
                         AbstractRepo.class, TeamRepo.class,
                         AbstractService.class, TeamService.class,
                         AbstractRules.class, TeamRules.class,
-                        EntityUtility.class, EMProducer.class, LogProducer.class, RulesUtility.class)
+                        EntityUtility.class, EMProducer.class, LogProducer.class, StringUtility.class)
                 .addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml")
                 .addAsResource("META-INF/apache-deltaspike.properties")
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
@@ -85,6 +85,7 @@ public class TeamServiceTest {
     @Test(expected = Exception.class)
     public void testNonUniqueFlag() {
         checkTeam = new Team();
+        checkTeam.setName("Bala Morgab 2");
         checkTeam.setFlag("BMG");
         service.create(checkTeam);
     }

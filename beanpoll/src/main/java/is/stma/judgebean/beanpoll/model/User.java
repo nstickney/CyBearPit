@@ -5,6 +5,7 @@ import is.stma.judgebean.beanpoll.util.HashUtility;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
+import java.util.UUID;
 
 @Entity
 public class User extends AbstractEntity {
@@ -16,7 +17,7 @@ public class User extends AbstractEntity {
     private String salt;
 
     @Column(nullable = false)
-    private String hashedPassword;
+    private String secret;
 
     @Column(nullable = false)
     private boolean admin;
@@ -37,20 +38,13 @@ public class User extends AbstractEntity {
         return salt;
     }
 
-    public void setSalt(String salt) {
-        this.salt = salt;
+    public String getSecret() {
+        return secret;
     }
 
-    public String getHashedPassword() {
-        return hashedPassword;
-    }
-
-    public void setHashedPassword(String hashedPassword) {
-        this.hashedPassword = hashedPassword;
-    }
-
-    public void setPassword(String password) {
-        this.hashedPassword = HashUtility.getHash(salt + password);
+    public void setSecret(String password) {
+        this.salt = UUID.randomUUID().toString();
+        this.secret = HashUtility.getHash(salt + password);
     }
 
     public boolean isAdmin() {
@@ -70,6 +64,6 @@ public class User extends AbstractEntity {
     }
 
     public boolean checkPassword(String password) {
-        return HashUtility.checkHash(salt + password, hashedPassword);
+        return HashUtility.checkHash(salt + password, secret);
     }
 }

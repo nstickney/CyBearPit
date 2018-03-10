@@ -2,19 +2,15 @@ package is.stma.judgebean.beanpoll.controller;
 
 import is.stma.judgebean.beanpoll.model.User;
 import is.stma.judgebean.beanpoll.service.UserService;
+import is.stma.judgebean.beanpoll.util.AuthenticationException;
 
 import javax.ejb.EJBException;
 import javax.enterprise.inject.Model;
-import javax.faces.application.FacesMessage;
 import javax.inject.Inject;
 import javax.persistence.NoResultException;
 
 @Model
 public class SessionController extends AbstractFacesController {
-
-    private static final String LOGIN_FAILURE = "Authentication failed";
-    private static final String LOGIN_BLANK = "Username and password are required";
-    private static final String LOGIN_INCORRECT = "Username or password is incorrect";
 
     private static final String LOGIN_SUCCESS = "Welcome to BeanPoll";
 
@@ -64,7 +60,7 @@ public class SessionController extends AbstractFacesController {
 
         // Early fail if username or password is empty
         if (null == username || username.isEmpty() || null == password || password.isEmpty()) {
-            return failAuthentication(LOGIN_BLANK);
+            return failAuthentication(AuthenticationException.LOGIN_BLANK);
         }
 
         // Find the user in question, or fail gracefully
@@ -72,7 +68,7 @@ public class SessionController extends AbstractFacesController {
         try {
             checkUser = userService.getByName(username);
         } catch (NoResultException | EJBException e) {
-            errorOut(e, LOGIN_INCORRECT);
+            errorOut(e, AuthenticationException.LOGIN_INCORRECT);
             return LOGIN_PAGE;
         }
 
@@ -91,12 +87,12 @@ public class SessionController extends AbstractFacesController {
         }
 
         // Fail
-        return failAuthentication(LOGIN_INCORRECT);
+        return failAuthentication(AuthenticationException.LOGIN_INCORRECT);
     }
 
     private String failAuthentication(String summary) {
         bean.setSessionUser(null);
-        facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, LOGIN_FAILURE, summary));
+        errorOut(new AuthenticationException(), summary);
         facesContext.getExternalContext().getFlash().setKeepMessages(true);
         return LOGIN_PAGE;
     }

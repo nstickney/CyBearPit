@@ -3,13 +3,13 @@ package is.stma.judgebean.beanpoll.controller;
 import is.stma.judgebean.beanpoll.model.Team;
 import is.stma.judgebean.beanpoll.rules.TeamRules;
 import is.stma.judgebean.beanpoll.service.TeamService;
+import is.stma.judgebean.beanpoll.util.StringUtility;
 
 import javax.enterprise.inject.Model;
 import javax.enterprise.inject.Produces;
 import javax.faces.application.FacesMessage;
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.util.UUID;
 
 import static is.stma.judgebean.beanpoll.util.EntityUtility.prefix;
 
@@ -52,10 +52,9 @@ public class TeamController extends AbstractEntityController<Team, TeamRules,
     @Override
     public void create() {
         try {
-            String teamString = getNew().getName();
+            String teamString = StringUtility.removeWhitespace(getNew().getName());
             userController.getNew().setName(teamString);
-            userController.getNew().setSalt(UUID.randomUUID().toString());
-            userController.getNew().setHashedPassword(teamString);
+            userController.getNew().setSecret(teamString);
             userController.create();
             setNew(getService().create(getNew()));
             facesContext.addMessage(null, new FacesMessage(

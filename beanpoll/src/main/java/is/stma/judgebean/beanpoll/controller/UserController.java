@@ -3,6 +3,7 @@ package is.stma.judgebean.beanpoll.controller;
 import is.stma.judgebean.beanpoll.model.User;
 import is.stma.judgebean.beanpoll.rules.UserRules;
 import is.stma.judgebean.beanpoll.service.UserService;
+import is.stma.judgebean.beanpoll.util.AuthenticationException;
 
 import javax.enterprise.inject.Model;
 import javax.inject.Inject;
@@ -42,5 +43,14 @@ public class UserController extends AbstractEntityController<User, UserRules,
     @Override
     public void delete(User entity) {
         doDelete(entity);
+    }
+
+    public void changePassword(User entity, String currentPassword, String newPassword) {
+        if (entity.checkPassword(currentPassword)) {
+            entity.setSecret(newPassword);
+            update(entity);
+        } else {
+            errorOut(new AuthenticationException(), AuthenticationException.LOGIN_INCORRECT);
+        }
     }
 }
