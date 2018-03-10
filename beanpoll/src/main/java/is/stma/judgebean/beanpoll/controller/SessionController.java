@@ -122,7 +122,6 @@ public class SessionController extends AbstractFacesController {
     }
 
     public String changeUsername() {
-        bean.getUser().setName(username);
         userController.update(bean.getUser());
         bean.setUser(userService.getByName(username));
         return "";
