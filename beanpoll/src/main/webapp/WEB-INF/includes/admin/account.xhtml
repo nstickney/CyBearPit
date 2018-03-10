@@ -1,5 +1,34 @@
 <ui:fragment xmlns="http://www.w3.org/1999/xhtml"
+             xmlns:b="http://bootsfaces.net/ui"
+             xmlns:f="http://xmlns.jcp.org/jsf/core"
+             xmlns:h="http://xmlns.jcp.org/jsf/html"
              xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <!-- Update account settings -->
+    <h:form>
+        <b:panelGrid title="Username" look="primary" colSpans="2,4,2,4">
+            <h:outputLabel value="Username:"/>
+            <b:inputText value="#{sessionBean.user.name}" id="username" class="form-control">
+                <f:facet name="prepend"><b:icon name="user"/></f:facet>
+            </b:inputText>
+            <b:commandButton value="Change Username" look="warning"
+                             action="#{sessionController.changeUsername()}"/>
+            <h:outputText value=""/>
+            <h:outputLabel value="Current Password:"/>
+            <b:inputSecret value="#{sessionController.password}" id="password" class="form-control">
+                <f:facet name="prepend"><b:iconAwesome name="key"/></f:facet>
+            </b:inputSecret>
+            <h:outputText value=""/>
+            <h:outputText value=""/>
+            <h:outputLabel value="New Password:"/>
+            <b:inputSecret value="#{sessionController.newPassword}" id="newPassword" class="form-control">
+                <f:facet name="prepend"><b:iconAwesome name="key"/></f:facet>
+            </b:inputSecret>
+            <b:commandButton value="Change Password" look="warning"
+                             action="#{sessionController.changePassword()}"/>
+            <h:outputText value=""/>
+        </b:panelGrid>
+    </h:form>
 
 
 </ui:fragment>

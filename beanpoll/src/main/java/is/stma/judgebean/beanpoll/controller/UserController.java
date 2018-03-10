@@ -44,13 +44,4 @@ public class UserController extends AbstractEntityController<User, UserRules,
     public void delete(User entity) {
         doDelete(entity);
     }
-
-    public void changePassword(User entity, String currentPassword, String newPassword) {
-        if (entity.checkPassword(currentPassword)) {
-            entity.setSecret(newPassword);
-            update(entity);
-        } else {
-            errorOut(new AuthenticationException(), AuthenticationException.LOGIN_INCORRECT);
-        }
-    }
 }

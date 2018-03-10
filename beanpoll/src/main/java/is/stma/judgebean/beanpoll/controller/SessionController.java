@@ -3,11 +3,13 @@ package is.stma.judgebean.beanpoll.controller;
 import is.stma.judgebean.beanpoll.model.User;
 import is.stma.judgebean.beanpoll.service.UserService;
 import is.stma.judgebean.beanpoll.util.AuthenticationException;
+import is.stma.judgebean.beanpoll.util.PasswordUtility;
 
 import javax.ejb.EJBException;
 import javax.enterprise.inject.Model;
 import javax.inject.Inject;
 import javax.persistence.NoResultException;
+import javax.xml.bind.ValidationException;
 
 @Model
 public class SessionController extends AbstractFacesController {
@@ -24,9 +26,13 @@ public class SessionController extends AbstractFacesController {
     @Inject
     private UserService userService;
 
+    @Inject
+    private UserController userController;
+
     private String username;
 
     private String password;
+    private String newPassword;
 
     public String getUsername() {
         return username;
@@ -44,16 +50,12 @@ public class SessionController extends AbstractFacesController {
         this.password = password;
     }
 
-    private boolean isAuthenticated() {
-        return null != bean.getSessionUser();
+    public String getNewPassword() {
+        return newPassword;
     }
 
-    private boolean isAdmin() {
-        return isAuthenticated() && bean.getSessionUser().isAdmin();
-    }
-
-    private boolean hasTeam() {
-        return isAuthenticated() && null != bean.getSessionUser().getTeam();
+    public void setNewPassword(String newPassword) {
+        this.newPassword = newPassword;
     }
 
     public String authenticate() {
@@ -76,10 +78,10 @@ public class SessionController extends AbstractFacesController {
         if (null != checkUser && checkUser.checkPassword(password)) {
 
             //Set the session user
-            bean.setSessionUser(checkUser);
+            bean.setUser(checkUser);
 
             // Send admin user to the admin page; otherwise go to the team page
-            if (bean.getSessionUser().isAdmin()) {
+            if (bean.isAdmin()) {
                 return ADMIN_PAGE;
             } else {
                 return TEAM_PAGE;
@@ -91,35 +93,52 @@ public class SessionController extends AbstractFacesController {
     }
 
     private String failAuthentication(String summary) {
-        bean.setSessionUser(null);
+        bean.setUser(null);
         errorOut(new AuthenticationException(), summary);
         facesContext.getExternalContext().getFlash().setKeepMessages(true);
         return LOGIN_PAGE;
     }
 
     public String checkAdminNavigation() {
-        if (isAdmin()) {
+        if (bean.isAdmin()) {
             return null;
         }
         return LOGIN_PAGE;
     }
 
     public String checkTeamNavigation() {
-        if (hasTeam()) {
+        if (bean.hasTeam()) {
             return null;
         }
         return LOGIN_PAGE;
     }
 
     public String checkLoginNavigation() {
-        if (isAuthenticated()) {
-            if (hasTeam()) {
-                return TEAM_PAGE;
-            }
-            if (isAdmin()) {
-                return ADMIN_PAGE;
-            }
+        if (bean.checkAuthenticationStatus()) {
+            checkTeamNavigation();
+            checkAdminNavigation();
         }
         return null;
     }
+
+    public String changeUsername() {
+        bean.getUser().setName(username);
+        userController.update(bean.getUser());
+        bean.setUser(userService.getByName(username));
+        return "";
+    }
+
+    public String changePassword() {
+        if (bean.getUser().checkPassword(password) &&
+                PasswordUtility.meetsRequirements(newPassword)) {
+            username = bean.getUser().getName();
+            password = newPassword;
+            bean.getUser().setSecret(newPassword);
+            userController.update(bean.getUser());
+            return authenticate();
+        }
+        errorOut(new ValidationException("Incorrect password"), "Incorrect password");
+        return "";
+    }
+
 }

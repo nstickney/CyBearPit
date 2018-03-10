@@ -3,42 +3,37 @@ package is.stma.judgebean.beanpoll.controller;
 import is.stma.judgebean.beanpoll.model.User;
 
 import javax.enterprise.context.ConversationScoped;
+import javax.enterprise.context.SessionScoped;
+import javax.enterprise.inject.Produces;
 import javax.inject.Named;
 import java.io.Serializable;
 
 @Named
-@ConversationScoped
+@SessionScoped
 public class SessionBean implements Serializable {
 
     private static final long serialVersionUID = 721057087394449169L;
 
-    private User sessionUser = null;
+    private User user;
 
-    public User getSessionUser() {
-        return sessionUser;
+    public User getUser() {
+        return user;
     }
 
-    public void setSessionUser(User sessionUser) {
-        this.sessionUser = sessionUser;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public String checkAuthenticationStatus() {
-        if (sessionUser == null) {
-            return "login.xhtml";
-        }
-        return null;
+    public boolean checkAuthenticationStatus() {
+        return null == user;
     }
 
-    public String isAdmin() {
-        if (sessionUser != null && sessionUser.isAdmin()) {
-            return null;
-        }
-        return "login.xhtml";
+    public boolean isAdmin() {
+        return null != user && user.isAdmin();
     }
 
-    public String logout() {
-        sessionUser = null;
-        return "login.xhtml";
+    public boolean hasTeam() {
+        return null != user && null != user.getTeam();
     }
 
 }

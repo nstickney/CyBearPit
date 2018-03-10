@@ -20,32 +20,21 @@
 
         <b:tab title="Log In">
             <h:form>
-                <b:row>
-                    <b:column col-md="2">
-                        <h:outputLabel value="Username:" for="username"/>
-                    </b:column>
-                    <b:column col-md="4">
-                        <b:inputText value="#{sessionController.username}" id="username" class="form-control">
-                            <f:facet name="prepend"><b:icon name="user"/></f:facet>
-                        </b:inputText>
-                    </b:column>
-                </b:row>
-                <b:row>
-                    <b:column col-md="2">
-                        <h:outputLabel value="Password:" for="password"/>
-                    </b:column>
-                    <b:column col-md="4">
-                        <b:inputSecret value="#{sessionController.password}" id="password" class="form-control">
-                            <f:facet name="prepend"><b:iconAwesome name="key"/></f:facet>
-                        </b:inputSecret>
-                    </b:column>
-                </b:row>
-                <b:row>
-                    <b:column col-md="2"/>
-                    <b:column col-md="2">
-                        <b:commandButton action="#{sessionController.authenticate()}" value="Log In" look="success"/>
-                    </b:column>
-                </b:row>
+                <b:panelGrid colSpans="2,4,6">
+                    <h:outputLabel value="Username:" for="username"/>
+                    <b:inputText value="#{sessionController.username}" id="username" class="form-control">
+                        <f:facet name="prepend"><b:icon name="user"/></f:facet>
+                    </b:inputText>
+                    <h:outputText value=""/>
+                    <h:outputLabel value="Password:" for="password"/>
+                    <b:inputSecret value="#{sessionController.password}" id="password" class="form-control">
+                        <f:facet name="prepend"><b:iconAwesome name="key"/></f:facet>
+                    </b:inputSecret>
+                    <h:outputText value=""/>
+                    <h:outputText value=""/>
+                    <b:commandButton action="#{sessionController.authenticate()}" value="Log In" look="success"/>
+                    <h:outputText value=""/>
+                </b:panelGrid>
             </h:form>
         </b:tab>
     </ui:define>

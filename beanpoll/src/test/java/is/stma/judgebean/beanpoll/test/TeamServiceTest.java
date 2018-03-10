@@ -19,7 +19,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
-import javax.validation.ValidationException;
 import java.io.File;
 import java.util.UUID;
 import java.util.logging.Logger;
