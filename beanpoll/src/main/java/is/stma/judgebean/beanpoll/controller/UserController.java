@@ -14,6 +14,9 @@ public class UserController extends AbstractEntityController<User, UserRules,
     @Inject
     private UserService service;
 
+    @Inject
+    private SessionBean bean;
+
     private User newUser;
 
     @Override
@@ -47,7 +50,6 @@ public class UserController extends AbstractEntityController<User, UserRules,
     public void changePassword(User entity, String currentPassword, String newPassword) {
         if (null != entity && null != currentPassword && null != newPassword && entity.checkPassword(currentPassword)) {
             entity.setSecret(newPassword);
-            update(entity);
         }
     }
 }

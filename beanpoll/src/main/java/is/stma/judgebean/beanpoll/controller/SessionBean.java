@@ -2,30 +2,32 @@ package is.stma.judgebean.beanpoll.controller;
 
 import is.stma.judgebean.beanpoll.model.User;
 
-import javax.enterprise.context.ConversationScoped;
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
+import javax.enterprise.inject.Produces;
 import javax.inject.Named;
 import java.io.Serializable;
 
 @Named
-@ConversationScoped
+@SessionScoped
 public class SessionBean extends AbstractFacesController implements Serializable {
 
     private static final long serialVersionUID = 721057087394449169L;
 
+    @Produces
+    @Named("sessionUser")
+    @RequestScoped
     private User user;
 
     private String username;
     private String password;
     private String newPassword;
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
+    @PostConstruct
+    private void updateUsername() {
         if (null != user) {
-            this.username = user.getName();
+            username = user.getName();
         }
     }
 
@@ -53,6 +55,14 @@ public class SessionBean extends AbstractFacesController implements Serializable
         this.newPassword = newPassword;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public boolean checkAuthenticationStatus() {
         return null == user;
     }
@@ -63,6 +73,11 @@ public class SessionBean extends AbstractFacesController implements Serializable
 
     public boolean hasTeam() {
         return null != user && null != user.getTeam();
+    }
+
+    public String logOut() {
+        facesContext.getExternalContext().invalidateSession();
+        return SessionController.LOGIN_PAGE;
     }
 
 }

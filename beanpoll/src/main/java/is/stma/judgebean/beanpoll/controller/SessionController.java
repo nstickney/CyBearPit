@@ -4,7 +4,6 @@ import is.stma.judgebean.beanpoll.model.User;
 import is.stma.judgebean.beanpoll.service.UserService;
 import is.stma.judgebean.beanpoll.util.AuthenticationException;
 
-import javax.annotation.PostConstruct;
 import javax.ejb.EJBException;
 import javax.enterprise.inject.Model;
 import javax.inject.Inject;
@@ -13,9 +12,8 @@ import javax.persistence.NoResultException;
 @Model
 public class SessionController extends AbstractFacesController {
 
+    public static final String LOGIN_PAGE = "index.xhtml";
     private static final String LOGIN_SUCCESS = "Welcome to BeanPoll";
-
-    private static final String LOGIN_PAGE = "index.xhtml";
     private static final String ADMIN_PAGE = "control.xhtml";
     private static final String TEAM_PAGE = "team.xhtml";
 
@@ -26,7 +24,6 @@ public class SessionController extends AbstractFacesController {
     private UserService userService;
 
     private String username;
-
     private String password;
 
     public String getUsername() {
@@ -43,13 +40,6 @@ public class SessionController extends AbstractFacesController {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    @PostConstruct
-    private void updateUsername() {
-        if (null != bean.getUser()) {
-            username = bean.getUser().getName();
-        }
     }
 
     public String authenticate() {
