@@ -34,12 +34,11 @@ public class TeamRules extends AbstractRules<Team> {
     private void checkTeamNameAndFlagAreUniqueInContest(Team entity) throws ValidationException {
         if (null != entity.getContest()) {
             for (Team team : entity.getContest().getTeams()) {
-                errorOut("Found another team");
                 if (Objects.equals(team.getName(), entity.getName())) {
-                    errorOut("Team name must be unique in the contest");
+                    throw new ValidationException("Team name must be unique in the contest");
                 }
                 if (Objects.equals(team.getFlag(), entity.getFlag())) {
-                    errorOut("Team flag must be unique in the contest");
+                    throw new ValidationException("Team flag must be unique in the contest");
                 }
             }
         }

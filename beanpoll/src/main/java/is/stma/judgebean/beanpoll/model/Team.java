@@ -13,8 +13,8 @@ public class Team extends AbstractEntity {
     @Column
     private String flag;
 
-    @OneToOne(mappedBy = "team")
-    private User user;
+    @OneToMany(mappedBy = "team")
+    private List<User> users;
 
     @ManyToOne
     private Contest contest;
@@ -42,6 +42,14 @@ public class Team extends AbstractEntity {
         this.flag = flag;
     }
 
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
+
     public Contest getContest() {
         return contest;
     }
@@ -50,4 +58,11 @@ public class Team extends AbstractEntity {
         this.contest = contest;
     }
 
+    public List<Resource> getResources() {
+        return resources;
+    }
+
+    public void setResources(List<Resource> resources) {
+        this.resources = resources;
+    }
 }

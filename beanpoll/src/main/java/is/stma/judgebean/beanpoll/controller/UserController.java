@@ -5,7 +5,9 @@ import is.stma.judgebean.beanpoll.rules.UserRules;
 import is.stma.judgebean.beanpoll.service.UserService;
 
 import javax.enterprise.inject.Model;
+import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
+import javax.inject.Named;
 
 @Model
 public class UserController extends AbstractEntityController<User, UserRules,
@@ -20,6 +22,8 @@ public class UserController extends AbstractEntityController<User, UserRules,
     private User newUser;
 
     @Override
+    @Produces
+    @Named("newUser")
     User getNew() {
         if (newUser == null) {
             newUser = new User();

@@ -1,0 +1,26 @@
+<ui:fragment xmlns="http://www.w3.org/1999/xhtml"
+             xmlns:b="http://bootsfaces.net/ui"
+             xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <!-- Option to create a new user -->
+    <b:panel col-lg="6" title="Create a New User" look="primary" collapsed="#{true}">
+        Flag: #{newUser.name}
+    </b:panel>
+
+    <!-- Unassigned users first -->
+    <ui:repeat var="_uuser" value="#{unassignedUsers}">
+        <b:panel col-lg="6" title="Unassigned: #{_uuser.name}" look="info" collapsed="#{true}"/>
+    </ui:repeat>
+
+    <!-- Admin users next -->
+    <ui:repeat var="_uuser" value="#{unassignedUsers}">
+        <b:panel col-lg="6" title="Unassigned: #{_uuser.name}" look="info" collapsed="#{true}"/>
+    </ui:repeat>
+
+    <!-- Now print the rest of the users, ordered by team -->
+    <ui:repeat var="_team" value="#{teams}">
+        <ui:repeat var="_user" value="#{_team.users}">
+            <b:panel col-lg="6" title="#{_team.name}: #{_user.name}" collapsed="#{true}"/>
+        </ui:repeat>
+    </ui:repeat>
+</ui:fragment>

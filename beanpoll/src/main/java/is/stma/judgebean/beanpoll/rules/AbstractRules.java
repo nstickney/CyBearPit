@@ -8,7 +8,6 @@ import is.stma.judgebean.beanpoll.util.StringUtility;
 import javax.inject.Inject;
 import javax.validation.ValidationException;
 import java.text.DateFormat;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public abstract class AbstractRules<E extends AbstractEntity> {
@@ -30,9 +29,9 @@ public abstract class AbstractRules<E extends AbstractEntity> {
         boolean collision = !isUuidUnique(entity);
 
         if (target == Target.CREATE && collision) {
-            errorOut("Cannot create " + EntityUtility.prefix(entity) + "; UUID exists");
+            throw new ValidationException("Cannot create " + EntityUtility.prefix(entity) + "; UUID exists");
         } else if ((target == Target.UPDATE || target == Target.DELETE) && !collision) {
-            errorOut("Cannot update " + EntityUtility.prefix(entity) + "; UUID not found");
+            throw new ValidationException("Cannot update " + EntityUtility.prefix(entity) + "; UUID not found");
         }
 
         if (target == Target.DELETE) {
@@ -45,11 +44,6 @@ public abstract class AbstractRules<E extends AbstractEntity> {
 
     private boolean isUuidUnique(E entity) {
         return (getRepo().findBy(entity.getId()) == null);
-    }
-
-    void errorOut(String details) throws ValidationException {
-        log.log(Level.WARNING, details);
-        throw new ValidationException(details);
     }
 
     public enum Target {
