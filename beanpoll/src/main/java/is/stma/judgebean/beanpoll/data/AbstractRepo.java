@@ -7,8 +7,6 @@ import java.util.List;
 
 public interface AbstractRepo<E extends AbstractEntity> extends EntityRepository<E, String> {
 
-    E findById(String id);
-
     List<E> findAllOrderByNameAsc();
 
 }

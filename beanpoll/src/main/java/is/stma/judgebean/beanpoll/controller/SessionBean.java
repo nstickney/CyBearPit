@@ -9,12 +9,16 @@ import javax.inject.Named;
 import java.io.Serializable;
 
 @Named
-@SessionScoped
-public class SessionBean implements Serializable {
+@ConversationScoped
+public class SessionBean extends AbstractFacesController implements Serializable {
 
     private static final long serialVersionUID = 721057087394449169L;
 
     private User user;
+
+    private String username;
+    private String password;
+    private String newPassword;
 
     public User getUser() {
         return user;
@@ -22,6 +26,33 @@ public class SessionBean implements Serializable {
 
     public void setUser(User user) {
         this.user = user;
+        if (null != user) {
+            this.username = user.getName();
+        }
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getNewPassword() {
+        return newPassword;
+    }
+
+    public void setNewPassword(String newPassword) {
+        this.newPassword = newPassword;
     }
 
     public boolean checkAuthenticationStatus() {

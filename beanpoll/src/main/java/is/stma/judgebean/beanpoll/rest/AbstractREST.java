@@ -38,7 +38,7 @@ abstract class AbstractREST<E extends AbstractEntity,
     abstract S getService();
 
     E lookupById(String id) {
-        E entity = getRepo().findById(id);
+        E entity = getRepo().findBy(id);
         if (entity == null) {
             throw new WebApplicationException(Response.Status.NOT_FOUND);
         }

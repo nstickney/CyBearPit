@@ -5,6 +5,7 @@ import is.stma.judgebean.beanpoll.service.UserService;
 import is.stma.judgebean.beanpoll.util.AuthenticationException;
 import is.stma.judgebean.beanpoll.util.PasswordUtility;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJBException;
 import javax.enterprise.inject.Model;
 import javax.inject.Inject;
@@ -26,13 +27,9 @@ public class SessionController extends AbstractFacesController {
     @Inject
     private UserService userService;
 
-    @Inject
-    private UserController userController;
-
     private String username;
 
     private String password;
-    private String newPassword;
 
     public String getUsername() {
         return username;
@@ -50,12 +47,11 @@ public class SessionController extends AbstractFacesController {
         this.password = password;
     }
 
-    public String getNewPassword() {
-        return newPassword;
-    }
-
-    public void setNewPassword(String newPassword) {
-        this.newPassword = newPassword;
+    @PostConstruct
+    private void updateUsername() {
+        if (null != bean.getUser()) {
+            username = bean.getUser().getName();
+        }
     }
 
     public String authenticate() {
@@ -119,25 +115,6 @@ public class SessionController extends AbstractFacesController {
             checkAdminNavigation();
         }
         return null;
-    }
-
-    public String changeUsername() {
-        userController.update(bean.getUser());
-        bean.setUser(userService.getByName(username));
-        return "";
-    }
-
-    public String changePassword() {
-        if (bean.getUser().checkPassword(password) &&
-                PasswordUtility.meetsRequirements(newPassword)) {
-            username = bean.getUser().getName();
-            password = newPassword;
-            bean.getUser().setSecret(newPassword);
-            userController.update(bean.getUser());
-            return authenticate();
-        }
-        errorOut(new ValidationException("Incorrect password"), "Incorrect password");
-        return "";
     }
 
 }

@@ -5,30 +5,38 @@
              xmlns:ui="http://java.sun.com/jsf/facelets">
 
     <!-- Update account settings -->
-    <h:form>
-        <b:panelGrid title="Username" look="primary" colSpans="2,4,2,4">
-            <h:outputLabel value="Username:"/>
-            <b:inputText value="#{sessionBean.user.name}" id="username" class="form-control">
-                <f:facet name="prepend"><b:icon name="user"/></f:facet>
-            </b:inputText>
-            <b:commandButton value="Change Username" look="warning"
-                             action="#{sessionController.changeUsername()}"/>
-            <h:outputText value=""/>
-            <h:outputLabel value="Current Password:"/>
-            <b:inputSecret value="#{sessionController.password}" id="password" class="form-control">
-                <f:facet name="prepend"><b:iconAwesome name="key"/></f:facet>
-            </b:inputSecret>
-            <h:outputText value=""/>
-            <h:outputText value=""/>
-            <h:outputLabel value="New Password:"/>
-            <b:inputSecret value="#{sessionController.newPassword}" id="newPassword" class="form-control">
-                <f:facet name="prepend"><b:iconAwesome name="key"/></f:facet>
-            </b:inputSecret>
-            <b:commandButton value="Change Password" look="warning"
-                             action="#{sessionController.changePassword()}"/>
-            <h:outputText value=""/>
-        </b:panelGrid>
-    </h:form>
+    <b:panel title="Change Username" look="info">
+        <h:form>
+            <b:panelGrid title="Username" look="primary" colSpans="2,4,2,4">
+                <h:outputLabel value="Username:"/>
+                <b:inputText value="#{sessionBean.username}" id="username" class="form-control">
+                    <f:facet name="prepend"><b:icon name="user"/></f:facet>
+                </b:inputText>
+                <b:commandButton value="Change Username" look="warning"
+                                 action="#{userController.update(sessionBean.user)}"/>
+                <h:outputText value=""/>
+            </b:panelGrid>
+        </h:form>
+    </b:panel>
+    <b:panel title="Change Password" look="info">
+        <h:form>
+            <b:panelGrid colSpans="2,4,2,4">
+                <h:outputLabel value="Current Password:"/>
+                <b:inputSecret value="#{sessionBean.password}" id="password" class="form-control">
+                    <f:facet name="prepend"><b:iconAwesome name="key"/></f:facet>
+                </b:inputSecret>
+                <h:outputText value=""/>
+                <h:outputText value=""/>
+                <h:outputLabel value="New Password:"/>
+                <b:inputSecret value="#{sessionBean.newPassword}" id="newPassword" class="form-control">
+                    <f:facet name="prepend"><b:iconAwesome name="key"/></f:facet>
+                </b:inputSecret>
+                <b:commandButton value="Change Password" look="warning"
+                                 action="#{userController.changePassword(sessionBean.user, sessionBean.user, sessionBean.password)}"/>
+                <h:outputText value=""/>
+            </b:panelGrid>
+        </h:form>
+    </b:panel>
 
 
 </ui:fragment>

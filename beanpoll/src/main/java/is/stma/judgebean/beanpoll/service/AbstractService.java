@@ -48,17 +48,20 @@ public abstract class AbstractService<E extends AbstractEntity,
     }
 
     public E update(E entity) throws ValidationException {
-        em.detach(entity);
-        try {
-            log.log(Level.INFO, "Updating " + prefix(getRepo().findBy(entity.getId())));
-        } catch (NoResultException | NullPointerException e) {
-            throw new ValidationException("Cannot update nonexistent entity");
+        if (null != entity) {
+            try {
+                log.log(Level.INFO, "Updating " + prefix(getRepo().findBy(entity.getId())));
+            } catch (NoResultException | NullPointerException e) {
+                throw new ValidationException("Cannot update nonexistent entity");
+            }
+            em.detach(entity);
+            getRules().validate(entity, AbstractRules.Target.UPDATE);
+            entity = getRepo().save(entity);
+            log.log(Level.INFO, "Updated " + prefix(entity));
+            getEvent().fire(entity);
+            return entity;
         }
-        getRules().validate(entity, AbstractRules.Target.UPDATE);
-        entity = getRepo().save(entity);
-        log.log(Level.INFO, "Updated " + prefix(entity));
-        getEvent().fire(entity);
-        return entity;
+        throw new ValidationException("Cannot update nonexistent entity");
     }
 
     public void delete(E entity) throws ValidationException {
