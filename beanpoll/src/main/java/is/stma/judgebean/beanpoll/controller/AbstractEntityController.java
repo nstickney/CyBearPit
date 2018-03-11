@@ -6,7 +6,6 @@ import is.stma.judgebean.beanpoll.rules.AbstractRules;
 import is.stma.judgebean.beanpoll.service.AbstractService;
 
 import javax.faces.application.FacesMessage;
-import javax.xml.bind.ValidationException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,18 +78,14 @@ abstract class AbstractEntityController<E extends AbstractEntity,
      * @param entity the <E> to update
      */
     void doUpdate(E entity) {
-        if (null != entity) {
-            try {
-                entity = getService().update(entity);
-                facesContext.addMessage(null, new FacesMessage(
-                        FacesMessage.SEVERITY_INFO, prefix(entity) + " updated.", "")
-                );
-            } catch (Exception e) {
-//                errorOut(e, prefix(entity) + " update failed.");
-                errorOut(e, entity.getId());
-            }
+        try {
+            entity = getService().update(entity);
+            facesContext.addMessage(null, new FacesMessage(
+                    FacesMessage.SEVERITY_INFO, prefix(entity) + " updated.", "")
+            );
+        } catch (Exception e) {
+            errorOut(e, prefix(entity) + " update failed.");
         }
-        errorOut(new ValidationException("Cannot update null entity"), "FAILED");
     }
 
     /**

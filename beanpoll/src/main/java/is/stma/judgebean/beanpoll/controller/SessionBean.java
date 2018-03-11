@@ -3,8 +3,6 @@ package is.stma.judgebean.beanpoll.controller;
 import is.stma.judgebean.beanpoll.model.User;
 
 import javax.enterprise.context.ConversationScoped;
-import javax.enterprise.context.SessionScoped;
-import javax.enterprise.inject.Produces;
 import javax.inject.Named;
 import java.io.Serializable;
 

@@ -3,14 +3,12 @@ package is.stma.judgebean.beanpoll.controller;
 import is.stma.judgebean.beanpoll.model.User;
 import is.stma.judgebean.beanpoll.service.UserService;
 import is.stma.judgebean.beanpoll.util.AuthenticationException;
-import is.stma.judgebean.beanpoll.util.PasswordUtility;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJBException;
 import javax.enterprise.inject.Model;
 import javax.inject.Inject;
 import javax.persistence.NoResultException;
-import javax.xml.bind.ValidationException;
 
 @Model
 public class SessionController extends AbstractFacesController {

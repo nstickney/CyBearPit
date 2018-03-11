@@ -3,7 +3,6 @@ package is.stma.judgebean.beanpoll.controller;
 import is.stma.judgebean.beanpoll.model.User;
 import is.stma.judgebean.beanpoll.rules.UserRules;
 import is.stma.judgebean.beanpoll.service.UserService;
-import is.stma.judgebean.beanpoll.util.AuthenticationException;
 
 import javax.enterprise.inject.Model;
 import javax.inject.Inject;
