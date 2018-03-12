@@ -28,7 +28,10 @@ public class Resource extends AbstractEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private Contest contest;
 
-    @ManyToMany(mappedBy = "resources")
+    @ManyToMany
+    @JoinTable(name = "ResourceTeams",
+            joinColumns = {@JoinColumn(name = "resource_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "team_id", referencedColumnName = "id")})
     private List<Team> teams = new ArrayList<>();
 
     @OneToMany(mappedBy = "resource")

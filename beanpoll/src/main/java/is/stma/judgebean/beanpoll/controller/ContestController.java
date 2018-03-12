@@ -47,4 +47,9 @@ public class ContestController extends AbstractEntityController<Contest, Contest
     public void delete(Contest entity) {
         doDelete(entity);
     }
+
+    public void clone(Contest entity) {
+        getNew().setName(entity.getName() + "Clone");
+        create();
+    }
 }

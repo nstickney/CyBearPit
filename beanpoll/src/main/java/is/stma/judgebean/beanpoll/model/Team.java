@@ -13,16 +13,13 @@ public class Team extends AbstractEntity {
     @Column
     private String flag;
 
-    @OneToMany(mappedBy = "team")
-    private List<User> users;
-
     @ManyToOne
     private Contest contest;
 
-    @ManyToMany
-    @JoinTable(name = "TeamResources",
-            joinColumns = {@JoinColumn(name = "team_id", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "resource_id", referencedColumnName = "id")})
+    @OneToMany(mappedBy = "team")
+    private List<User> users;
+
+    @ManyToMany(mappedBy = "teams")
     private List<Resource> resources = new ArrayList<>();
 
     @OneToMany(mappedBy = "team")

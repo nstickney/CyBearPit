@@ -11,30 +11,7 @@
                 <h:outputLabel value="Name:" for="nname"/>
                 <b:inputText value="#{newContest.name}" id="nname" class="form-control">
                     <f:facet name="prepend"><b:iconAwesome name="trophy"/></f:facet>
-                    <f:selectItems value="#{unassignedResources}" var="_nresource"
-                                   itemLabel="#{_nresource.name}" itemValue="#{_nresource}"/>
                 </b:inputText>
-                <h:outputText value=""/>
-                <h:outputLabel value="Resources:" for="nresources"/>
-                <h:selectManyListbox value="#{newContest.resources}" id="nresources"
-                                     style="width: 100%">
-                    <f:selectItems value="#{unassignedResources}" var="_uresource"
-                                   itemLabel="#{_uresource.name}" itemValue="#{_uresource}"/>
-                </h:selectManyListbox>
-                <h:outputText value=""/>
-                <h:outputLabel value="Tasks:" for="ntasks"/>
-                <h:selectManyListbox value="#{newContest.tasks}" id="ntasks"
-                                     style="width: 100%">
-                    <f:selectItems value="#{unassignedTasks}" var="_utask"
-                                   itemLabel="#{_utask.name}" itemValue="#{_utask}"/>
-                </h:selectManyListbox>
-                <!--<h:outputText value=""/>-->
-                <!--<h:outputLabel value="Teams:" for="nteams"/>-->
-                <!--<h:selectManyListbox value="#{newContest.teams}" id="nteams"-->
-                                     <!--style="width: 100%">-->
-                    <!--<f:selectItems value="#{unassignedTeams}" var="_uteam"-->
-                                   <!--itemLabel="#{_uteam.name}" itemValue="#{_uteam}"/>-->
-                <!--</h:selectManyListbox>-->
                 <b:commandButton action="#{contestController.create()}" value="Create" look="success"/>
             </b:panelGrid>
         </h:form>
@@ -52,10 +29,6 @@
                         <b:dataTableColumn value="#{_resource.type}"/>
                         <b:dataTableColumn value="#{_resource.address}"/>
                         <b:dataTableColumn value="#{_resource.port}"/>
-                        <!--<b:dataTableColumn label="Remove">-->
-                            <!--<b:commandButton action="#{contestController.removeResource(_contest, _resource)}"-->
-                                             <!--value="Remove" look="warning"/>-->
-                        <!--</b:dataTableColumn>-->
                     </b:dataTable>
                 </h:form>
             </b:panel>
@@ -82,17 +55,25 @@
 
             <!-- Contest controls -->
             <h:form>
-                <b:panelGrid colSpans="2,2,2,2,4" size="sm">
+                <b:panelGrid colSpans="2,6,4" size="xs">
+                    <h:outputLabel value="Name:" for="name"/>
+                    <!-- TODO: For some reason this doesn't catch the name -->
+                    <b:inputText value="#{_contest.name}" id="name" class="form-control">
+                        <f:facet name="prepend"><b:iconAwesome name="trophy"/></f:facet>
+                    </b:inputText>
+                    <b:commandButton action="#{contestController.update(_contest)}" value="Rename" look="info"/>
+                </b:panelGrid>
+                <b:panelGrid colSpans="2,2,2,2,2,2" size="sm">
                     <h:outputLabel value=""/>
                     <b:commandButton action="#{judge.run(_contest)}" value="Run"
-                                     rendered="#{!_contest.running}" look="success"/>
+                                     disabled="#{_contest.running}" look="success"/>
                     <b:commandButton action="#{judge.stop(_contest)}" value="Stop"
-                                     rendered="#{_contest.running}" look="warning"/>
-                    <b:commandButton action="#{contestController.update(_contest)}"
-                                     value="Update" look="info"/>
+                                     disabled="#{!_contest.running}" look="warning"/>
+                    <b:commandButton action="#{contestController.clone(_contest)}"
+                                     value="Clone" look="info"/>
+                    <h:outputLabel value=""/>
                     <b:commandButton action="#{contestController.delete(_contest)}"
                                      value="Delete" look="danger"/>
-                    <h:outputLabel value=""/>
                 </b:panelGrid>
             </h:form>
         </b:panel>

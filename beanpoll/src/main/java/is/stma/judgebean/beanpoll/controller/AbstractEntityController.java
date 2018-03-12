@@ -6,6 +6,7 @@ import is.stma.judgebean.beanpoll.rules.AbstractRules;
 import is.stma.judgebean.beanpoll.service.AbstractService;
 
 import javax.faces.application.FacesMessage;
+import javax.persistence.MappedSuperclass;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,7 +61,7 @@ abstract class AbstractEntityController<E extends AbstractEntity,
     /**
      * Persist the <E> from getNew()
      */
-    void create() {
+    public void create() {
         try {
             setNew(getService().create(getNew()));
             facesContext.addMessage(null, new FacesMessage(
