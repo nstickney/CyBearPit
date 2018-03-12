@@ -7,11 +7,22 @@ import javax.persistence.ManyToOne;
 @Entity
 public class ResourceParameter extends AbstractEntity {
 
+    // DNS tag strings
+    private static final String DNS_QUERY = "DNS_QUERY";
+    private static final String DNS_RECORD_TYPE = "DNS_RECORD_TYPE";
+    private static final String DNS_TCP = "DNS_TCP";
+    private static final String DNS_RECURSIVE = "DNS_RECURSIVE";
+    private static final String DNS_TIMEOUT = "DNS_TIMEOUT";
+
+    // Boolean value strings
+    private static final String TRUE = "TRUE";
+    private static final String FALSE = "FALSE";
+
     @ManyToOne
     private Resource resource;
 
     @Column(nullable = false)
-    private ParameterTag tag = ParameterTag.HOST;
+    private String tag = DNS_QUERY;
 
     @Column
     private String value = null;
@@ -21,13 +32,27 @@ public class ResourceParameter extends AbstractEntity {
         return getId();
     }
 
-    public enum ParameterTag {
-
-        // These tags can apply to any kind of resource
-        TYPE, HOST, PORT, CHECK_FLAG,
-
-        // These flags apply only to DNS resources
-        QUERY, RECORD_TYPE, TCP, RECURSIVE, TIMEOUT, CHECK_DEFAULT
+    public Resource getResource() {
+        return resource;
     }
 
+    public void setResource(Resource resource) {
+        this.resource = resource;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
 }

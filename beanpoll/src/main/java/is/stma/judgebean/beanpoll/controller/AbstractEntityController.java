@@ -60,7 +60,7 @@ abstract class AbstractEntityController<E extends AbstractEntity,
     /**
      * Persist the <E> from getNew()
      */
-    public void create() {
+    void create() {
         try {
             setNew(getService().create(getNew()));
             facesContext.addMessage(null, new FacesMessage(

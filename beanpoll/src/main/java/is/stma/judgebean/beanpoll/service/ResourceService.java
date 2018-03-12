@@ -13,6 +13,7 @@ import javax.inject.Inject;
 public class ResourceService extends AbstractService<Resource, AbstractRepo<Resource>,
         ResourceRules> {
 
+    @SuppressWarnings("CdiInjectionPointsInspection")
     @Inject
     private ResourceRepo repo;
 

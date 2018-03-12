@@ -1,6 +1,5 @@
 package is.stma.judgebean.beanpoll.model;
 
-import javax.enterprise.inject.Model;
 import javax.persistence.*;
 
 @Entity
@@ -13,6 +12,9 @@ public class TaskResponse extends AbstractEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id")
     private Team team;
+
+    @Column
+    private String contents;
 
     @OneToOne
     private Points points;
@@ -36,5 +38,21 @@ public class TaskResponse extends AbstractEntity {
 
     public void setTeam(Team team) {
         this.team = team;
+    }
+
+    public String getContents() {
+        return contents;
+    }
+
+    public void setContents(String contents) {
+        this.contents = contents;
+    }
+
+    public Points getPoints() {
+        return points;
+    }
+
+    public void setPoints(Points points) {
+        this.points = points;
     }
 }

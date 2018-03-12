@@ -14,7 +14,13 @@ public class Resource extends AbstractEntity {
     private String name;
 
     @Column(nullable = false)
-    private String tag = DNS;
+    private String type = DNS;
+
+    @Column(nullable = false)
+    private String address = "baylor.edu";
+
+    @Column(nullable = false)
+    private int port = 53;
 
     @OneToMany(mappedBy = "resource")
     private List<ResourceParameter> parameters = new ArrayList<>();
@@ -37,12 +43,43 @@ public class Resource extends AbstractEntity {
         this.name = name;
     }
 
-    public String getTag() {
-        return tag;
+    public String getLook() {
+        if (null == contest) {
+            return "warning";
+        }
+        return "default";
     }
 
-    public void setTag(String tag) {
-        this.tag = tag;
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String tag) {
+        this.type = tag;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
+    }
+
+    public List<ResourceParameter> getParameters() {
+        return parameters;
+    }
+
+    public void setParameters(List<ResourceParameter> parameters) {
+        this.parameters = parameters;
     }
 
     public Contest getContest() {
@@ -53,11 +90,19 @@ public class Resource extends AbstractEntity {
         this.contest = contest;
     }
 
-    public List<ResourceParameter> getParameters() {
-        return parameters;
+    public List<Team> getTeams() {
+        return teams;
     }
 
-    public void setParameters(List<ResourceParameter> parameters) {
-        this.parameters = parameters;
+    public void setTeams(List<Team> teams) {
+        this.teams = teams;
+    }
+
+    public List<Points> getPoints() {
+        return points;
+    }
+
+    public void setPoints(List<Points> points) {
+        this.points = points;
     }
 }

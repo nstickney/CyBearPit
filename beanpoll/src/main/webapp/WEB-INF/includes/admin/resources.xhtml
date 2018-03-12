@@ -1,20 +1,69 @@
 <ui:fragment xmlns="http://www.w3.org/1999/xhtml"
              xmlns:b="http://bootsfaces.net/ui"
+             xmlns:f="http://xmlns.jcp.org/jsf/core"
+             xmlns:h="http://xmlns.jcp.org/jsf/html"
              xmlns:ui="http://java.sun.com/jsf/facelets">
 
     <!--Option to create a new resource-->
-    <b:panel ctitle="Create a New Resource" look="primary" collapsed="#{true}"/>
+    <b:panel title="Create a New Resource" look="info" collapsed="#{true}">
+        <h:form>
+            <b:panelGrid colSpans="2,6,4" size="xs">
+                <h:outputLabel value="Contest:" for="ncontest"/>
+                <b:selectOneMenu value="#{newResource.contest}" id="ncontest">
+                    <f:facet name="prepend"><b:iconAwesome name="trophy"/></f:facet>
+                    <f:selectItems value="#{contests}" var="_contest"
+                                   itemLabel="#{_contest.name}" itemValue="#{_contest}"/>
+                </b:selectOneMenu>
+                <h:outputText value=""/>
+                <h:outputLabel value="Name:" for="nname"/>
+                <b:inputText value="#{newResource.name}" id="nname" class="form-control">
+                    <f:facet name="prepend"><b:iconAwesome name="server"/></f:facet>
+                </b:inputText>
+                <h:outputText value=""/>
+                <h:outputLabel value="Type:" for="ntype"/>
+                <b:selectOneMenu value="#{newResource.type}" id="ntype">
+                    <f:selectItem itemValue="DNS" itemLabel="DNS"/>
+                    <f:selectItem itemValue="HTTP" itemLabel="HTTP"/>
+                </b:selectOneMenu>
+                <b:commandButton action="#{resourceController.create()}" value="Create" look="success"/>
+            </b:panelGrid>
+        </h:form>
+    </b:panel>
 
     <!--Show the unassigned resources first-->
     <ui:repeat var="_uresource" value="#{unassignedResources}">
-        <b:panel title="Unassigned: #{_uresource.name} (#{_uresource.tag})" look="info"
-                 collapsed="#{true}"/>
+        <b:panel title="Unassigned: #{_uresource.name} (#{_uresource.type})" look="warning"
+                 collapsed="#{true}">
+            <b:panel title="Parameters">
+                <b:dataTable var="_parameter" value="#{_uresource.parameters}">
+                    <b:dataTableColumn value="#{_parameter.tag}"/>
+                    <b:dataTableColumn value="#{_parameter.value}"/>
+                </b:dataTable>
+            </b:panel>
+            <h:form>
+                <b:panelGrid colSpans="2,3,3,4" size="sm">
+                    <h:outputText value=""/>
+                    <b:commandButton action="#{resourceController.update(_uresource)}"
+                                     value="Update" look="info"/>
+                    <b:commandButton action="#{resourceController.delete(_uresource)}"
+                                     value="Delete" look="danger"/>
+                    <h:outputText value=""/>
+                </b:panelGrid>
+            </h:form>
+        </b:panel>
     </ui:repeat>
 
     <!--The remaining resources are grouped by contest-->
     <ui:repeat value="#{contests}" var="_contest">
         <ui:repeat var="_resource" value="#{_contest.resources}">
-            <b:panel title="#{_contest.name}: #{_resource.name} (#{_resource.tag})" collapsed="#{true}"/>
+            <b:panel title="#{_contest.name}: #{_resource.name} (#{_resource.type})" collapsed="#{true}">
+                <b:panel title="Parameters">
+                    <b:dataTable var="_parameter" value="#{_resource.parameters}">
+                        <b:dataTableColumn value="#{_parameter.tag}"/>
+                        <b:dataTableColumn value="#{_parameter.value}"/>
+                    </b:dataTable>
+                </b:panel>
+            </b:panel>
         </ui:repeat>
     </ui:repeat>
 </ui:fragment>

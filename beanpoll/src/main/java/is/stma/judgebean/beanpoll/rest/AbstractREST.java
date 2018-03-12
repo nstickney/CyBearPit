@@ -26,9 +26,11 @@ abstract class AbstractREST<E extends AbstractEntity,
         S extends AbstractService<E, R, V>> {
 
     @Inject
+    private
     Logger log;
 
     @Inject
+    private
     Validator validator;
 
     abstract R getRepo();

@@ -13,6 +13,7 @@ import javax.inject.Inject;
 public class UserService extends AbstractService<User, AbstractRepo<User>,
         UserRules> {
 
+    @SuppressWarnings("CdiInjectionPointsInspection")
     @Inject
     private UserRepo repo;
 

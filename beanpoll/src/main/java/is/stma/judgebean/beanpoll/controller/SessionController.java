@@ -14,7 +14,7 @@ import javax.persistence.NoResultException;
 public class SessionController extends AbstractFacesController {
 
     public static final String LOGIN_PAGE = "index.xhtml";
-    private static final String ADMIN_PAGE = "control.xhtml";
+    private static final String ADMIN_PAGE = "admin.xhtml";
     private static final String TEAM_PAGE = "team.xhtml";
 
     private static final FacesMessage LOGIN_SUCCESS = new FacesMessage("Welcome to BeanPoll");

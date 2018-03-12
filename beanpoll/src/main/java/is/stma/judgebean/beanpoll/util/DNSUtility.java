@@ -32,8 +32,8 @@ public class DNSUtility {
      * @param timeout     length of the timeout in seconds
      * @return top (first) response from the server, or ERROR
      */
-    public static String lookup(String hostAddress, int hostPort, String query, int type,
-                                boolean tcp, boolean recursive, int timeout) {
+    private static String lookup(String hostAddress, int hostPort, String query, int type,
+                                 boolean tcp, boolean recursive, int timeout) {
         try {
 
             // Set up the resolution options

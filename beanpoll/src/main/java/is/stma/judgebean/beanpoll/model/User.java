@@ -5,7 +5,6 @@ import is.stma.judgebean.beanpoll.util.HashUtility;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import java.util.UUID;
 
 @Entity

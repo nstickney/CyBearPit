@@ -3,7 +3,7 @@
 --
 -- JBoss, Home of Professional Open Source
 -- Copyright 2013, Red Hat, Inc. and/or its affiliates, and individual
--- contributors by the @authors tag. See the copyright.txt in the
+-- contributors by the @authors type. See the copyright.txt in the
 -- distribution for a full listing of individual contributors.
 --
 -- Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,16 +30,16 @@ insert into Team (id, name, flag, contest_id) values ('T4', 'Totally Unrelated P
 insert into Team (id, name, flag, contest_id) values ('T5', 'Totally Unrelated People, 2', '234567', 'C2');
 insert into Team (id, name, flag, contest_id) values ('T6', 'Totally Unrelated People, 3', '345678', 'C0');
 insert into Team (id, name, flag) values ('T7', 'Totally Unrelated People', '123456');
-insert into Resource (id, name, tag, contest_id) values ('R0', 'Nameserver A0', 'DNS', 'C0');
-insert into Resource (id, name, tag, contest_id) values ('R1', 'Nameserver B0', 'DNS', 'C0');
-insert into Resource (id, name, tag, contest_id) values ('R2', 'Webserver A0', 'HTTP', 'C0');
-insert into Resource (id, name, tag, contest_id) values ('R3', 'Webserver B0', 'HTTP', 'C0');
-insert into Resource (id, name, tag, contest_id) values ('R4', 'Nameserver A1', 'DNS', 'C1');
-insert into Resource (id, name, tag, contest_id) values ('R5', 'Nameserver B1', 'DNS', 'C1');
-insert into Resource (id, name, tag, contest_id) values ('R6', 'Webserver A1', 'HTTP', 'C1');
-insert into Resource (id, name, tag, contest_id) values ('R7', 'Webserver B1', 'HTTP', 'C1');
-insert into Resource (id, name, tag, contest_id) values ('R8', 'Nameserver A2', 'DNS', 'C2');
-insert into Resource (id, name, tag, contest_id) values ('R9', 'Nameserver B2', 'DNS', 'C2');
-insert into Resource (id, name, tag, contest_id) values ('R10', 'Webserver A2', 'HTTP', 'C2');
-insert into Resource (id, name, tag, contest_id) values ('R11', 'Webserver B2', 'HTTP', 'C2');
-insert into Resource (id, name, tag) values ('R12', 'Webserver', 'HTTP');
+insert into Resource (id, name, type, address, port, contest_id) values ('R0', 'Nameserver A0', 'DNS', 'ns1.baylor.edu', 53, 'C0');
+insert into Resource (id, name, type, address, port, contest_id) values ('R1', 'Nameserver B0', 'DNS', 'ns2.baylor.edu', 53, 'C0');
+insert into Resource (id, name, type, address, port, contest_id) values ('R2', 'Webserver A0', 'HTTP', 'baylor.edu', 80, 'C0');
+insert into Resource (id, name, type, address, port, contest_id) values ('R3', 'Webserver B0', 'HTTP', 'ecs.baylor.edu', 80, 'C0');
+insert into Resource (id, name, type, address, port, contest_id) values ('R4', 'Nameserver A1', 'DNS', '129.62.3.222', 53, 'C1');
+insert into Resource (id, name, type, address, port, contest_id) values ('R5', 'Nameserver B1', 'DNS', '129.62.3.212', 53, 'C1');
+insert into Resource (id, name, type, address, port, contest_id) values ('R6', 'Webserver A1', 'HTTP', 'infosec.baylor.edu', 80, 'C1');
+insert into Resource (id, name, type, address, port, contest_id) values ('R7', 'Webserver B1', 'HTTP', 'google.com', 80, 'C1');
+insert into Resource (id, name, type, address, port, contest_id) values ('R8', 'Nameserver A2', 'DNS', '208.67.222.222', 53, 'C2');
+insert into Resource (id, name, type, address, port, contest_id) values ('R9', 'Nameserver B2', 'DNS', '208.67.220.220', 53, 'C2');
+insert into Resource (id, name, type, address, port, contest_id) values ('R10', 'Webserver A2', 'HTTP', 'facebook.com', 80, 'C2');
+insert into Resource (id, name, type, address, port, contest_id) values ('R11', 'Webserver B2', 'HTTP', 'duckduckgo.com', 80, 'C2');
+insert into Resource (id, name, type, address, port) values ('R12', 'Webserver', 'HTTP');

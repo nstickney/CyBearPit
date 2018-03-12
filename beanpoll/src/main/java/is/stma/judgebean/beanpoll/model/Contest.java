@@ -33,6 +33,13 @@ public class Contest extends AbstractEntity {
         this.name = name;
     }
 
+    public String getLook() {
+        if (running) {
+            return "success";
+        }
+        return "default";
+    }
+
     public boolean isRunning() {
         return running;
     }

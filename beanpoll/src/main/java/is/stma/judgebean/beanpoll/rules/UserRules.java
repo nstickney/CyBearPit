@@ -11,6 +11,7 @@ import javax.validation.ValidationException;
 @Model
 public class UserRules extends AbstractRules<User> {
 
+    @SuppressWarnings("CdiInjectionPointsInspection")
     @Inject
     private UserRepo repo;
 

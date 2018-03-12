@@ -21,6 +21,7 @@ abstract class AbstractFacesController {
      * The application log
      */
     @Inject
+    private
     Logger log;
 
     /**

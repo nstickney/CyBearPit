@@ -11,6 +11,7 @@ import javax.validation.ValidationException;
 @Model
 public class ContestRules extends AbstractRules<Contest> {
 
+    @SuppressWarnings("CdiInjectionPointsInspection")
     @Inject
     private ContestRepo repo;
 

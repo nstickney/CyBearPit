@@ -12,7 +12,6 @@ import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.xbill.DNS.Type;
@@ -25,7 +24,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 @RunWith(Arquillian.class)
 public class DNSUtilityTest {
 
-    private String query = "baylor.edu";
+    private final String query = "baylor.edu";
 
     @Deployment
     public static Archive<?> createTestArchive() {
@@ -39,10 +38,6 @@ public class DNSUtilityTest {
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsWebInfResource("test-ds.xml") // Deploy test datasource
                 .addAsLibraries(files); // Add necessary stuff from pom.xml
-    }
-
-    @Before
-    public void setUp() {
     }
 
     @Test

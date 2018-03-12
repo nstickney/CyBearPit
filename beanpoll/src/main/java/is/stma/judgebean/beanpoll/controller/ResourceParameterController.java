@@ -49,12 +49,7 @@ public class ResourceParameterController extends AbstractEntityController<Resour
         doDelete(entity);
     }
 
-    /**
-     * Creates and attaches all the necessary parameters for a given resource
-     *
-     * @param resource resource to parameterize
-     */
     public void parameterize(Resource resource) {
-
+        //TODO: Create and set parameters for the new resource
     }
 }

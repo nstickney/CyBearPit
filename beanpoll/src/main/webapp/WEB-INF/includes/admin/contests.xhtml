@@ -5,80 +5,96 @@
              xmlns:ui="http://java.sun.com/jsf/facelets">
 
     <!-- Option to create a new contest -->
-    <b:panel title="Create a New Contest" look="primary" collapsed="#{true}">
+    <b:panel title="Create a New Contest" look="info" collapsed="#{true}">
         <h:form>
             <b:panelGrid colSpans="2,6,4" size="xs">
                 <h:outputLabel value="Name:" for="nname"/>
                 <b:inputText value="#{newContest.name}" id="nname" class="form-control">
-                    <f:facet name="prepend"><b:iconAwesome name="gamepad"/></f:facet>
+                    <f:facet name="prepend"><b:iconAwesome name="trophy"/></f:facet>
+                    <f:selectItems value="#{unassignedResources}" var="_nresource"
+                                   itemLabel="#{_nresource.name}" itemValue="#{_nresource}"/>
                 </b:inputText>
                 <h:outputText value=""/>
+                <h:outputLabel value="Resources:" for="nresources"/>
+                <h:selectManyListbox value="#{newContest.resources}" id="nresources"
+                                     style="width: 100%">
+                    <f:selectItems value="#{unassignedResources}" var="_uresource"
+                                   itemLabel="#{_uresource.name}" itemValue="#{_uresource}"/>
+                </h:selectManyListbox>
                 <h:outputText value=""/>
+                <h:outputLabel value="Tasks:" for="ntasks"/>
+                <h:selectManyListbox value="#{newContest.tasks}" id="ntasks"
+                                     style="width: 100%">
+                    <f:selectItems value="#{unassignedTasks}" var="_utask"
+                                   itemLabel="#{_utask.name}" itemValue="#{_utask}"/>
+                </h:selectManyListbox>
+                <!--<h:outputText value=""/>-->
+                <!--<h:outputLabel value="Teams:" for="nteams"/>-->
+                <!--<h:selectManyListbox value="#{newContest.teams}" id="nteams"-->
+                                     <!--style="width: 100%">-->
+                    <!--<f:selectItems value="#{unassignedTeams}" var="_uteam"-->
+                                   <!--itemLabel="#{_uteam.name}" itemValue="#{_uteam}"/>-->
+                <!--</h:selectManyListbox>-->
                 <b:commandButton action="#{contestController.create()}" value="Create" look="success"/>
-                <h:outputText value=""/>
             </b:panelGrid>
         </h:form>
     </b:panel>
 
-    <!-- Show running contests first -->
-    <ui:repeat var="_rcontest" value="#{runningContests}">
-        <b:panel title="#{_rcontest.name}" collapsed="#{true}" look="success">
+    <!-- Existing contests -->
+    <ui:repeat var="_contest" value="#{contests}">
+        <b:panel title="#{_contest.name}" look="#{_contest.look}" collapsed="#{true}">
 
             <!-- Contest resources -->
-            <b:panel title="Resources">
-                <b:dataTable var="_resource" value="#{_rcontest.resources}">
-                    <b:dataTableColumn value="#{_resource.name}"/>
-                    <b:dataTableColumn value="#{_resource.tag}"/>
-                </b:dataTable>
+            <b:panel title="Resources" collapsed="#{true}">
+                <h:form>
+                    <b:dataTable var="_resource" value="#{_contest.resources}">
+                        <b:dataTableColumn value="#{_resource.name}"/>
+                        <b:dataTableColumn value="#{_resource.type}"/>
+                        <b:dataTableColumn value="#{_resource.address}"/>
+                        <b:dataTableColumn value="#{_resource.port}"/>
+                        <!--<b:dataTableColumn label="Remove">-->
+                            <!--<b:commandButton action="#{contestController.removeResource(_contest, _resource)}"-->
+                                             <!--value="Remove" look="warning"/>-->
+                        <!--</b:dataTableColumn>-->
+                    </b:dataTable>
+                </h:form>
             </b:panel>
 
             <!-- Contest tasks -->
-            <b:panel title="Tasks">
-                <b:dataTable var="_task" value="#{_rcontest.tasks}">
-                    <b:dataTableColumn value="#{_task.name}"/>
-                </b:dataTable>
+            <b:panel title="Tasks" collapsed="#{true}">
+                <h:form>
+                    <b:dataTable var="_task" value="#{_contest.tasks}">
+                        <b:dataTableColumn value="#{_task.name}"/>
+                    </b:dataTable>
+                </h:form>
             </b:panel>
 
             <!-- Contest teams -->
-            <b:panel title="Teams">
-                <b:dataTable var="_team" value="#{_rcontest.teams}">
-                    <b:dataTableColumn value="#{_team.name}"/>
-                    <b:dataTableColumn value="#{_team.flag}"/>
-                    <b:dataTableColumn value="#{_team.score}"/>
-                </b:dataTable>
+            <b:panel title="Teams" collapsed="#{true}">
+                <h:form>
+                    <b:dataTable var="_team" value="#{_contest.teams}">
+                        <b:dataTableColumn value="#{_team.name}"/>
+                        <b:dataTableColumn value="#{_team.flag}"/>
+                        <b:dataTableColumn value="#{_team.score}"/>
+                    </b:dataTable>
+                </h:form>
             </b:panel>
 
-        </b:panel>
-    </ui:repeat>
-
-    <!-- Then show stopped contests -->
-    <ui:repeat var="_scontest" value="#{stoppedContests}" look="danger">
-        <b:panel title="#{_scontest.name}" collapsed="#{true}">
-
-            <!-- Contest resources -->
-            <b:panel title="Resources">
-                <b:dataTable var="_resource" value="#{_scontest.resources}">
-                    <b:dataTableColumn value="#{_resource.name}"/>
-                    <b:dataTableColumn value="#{_resource.tag}"/>
-                </b:dataTable>
-            </b:panel>
-
-            <!-- Contest tasks -->
-            <b:panel title="Tasks">
-                <b:dataTable var="_task" value="#{_scontest.tasks}">
-                    <b:dataTableColumn value="#{_task.name}"/>
-                </b:dataTable>
-            </b:panel>
-
-            <!-- Contest teams -->
-            <b:panel title="Teams">
-                <b:dataTable var="_team" value="#{_scontest.teams}">
-                    <b:dataTableColumn value="#{_team.name}"/>
-                    <b:dataTableColumn value="#{_team.flag}"/>
-                    <b:dataTableColumn value="#{_team.score}"/>
-                </b:dataTable>
-            </b:panel>
-
+            <!-- Contest controls -->
+            <h:form>
+                <b:panelGrid colSpans="2,2,2,2,4" size="sm">
+                    <h:outputLabel value=""/>
+                    <b:commandButton action="#{judge.run(_contest)}" value="Run"
+                                     rendered="#{!_contest.running}" look="success"/>
+                    <b:commandButton action="#{judge.stop(_contest)}" value="Stop"
+                                     rendered="#{_contest.running}" look="warning"/>
+                    <b:commandButton action="#{contestController.update(_contest)}"
+                                     value="Update" look="info"/>
+                    <b:commandButton action="#{contestController.delete(_contest)}"
+                                     value="Delete" look="danger"/>
+                    <h:outputLabel value=""/>
+                </b:panelGrid>
+            </h:form>
         </b:panel>
     </ui:repeat>
 </ui:fragment>

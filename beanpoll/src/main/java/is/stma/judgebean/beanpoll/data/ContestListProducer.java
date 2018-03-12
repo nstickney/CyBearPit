@@ -27,7 +27,7 @@ public class ContestListProducer extends AbstractEntityListProducer<Contest> {
     @Override
     @PostConstruct
     void retrieveAll() {
-        entities = repo.findAllOrderByNameAsc();
+        entities = repo.findAllOrderByRunningDescNameAsc();
     }
 
     @Produces

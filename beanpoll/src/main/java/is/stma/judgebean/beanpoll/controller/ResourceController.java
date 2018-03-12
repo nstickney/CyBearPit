@@ -22,6 +22,8 @@ public class ResourceController extends AbstractEntityController<Resource, Resou
     private Resource newResource;
 
     @Override
+    @Produces
+    @Named("newResource")
     Resource getNew() {
         if (newResource == null) {
             newResource = new Resource();
@@ -53,7 +55,7 @@ public class ResourceController extends AbstractEntityController<Resource, Resou
     @Named("newDNS")
     Resource getNewDNS() {
         Resource newDNS = getNew();
-        newDNS.setTag(Resource.DNS);
+        newDNS.setType(Resource.DNS);
         parameterController.parameterize(newDNS);
         return newDNS;
     }
@@ -62,7 +64,7 @@ public class ResourceController extends AbstractEntityController<Resource, Resou
     @Named("newHTTP")
     Resource getNewHTTP() {
         Resource newHTTP = getNew();
-        newHTTP.setTag(Resource.HTTP);
+        newHTTP.setType(Resource.HTTP);
         parameterController.parameterize(newHTTP);
         return newHTTP;
     }
