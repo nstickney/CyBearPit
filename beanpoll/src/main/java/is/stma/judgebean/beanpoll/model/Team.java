@@ -25,6 +25,12 @@ public class Team extends AbstractEntity {
             inverseJoinColumns = {@JoinColumn(name = "resource_id", referencedColumnName = "id")})
     private List<Resource> resources = new ArrayList<>();
 
+    @OneToMany(mappedBy = "team")
+    private List<TaskResponse> taskResponses = new ArrayList<>();
+
+    @OneToMany(mappedBy = "team")
+    private List<Points> points = new ArrayList<>();
+
     @Override
     public String getName() {
         return name;
@@ -64,5 +70,29 @@ public class Team extends AbstractEntity {
 
     public void setResources(List<Resource> resources) {
         this.resources = resources;
+    }
+
+    public List<TaskResponse> getTaskResponses() {
+        return taskResponses;
+    }
+
+    public void setTaskResponses(List<TaskResponse> taskResponses) {
+        this.taskResponses = taskResponses;
+    }
+
+    public List<Points> getPoints() {
+        return points;
+    }
+
+    public void setPoints(List<Points> points) {
+        this.points = points;
+    }
+
+    public int getScore() {
+        int score = 0;
+        for (Points p : points) {
+            score += p.getScore();
+        }
+        return score;
     }
 }

@@ -16,14 +16,17 @@ public class Resource extends AbstractEntity {
     @Column(nullable = false)
     private String tag = DNS;
 
+    @OneToMany(mappedBy = "resource")
+    private List<ResourceParameter> parameters = new ArrayList<>();
+
     @ManyToOne(fetch = FetchType.LAZY)
     private Contest contest;
 
     @ManyToMany(mappedBy = "resources")
-    private List<Team> teams;
+    private List<Team> teams = new ArrayList<>();
 
     @OneToMany(mappedBy = "resource")
-    private List<ResourceParameter> parameters = new ArrayList<>();
+    private List<Points> points = new ArrayList<>();
 
     @Override
     public String getName() {

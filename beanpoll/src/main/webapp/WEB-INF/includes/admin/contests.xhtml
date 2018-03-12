@@ -1,17 +1,84 @@
 <ui:fragment xmlns="http://www.w3.org/1999/xhtml"
              xmlns:b="http://bootsfaces.net/ui"
+             xmlns:f="http://xmlns.jcp.org/jsf/core"
+             xmlns:h="http://xmlns.jcp.org/jsf/html"
              xmlns:ui="http://java.sun.com/jsf/facelets">
 
     <!-- Option to create a new contest -->
-    <b:panel col-lg="6" title="Create a New Contest" look="primary" collapsed="#{true}"/>
+    <b:panel title="Create a New Contest" look="primary" collapsed="#{true}">
+        <h:form>
+            <b:panelGrid colSpans="2,6,4" size="xs">
+                <h:outputLabel value="Name:" for="nname"/>
+                <b:inputText value="#{newContest.name}" id="nname" class="form-control">
+                    <f:facet name="prepend"><b:iconAwesome name="gamepad"/></f:facet>
+                </b:inputText>
+                <h:outputText value=""/>
+                <h:outputText value=""/>
+                <b:commandButton action="#{contestController.create()}" value="Create" look="success"/>
+                <h:outputText value=""/>
+            </b:panelGrid>
+        </h:form>
+    </b:panel>
 
     <!-- Show running contests first -->
     <ui:repeat var="_rcontest" value="#{runningContests}">
-        <b:panel col-lg="6" title="#{_rcontest.name}" collapsed="#{true}" look="success"/>
+        <b:panel title="#{_rcontest.name}" collapsed="#{true}" look="success">
+
+            <!-- Contest resources -->
+            <b:panel title="Resources">
+                <b:dataTable var="_resource" value="#{_rcontest.resources}">
+                    <b:dataTableColumn value="#{_resource.name}"/>
+                    <b:dataTableColumn value="#{_resource.tag}"/>
+                </b:dataTable>
+            </b:panel>
+
+            <!-- Contest tasks -->
+            <b:panel title="Tasks">
+                <b:dataTable var="_task" value="#{_rcontest.tasks}">
+                    <b:dataTableColumn value="#{_task.name}"/>
+                </b:dataTable>
+            </b:panel>
+
+            <!-- Contest teams -->
+            <b:panel title="Teams">
+                <b:dataTable var="_team" value="#{_rcontest.teams}">
+                    <b:dataTableColumn value="#{_team.name}"/>
+                    <b:dataTableColumn value="#{_team.flag}"/>
+                    <b:dataTableColumn value="#{_team.score}"/>
+                </b:dataTable>
+            </b:panel>
+
+        </b:panel>
     </ui:repeat>
 
     <!-- Then show stopped contests -->
-    <ui:repeat var="_scontest" value="#{stoppedContests}">
-        <b:panel col-lg="6" title="#{_scontest.name}" collapsed="#{true}"/>
+    <ui:repeat var="_scontest" value="#{stoppedContests}" look="danger">
+        <b:panel title="#{_scontest.name}" collapsed="#{true}">
+
+            <!-- Contest resources -->
+            <b:panel title="Resources">
+                <b:dataTable var="_resource" value="#{_scontest.resources}">
+                    <b:dataTableColumn value="#{_resource.name}"/>
+                    <b:dataTableColumn value="#{_resource.tag}"/>
+                </b:dataTable>
+            </b:panel>
+
+            <!-- Contest tasks -->
+            <b:panel title="Tasks">
+                <b:dataTable var="_task" value="#{_scontest.tasks}">
+                    <b:dataTableColumn value="#{_task.name}"/>
+                </b:dataTable>
+            </b:panel>
+
+            <!-- Contest teams -->
+            <b:panel title="Teams">
+                <b:dataTable var="_team" value="#{_scontest.teams}">
+                    <b:dataTableColumn value="#{_team.name}"/>
+                    <b:dataTableColumn value="#{_team.flag}"/>
+                    <b:dataTableColumn value="#{_team.score}"/>
+                </b:dataTable>
+            </b:panel>
+
+        </b:panel>
     </ui:repeat>
 </ui:fragment>

@@ -3,17 +3,17 @@
              xmlns:ui="http://java.sun.com/jsf/facelets">
 
     <!--Option to create a new task-->
-    <b:panel col-lg="6" title="Create a New Task" look="primary" collapsed="#{true}"/>
+    <b:panel title="Create a New Task" look="primary" collapsed="#{true}"/>
 
     <!--Show the unassigned resources first-->
     <ui:repeat var="_utask" value="#{unassignedTasks}">
-        <b:panel col-lg="6" title="Unassigned: #{_utask.name}" look="info" collapsed="#{true}"/>
+        <b:panel title="Unassigned: #{_utask.name}" look="info" collapsed="#{true}"/>
     </ui:repeat>
 
     <!--The remaining resources are grouped by contest-->
     <ui:repeat value="#{contests}" var="_contest">
         <ui:repeat var="_task" value="#{_contest.tasks}">
-            <b:panel col-lg="6" title="#{_contest.name}: #{_task.name}" collapsed="#{true}"/>
+            <b:panel title="#{_contest.name}: #{_task.name}" collapsed="#{true}"/>
         </ui:repeat>
     </ui:repeat>
 </ui:fragment>

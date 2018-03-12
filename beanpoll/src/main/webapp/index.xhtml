@@ -20,7 +20,7 @@
 
         <b:tab title="Log In">
             <h:form>
-                <b:panelGrid colSpans="2,4,6">
+                <b:panelGrid colSpans="2,6,4" size="xs">
                     <h:outputLabel value="Username:" for="username"/>
                     <b:inputText value="#{sessionController.username}" id="username" class="form-control">
                         <f:facet name="prepend"><b:icon name="user"/></f:facet>
@@ -33,7 +33,6 @@
                     <h:outputText value=""/>
                     <h:outputText value=""/>
                     <b:commandButton action="#{sessionController.authenticate()}" value="Log In" look="success"/>
-                    <h:outputText value=""/>
                 </b:panelGrid>
             </h:form>
         </b:tab>
