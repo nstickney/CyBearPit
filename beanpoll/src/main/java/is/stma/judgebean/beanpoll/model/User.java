@@ -51,7 +51,11 @@ public class User extends AbstractEntity implements Comparable {
         return secret;
     }
 
-    public void setSecret(String password) {
+    public String getPassword() {
+        return "";
+    }
+
+    public void setPassword(String password) {
         this.salt = UUID.randomUUID().toString();
         this.secret = HashUtility.getHash(salt + password);
     }

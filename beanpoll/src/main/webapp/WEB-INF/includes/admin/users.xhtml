@@ -1,26 +1,33 @@
 <ui:fragment xmlns="http://www.w3.org/1999/xhtml"
              xmlns:b="http://bootsfaces.net/ui"
+             xmlns:c="http://java.sun.com/jsp/jstl/core"
+             xmlns:f="http://xmlns.jcp.org/jsf/core"
+             xmlns:h="http://xmlns.jcp.org/jsf/html"
              xmlns:ui="http://java.sun.com/jsf/facelets">
 
     <!-- Option to create a new user -->
-    <b:panel title="Create a New User" look="primary" collapsed="#{true}">
-        Flag: #{newUser.name}
-    </b:panel>
+    <b:panel title="Create a New User" look="info" collapsed="#{true}"><h:form>
+        <b:panelGrid colSpans="2,6,4" size="sm">
+            <h:outputLabel value="Team:" for="nteam"/>
+            <b:selectOneMenu value="#{newUser.team}" id="nteam" require="false" >
+                <f:facet name="prepend"><b:iconAwesome name="flag"/></f:facet>
+                <f:selectItems value="#{teams}" var="_nteam"
+                               itemLabel="#{_nteam.displayName}" itemValue="#{_nteam}"/>
+            </b:selectOneMenu>
+            <h:outputText value=""/>
+            <h:outputLabel value="Name:" for="nname"/>
+            <b:inputText value="#{newUser.name}" id="nname" class="form-control">
+                <f:facet name="prepend"><b:iconAwesome name="check"/></f:facet>
+            </b:inputText>
+            <h:outputText value=""/>
+            <h:outputLabel value="Password:" for="npassword"/>
+            <b:inputSecret value="#{newUser.password}" id="npassword"/>
+            <b:commandButton action="#{userController.create()}" value="Create" look="success"/>
+        </b:panelGrid>
+    </h:form></b:panel>
 
-    <!-- Unassigned users first -->
-    <ui:repeat var="_uuser" value="#{unassignedUsers}">
-        <b:panel title="Unassigned: #{_uuser.name}" look="info" collapsed="#{true}"/>
-    </ui:repeat>
-
-    <!-- Admin users next -->
-    <ui:repeat var="_uuser" value="#{unassignedUsers}">
-        <b:panel title="Unassigned: #{_uuser.name}" look="info" collapsed="#{true}"/>
-    </ui:repeat>
-
-    <!-- Now print the rest of the users, ordered by team -->
-    <ui:repeat var="_team" value="#{teams}">
-        <ui:repeat var="_user" value="#{_team.users}">
-            <b:panel title="#{_team.name}: #{_user.name}" collapsed="#{true}"/>
-        </ui:repeat>
-    </ui:repeat>
+    <!-- Existing users, ordered by admins, then by teams -->
+    <c:forEach var="_user" items="#{users}">
+        <b:panel title="#{_user.displayName}" collapsed="#{true}"/>
+    </c:forEach>
 </ui:fragment>

@@ -93,6 +93,16 @@ public class Team extends ComparableByContest {
         return score;
     }
 
+    public int getResourceScore(Resource resource) {
+        int score = 0;
+        for (Points p : points) {
+            if (null != p.getResource() && p.getResource().equalByUUID(resource)) {
+                score += p.getScore();
+            }
+        }
+        return score;
+    }
+
     @Override
     public int compareTo(Object o) {
         return compare(this, (ComparableByContest) o);

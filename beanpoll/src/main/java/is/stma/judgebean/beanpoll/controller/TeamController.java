@@ -54,7 +54,7 @@ public class TeamController extends AbstractEntityController<Team, TeamRules,
         try {
             String teamString = StringUtility.removeWhitespace(getNew().getName());
             userController.getNew().setName(teamString);
-            userController.getNew().setSecret(teamString);
+            userController.getNew().setPassword(teamString);
             userController.create();
             setNew(getService().create(getNew()));
             facesContext.addMessage(null, new FacesMessage(

@@ -50,7 +50,7 @@ public class UserController extends AbstractEntityController<User, UserRules,
 
     public void changePassword(User entity, String currentPassword, String newPassword) {
         if (null != entity && null != currentPassword && null != newPassword && entity.checkPassword(currentPassword)) {
-            entity.setSecret(newPassword);
+            entity.setPassword(newPassword);
             update(entity);
         }
     }
