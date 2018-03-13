@@ -4,15 +4,15 @@
              xmlns:h="http://xmlns.jcp.org/jsf/html"
              xmlns:ui="http://java.sun.com/jsf/facelets">
 
-    <!--Option to create a new task-->
+    <!-- Option to create a new task -->
     <b:panel title="Create a New Task" look="info" collapsed="#{true}">
         <h:form>
             <b:panelGrid colSpans="2,6,4" size="xs">
                 <h:outputLabel value="Contest:" for="ncontest"/>
                 <b:selectOneMenu value="#{newTask.contest}" id="ncontest">
                     <f:facet name="prepend"><b:iconAwesome name="trophy"/></f:facet>
-                    <f:selectItems value="#{contests}" var="_contest"
-                                   itemLabel="#{_contest.name}" itemValue="#{_contest}"/>
+                    <f:selectItems value="#{contests}" var="_ncontest"
+                                   itemLabel="#{_ncontest.name}" itemValue="#{_ncontest}"/>
                 </b:selectOneMenu>
                 <h:outputText value=""/>
                 <h:outputLabel value="Name:" for="nname"/>
@@ -27,59 +27,9 @@
         </h:form>
     </b:panel>
 
-    <!--Show the unassigned tasks first-->
-    <ui:repeat var="_utask" value="#{unassignedTasks}">
-        <b:panel title="Unassigned: #{_utask.name}" look="warning" collapsed="#{true}">
-
-            <!-- Basic task settings -->
-            <b:panel title="Settings" collapsed="#{true}">
-                <h:form>
-                    <b:panelGrid colSpans="2,6,4" size="xs">
-                        <h:outputLabel value="Contest:" for="contest"/>
-                        <b:selectOneMenu value="#{_utask.contest}" id="contest">
-                            <f:facet name="prepend"><b:iconAwesome name="trophy"/></f:facet>
-                            <f:selectItems value="#{contests}" var="_contest"
-                                           itemLabel="#{_contest.name}"
-                                           itemValue="#{_contest}"/>
-                        </b:selectOneMenu>
-                        <h:outputText value=""/>
-                        <h:outputLabel value="Name:" for="nname"/>
-                        <b:inputText value="#{_utask.name}" id="nname" class="form-control">
-                            <f:facet name="prepend"><b:iconAwesome name="check"/></f:facet>
-                        </b:inputText>
-                        <h:outputText value=""/>
-                        <h:outputLabel value="Description:" for="ndescription"/>
-                        <b:inputTextarea value="#{_utask.description}" id="ndescription"/>
-                        <h:outputText value=""/>
-                    </b:panelGrid>
-                    <b:panelGrid colSpans="2,2,8" size="sm">
-                        <h:outputText value=""/>
-                        <b:commandButton action="#{taskController.update(_utask)}"
-                                         value="Update" look="info"/>
-                        <b:commandButton action="#{taskController.delete(_utask)}"
-                                         value="Delete" look="danger"/>
-                    </b:panelGrid>
-                </h:form>
-            </b:panel>
-
-            <!-- Task responses -->
-            <b:panel title="Responses" collapsed="#{true}">
-                <b:dataTable var="_response" value="#{_utask.responses}">
-                    <b:dataTableColumn value="#{_response.team}">
-                        #{_response.team.name}
-                    </b:dataTableColumn>
-                    <b:dataTableColumn value="#{_response.contents}"/>
-                    <b:dataTableColumn value="#{_response.points}"/>
-                </b:dataTable>
-            </b:panel>
-        </b:panel>
-    </ui:repeat>
-
-    <!--The remaining tasks are grouped by contest-->
-    <ui:repeat value="#{contests}" var="_contest">
-        <ui:repeat var="_task" value="#{_contest.tasks}">
-            <b:panel title="#{_contest.name}: #{_task.name}" look="#{_contest.look}"
-                     collapsed="#{true}">
+    <!-- Existing tasks, grouped by contest -->
+        <ui:repeat var="_task" value="#{tasks}">
+            <b:panel title="#{_task.displayName}" look="#{_task.look}" collapsed="#{true}">
 
                 <!-- Basic task settings -->
                 <b:panel title="Settings" collapsed="#{true}">
@@ -88,9 +38,9 @@
                             <h:outputLabel value="Contest:" for="contest"/>
                             <b:selectOneMenu value="#{_task.contest}" id="contest">
                                 <f:facet name="prepend"><b:iconAwesome name="trophy"/></f:facet>
-                                <f:selectItems value="#{contests}" var="_contest"
-                                               itemLabel="#{_contest.name}"
-                                               itemValue="#{_contest}"/>
+                                <f:selectItems value="#{contests}" var="_acontest"
+                                               itemLabel="#{_acontest.name}"
+                                               itemValue="#{_acontest}"/>
                             </b:selectOneMenu>
                             <h:outputText value=""/>
                             <h:outputLabel value="Name:" for="nname"/>
@@ -124,5 +74,4 @@
                 </b:panel>
             </b:panel>
         </ui:repeat>
-    </ui:repeat>
 </ui:fragment>

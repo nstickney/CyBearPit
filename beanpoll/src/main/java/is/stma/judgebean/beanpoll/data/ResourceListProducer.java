@@ -8,6 +8,7 @@ import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @RequestScoped
@@ -27,18 +28,7 @@ public class ResourceListProducer extends AbstractEntityListProducer<Resource> {
     @Override
     @PostConstruct
     void retrieveAll() {
-        entities = repo.findAllOrderByNameAsc();
-    }
-
-    @Produces
-    @Named("unassignedResources")
-    public List<Resource> findUnassigned() {
-        List<Resource> unassigned = new ArrayList<>();
-        for (Resource entity : entities) {
-            if (entity.getContest() == null) {
-                unassigned.add(entity);
-            }
-        }
-        return unassigned;
+        entities =  repo.findAllOrderByNameAsc();
+        Collections.sort(entities);
     }
 }

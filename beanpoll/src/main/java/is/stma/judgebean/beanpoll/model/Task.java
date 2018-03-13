@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Task extends AbstractEntity {
+public class Task extends AbstractEntity implements Comparable {
 
     @Column(nullable = false, unique = true)
     private String name;
@@ -32,6 +32,20 @@ public class Task extends AbstractEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDisplayName() {
+        if (null != contest) {
+            return contest.getName() + ": " + name;
+        }
+        return name;
+    }
+
+    public String getLook() {
+        if (null == contest) {
+            return "warning";
+        }
+        return "default";
     }
 
     public int getPointValue() {
@@ -64,5 +78,35 @@ public class Task extends AbstractEntity {
 
     public void setResponses(List<TaskResponse> responses) {
         this.responses = responses;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+
+        // Typecast the compared object to a Resource
+        Task t = (Task) o;
+
+        // If both are assigned to Contests, decide based on Contest name
+        if (null != t.getContest() && null != this.contest) {
+            int contestNameComparison = this.contest.getName().compareTo(t.getContest().getName());
+
+            // If the Contests have the same name, decide based on Resource name
+            if (0 == contestNameComparison) {
+                return this.name.compareTo(t.getName());
+            }
+            return contestNameComparison;
+        }
+
+        // If neither is assigned to a Contest, decide based on Resource name
+        if (null == t.getContest() && null == this.contest) {
+            return this.name.compareTo(t.getName());
+        }
+
+        // If this is assigned to a Contest, r is the lessor
+        if (null != this.contest) {
+            return 1;
+        }
+
+        return -1;
     }
 }
