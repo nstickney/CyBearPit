@@ -5,12 +5,12 @@ import is.stma.judgebean.beanpoll.model.AbstractEntity;
 import is.stma.judgebean.beanpoll.rules.AbstractRules;
 import is.stma.judgebean.beanpoll.service.AbstractService;
 
+import javax.ejb.EJB;
+import javax.ejb.EJBException;
 import javax.faces.application.FacesMessage;
-import javax.persistence.MappedSuperclass;
+import javax.validation.ValidationException;
 import java.util.ArrayList;
 import java.util.List;
-
-import static is.stma.judgebean.beanpoll.util.EntityUtility.prefix;
 
 /**
  * Provides the default operations for modeled entities (CRUD)
@@ -63,14 +63,16 @@ abstract class AbstractEntityController<E extends AbstractEntity,
      */
     public void create() {
         try {
-            setNew(getService().create(getNew()));
+            getService().create(getNew());
             facesContext.addMessage(null, new FacesMessage(
-                    FacesMessage.SEVERITY_INFO, prefix(getNew()) + " created.",
+                    FacesMessage.SEVERITY_INFO, getNew().getLogName() + " created.",
                     "")
             );
             setNew(null);
+        } catch (EJBException | ValidationException e) {
+            errorOut(e, "Failed to create " + getNew().getLogName() + ": " + e.getMessage());
         } catch (Exception e) {
-            errorOut(e, prefix(getNew()) + " creation failed.");
+            errorOut(e, getNew().getLogName() + " creation failed.");
         }
     }
 
@@ -83,10 +85,12 @@ abstract class AbstractEntityController<E extends AbstractEntity,
         try {
             entity = getService().update(entity);
             facesContext.addMessage(null, new FacesMessage(
-                    FacesMessage.SEVERITY_INFO, prefix(entity) + " updated.", "")
+                    FacesMessage.SEVERITY_INFO, entity.getLogName() + " updated.", "")
             );
+        } catch (EJBException | ValidationException e) {
+            errorOut(e, "Failed to update " + entity.getLogName() + ": " + e.getMessage());
         } catch (Exception e) {
-            errorOut(e, prefix(entity) + " update failed.");
+            errorOut(e, entity.getLogName() + " update failed.");
         }
     }
 
@@ -97,14 +101,16 @@ abstract class AbstractEntityController<E extends AbstractEntity,
      */
     void doDelete(E entity) {
         try {
-            String deleted = prefix(entity);
+            String deleted = entity.getLogName();
             getService().delete(entity);
             facesContext.addMessage(null, new FacesMessage(
                     FacesMessage.SEVERITY_INFO, deleted + " deleted.",
                     "")
             );
+        } catch (EJBException | ValidationException e) {
+            errorOut(e, "Failed to delete " + entity.getLogName() + ": " + e.getMessage());
         } catch (Exception e) {
-            errorOut(e, prefix(entity) + " deletion failed.");
+            errorOut(e, entity.getLogName() + " deletion failed.");
         }
     }
 
@@ -117,7 +123,7 @@ abstract class AbstractEntityController<E extends AbstractEntity,
     public List<E> search(String q) {
         List<E> filteredEntities = new ArrayList<>();
         for (E c : getService().readAll()) {
-            if (c.getName().toLowerCase().contains(q.toLowerCase())) {
+            if (c.getLogName().toLowerCase().contains(q.toLowerCase())) {
                 filteredEntities.add(c);
             }
         }

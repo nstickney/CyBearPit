@@ -58,15 +58,16 @@
                     <b:commandButton action="#{contestController.update(_contest)}" value="Rename"
                                      iconAwesome="retweet" look="info"/>
                 </b:panelGrid>
-                <b:panelGrid colSpans="2,2,2,2,2,2" size="sm">
+                <b:panelGrid colSpans="3,3,3,3" size="sm">
                     <h:outputLabel value="Controls"/>
-                    <b:commandButton action="#{judge.run(_contest)}" value="Run" iconAwesome="play"
-                                     disabled="#{_contest.running}" look="success"/>
-                    <b:commandButton action="#{judge.stop(_contest)}" value="Stop" iconAwesome="stop"
-                                     disabled="#{!_contest.running}" look="warning"/>
+                    <b:buttonGroup>
+                        <b:commandButton action="#{judge.run(_contest)}" value="Run" iconAwesome="play"
+                                         disabled="#{_contest.running}" look="success"/>
+                        <b:commandButton action="#{judge.stop(_contest)}" value="Stop" iconAwesome="stop"
+                                         disabled="#{!_contest.running}" look="warning"/>
+                    </b:buttonGroup>
                     <b:commandButton action="#{contestController.clone(_contest)}" iconAwesome="copy"
                                      value="Clone" look="info"/>
-                    <h:outputLabel value=""/>
                     <b:commandButton action="#{contestController.delete(_contest)}"
                                      value="Delete" iconAwesome="trash" look="danger"/>
                 </b:panelGrid>

@@ -1,0 +1,15 @@
+package is.stma.judgebean.beanpoll.util;
+
+import is.stma.judgebean.beanpoll.model.AbstractEntity;
+
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
+
+public class DateUtility {
+
+    public static LocalDate convert(Date date) {
+        return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+    }
+
+}

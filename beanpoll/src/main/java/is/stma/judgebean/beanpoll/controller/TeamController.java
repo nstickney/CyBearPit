@@ -1,6 +1,9 @@
 package is.stma.judgebean.beanpoll.controller;
 
+import is.stma.judgebean.beanpoll.model.Resource;
+import is.stma.judgebean.beanpoll.model.TaskResponse;
 import is.stma.judgebean.beanpoll.model.Team;
+import is.stma.judgebean.beanpoll.model.User;
 import is.stma.judgebean.beanpoll.rules.TeamRules;
 import is.stma.judgebean.beanpoll.service.TeamService;
 import is.stma.judgebean.beanpoll.util.StringUtility;
@@ -10,8 +13,9 @@ import javax.enterprise.inject.Produces;
 import javax.faces.application.FacesMessage;
 import javax.inject.Inject;
 import javax.inject.Named;
-
-import static is.stma.judgebean.beanpoll.util.EntityUtility.prefix;
+import javax.validation.ValidationException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Model
 public class TeamController extends AbstractEntityController<Team, TeamRules,
@@ -21,6 +25,12 @@ public class TeamController extends AbstractEntityController<Team, TeamRules,
     private TeamService service;
 
     private Team newTeam;
+
+    @Inject
+    private ResourceController resourceController;
+
+    @Inject
+    private TaskResponseController taskResponseController;
 
     @Inject
     private UserController userController;
@@ -52,17 +62,19 @@ public class TeamController extends AbstractEntityController<Team, TeamRules,
     @Override
     public void create() {
         try {
-            String teamString = StringUtility.removeWhitespace(getNew().getName());
+            String teamString = StringUtility.removeWhitespace(getNew().getLogName());
             userController.getNew().setName(teamString);
             userController.getNew().setPassword(teamString);
+            userController.getNew().setTeam(getService().create(getNew()));
             userController.create();
-            setNew(getService().create(getNew()));
             facesContext.addMessage(null, new FacesMessage(
-                    FacesMessage.SEVERITY_INFO, prefix(getNew()) + " created.",
+                    FacesMessage.SEVERITY_INFO, getNew().getLogName() + " created.",
                     "")
             );
+        } catch (ValidationException e) {
+            errorOut(e, "Failed to create " + getNew().getLogName() + ": " + e.getMessage());
         } catch (Exception e) {
-            errorOut(e, prefix(getNew()) + " creation failed.");
+            errorOut(e, getNew().getLogName() + " creation failed.");
         }
     }
 
@@ -73,6 +85,29 @@ public class TeamController extends AbstractEntityController<Team, TeamRules,
 
     @Override
     public void delete(Team entity) {
+
+        // Remove the team from all resources' team lists
+        List<Resource> resources = new ArrayList<>(entity.getResources());
+        for (Resource r : resources) {
+            r.removeTeam(entity);
+            resourceController.update(r);
+        }
+
+        // Orphan all the team's task responses
+        List<TaskResponse> responses = new ArrayList<>(entity.getTaskResponses());
+        for (TaskResponse r : responses) {
+            r.setTeam(null);
+            taskResponseController.update(r);
+        }
+
+        // Orphan all team users
+        List<User> users = new ArrayList<>(entity.getUsers());
+        for (User u : users) {
+            u.setTeam(null);
+            userController.update(u);
+        }
+
+        // Remove the team itself
         doDelete(entity);
     }
 }

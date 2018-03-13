@@ -49,7 +49,7 @@ public class ContestController extends AbstractEntityController<Contest, Contest
     }
 
     public void clone(Contest entity) {
-        getNew().setName(entity.getName() + " Clone");
+        getNew().setName(entity.getLogName() + " Clone");
         create();
     }
 }

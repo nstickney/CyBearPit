@@ -94,6 +94,18 @@ public class Resource extends ComparableByContest {
         this.teams = teams;
     }
 
+    public void addTeam(Team team) {
+        if (null != team) {
+            teams.add(team);
+        }
+    }
+
+    public void removeTeam(Team team) {
+        if (null != team && teams.contains(team)) {
+            teams.remove(team);
+        }
+    }
+
     public List<Points> getPoints() {
         return points;
     }

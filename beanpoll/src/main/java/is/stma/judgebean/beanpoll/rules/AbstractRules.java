@@ -2,7 +2,7 @@ package is.stma.judgebean.beanpoll.rules;
 
 import is.stma.judgebean.beanpoll.data.AbstractRepo;
 import is.stma.judgebean.beanpoll.model.AbstractEntity;
-import is.stma.judgebean.beanpoll.util.EntityUtility;
+import is.stma.judgebean.beanpoll.util.DateUtility;
 import is.stma.judgebean.beanpoll.util.StringUtility;
 
 import javax.inject.Inject;
@@ -29,9 +29,9 @@ public abstract class AbstractRules<E extends AbstractEntity> {
         boolean collision = !isUuidUnique(entity);
 
         if (target == Target.CREATE && collision) {
-            throw new ValidationException("Cannot create " + EntityUtility.prefix(entity) + "; UUID exists");
+            throw new ValidationException("Cannot create " + entity.getName() + "; UUID exists");
         } else if ((target == Target.UPDATE || target == Target.DELETE) && !collision) {
-            throw new ValidationException("Cannot update " + EntityUtility.prefix(entity) + "; UUID not found");
+            throw new ValidationException("Cannot update " + entity.getName() + "; UUID not found");
         }
 
         if (target == Target.DELETE) {

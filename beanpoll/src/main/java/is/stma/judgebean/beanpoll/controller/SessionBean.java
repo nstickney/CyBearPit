@@ -27,7 +27,7 @@ public class SessionBean extends AbstractFacesController implements Serializable
     @PostConstruct
     private void updateUsername() {
         if (null != user) {
-            username = user.getName();
+            username = user.getLogName();
         }
     }
 

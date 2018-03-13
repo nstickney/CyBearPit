@@ -42,4 +42,15 @@
                              icon="log-out" look="warning" />
         </h:form>
     </b:panel>
+
+    <!-- Delete account -->
+    <b:panel title="Delete Account" iconAwesome="trash" look="danger" collapsed="#{true}">
+        <h:form>
+            <b:panelGrid colSpans="9,3">
+                <h:outputText value=""/>
+                <b:commandButton value="Delete Account" action="#{userController.delete(sessionUser)}"
+                                 iconAwesome="trash" look="danger" />
+            </b:panelGrid>
+        </h:form>
+    </b:panel>
 </ui:fragment>

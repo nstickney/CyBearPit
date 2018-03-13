@@ -25,4 +25,8 @@ public abstract class AbstractEntity implements Serializable {
         return id;
     }
 
+    public String getLogName() {
+        return this.getClass().getSimpleName() + " " + getName();
+    }
+
 }

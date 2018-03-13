@@ -52,14 +52,6 @@ public class User extends AbstractEntity implements Comparable<User> {
         return "default";
     }
 
-    public String getSalt() {
-        return salt;
-    }
-
-    public String getSecret() {
-        return secret;
-    }
-
     public String getPassword() {
         return "";
     }
