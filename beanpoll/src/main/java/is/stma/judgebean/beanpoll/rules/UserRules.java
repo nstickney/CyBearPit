@@ -26,6 +26,9 @@ public class UserRules extends AbstractRules<User> {
 
         // Team users must not be admins
         checkAdminUserNotAssignedToTeam(entity);
+
+        // Team users must not be judges
+        checkJudgeUserNotAssignedToTeam(entity);
     }
 
     @Override
@@ -41,6 +44,12 @@ public class UserRules extends AbstractRules<User> {
     private void checkAdminUserNotAssignedToTeam(User entity) throws ValidationException {
         if (entity.isAdmin() && null != entity.getTeam()) {
             throw new ValidationException("team users are not allowed to be admins");
+        }
+    }
+
+    private void checkJudgeUserNotAssignedToTeam(User entity) throws ValidationException {
+        if (entity.isJudge() && null != entity.getTeam()) {
+            throw new ValidationException("team users are not allowed to be judges");
         }
     }
 

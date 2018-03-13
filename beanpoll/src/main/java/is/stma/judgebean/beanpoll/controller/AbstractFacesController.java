@@ -26,7 +26,7 @@ abstract class AbstractFacesController {
 
     void messageOut(String msg) {
         facesContext.addMessage(null,
-                new FacesMessage(FacesMessage.SEVERITY_INFO, msg, null));
+                new FacesMessage(FacesMessage.SEVERITY_INFO, msg, ""));
     }
 
     /**

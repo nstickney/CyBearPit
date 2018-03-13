@@ -22,10 +22,13 @@ public class Resource extends ComparableByContest {
     @Column(nullable = false)
     private int port = 53;
 
+    @Column(nullable = false)
+    private boolean scoring = false;
+
     @OneToMany(mappedBy = "resource")
     private List<ResourceParameter> parameters = new ArrayList<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private Contest contest;
 
     @ManyToMany
@@ -44,6 +47,19 @@ public class Resource extends ComparableByContest {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String getLook() {
+        if (scoring) {
+            if (null == contest || !contest.isRunning()) {
+                return "warning";
+            }
+            return "success";
+        } else if (null != contest && contest.isRunning()) {
+            return "warning";
+        }
+        return "default";
     }
 
     public String getType() {
@@ -68,6 +84,14 @@ public class Resource extends ComparableByContest {
 
     public void setPort(int port) {
         this.port = port;
+    }
+
+    public boolean isScoring() {
+        return scoring;
+    }
+
+    public void setScoring(boolean scoring) {
+        this.scoring = scoring;
     }
 
     public List<ResourceParameter> getParameters() {

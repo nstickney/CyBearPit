@@ -22,10 +22,21 @@ public class TaskResponseRules extends AbstractRules<TaskResponse> {
     @Override
     public void runBusinessRules(TaskResponse entity, Target target)
             throws ValidationException {
+
+        // Check score is within allowable range
+        checkScoreWithinTaskPointValue(entity);
     }
 
     @Override
     void checkBeforeDelete(TaskResponse entity) throws ValidationException {
 
+    }
+
+    private void checkScoreWithinTaskPointValue(TaskResponse entity) throws ValidationException {
+        if (entity.getScore() < -entity.getTask().getPointValue()
+                || entity.getScore() > entity.getTask().getPointValue()) {
+            throw new ValidationException("score " + entity.getScore() + " is not within plus or minus"
+                    + entity.getTask().getPointValue() + " of zero");
+        }
     }
 }

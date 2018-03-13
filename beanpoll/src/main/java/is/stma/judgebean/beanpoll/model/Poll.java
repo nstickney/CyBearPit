@@ -6,11 +6,11 @@ import java.time.LocalDate;
 @Entity
 public class Poll extends AbstractEntity {
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "team_id")
     private Team team;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "resource_id")
     private Resource resource;
 

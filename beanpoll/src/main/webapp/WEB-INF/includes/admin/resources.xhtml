@@ -39,6 +39,9 @@
                              p:type="number" p:min="1" p:max="65535">
                     <f:facet name="prepend"><b:iconAwesome name="plug"/></f:facet>
                 </b:inputText>
+                <h:outputText value=""/>
+                <h:outputLabel value="Scoring:" for="nscoring"/>
+                <b:selectBooleanCheckbox value="#{newResource.scoring}" id="nscoring"/>
                 <b:commandButton action="#{resourceController.create()}" value="Create"
                                  iconAwesome="plus" look="success"/>
             </b:panelGrid>
@@ -98,8 +101,11 @@
                                  p:type="number" p:min="1" p:max="65535">
                         <f:facet name="prepend"><b:iconAwesome name="plug"/></f:facet>
                     </b:inputText>
-                    <b:commandButton action="#{resourceController.update(_resource)}" value="Update"
-                                     iconAwesome="retweet" look="info" oncomplete="javascript:location.reload(true)"/>
+                    <h:outputText value=""/>
+                    <h:outputLabel value="Scoring:" for="scoring"/>
+                    <b:selectBooleanCheckbox value="#{_resource.scoring}" id="scoring"/>
+                    <b:commandButton action="#{resourceController.update(_resource)}"
+                                     value="Update" iconAwesome="retweet" look="info"/>
                 </b:panelGrid>
                 <b:panelGrid colSpans="9,3" size="sm">
                     <h:outputLabel value=""/>
