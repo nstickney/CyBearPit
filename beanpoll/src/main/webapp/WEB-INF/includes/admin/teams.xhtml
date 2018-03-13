@@ -2,24 +2,15 @@
              xmlns:b="http://bootsfaces.net/ui"
              xmlns:ui="http://java.sun.com/jsf/facelets">
 
-    <!--Option to create a new team-->
+    <!-- Option to create a new team -->
     <b:panel title="Create a New Team" look="primary" collapsed="#{true}">
         Flag: #{newTeam.flag}
     </b:panel>
 
-    <!--Unassigned teams first-->
-    <ui:repeat var="_uteam" value="#{unassignedTeams}">
-        <b:panel title="Unassigned: #{_uteam.name}" look="info" collapsed="#{true}">
-            Flag: #{_uteam.flag}
-        </b:panel>
-    </ui:repeat>
-
-    <!--Now print the rest of the teams, ordered by contest-->
-    <ui:repeat var="_contest" value="#{contests}">
-        <ui:repeat var="_team" value="#{_contest.teams}">
-            <b:panel title="#{_contest.name}: #{_team.name}" collapsed="#{true}">
+    <!-- Existing teams, grouped by contest -->
+        <ui:repeat var="_team" value="#{teams}">
+            <b:panel title="#{_team.displayName}" collapsed="#{true}">
                 Flag: #{_team.flag}
             </b:panel>
         </ui:repeat>
-    </ui:repeat>
 </ui:fragment>

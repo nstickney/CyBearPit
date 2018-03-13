@@ -31,16 +31,4 @@ public class TaskListProducer extends AbstractEntityListProducer<Task> {
         entities = repo.findAllOrderByNameAsc();
         Collections.sort(entities);
     }
-
-    @Produces
-    @Named("unassignedTasks")
-    public List<Task> findUnassigned() {
-        List<Task> unassigned = new ArrayList<>();
-        for (Task entity : entities) {
-            if (entity.getContest() == null) {
-                unassigned.add(entity);
-            }
-        }
-        return unassigned;
-    }
 }

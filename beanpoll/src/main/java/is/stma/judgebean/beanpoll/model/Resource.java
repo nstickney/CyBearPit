@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Resource extends AbstractEntity implements Comparable {
+public class Resource extends ComparableByContest {
 
     public static final String DNS = "DNS";
     public static final String HTTP = "HTTP";
@@ -44,14 +44,6 @@ public class Resource extends AbstractEntity implements Comparable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getDisplayName() {
-        String displayName = name + " (" + type + ")";
-        if (null != contest) {
-            displayName = contest.getName() + ": " + displayName;
-        }
-        return displayName;
     }
 
     public String getLook() {
@@ -119,31 +111,6 @@ public class Resource extends AbstractEntity implements Comparable {
 
     @Override
     public int compareTo(Object o) {
-
-        // Typecast the compared object to a Resource
-        Resource r = (Resource) o;
-
-        // If both are assigned to Contests, decide based on Contest name
-        if (null != r.getContest() && null != this.contest) {
-            int contestNameComparison = this.contest.getName().compareTo(r.getContest().getName());
-
-            // If the Contests have the same name, decide based on Resource name
-            if (0 == contestNameComparison) {
-                return this.name.compareTo(r.getName());
-            }
-            return contestNameComparison;
-        }
-
-        // If neither is assigned to a Contest, decide based on Resource name
-        if (null == r.getContest() && null == this.contest) {
-            return this.name.compareTo(r.getName());
-        }
-
-        // If this is assigned to a Contest, r is the lessor
-        if (null != this.contest) {
-            return 1;
-        }
-
-        return -1;
+        return compare(this, (ComparableByContest) o);
     }
 }

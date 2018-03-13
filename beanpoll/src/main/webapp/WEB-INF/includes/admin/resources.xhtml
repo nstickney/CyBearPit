@@ -30,7 +30,7 @@
         </h:form>
     </b:panel>
 
-    <!-- Existing resources -->
+    <!-- Existing resources, grouped by contest -->
     <ui:repeat var="_resource" value="#{resources}">
         <b:panel title="#{_resource.displayName}" look="#{_resource.look}" collapsed="#{true}">
             <b:panel title="Parameters">

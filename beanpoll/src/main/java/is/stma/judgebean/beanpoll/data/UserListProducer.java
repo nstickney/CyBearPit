@@ -8,6 +8,7 @@ import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @RequestScoped
@@ -28,6 +29,7 @@ public class UserListProducer extends AbstractEntityListProducer<User> {
     @PostConstruct
     void retrieveAll() {
         entities = repo.findAllOrderByNameAsc();
+        Collections.sort(entities);
     }
 
     @Produces

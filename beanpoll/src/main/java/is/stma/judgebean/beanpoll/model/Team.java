@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Team extends AbstractEntity {
+public class Team extends ComparableByContest {
 
     @Column(nullable = false)
     private String name;
@@ -91,5 +91,10 @@ public class Team extends AbstractEntity {
             score += p.getScore();
         }
         return score;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        return compare(this, (ComparableByContest) o);
     }
 }
