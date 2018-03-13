@@ -1,0 +1,43 @@
+<ui:fragment xmlns="http://www.w3.org/1999/xhtml"
+             xmlns:b="http://bootsfaces.net/ui"
+             xmlns:c="http://java.sun.com/jsp/jstl/core"
+             xmlns:f="http://xmlns.jcp.org/jsf/core"
+             xmlns:h="http://xmlns.jcp.org/jsf/html"
+             xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+             xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <!-- Responses, ungraded first, ordered by time -->
+    <c:forEach var="_taskResponse" items="#{taskResponses}">
+        <b:panel title="#{_taskResponse.team.name} - #{_taskResponse.task.name}"
+                 iconAwesome="envelope-open" look="#{_taskResponse.look}" collapsed="#{true}">
+
+            <h:form>
+                <b:panelGrid colSpans="2,6,4" size="sm">
+                    <h:outputLabel value="Response:" for="response"/>
+                    <b:inputText value="#{_taskResponse.contents}" id="response" class="form-control">
+                        <f:facet name="prepend"><b:iconAwesome name="check"/></f:facet>
+                    </b:inputText>
+                    <h:outputText value=""/>
+                    <h:outputLabel value="Score:" for="score"/>
+                    <b:inputText value="#{_taskResponse.score}" id="score"
+                                     p:type="number" p:min="-#{_taskResponse.task.pointValue}"
+                                     p:max="#{_taskResponse.task.pointValue}">
+                        <f:facet name="prepend"><b:iconAwesome name="thermometer-half"/></f:facet>
+                    </b:inputText>
+                    <h:outputText value=""/>
+                    <h:outputLabel value="Comments:" for="comments"/>
+                    <b:inputTextarea value="#{_taskResponse.comments}" id="comments">
+                        <f:facet name="prepend"><b:iconAwesome name="comment"/></f:facet>
+                    </b:inputTextarea>
+                    <b:commandButton action="#{taskResponseController.update(_taskResponse)}" value="Update"
+                                     iconAwesome="retweet" look="info"/>
+                </b:panelGrid>
+                <b:panelGrid colSpans="9,3" size="sm">
+                    <h:outputText value=""/>
+                    <b:commandButton action="#{taskResponseController.delete(_taskResponse)}"
+                                     value="Delete" iconAwesome="trash" look="danger"/>
+                </b:panelGrid>
+            </h:form>
+        </b:panel>
+    </c:forEach>
+</ui:fragment>

@@ -27,6 +27,13 @@ public class TaskResponse extends AbstractEntity {
         return getId();
     }
 
+    public String getLook() {
+        if (null == comments || comments.equals("")) {
+            return "warning";
+        }
+        return "default";
+    }
+
     public Task getTask() {
         return task;
     }

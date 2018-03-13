@@ -18,7 +18,7 @@ public class TaskResponseListProducer extends AbstractEntityListProducer<TaskRes
     private List<TaskResponse> entities;
 
     @Produces
-    @Named("TaskResponses")
+    @Named("taskResponses")
     public List<TaskResponse> getEntities() {
         return entities;
     }
@@ -26,6 +26,6 @@ public class TaskResponseListProducer extends AbstractEntityListProducer<TaskRes
     @Override
     @PostConstruct
     void retrieveAll() {
-        entities = repo.findAllOrderByNameAsc();
+        entities = repo.findAll();
     }
 }
