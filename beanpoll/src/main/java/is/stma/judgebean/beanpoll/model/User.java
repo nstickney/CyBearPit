@@ -8,7 +8,7 @@ import javax.persistence.ManyToOne;
 import java.util.UUID;
 
 @Entity
-public class User extends AbstractEntity implements Comparable {
+public class User extends AbstractEntity implements Comparable<User> {
 
     @Column(nullable = false, unique = true)
     private String name;
@@ -89,36 +89,34 @@ public class User extends AbstractEntity implements Comparable {
         return HashUtility.checkHash(salt + password, secret);
     }
 
-    public int compareTo(Object o) {
-
-        User user = (User) o;
+    public int compareTo(User o) {
 
         // If both are admins, decide based on name
-        if (this.isAdmin() && user.isAdmin()) {
-            return this.getName().compareToIgnoreCase(user.getName());
+        if (this.isAdmin() && o.isAdmin()) {
+            return this.getName().compareToIgnoreCase(o.getName());
         }
 
         // If one is an admin, but not the other, decide based on that
         if (this.isAdmin()) {
             return -1;
-        } else if (user.isAdmin()) {
+        } else if (o.isAdmin()) {
             return 1;
         }
 
         // If both are assigned to Teams, decide based on Team name
-        if (null != this.getTeam() && null != user.getTeam()) {
-            int teamNameComp = this.getDisplayName().compareToIgnoreCase(user.getDisplayName());
+        if (null != this.getTeam() && null != o.getTeam()) {
+            int teamNameComp = this.getDisplayName().compareToIgnoreCase(o.getDisplayName());
 
             // If the Contests have the same name, decide based on Entity name
             if (0 == teamNameComp) {
-                return this.getName().compareToIgnoreCase(user.getName());
+                return this.getName().compareToIgnoreCase(o.getName());
             }
             return teamNameComp;
         }
 
         // If neither is assigned to a Contest, decide based on Entity name
-        if (null == this.getTeam() && null == user.getTeam()) {
-            return this.getName().compareToIgnoreCase(user.getName());
+        if (null == this.getTeam() && null == o.getTeam()) {
+            return this.getName().compareToIgnoreCase(o.getName());
         }
 
         // Return whichever is not assigned to a Contest

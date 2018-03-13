@@ -1,6 +1,6 @@
 package is.stma.judgebean.beanpoll.model;
 
-public abstract class ComparableByContest extends AbstractEntity implements Comparable {
+public abstract class ComparableByContest extends AbstractEntity implements Comparable<ComparableByContest> {
 
     abstract Contest getContest();
 

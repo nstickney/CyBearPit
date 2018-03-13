@@ -103,7 +103,7 @@ public class Resource extends ComparableByContest {
     }
 
     @Override
-    public int compareTo(Object o) {
+    public int compareTo(ComparableByContest o) {
         return compare(this, (ComparableByContest) o);
     }
 }

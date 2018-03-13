@@ -24,7 +24,7 @@ import java.util.UUID;
 import java.util.logging.Logger;
 
 @RunWith(Arquillian.class)
-public class TeamServiceTest {
+public class TeamRulesTest {
 
     @Inject
     private Logger log;
@@ -38,8 +38,6 @@ public class TeamServiceTest {
     private Contest newContest;
     private Team newTeam;
     private Team checkTeam;
-
-    private String newTeamUUID;
 
     @Deployment
     public static WebArchive createDeployment() {

@@ -24,10 +24,22 @@ public class UserRules extends AbstractRules<User> {
     public void runBusinessRules(User entity, Target target)
             throws ValidationException {
 
+        if (Target.CREATE == target || Target.UPDATE == target) {
+
+            // Team users must not be admins
+            checkAdminUserNotAssignedToTeam(entity);
+        }
+
     }
 
     @Override
     void checkBeforeDelete(User entity) throws ValidationException {
 
+    }
+
+    private void checkAdminUserNotAssignedToTeam(User entity) throws ValidationException {
+        if (entity.isAdmin() && null != entity.getTeam()) {
+            throw new ValidationException("Team users are not allowed to be admins");
+        }
     }
 }
