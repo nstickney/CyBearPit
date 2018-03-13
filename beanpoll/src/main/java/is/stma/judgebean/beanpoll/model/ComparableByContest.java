@@ -11,6 +11,13 @@ public abstract class ComparableByContest extends AbstractEntity implements Comp
         return getName();
     }
 
+    public String getLook() {
+        if (null == getContest()) {
+            return "warning";
+        }
+        return "default";
+    }
+
     public int compare(ComparableByContest e1, ComparableByContest e2) {
 
         // If both are assigned to Contests, decide based on display name

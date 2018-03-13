@@ -8,26 +8,64 @@
     <!-- Option to create a new user -->
     <b:panel title="Create a New User" look="info" collapsed="#{true}"><h:form>
         <b:panelGrid colSpans="2,6,4" size="sm">
+            <h:outputLabel value="Admin:" for="nadmin"/>
+            <b:selectBooleanCheckbox value="#{newUser.admin}" id="nadmin"/>
+            <h:outputText value=""/>
             <h:outputLabel value="Team:" for="nteam"/>
-            <b:selectOneMenu value="#{newUser.team}" id="nteam" require="false" >
-                <f:facet name="prepend"><b:iconAwesome name="flag"/></f:facet>
+            <b:selectOneMenu value="#{newUser.team}" id="nteam" require="false">
+                <f:facet name="prepend"><b:iconAwesome name="bullhorn"/></f:facet>
+                <f:selectItem itemValue="#{null}" itemLabel=""/>
                 <f:selectItems value="#{teams}" var="_nteam"
                                itemLabel="#{_nteam.displayName}" itemValue="#{_nteam}"/>
             </b:selectOneMenu>
             <h:outputText value=""/>
             <h:outputLabel value="Name:" for="nname"/>
             <b:inputText value="#{newUser.name}" id="nname" class="form-control">
-                <f:facet name="prepend"><b:iconAwesome name="check"/></f:facet>
+                <f:facet name="prepend"><b:iconAwesome name="user"/></f:facet>
             </b:inputText>
             <h:outputText value=""/>
             <h:outputLabel value="Password:" for="npassword"/>
             <b:inputSecret value="#{newUser.password}" id="npassword"/>
-            <b:commandButton action="#{userController.create()}" value="Create" look="success"/>
+            <b:commandButton action="#{userController.create()}" value="Create"
+                             iconAwesome="plus" look="success"/>
         </b:panelGrid>
     </h:form></b:panel>
 
     <!-- Existing users, ordered by admins, then by teams -->
     <c:forEach var="_user" items="#{users}">
-        <b:panel title="#{_user.displayName}" collapsed="#{true}"/>
+        <b:panel title="#{_user.displayName}" iconAwesome="user" look="#{_user.look}" collapsed="#{true}">
+
+            <!-- User settings -->
+            <b:panel title="Settings" iconAwesome="cog" collapsed="#{true}"><h:form>
+                <b:panelGrid colSpans="2,6,4" size="sm">
+                    <h:outputLabel value="Admin:" for="admin"/>
+                    <b:selectBooleanCheckbox value="#{_user.admin}" id="admin"/>
+                    <h:outputText value=""/>
+                    <h:outputLabel value="Team:" for="team"/>
+                    <b:selectOneMenu value="#{_user.team}" id="team" require="false">
+                        <f:facet name="prepend"><b:iconAwesome name="bullhorn"/></f:facet>
+                        <f:selectItem itemValue="#{null}" itemLabel=""/>
+                        <f:selectItems value="#{teams}" var="_team"
+                                       itemLabel="#{_team.displayName}" itemValue="#{_nteam}"/>
+                    </b:selectOneMenu>
+                    <h:outputText value=""/>
+                    <h:outputLabel value="Name:" for="name"/>
+                    <b:inputText value="#{_user.name}" id="name" class="form-control">
+                        <f:facet name="prepend"><b:iconAwesome name="user"/></f:facet>
+                    </b:inputText>
+                    <h:outputText value=""/>
+                    <h:outputLabel value="Password:" for="password"/>
+                    <b:inputSecret value="#{_user.password}" id="password"/>
+                    <b:commandButton action="#{userController.update(_user)}" value="Update"
+                                     iconAwesome="retweet" look="info"/>
+                </b:panelGrid>
+                <b:panelGrid colSpans="10,2" size="sm">
+                    <h:outputLabel value=""/>
+                    <b:commandButton action="#{userController.delete(_user)}" value="Delete"
+                                     iconAwesome="trash" look="danger"/>
+                </b:panelGrid>
+            </h:form></b:panel>
+
+        </b:panel>
     </c:forEach>
 </ui:fragment>

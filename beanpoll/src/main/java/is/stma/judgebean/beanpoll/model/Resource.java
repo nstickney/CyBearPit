@@ -46,13 +46,6 @@ public class Resource extends ComparableByContest {
         this.name = name;
     }
 
-    public String getLook() {
-        if (null == contest) {
-            return "warning";
-        }
-        return "default";
-    }
-
     public String getType() {
         return type;
     }

@@ -6,7 +6,7 @@
              xmlns:ui="http://java.sun.com/jsf/facelets">
 
     <!-- Option to create a new team -->
-    <b:panel title="Create a New Team" look="info" collapsed="#{true}"><h:form>
+    <b:panel title="Create a New Team" iconAwesome="plus" look="info" collapsed="#{true}"><h:form>
         <b:panelGrid colSpans="2,6,4" size="sm">
             <h:outputLabel value="Contest:" for="ncontest"/>
             <b:selectOneMenu value="#{newTeam.contest}" id="ncontest">
@@ -17,21 +17,25 @@
             <h:outputText value=""/>
             <h:outputLabel value="Name:" for="nname"/>
             <b:inputText value="#{newTeam.name}" id="nname" class="form-control">
-                <f:facet name="prepend"><b:iconAwesome name="check"/></f:facet>
+                <f:facet name="prepend"><b:iconAwesome name="bullhorn"/></f:facet>
             </b:inputText>
             <h:outputText value=""/>
             <h:outputLabel value="Flag:" for="nflag"/>
-            <b:inputText value="#{newTeam.flag}" id="nflag"/>
-            <b:commandButton action="#{teamController.create()}" value="Create" look="success"/>
+            <b:inputText value="#{newTeam.flag}" id="nflag">
+                <f:facet name="prepend"><b:iconAwesome name="flag"/></f:facet>
+            </b:inputText>
+            <b:commandButton action="#{teamController.create()}" value="Create"
+                             iconAwesome="plus" look="success"/>
         </b:panelGrid>
     </h:form></b:panel>
 
     <!-- Existing teams, grouped by contest -->
     <c:forEach var="_team" items="#{teams}">
-        <b:panel title="#{_team.displayName} - #{_team.score}" collapsed="#{true}">
+        <b:panel title="#{_team.displayName} - #{_team.score}" iconAwesome="bullhorn"
+                 look="#{_team.look}" collapsed="#{true}">
 
             <!-- Team settings -->
-            <b:panel title="Settings" collapsed="#{true}"><h:form>
+            <b:panel title="Settings" iconAwesome="cog" collapsed="#{true}"><h:form>
                 <b:panelGrid colSpans="2,6,4" size="sm">
                     <h:outputLabel value="Contest:" for="contest"/>
                     <b:selectOneMenu value="#{_team.contest}" id="contest">
@@ -42,17 +46,20 @@
                     <h:outputText value=""/>
                     <h:outputLabel value="Name:" for="name"/>
                     <b:inputText value="#{_team.name}" id="name" class="form-control">
-                        <f:facet name="prepend"><b:iconAwesome name="server"/></f:facet>
+                        <f:facet name="prepend"><b:iconAwesome name="bullhorn"/></f:facet>
                     </b:inputText>
                     <h:outputText value=""/>
                     <h:outputLabel value="Flag:" for="flag"/>
-                    <b:inputText value="#{_team.flag}" id="flag"/>
-                    <b:commandButton action="#{teamController.update(_team)}" value="Update" look="info"/>
+                    <b:inputText value="#{_team.flag}" id="flag">
+                        <f:facet name="prepend"><b:iconAwesome name="flag"/></f:facet>
+                    </b:inputText>
+                    <b:commandButton action="#{teamController.update(_team)}" value="Update"
+                                     iconAwesome="retweet" look="info"/>
                 </b:panelGrid>
                 <b:panelGrid colSpans="10,2" size="sm">
                     <h:outputLabel value=""/>
-                    <b:commandButton action="#{teamController.delete(_team)}"
-                                     value="Delete" look="danger"/>
+                    <b:commandButton action="#{teamController.delete(_team)}" value="Delete"
+                                     iconAwesome="trash" look="danger"/>
                 </b:panelGrid>
             </h:form></b:panel>
         </b:panel>

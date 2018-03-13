@@ -6,7 +6,7 @@
              xmlns:ui="http://java.sun.com/jsf/facelets">
 
     <!-- Option to create a new task -->
-    <b:panel title="Create a New Task" look="info" collapsed="#{true}"><h:form>
+    <b:panel title="Create a New Task" iconAwesome="plus" look="info" collapsed="#{true}"><h:form>
         <b:panelGrid colSpans="2,6,4" size="sm">
             <h:outputLabel value="Contest:" for="ncontest"/>
             <b:selectOneMenu value="#{newTask.contest}" id="ncontest">
@@ -21,17 +21,20 @@
             </b:inputText>
             <h:outputText value=""/>
             <h:outputLabel value="Description:" for="ndescription"/>
-            <b:inputTextarea value="#{newTask.description}" id="ndescription"/>
-            <b:commandButton action="#{taskController.create()}" value="Create" look="success"/>
+            <b:inputTextarea value="#{newTask.description}" id="ndescription">
+                <f:facet name="prepend"><b:iconAwesome name="info"/></f:facet>
+            </b:inputTextarea>
+            <b:commandButton action="#{taskController.create()}" value="Create"
+                             iconAwesome="plus" look="success"/>
         </b:panelGrid>
     </h:form></b:panel>
 
     <!-- Existing tasks, grouped by contest -->
     <c:forEach var="_task" items="#{tasks}">
-        <b:panel title="#{_task.displayName}" look="#{_task.look}" collapsed="#{true}">
+        <b:panel title="#{_task.displayName}" iconAwesome="check" look="#{_task.look}" collapsed="#{true}">
 
             <!-- Task responses -->
-            <b:panel title="Responses" collapsed="#{true}">
+            <b:panel title="Responses" iconAwesome="envelope-open" collapsed="#{true}">
                 <b:dataTable var="_response" value="#{_task.responses}">
                     <b:dataTableColumn value="#{_response.team.name}" label="Team"/>
                     <b:dataTableColumn value="#{_response.contents}"/>
@@ -41,7 +44,7 @@
             </b:panel>
 
             <!-- Task settings -->
-            <b:panel title="Settings" collapsed="#{true}">
+            <b:panel title="Settings" iconAwesome="cog" collapsed="#{true}">
                 <h:form>
                     <b:panelGrid colSpans="2,6,4" size="sm">
                         <h:outputLabel value="Contest:" for="contest"/>
@@ -58,14 +61,16 @@
                         </b:inputText>
                         <h:outputText value=""/>
                         <h:outputLabel value="Description:" for="ndescription"/>
-                        <b:inputTextarea value="#{_task.description}" id="ndescription"/>
-                        <b:commandButton action="#{taskController.update(_task)}"
-                                         value="Update" look="info"/>
+                        <b:inputTextarea value="#{_task.description}" id="ndescription">
+                            <f:facet name="prepend"><b:iconAwesome name="info"/></f:facet>
+                        </b:inputTextarea>
+                        <b:commandButton action="#{taskController.update(_task)}" value="Update"
+                                         iconAwesome="retweet" look="info"/>
                     </b:panelGrid>
                     <b:panelGrid colSpans="10,2" size="sm">
                         <h:outputText value=""/>
-                        <b:commandButton action="#{taskController.delete(_task)}"
-                                         value="Delete" look="danger"/>
+                        <b:commandButton action="#{taskController.delete(_task)}" value="Delete"
+                                         iconAwesome="trash" look="danger"/>
                     </b:panelGrid>
                 </h:form>
             </b:panel>

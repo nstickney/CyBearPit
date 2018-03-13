@@ -5,19 +5,19 @@
              xmlns:ui="http://java.sun.com/jsf/facelets">
 
     <!-- Update account settings -->
-    <b:panel title="Change Username" look="info">
+    <b:panel title="Change Username" iconAwesome="user" look="info">
         <h:form>
             <b:panelGrid colSpans="2,6,4" size="sm">
                 <h:outputLabel value="Username:"/>
                 <b:inputText value="#{sessionUser.name}" id="username" class="form-control">
                     <f:facet name="prepend"><b:icon name="user"/></f:facet>
                 </b:inputText>
-                <b:commandButton value="Change Username" look="warning"
+                <b:commandButton value="Change Username" look="warning" iconAwesome="retweet"
                                  action="#{userController.update(sessionUser)}"/>
             </b:panelGrid>
         </h:form>
     </b:panel>
-    <b:panel title="Change Password" look="info">
+    <b:panel title="Change Password" iconAwesome="key" look="info">
         <h:form>
             <b:panelGrid colSpans="2,6,4" size="sm">
                 <h:outputLabel value="Current Password:"/>
@@ -29,16 +29,17 @@
                 <b:inputSecret value="#{sessionBean.newPassword}" id="newPassword" class="form-control">
                     <f:facet name="prepend"><b:iconAwesome name="key"/></f:facet>
                 </b:inputSecret>
-                <b:commandButton value="Change Password" look="warning"
+                <b:commandButton value="Change Password" look="warning" iconAwesome="retweet"
                                  action="#{userController.changePassword(sessionUser, sessionBean.password, sessionBean.newPassword)}"/>
             </b:panelGrid>
         </h:form>
     </b:panel>
-    <b:panel title="Log Out" look="info">
+
+    <!-- End session -->
+    <b:panel title="Log Out" icon="log-out" look="warning">
         <h:form>
-            <b:commandButton value="Log Out" look="warning" action="#{sessionBean.logOut()}"/>
+            <b:commandButton value="Log Out" action="#{sessionBean.logOut()}"
+                             icon="log-out" look="warning" />
         </h:form>
     </b:panel>
-
-
 </ui:fragment>

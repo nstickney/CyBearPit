@@ -43,6 +43,15 @@ public class User extends AbstractEntity implements Comparable {
         return name;
     }
 
+    public String getLook() {
+        if (admin) {
+            return "danger";
+        } else if (null == team) {
+            return "warning";
+        }
+        return "default";
+    }
+
     public String getSalt() {
         return salt;
     }

@@ -6,22 +6,23 @@
              xmlns:ui="http://java.sun.com/jsf/facelets">
 
     <!-- Option to create a new contest -->
-    <b:panel title="Create a New Contest" look="info" collapsed="#{true}"><h:form>
+    <b:panel title="Create a New Contest" iconAwesome="plus" look="info" collapsed="#{true}"><h:form>
         <b:panelGrid colSpans="2,6,4" size="sm">
             <h:outputLabel value="Name:" for="nname"/>
             <b:inputText value="#{newContest.name}" id="nname" class="form-control">
                 <f:facet name="prepend"><b:iconAwesome name="trophy"/></f:facet>
             </b:inputText>
-            <b:commandButton action="#{contestController.create()}" value="Create" look="success"/>
+            <b:commandButton action="#{contestController.create()}" value="Create"
+                             iconAwesome="plus" look="success"/>
         </b:panelGrid>
     </h:form></b:panel>
 
     <!-- Existing contests -->
     <c:forEach var="_contest" items="#{contests}">
-        <b:panel title="#{_contest.name}" look="#{_contest.look}" collapsed="#{true}">
+        <b:panel title="#{_contest.name}" iconAwesome="trophy" look="#{_contest.look}" collapsed="#{true}">
 
             <!-- Contest resources -->
-            <b:panel title="Resources" collapsed="#{true}"><h:form>
+            <b:panel title="Resources" iconAwesome="server" collapsed="#{true}"><h:form>
                 <b:dataTable var="_resource" value="#{_contest.resources}">
                     <b:dataTableColumn value="#{_resource.name}"/>
                     <b:dataTableColumn value="#{_resource.type}"/>
@@ -31,7 +32,7 @@
             </h:form></b:panel>
 
             <!-- Contest tasks -->
-            <b:panel title="Tasks" collapsed="#{true}"><h:form>
+            <b:panel title="Tasks" iconAwesome="check" collapsed="#{true}"><h:form>
                 <b:dataTable var="_task" value="#{_contest.tasks}">
                     <b:dataTableColumn value="#{_task.name}"/>
                     <b:dataTableColumn value="#{_task.pointValue}" label="Value"/>
@@ -39,7 +40,7 @@
             </h:form></b:panel>
 
             <!-- Contest teams -->
-            <b:panel title="Teams" collapsed="#{true}"><h:form>
+            <b:panel title="Teams" ilook="warning" collapsed="#{true}"><h:form>
                 <b:dataTable var="_team" value="#{_contest.teams}">
                     <b:dataTableColumn value="#{_team.name}"/>
                     <b:dataTableColumn value="#{_team.flag}"/>
@@ -48,25 +49,26 @@
             </h:form></b:panel>
 
             <!-- Contest settings -->
-            <b:panel title="Settings" collapsed="#{true}"><h:form>
+            <b:panel title="Settings" iconAwesome="cog" collapsed="#{true}"><h:form>
                 <b:panelGrid colSpans="2,6,4" size="sm">
                     <h:outputLabel value="Name:" for="name"/>
                     <b:inputText value="#{_contest.name}" id="name" class="form-control">
                         <f:facet name="prepend"><b:iconAwesome name="trophy"/></f:facet>
                     </b:inputText>
-                    <b:commandButton action="#{contestController.update(_contest)}" value="Rename" look="info"/>
+                    <b:commandButton action="#{contestController.update(_contest)}" value="Rename"
+                                     iconAwesome="retweet" look="info"/>
                 </b:panelGrid>
                 <b:panelGrid colSpans="2,2,2,2,2,2" size="sm">
                     <h:outputLabel value="Controls"/>
-                    <b:commandButton action="#{judge.run(_contest)}" value="Run"
+                    <b:commandButton action="#{judge.run(_contest)}" value="Run" iconAwesome="play"
                                      disabled="#{_contest.running}" look="success"/>
-                    <b:commandButton action="#{judge.stop(_contest)}" value="Stop"
+                    <b:commandButton action="#{judge.stop(_contest)}" value="Stop" iconAwesome="stop"
                                      disabled="#{!_contest.running}" look="warning"/>
-                    <b:commandButton action="#{contestController.clone(_contest)}"
+                    <b:commandButton action="#{contestController.clone(_contest)}" iconAwesome="copy"
                                      value="Clone" look="info"/>
                     <h:outputLabel value=""/>
                     <b:commandButton action="#{contestController.delete(_contest)}"
-                                     value="Delete" look="danger"/>
+                                     value="Delete" iconAwesome="trash" look="danger"/>
                 </b:panelGrid>
             </h:form></b:panel>
         </b:panel>

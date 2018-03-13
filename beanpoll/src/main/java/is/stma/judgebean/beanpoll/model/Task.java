@@ -34,13 +34,6 @@ public class Task extends ComparableByContest {
         this.name = name;
     }
 
-    public String getLook() {
-        if (null == contest) {
-            return "warning";
-        }
-        return "default";
-    }
-
     public int getPointValue() {
         return pointValue;
     }
