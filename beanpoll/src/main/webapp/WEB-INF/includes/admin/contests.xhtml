@@ -5,66 +5,57 @@
              xmlns:ui="http://java.sun.com/jsf/facelets">
 
     <!-- Option to create a new contest -->
-    <b:panel title="Create a New Contest" look="info" collapsed="#{true}">
-        <h:form>
-            <b:panelGrid colSpans="2,6,4" size="xs">
-                <h:outputLabel value="Name:" for="nname"/>
-                <b:inputText value="#{newContest.name}" id="nname" class="form-control">
-                    <f:facet name="prepend"><b:iconAwesome name="trophy"/></f:facet>
-                </b:inputText>
-                <b:commandButton action="#{contestController.create()}" value="Create" look="success"/>
-            </b:panelGrid>
-        </h:form>
-    </b:panel>
+    <b:panel title="Create a New Contest" look="info" collapsed="#{true}"><h:form>
+        <b:panelGrid colSpans="2,6,4" size="xs">
+            <h:outputLabel value="Name:" for="nname"/>
+            <b:inputText value="#{newContest.name}" id="nname" class="form-control">
+                <f:facet name="prepend"><b:iconAwesome name="trophy"/></f:facet>
+            </b:inputText>
+            <b:commandButton action="#{contestController.create()}" value="Create" look="success"/>
+        </b:panelGrid>
+    </h:form></b:panel>
 
     <!-- Existing contests -->
     <ui:repeat var="_contest" value="#{contests}">
         <b:panel title="#{_contest.name}" look="#{_contest.look}" collapsed="#{true}">
 
             <!-- Contest resources -->
-            <b:panel title="Resources" collapsed="#{true}">
-                <h:form>
-                    <b:dataTable var="_resource" value="#{_contest.resources}">
-                        <b:dataTableColumn value="#{_resource.name}"/>
-                        <b:dataTableColumn value="#{_resource.type}"/>
-                        <b:dataTableColumn value="#{_resource.address}"/>
-                        <b:dataTableColumn value="#{_resource.port}"/>
-                    </b:dataTable>
-                </h:form>
-            </b:panel>
+            <b:panel title="Resources" collapsed="#{true}"><h:form>
+                <b:dataTable var="_resource" value="#{_contest.resources}">
+                    <b:dataTableColumn value="#{_resource.name}"/>
+                    <b:dataTableColumn value="#{_resource.type}"/>
+                    <b:dataTableColumn value="#{_resource.address}"/>
+                    <b:dataTableColumn value="#{_resource.port}"/>
+                </b:dataTable>
+            </h:form></b:panel>
 
             <!-- Contest tasks -->
-            <b:panel title="Tasks" collapsed="#{true}">
-                <h:form>
-                    <b:dataTable var="_task" value="#{_contest.tasks}">
-                        <b:dataTableColumn value="#{_task.name}"/>
-                    </b:dataTable>
-                </h:form>
-            </b:panel>
+            <b:panel title="Tasks" collapsed="#{true}"><h:form>
+                <b:dataTable var="_task" value="#{_contest.tasks}">
+                    <b:dataTableColumn value="#{_task.name}"/>
+                </b:dataTable>
+            </h:form></b:panel>
 
             <!-- Contest teams -->
-            <b:panel title="Teams" collapsed="#{true}">
-                <h:form>
-                    <b:dataTable var="_team" value="#{_contest.teams}">
-                        <b:dataTableColumn value="#{_team.name}"/>
-                        <b:dataTableColumn value="#{_team.flag}"/>
-                        <b:dataTableColumn value="#{_team.score}"/>
-                    </b:dataTable>
-                </h:form>
-            </b:panel>
+            <b:panel title="Teams" collapsed="#{true}"><h:form>
+                <b:dataTable var="_team" value="#{_contest.teams}">
+                    <b:dataTableColumn value="#{_team.name}"/>
+                    <b:dataTableColumn value="#{_team.flag}"/>
+                    <b:dataTableColumn value="#{_team.score}"/>
+                </b:dataTable>
+            </h:form></b:panel>
 
-            <!-- Contest controls -->
-            <h:form>
+            <!-- Contest settings -->
+            <b:panel title="Settings"><h:form>
                 <b:panelGrid colSpans="2,6,4" size="xs">
                     <h:outputLabel value="Name:" for="name"/>
-                    <!-- TODO: For some reason this doesn't catch the name -->
                     <b:inputText value="#{_contest.name}" id="name" class="form-control">
                         <f:facet name="prepend"><b:iconAwesome name="trophy"/></f:facet>
                     </b:inputText>
                     <b:commandButton action="#{contestController.update(_contest)}" value="Rename" look="info"/>
                 </b:panelGrid>
                 <b:panelGrid colSpans="2,2,2,2,2,2" size="sm">
-                    <h:outputLabel value=""/>
+                    <h:outputLabel value="Controls"/>
                     <b:commandButton action="#{judge.run(_contest)}" value="Run"
                                      disabled="#{_contest.running}" look="success"/>
                     <b:commandButton action="#{judge.stop(_contest)}" value="Stop"
@@ -75,7 +66,7 @@
                     <b:commandButton action="#{contestController.delete(_contest)}"
                                      value="Delete" look="danger"/>
                 </b:panelGrid>
-            </h:form>
+            </h:form></b:panel>
         </b:panel>
     </ui:repeat>
 </ui:fragment>

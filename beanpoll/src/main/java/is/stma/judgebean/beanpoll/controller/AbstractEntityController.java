@@ -68,6 +68,7 @@ abstract class AbstractEntityController<E extends AbstractEntity,
                     FacesMessage.SEVERITY_INFO, prefix(getNew()) + " created.",
                     "")
             );
+            setNew(null);
         } catch (Exception e) {
             errorOut(e, prefix(getNew()) + " creation failed.");
         }
