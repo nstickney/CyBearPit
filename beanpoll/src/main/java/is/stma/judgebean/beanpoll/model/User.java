@@ -82,7 +82,7 @@ public class User extends AbstractEntity implements Comparable {
 
         // If both are admins, decide based on name
         if (this.isAdmin() && user.isAdmin()) {
-            return this.getName().compareTo(user.getName());
+            return this.getName().compareToIgnoreCase(user.getName());
         }
 
         // If one is an admin, but not the other, decide based on that
@@ -94,18 +94,18 @@ public class User extends AbstractEntity implements Comparable {
 
         // If both are assigned to Teams, decide based on Team name
         if (null != this.getTeam() && null != user.getTeam()) {
-            int contestNameComparison = this.getDisplayName().compareTo(user.getDisplayName());
+            int teamNameComp = this.getDisplayName().compareToIgnoreCase(user.getDisplayName());
 
             // If the Contests have the same name, decide based on Entity name
-            if (0 == contestNameComparison) {
-                return this.getName().compareTo(user.getName());
+            if (0 == teamNameComp) {
+                return this.getName().compareToIgnoreCase(user.getName());
             }
-            return contestNameComparison;
+            return teamNameComp;
         }
 
         // If neither is assigned to a Contest, decide based on Entity name
         if (null == this.getTeam() && null == user.getTeam()) {
-            return this.getName().compareTo(user.getName());
+            return this.getName().compareToIgnoreCase(user.getName());
         }
 
         // Return whichever is not assigned to a Contest
