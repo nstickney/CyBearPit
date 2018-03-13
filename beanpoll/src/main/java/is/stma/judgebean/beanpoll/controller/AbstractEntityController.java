@@ -5,7 +5,6 @@ import is.stma.judgebean.beanpoll.model.AbstractEntity;
 import is.stma.judgebean.beanpoll.rules.AbstractRules;
 import is.stma.judgebean.beanpoll.service.AbstractService;
 
-import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.faces.application.FacesMessage;
 import javax.validation.ValidationException;
@@ -70,9 +69,9 @@ abstract class AbstractEntityController<E extends AbstractEntity,
             );
             setNew(null);
         } catch (EJBException | ValidationException e) {
-            errorOut(e, "Failed to create " + getNew().getLogName() + ": " + e.getMessage());
+            errorOut(e, "Failed to create " + getNew().getLogName() + ": ");
         } catch (Exception e) {
-            errorOut(e, getNew().getLogName() + " creation failed.");
+            errorOut(e, getNew().getLogName() + " creation failed: ");
         }
     }
 
@@ -84,13 +83,11 @@ abstract class AbstractEntityController<E extends AbstractEntity,
     void doUpdate(E entity) {
         try {
             entity = getService().update(entity);
-            facesContext.addMessage(null, new FacesMessage(
-                    FacesMessage.SEVERITY_INFO, entity.getLogName() + " updated.", "")
-            );
+            messageOut(entity.getLogName() + " updated.");
         } catch (EJBException | ValidationException e) {
-            errorOut(e, "Failed to update " + entity.getLogName() + ": " + e.getMessage());
+            errorOut(e, "Failed to update " + entity.getLogName() + ": ");
         } catch (Exception e) {
-            errorOut(e, entity.getLogName() + " update failed.");
+            errorOut(e, entity.getLogName() + " update failed: ");
         }
     }
 
@@ -103,14 +100,11 @@ abstract class AbstractEntityController<E extends AbstractEntity,
         try {
             String deleted = entity.getLogName();
             getService().delete(entity);
-            facesContext.addMessage(null, new FacesMessage(
-                    FacesMessage.SEVERITY_INFO, deleted + " deleted.",
-                    "")
-            );
+            messageOut(deleted + " deleted.");
         } catch (EJBException | ValidationException e) {
-            errorOut(e, "Failed to delete " + entity.getLogName() + ": " + e.getMessage());
+            errorOut(e, "Failed to delete " + entity.getLogName() + ": ");
         } catch (Exception e) {
-            errorOut(e, entity.getLogName() + " deletion failed.");
+            errorOut(e, entity.getLogName() + " deletion failed: ");
         }
     }
 

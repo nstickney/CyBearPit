@@ -24,6 +24,11 @@ abstract class AbstractFacesController {
     private
     Logger log;
 
+    void messageOut(String msg) {
+        facesContext.addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_INFO, msg, null));
+    }
+
     /**
      * Handle a Throwable by logging the error message and pushing it to the FacesContext
      *

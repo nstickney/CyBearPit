@@ -8,7 +8,6 @@ import javax.enterprise.inject.Model;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.xml.bind.ValidationException;
 
 @Model
 public class UserController extends AbstractEntityController<User, UserRules,

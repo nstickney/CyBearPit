@@ -20,7 +20,10 @@ public class User extends AbstractEntity implements Comparable<User> {
     private String secret;
 
     @Column(nullable = false)
-    private boolean admin;
+    private boolean admin = false;
+
+    @Column(nullable = false)
+    private boolean judge = false;
 
     @ManyToOne
     private Team team;
@@ -69,6 +72,14 @@ public class User extends AbstractEntity implements Comparable<User> {
         this.admin = admin;
     }
 
+    public boolean isJudge() {
+        return judge;
+    }
+
+    public void setJudge(boolean judge) {
+        this.judge = judge;
+    }
+
     public Team getTeam() {
         return team;
     }
@@ -92,6 +103,18 @@ public class User extends AbstractEntity implements Comparable<User> {
         if (this.isAdmin()) {
             return -1;
         } else if (o.isAdmin()) {
+            return 1;
+        }
+
+        // If both are judges, decide based on name
+        if (this.isJudge() && o.isJudge()) {
+            return this.getName().compareToIgnoreCase(o.getName());
+        }
+
+        // If one is an judge, but not the other, decide based on that
+        if (this.isJudge()) {
+            return -1;
+        } else if (o.isJudge()) {
             return 1;
         }
 

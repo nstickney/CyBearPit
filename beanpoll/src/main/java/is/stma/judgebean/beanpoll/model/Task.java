@@ -16,7 +16,7 @@ public class Task extends ComparableByContest {
     @Column(nullable = false)
     private int pointValue;
 
-    @Column(nullable = false)
+    @Column
     private String description;
 
     @ManyToOne

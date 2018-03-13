@@ -99,7 +99,7 @@
                         <f:facet name="prepend"><b:iconAwesome name="plug"/></f:facet>
                     </b:inputText>
                     <b:commandButton action="#{resourceController.update(_resource)}" value="Update"
-                                     iconAwesome="retweet" look="info"/>
+                                     iconAwesome="retweet" look="info" oncomplete="javascript:location.reload(true)"/>
                 </b:panelGrid>
                 <b:panelGrid colSpans="9,3" size="sm">
                     <h:outputLabel value=""/>

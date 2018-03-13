@@ -38,8 +38,8 @@
                 <b:dataTable var="_response" value="#{_task.responses}">
                     <b:dataTableColumn value="#{_response.team.name}" label="Team"/>
                     <b:dataTableColumn value="#{_response.contents}"/>
-                    <b:dataTableColumn value="#{_response.points.score}"/>
-                    <b:dataTableColumn value="#{_response.points.information}" label="Comments"/>
+                    <b:dataTableColumn value="#{_response.score}"/>
+                    <b:dataTableColumn value="#{_response.comments}"/>
                 </b:dataTable>
             </b:panel>
 

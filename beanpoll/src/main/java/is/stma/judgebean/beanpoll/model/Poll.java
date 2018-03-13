@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-public class Points extends AbstractEntity {
+public class Poll extends AbstractEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id")
@@ -13,9 +13,6 @@ public class Points extends AbstractEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "resource_id")
     private Resource resource;
-
-    @OneToOne
-    private TaskResponse taskResponse;
 
     private int score;
 
@@ -42,14 +39,6 @@ public class Points extends AbstractEntity {
 
     public void setResource(Resource resource) {
         this.resource = resource;
-    }
-
-    public TaskResponse getTaskResponse() {
-        return taskResponse;
-    }
-
-    public void setTaskResponse(TaskResponse taskResponse) {
-        this.taskResponse = taskResponse;
     }
 
     public int getScore() {

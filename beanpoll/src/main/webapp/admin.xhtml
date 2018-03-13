@@ -17,9 +17,10 @@
             <f:viewAction action="#{sessionController.checkAdminNavigation()}"/>
         </f:metadata>
 
+        <!-- Main body content (tabs) -->
         <b:tab title="Account">
             <f:facet name="anchor"><b:iconAwesome name="user"/></f:facet>
-            <ui:include src="WEB-INF/includes/admin/account.xhtml"/>
+            <ui:include src="WEB-INF/includes/account.xhtml"/>
         </b:tab>
         <b:tab title="Contests">
             <f:facet name="anchor"><b:iconAwesome name="trophy"/></f:facet>

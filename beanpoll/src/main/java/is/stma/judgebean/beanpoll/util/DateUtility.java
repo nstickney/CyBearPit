@@ -1,7 +1,5 @@
 package is.stma.judgebean.beanpoll.util;
 
-import is.stma.judgebean.beanpoll.model.AbstractEntity;
-
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;

@@ -11,6 +11,9 @@
             <h:outputLabel value="Admin:" for="nadmin"/>
             <b:selectBooleanCheckbox value="#{newUser.admin}" id="nadmin"/>
             <h:outputText value=""/>
+            <h:outputLabel value="Judge:" for="njudge"/>
+            <b:selectBooleanCheckbox value="#{newUser.judge}" id="njudge"/>
+            <h:outputText value=""/>
             <h:outputLabel value="Team:" for="nteam"/>
             <b:selectOneMenu value="#{newUser.team}" id="nteam" require="false">
                 <f:facet name="prepend"><b:iconAwesome name="bullhorn"/></f:facet>
@@ -40,6 +43,9 @@
                 <b:panelGrid colSpans="2,6,4" size="sm">
                     <h:outputLabel value="Admin:" for="admin"/>
                     <b:selectBooleanCheckbox value="#{_user.admin}" id="admin"/>
+                    <h:outputText value=""/>
+                    <h:outputLabel value="Judge:" for="judge"/>
+                    <b:selectBooleanCheckbox value="#{_user.judge}" id="judge"/>
                     <h:outputText value=""/>
                     <h:outputLabel value="Team:" for="team"/>
                     <b:selectOneMenu value="#{_user.team}" id="team" require="false">

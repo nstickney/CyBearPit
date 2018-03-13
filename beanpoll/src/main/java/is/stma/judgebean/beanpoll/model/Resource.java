@@ -35,7 +35,7 @@ public class Resource extends ComparableByContest {
     private List<Team> teams = new ArrayList<>();
 
     @OneToMany(mappedBy = "resource")
-    private List<Points> points = new ArrayList<>();
+    private List<Poll> points = new ArrayList<>();
 
     @Override
     public String getName() {
@@ -106,11 +106,11 @@ public class Resource extends ComparableByContest {
         }
     }
 
-    public List<Points> getPoints() {
+    public List<Poll> getPoints() {
         return points;
     }
 
-    public void setPoints(List<Points> points) {
+    public void setPoints(List<Poll> points) {
         this.points = points;
     }
 

@@ -16,8 +16,11 @@ public class TaskResponse extends AbstractEntity {
     @Column
     private String contents;
 
-    @OneToOne
-    private Points points;
+    @Column
+    private int score = 0;
+
+    @Column
+    private String comments;
 
     @Override
     public String getName() {
@@ -48,11 +51,19 @@ public class TaskResponse extends AbstractEntity {
         this.contents = contents;
     }
 
-    public Points getPoints() {
-        return points;
+    public int getScore() {
+        return score;
     }
 
-    public void setPoints(Points points) {
-        this.points = points;
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
     }
 }

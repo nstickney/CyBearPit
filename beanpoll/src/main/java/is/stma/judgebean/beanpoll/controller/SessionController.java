@@ -6,7 +6,6 @@ import is.stma.judgebean.beanpoll.util.AuthenticationException;
 
 import javax.ejb.EJBException;
 import javax.enterprise.inject.Model;
-import javax.faces.application.FacesMessage;
 import javax.inject.Inject;
 import javax.persistence.NoResultException;
 
@@ -15,9 +14,11 @@ public class SessionController extends AbstractFacesController {
 
     public static final String LOGIN_PAGE = "index.xhtml";
     private static final String ADMIN_PAGE = "admin.xhtml";
+    private static final String JUDGE_PAGE = "judge.xhtml";
     private static final String TEAM_PAGE = "team.xhtml";
+    private static final String USER_PAGE = "user.xhtml";
 
-    private static final FacesMessage LOGIN_SUCCESS = new FacesMessage("Welcome to BeanPoll");
+    private static final String LOGIN_SUCCESS = "Welcome to BeanPoll";
 
     @Inject
     private SessionBean bean;
@@ -55,7 +56,7 @@ public class SessionController extends AbstractFacesController {
         User checkUser;
         try {
             checkUser = userService.getByName(username);
-        } catch (NoResultException | EJBException e) {
+        } catch (EJBException | NoResultException e) {
             errorOut(e, AuthenticationException.LOGIN_INCORRECT);
             return LOGIN_PAGE;
         }
@@ -67,13 +68,9 @@ public class SessionController extends AbstractFacesController {
             bean.setUser(checkUser);
 
             // Send admin user to the admin page; otherwise go to the team page
-            facesContext.addMessage(null, LOGIN_SUCCESS);
+            messageOut(LOGIN_SUCCESS);
             facesContext.getExternalContext().getFlash().setKeepMessages(true);
-            if (bean.isAdmin()) {
-                return ADMIN_PAGE;
-            } else {
-                return TEAM_PAGE;
-            }
+            return checkLoginNavigation();
         }
 
         // Fail
@@ -95,6 +92,13 @@ public class SessionController extends AbstractFacesController {
         return LOGIN_PAGE;
     }
 
+    public String checkJudgeNavigation() {
+        if (bean.isJudge()) {
+            return null;
+        }
+        return JUDGE_PAGE;
+    }
+
     public String checkTeamNavigation() {
         if (bean.hasTeam()) {
             return null;
@@ -102,15 +106,25 @@ public class SessionController extends AbstractFacesController {
         return LOGIN_PAGE;
     }
 
+    public String checkAuthenticated() {
+        if (bean.isAuthenticated()) {
+            return null;
+        }
+        return LOGIN_PAGE;
+    }
+
     public String checkLoginNavigation() {
-        if (bean.checkAuthenticationStatus()) {
+        if (bean.isAuthenticated()) {
             if (bean.hasTeam()) {
                 return TEAM_PAGE;
+            } else if (bean.isJudge()) {
+                return JUDGE_PAGE;
             } else if (bean.isAdmin()) {
                 return ADMIN_PAGE;
             }
+            return USER_PAGE;
         }
-        return null;
+        return LOGIN_PAGE;
     }
 
 }

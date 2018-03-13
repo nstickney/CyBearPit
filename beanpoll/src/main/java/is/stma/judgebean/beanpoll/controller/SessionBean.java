@@ -56,6 +56,9 @@ public class SessionBean extends AbstractFacesController implements Serializable
     }
 
     public User getUser() {
+        if (null == user) {
+            return new User();
+        }
         return user;
     }
 
@@ -63,12 +66,16 @@ public class SessionBean extends AbstractFacesController implements Serializable
         this.user = user;
     }
 
-    public boolean checkAuthenticationStatus() {
-        return null == user;
+    public boolean isAuthenticated() {
+        return null != user;
     }
 
     public boolean isAdmin() {
         return null != user && user.isAdmin();
+    }
+
+    public boolean isJudge() {
+        return null != user && user.isJudge();
     }
 
     public boolean hasTeam() {

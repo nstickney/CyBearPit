@@ -2,7 +2,6 @@ package is.stma.judgebean.beanpoll.rules;
 
 import is.stma.judgebean.beanpoll.data.AbstractRepo;
 import is.stma.judgebean.beanpoll.model.AbstractEntity;
-import is.stma.judgebean.beanpoll.util.DateUtility;
 import is.stma.judgebean.beanpoll.util.StringUtility;
 
 import javax.inject.Inject;

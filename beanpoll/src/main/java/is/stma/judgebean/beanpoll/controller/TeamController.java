@@ -10,7 +10,6 @@ import is.stma.judgebean.beanpoll.util.StringUtility;
 
 import javax.enterprise.inject.Model;
 import javax.enterprise.inject.Produces;
-import javax.faces.application.FacesMessage;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.validation.ValidationException;
@@ -67,14 +66,11 @@ public class TeamController extends AbstractEntityController<Team, TeamRules,
             userController.getNew().setPassword(teamString);
             userController.getNew().setTeam(getService().create(getNew()));
             userController.create();
-            facesContext.addMessage(null, new FacesMessage(
-                    FacesMessage.SEVERITY_INFO, getNew().getLogName() + " created.",
-                    "")
-            );
+            messageOut(getNew().getLogName() + " created.");
         } catch (ValidationException e) {
-            errorOut(e, "Failed to create " + getNew().getLogName() + ": " + e.getMessage());
+            errorOut(e, "Failed to create " + getNew().getLogName() + ": ");
         } catch (Exception e) {
-            errorOut(e, getNew().getLogName() + " creation failed.");
+            errorOut(e, getNew().getLogName() + " creation failed: ");
         }
     }
 

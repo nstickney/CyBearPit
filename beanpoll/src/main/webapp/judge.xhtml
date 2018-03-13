@@ -7,14 +7,14 @@
                 template="/WEB-INF/templates/default.xhtml">
 
     <!-- Page title and content header string -->
-    <ui:define name="title">#{sessionUser.team.name}</ui:define>
+    <ui:define name="title">Contest Judging</ui:define>
 
     <!-- Main body content -->
     <ui:define name="content">
 
-        <!-- Must be a team user to view the team page -->
+        <!-- Must be administrative user to view the control page -->
         <f:metadata>
-            <f:viewAction action="#{sessionController.checkTeamNavigation()}"/>
+            <f:viewAction action="#{sessionController.checkJudgeNavigation()}"/>
         </f:metadata>
 
         <!-- Main body content (tabs) -->
@@ -22,14 +22,6 @@
             <f:facet name="anchor"><b:iconAwesome name="user"/></f:facet>
             <ui:include src="WEB-INF/includes/account.xhtml"/>
         </b:tab>
-        <b:tab title="Team">
-            SHOW TEAM INFO HERE
-        </b:tab>
-        <b:tab title="Injects">
-            SHOW THE INJECT LIST HERE
-        </b:tab>
-        <b:tab title="Resources">
-            SHOW THE TEAM RESOURCES HERE
-        </b:tab>
+
     </ui:define>
 </ui:composition>

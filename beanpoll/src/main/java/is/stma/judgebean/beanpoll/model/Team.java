@@ -26,7 +26,7 @@ public class Team extends ComparableByContest {
     private List<TaskResponse> taskResponses = new ArrayList<>();
 
     @OneToMany(mappedBy = "team")
-    private List<Points> points = new ArrayList<>();
+    private List<Poll> points = new ArrayList<>();
 
     @Override
     public String getName() {
@@ -77,17 +77,17 @@ public class Team extends ComparableByContest {
         this.taskResponses = taskResponses;
     }
 
-    public List<Points> getPoints() {
+    public List<Poll> getPoints() {
         return points;
     }
 
-    public void setPoints(List<Points> points) {
+    public void setPoints(List<Poll> points) {
         this.points = points;
     }
 
     public int getScore() {
         int score = 0;
-        for (Points p : points) {
+        for (Poll p : points) {
             score += p.getScore();
         }
         return score;
@@ -95,7 +95,7 @@ public class Team extends ComparableByContest {
 
     public int getResourceScore(Resource resource) {
         int score = 0;
-        for (Points p : points) {
+        for (Poll p : points) {
             if (null != p.getResource() && p.getResource().equalByUUID(resource)) {
                 score += p.getScore();
             }
