@@ -34,7 +34,7 @@ public class ResourceRules extends AbstractRules<Resource> {
     }
 
     private void checkTeamsMatchContest(Resource entity) throws ValidationException {
-        for (Team t: entity.getTeams()) {
+        for (Team t : entity.getTeams()) {
             if (!t.getContest().equalByUUID(entity.getContest())) {
                 throw new ValidationException("only teams from " + entity.getContest().getName()
                         + " may be assigned to " + entity.getName());

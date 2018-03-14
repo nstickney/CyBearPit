@@ -2,7 +2,6 @@ package is.stma.judgebean.beanpoll.controller;
 
 import is.stma.judgebean.beanpoll.model.User;
 import is.stma.judgebean.beanpoll.util.AuthenticationException;
-import is.stma.judgebean.beanpoll.util.PasswordUtility;
 
 import javax.ejb.EJBException;
 import javax.enterprise.inject.Model;

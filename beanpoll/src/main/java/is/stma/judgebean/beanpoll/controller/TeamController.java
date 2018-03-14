@@ -8,6 +8,7 @@ import is.stma.judgebean.beanpoll.rules.TeamRules;
 import is.stma.judgebean.beanpoll.service.TeamService;
 import is.stma.judgebean.beanpoll.util.StringUtility;
 
+import javax.ejb.EJBException;
 import javax.enterprise.inject.Model;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
@@ -67,7 +68,7 @@ public class TeamController extends AbstractEntityController<Team, TeamRules,
             userController.getNew().setTeam(getService().create(getNew()));
             userController.create();
             messageOut(getNew().getLogName() + " created.");
-        } catch (ValidationException e) {
+        } catch (EJBException | ValidationException e) {
             errorOut(e, "Failed to create " + getNew().getLogName() + ": ");
         } catch (Exception e) {
             errorOut(e, getNew().getLogName() + " creation failed: ");

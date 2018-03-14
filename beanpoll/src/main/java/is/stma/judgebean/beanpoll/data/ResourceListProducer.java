@@ -27,7 +27,7 @@ public class ResourceListProducer extends AbstractEntityListProducer<Resource> {
     @Override
     @PostConstruct
     void retrieveAll() {
-        entities =  repo.findAllOrderByNameAsc();
+        entities = repo.findAllOrderByNameAsc();
         Collections.sort(entities);
     }
 }

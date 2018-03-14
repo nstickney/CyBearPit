@@ -68,6 +68,6 @@ public class Task extends ComparableByContest {
 
     @Override
     public int compareTo(ComparableByContest o) {
-        return compare(this, (ComparableByContest) o);
+        return compare(this, o);
     }
 }

@@ -2,7 +2,7 @@ package is.stma.judgebean.beanpoll.asynchronous;
 
 import is.stma.judgebean.beanpoll.model.Contest;
 import is.stma.judgebean.beanpoll.service.ContestService;
-import is.stma.judgebean.beanpoll.service.ResourceParameterService;
+import is.stma.judgebean.beanpoll.service.ParameterService;
 import is.stma.judgebean.beanpoll.service.ResourceService;
 import is.stma.judgebean.beanpoll.service.TeamService;
 
@@ -15,17 +15,14 @@ import javax.inject.Named;
 public class Judge {
 
     @Inject
-    private
-    ContestService contestService;
-
-    @Inject
     TeamService teamService;
-
     @Inject
     ResourceService resourceService;
-
     @Inject
-    ResourceParameterService resourceParameterService;
+    ParameterService parameterService;
+    @Inject
+    private
+    ContestService contestService;
 
     public void run(Contest contest) {
         contest.setRunning(true);

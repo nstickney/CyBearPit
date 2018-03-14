@@ -17,10 +17,10 @@
 package is.stma.judgebean.beanpoll.rest;
 
 import is.stma.judgebean.beanpoll.data.AbstractRepo;
-import is.stma.judgebean.beanpoll.data.ResourceParameterRepo;
-import is.stma.judgebean.beanpoll.model.ResourceParameter;
-import is.stma.judgebean.beanpoll.rules.ResourceParameterRules;
-import is.stma.judgebean.beanpoll.service.ResourceParameterService;
+import is.stma.judgebean.beanpoll.data.ParameterRepo;
+import is.stma.judgebean.beanpoll.model.Parameter;
+import is.stma.judgebean.beanpoll.rules.ParameterRules;
+import is.stma.judgebean.beanpoll.service.ParameterService;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -36,46 +36,46 @@ import java.util.List;
  */
 @Path("/resourceParameters")
 @RequestScoped
-public class ResourceParameterREST extends AbstractREST<ResourceParameter, AbstractRepo<ResourceParameter>, ResourceParameterRules, ResourceParameterService> {
+public class ParameterREST extends AbstractREST<Parameter, AbstractRepo<Parameter>, ParameterRules, ParameterService> {
 
     @Inject
-    private ResourceParameterRepo repo;
+    private ParameterRepo repo;
 
     @Inject
-    private ResourceParameterRules rules;
+    private ParameterRules rules;
 
     @Inject
-    private ResourceParameterService service;
+    private ParameterService service;
 
-    ResourceParameterRepo getRepo() {
+    ParameterRepo getRepo() {
         return repo;
     }
 
-    ResourceParameterRules getRules() {
+    ParameterRules getRules() {
         return rules;
     }
 
-    ResourceParameterService getService() {
+    ParameterService getService() {
         return service;
     }
 
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public ResourceParameter lookupResourceParameterById(@PathParam("id") String id) {
+    public Parameter lookupResourceParameterById(@PathParam("id") String id) {
         return lookupById(id);
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<ResourceParameter> listAll() {
+    public List<Parameter> listAll() {
         return getRepo().findAllOrderByNameAsc();
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createResourceParameter(ResourceParameter entity) {
+    public Response createResourceParameter(Parameter entity) {
         return createEntity(entity);
     }
 }

@@ -1,6 +1,6 @@
 package is.stma.judgebean.beanpoll.data;
 
-import is.stma.judgebean.beanpoll.model.ResourceParameter;
+import is.stma.judgebean.beanpoll.model.Parameter;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
@@ -10,16 +10,16 @@ import javax.inject.Named;
 import java.util.List;
 
 @RequestScoped
-public class ResourceParameterListProducer extends AbstractEntityListProducer<ResourceParameter> {
+public class ParameterListProducer extends AbstractEntityListProducer<Parameter> {
 
     @Inject
-    private ResourceParameterRepo repo;
+    private ParameterRepo repo;
 
-    private List<ResourceParameter> entities;
+    private List<Parameter> entities;
 
     @Produces
     @Named("resourceParameters")
-    public List<ResourceParameter> getEntities() {
+    public List<Parameter> getEntities() {
         return entities;
     }
 

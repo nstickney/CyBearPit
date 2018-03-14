@@ -17,7 +17,7 @@ public class Resource extends ComparableByContest {
     private String type = DNS;
 
     @Column(nullable = false)
-    private String address = "baylor.edu";
+    private String address = "ns1.baylor.edu";
 
     @Column(nullable = false)
     private int port = 53;
@@ -26,7 +26,7 @@ public class Resource extends ComparableByContest {
     private boolean scoring = false;
 
     @OneToMany(mappedBy = "resource")
-    private List<ResourceParameter> parameters = new ArrayList<>();
+    private List<Parameter> parameters = new ArrayList<>();
 
     @ManyToOne
     private Contest contest;
@@ -94,11 +94,11 @@ public class Resource extends ComparableByContest {
         this.scoring = scoring;
     }
 
-    public List<ResourceParameter> getParameters() {
+    public List<Parameter> getParameters() {
         return parameters;
     }
 
-    public void setParameters(List<ResourceParameter> parameters) {
+    public void setParameters(List<Parameter> parameters) {
         this.parameters = parameters;
     }
 
@@ -140,6 +140,6 @@ public class Resource extends ComparableByContest {
 
     @Override
     public int compareTo(ComparableByContest o) {
-        return compare(this, (ComparableByContest) o);
+        return compare(this, o);
     }
 }

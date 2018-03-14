@@ -5,27 +5,33 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class ResourceParameter extends AbstractEntity {
-
-    // DNS tag strings
-    private static final String DNS_QUERY = "DNS_QUERY";
-    private static final String DNS_RECORD_TYPE = "DNS_RECORD_TYPE";
-    private static final String DNS_TCP = "DNS_TCP";
-    private static final String DNS_RECURSIVE = "DNS_RECURSIVE";
-    private static final String DNS_TIMEOUT = "DNS_TIMEOUT";
+public class Parameter extends AbstractEntity {
 
     // Boolean value strings
-    private static final String TRUE = "TRUE";
-    private static final String FALSE = "FALSE";
+    public static final String TRUE = "TRUE";
+    public static final String FALSE = "FALSE";
+
+    // Utility tag strings
+    private static final String UNUSED = "UNUSED";
 
     @ManyToOne
     private Resource resource;
 
     @Column(nullable = false)
-    private String tag = DNS_QUERY;
+    private String tag = UNUSED;
 
     @Column
-    private String value = null;
+    private String value;
+
+    public Parameter() {
+        super();
+    }
+
+    public Parameter(String tag, String value) {
+        super();
+        this.tag = tag;
+        this.value = value;
+    }
 
     @Override
     public String getName() {

@@ -39,9 +39,9 @@ public abstract class ComparableByContest extends AbstractEntity implements Comp
         if (null != e1.getContest() && null != e2.getContest()) {
 
             // If e1's contest is running (but not e2's), it is lower, and vice versa
-            if (e1.getContest().isRunning() && ! e2.getContest().isRunning()) {
+            if (e1.getContest().isRunning() && !e2.getContest().isRunning()) {
                 return -1;
-            } else if ( ! e1.getContest().isRunning() && e2.getContest().isRunning()) {
+            } else if (!e1.getContest().isRunning() && e2.getContest().isRunning()) {
                 return 1;
             }
         }

@@ -66,7 +66,7 @@
                     <h:outputLabel value="Password:" for="password"/>
                     <b:inputSecret value="#{userController.newPassword}" id="password"/>
                     <b:commandButton value="Change Password" iconAwesome="key" look="warning"
-                            action="#{userController.changePassword(_user, null, userController.newPassword, true)}"/>
+                                     action="#{userController.changePassword(_user, null, userController.newPassword, true)}"/>
                 </b:panelGrid></h:form>
                 <h:form><b:panelGrid colSpans="9,3" size="sm">
                     <h:outputLabel value=""/>
