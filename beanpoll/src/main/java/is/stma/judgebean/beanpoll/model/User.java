@@ -41,6 +41,8 @@ public class User extends AbstractEntity implements Comparable<User> {
     public String getDisplayName() {
         if (admin) {
             return "Admin: " + name;
+        } else if (judge) {
+            return "Judge: " + name;
         } else if (null != team) {
             return team.getDisplayName() + ": " + name;
         }
@@ -50,6 +52,8 @@ public class User extends AbstractEntity implements Comparable<User> {
     public String getLook() {
         if (admin) {
             return "danger";
+        } else if (judge) {
+            return "info";
         } else if (null == team) {
             return "warning";
         }

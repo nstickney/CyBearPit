@@ -18,8 +18,8 @@ public class DNSUtility {
     private static final int MAX_DNS_TIMEOUT = 5;
 
     /**
-     * Runs a forward lookup for A records on the given query at the specified
-     * host address and port. Note that only DNS records of tyles A, AAAA,
+     * Runs a forward lookup for records on the given query at the specified
+     * host address and port. Note that only DNS records of types A, AAAA,
      * CNAME, DNAME, MX, NS, PTR, and TXT are properly filtered, and only the
      * first record of any given type is returned.
      *
