@@ -24,6 +24,11 @@ public class UserRules extends AbstractRules<User> {
     public void runBusinessRules(User entity, Target target)
             throws ValidationException {
 
+        // Username must be unique on creation
+        if (Target.CREATE == target) {
+            checkUniqueUsername(entity);
+        }
+
         // Team users must not be admins
         checkAdminUserNotAssignedToTeam(entity);
 
@@ -39,6 +44,17 @@ public class UserRules extends AbstractRules<User> {
 
         // Don't delete the last user in a team
         checkNotLastUserOfTeam(entity);
+    }
+
+    private void checkUniqueUsername(User entity) throws ValidationException {
+        for (User u : repo.findAll()) {
+            if (u.getName().equals(entity.getName())) {
+                throw new ValidationException("username must be unique");
+            }
+            if (u.getDisplayName().equals(entity.getDisplayName())) {
+                throw new ValidationException("username is not allowed");
+            }
+        }
     }
 
     private void checkAdminUserNotAssignedToTeam(User entity) throws ValidationException {

@@ -92,52 +92,49 @@ public class User extends AbstractEntity implements Comparable<User> {
         return HashUtility.verify(salt + password, secret);
     }
 
+    @Override
     public int compareTo(User o) {
 
-        // If both are admins, decide based on name
-        if (this.isAdmin() && o.isAdmin()) {
-            return this.getName().compareToIgnoreCase(o.getName());
-        }
-
         // If one is an admin, but not the other, decide based on that
-        if (this.isAdmin()) {
+        if (this.isAdmin() && !o.isAdmin()) {
             return -1;
-        } else if (o.isAdmin()) {
+        } else if (!this.isAdmin() && o.isAdmin()) {
             return 1;
-        }
-
-        // If both are judges, decide based on name
-        if (this.isJudge() && o.isJudge()) {
-            return this.getName().compareToIgnoreCase(o.getName());
         }
 
         // If one is an judge, but not the other, decide based on that
-        if (this.isJudge()) {
+        if (this.isJudge() && !o.isJudge()) {
             return -1;
-        } else if (o.isJudge()) {
+        } else if (!this.isJudge() && o.isJudge()) {
             return 1;
         }
 
-        // If both are assigned to Teams, decide based on Team name
-        if (null != this.getTeam() && null != o.getTeam()) {
-            int teamNameComp = this.getDisplayName().compareToIgnoreCase(o.getDisplayName());
-
-            // If the Contests have the same name, decide based on Entity name
-            if (0 == teamNameComp) {
-                return this.getName().compareToIgnoreCase(o.getName());
-            }
-            return teamNameComp;
-        }
-
-        // If neither is assigned to a Contest, decide based on Entity name
-        if (null == this.getTeam() && null == o.getTeam()) {
-            return this.getName().compareToIgnoreCase(o.getName());
-        }
-
-        // Return whichever is not assigned to a Contest
-        if (null == this.getName()) {
+        // If one is on a team, but not the other, decide based on that
+        if (null == getDisplayName() && null != o.getDisplayName()) {
             return -1;
+        } else if (null != getDisplayName() && null == o.getDisplayName()) {
+            return 1;
         }
-        return 1;
+
+        int byDisplayName = getDisplayName().compareToIgnoreCase(o.getDisplayName());
+
+        // If no other criteria have decided the issue, decide based on UUID
+        if (0 == byDisplayName) {
+            return getId().compareTo(o.getId());
+        }
+        return byDisplayName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return null != o &&
+                o.getClass().equals(getClass()) &&
+                equalByUUID((User) o);
+    }
+
+    @Override
+    public int hashCode() {
+        String hashCodeString = getId() + getDisplayName();
+        return hashCodeString.hashCode();
     }
 }

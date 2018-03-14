@@ -18,6 +18,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import javax.ejb.EJBException;
 import javax.inject.Inject;
 import java.io.File;
 import java.util.UUID;
@@ -97,9 +98,7 @@ public class TeamRulesTest {
         Assert.assertEquals("TEST", newTeam.getFlag());
     }
 
-    //TODO: Arquillian catches the wrong error here(?!)
-    @Test(expected = java.lang.Exception.class)
-    //@Test(expected = ValidationException.class)
+    @Test(expected = EJBException.class)
     public void testUpdateNonexistent() {
         checkTeam = new Team();
         checkTeam.setName("Check Team");
@@ -107,9 +106,7 @@ public class TeamRulesTest {
         teamService.update(checkTeam);
     }
 
-    //TODO: Arquillian catches the wrong error here(?!)
-    @Test(expected = java.lang.Exception.class)
-    //@Test(expected = ValidationException.class)
+    @Test(expected = EJBException.class)
     public void testNonUniqueUUID() {
         checkTeam = newTeam;
         checkTeam.setFlag("We Copied You!");
@@ -118,7 +115,7 @@ public class TeamRulesTest {
 
     //TODO: Arquillian catches the wrong error here(?!)
     @Test(expected = java.lang.AssertionError.class)
-    //@Test(expected = ValidationException.class)
+//    @Test(expected = EJBException.class)
     public void testNonUniqueFlag() {
         checkTeam = new Team();
         checkTeam.setName("Test Team 2");

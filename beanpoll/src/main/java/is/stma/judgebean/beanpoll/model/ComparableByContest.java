@@ -2,6 +2,19 @@ package is.stma.judgebean.beanpoll.model;
 
 public abstract class ComparableByContest extends AbstractEntity implements Comparable<ComparableByContest> {
 
+    @Override
+    public boolean equals(Object o) {
+        return null != o &&
+                o.getClass().equals(getClass()) &&
+                equalByUUID((ComparableByContest) o);
+    }
+
+    @Override
+    public int hashCode() {
+        String hashCodeString = getId() + getDisplayName();
+        return hashCodeString.hashCode();
+    }
+
     abstract Contest getContest();
 
     public String getDisplayName() {
@@ -40,8 +53,13 @@ public abstract class ComparableByContest extends AbstractEntity implements Comp
             return 1;
         }
 
-        // If no other criteria have decided the issue, decide based on display name
-        return e1.getDisplayName().compareToIgnoreCase(e2.getDisplayName());
+        int byDisplayName = e1.getDisplayName().compareToIgnoreCase(e2.getDisplayName());
+
+        // If no other criteria have decided the issue, decide based on UUID
+        if (0 == byDisplayName) {
+            return e1.getId().compareTo(e2.getId());
+        }
+        return byDisplayName;
     }
 
 }

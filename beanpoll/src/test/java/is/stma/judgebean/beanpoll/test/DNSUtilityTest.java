@@ -24,7 +24,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 @RunWith(Arquillian.class)
 public class DNSUtilityTest {
 
-    private final String query = "baylor.edu";
+    private static final String query = "baylor.edu";
 
     @Deployment
     public static Archive<?> createTestArchive() {
