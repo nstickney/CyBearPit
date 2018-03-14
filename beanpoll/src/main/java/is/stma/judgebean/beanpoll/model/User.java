@@ -61,7 +61,7 @@ public class User extends AbstractEntity implements Comparable<User> {
 
     public void setPassword(String password) {
         this.salt = UUID.randomUUID().toString();
-        this.secret = HashUtility.getHash(salt + password);
+        this.secret = HashUtility.hash(salt + password);
     }
 
     public boolean isAdmin() {
@@ -89,7 +89,7 @@ public class User extends AbstractEntity implements Comparable<User> {
     }
 
     public boolean checkPassword(String password) {
-        return HashUtility.checkHash(salt + password, secret);
+        return HashUtility.verify(salt + password, secret);
     }
 
     public int compareTo(User o) {

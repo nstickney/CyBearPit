@@ -2,8 +2,8 @@ package is.stma.judgebean.beanpoll.util;
 
 class PasswordUtility {
 
-    private static final int MINIMUM_LENGTH = 12;
-    private static final int MAXIMUM_LENGTH = 36;
+    private static final int MINIMUM_LENGTH = 16;
+    private static final int MAXIMUM_LENGTH = 160;
     private static final String ALLOWED_PASSWORDS = "^[\\p{Alnum}\\p{Punct}]{"
             + MINIMUM_LENGTH + "," + MAXIMUM_LENGTH + "}$";
 
