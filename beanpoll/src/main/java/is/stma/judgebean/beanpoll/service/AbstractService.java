@@ -57,7 +57,7 @@ public abstract class AbstractService<E extends AbstractEntity,
     public void delete(E entity) throws ValidationException {
         getRules().validate(entity, AbstractRules.Target.DELETE);
         log.log(Level.INFO, "Deleting " + entity.getName());
-        getRepo().remove(entity);
+        getRepo().remove(em.contains(entity) ? entity : em.merge(entity));
         getEvent().fire(entity);
     }
 

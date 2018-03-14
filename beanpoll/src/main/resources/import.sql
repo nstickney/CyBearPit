@@ -19,8 +19,8 @@
 
 -- You can use this file to load seed data into the database using SQL statements
 INSERT INTO User (id, name, salt, secret, admin, judge) VALUES ('UA', 'beanpoll', 'judgebean', '$argon2id$v=19$m=1024,t=2,p=2$B6Lw0JZ5b+QqOmOba0ossQ$oYHSH76XD/H94adXaAIWR+c9/vAE09XZ6dFtAsjyXWA', TRUE, TRUE);
-INSERT INTO User (id, name, salt, secret, admin, judge) VALUES ('UA', 'beanadmin', 'judgebean', '$argon2id$v=19$m=1024,t=2,p=2$B6Lw0JZ5b+QqOmOba0ossQ$oYHSH76XD/H94adXaAIWR+c9/vAE09XZ6dFtAsjyXWA', TRUE, FALSE);
-INSERT INTO User (id, name, salt, secret, admin, judge) VALUES ('UA', 'beanjudge', 'judgebean', '$argon2id$v=19$m=1024,t=2,p=2$B6Lw0JZ5b+QqOmOba0ossQ$oYHSH76XD/H94adXaAIWR+c9/vAE09XZ6dFtAsjyXWA', FALSE, TRUE);
+INSERT INTO User (id, name, salt, secret, admin, judge) VALUES ('UBA', 'beanadmin', 'judgebean', '$argon2id$v=19$m=1024,t=2,p=2$B6Lw0JZ5b+QqOmOba0ossQ$oYHSH76XD/H94adXaAIWR+c9/vAE09XZ6dFtAsjyXWA', TRUE, FALSE);
+INSERT INTO User (id, name, salt, secret, admin, judge) VALUES ('UBJ', 'beanjudge', 'judgebean', '$argon2id$v=19$m=1024,t=2,p=2$B6Lw0JZ5b+QqOmOba0ossQ$oYHSH76XD/H94adXaAIWR+c9/vAE09XZ6dFtAsjyXWA', FALSE, TRUE);
 INSERT INTO Contest (id, name, running) VALUES ('C0', 'Cyber Patriot', FALSE);
 INSERT INTO Contest (id, name, running) VALUES ('C1', 'CCDC', FALSE);
 INSERT INTO Contest (id, name, running) VALUES ('C2', 'CDX', FALSE);

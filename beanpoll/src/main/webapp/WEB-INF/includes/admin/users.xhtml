@@ -39,8 +39,8 @@
         <b:panel title="#{_user.displayName}" iconAwesome="user" look="#{_user.look}" collapsed="#{true}">
 
             <!-- User settings -->
-            <b:panel title="Settings" iconAwesome="cog" collapsed="#{true}"><h:form>
-                <b:panelGrid colSpans="2,6,4" size="sm">
+            <b:panel title="Settings" iconAwesome="cog" collapsed="#{true}">
+                <h:form><b:panelGrid colSpans="2,6,4" size="sm">
                     <h:outputLabel value="Admin:" for="admin"/>
                     <b:selectBooleanCheckbox value="#{_user.admin}" id="admin"/>
                     <h:outputText value=""/>
@@ -59,19 +59,21 @@
                     <b:inputText value="#{_user.name}" id="name" class="form-control">
                         <f:facet name="prepend"><b:iconAwesome name="user"/></f:facet>
                     </b:inputText>
-                    <h:outputText value=""/>
-                    <h:outputLabel value="Password:" for="password"/>
-                    <b:inputSecret value="#{_user.password}" id="password"/>
                     <b:commandButton action="#{userController.update(_user)}" value="Update"
                                      iconAwesome="retweet" look="info"/>
-                </b:panelGrid>
-                <b:panelGrid colSpans="9,3" size="sm">
+                </b:panelGrid></h:form>
+                <h:form><b:panelGrid colSpans="2,6,4" size="sm">
+                    <h:outputLabel value="Password:" for="password"/>
+                    <b:inputSecret value="#{userController.newPassword}" id="password"/>
+                    <b:commandButton value="Change Password" iconAwesome="key" look="warning"
+                            action="#{userController.changePassword(_user, null, userController.newPassword, true)}"/>
+                </b:panelGrid></h:form>
+                <h:form><b:panelGrid colSpans="9,3" size="sm">
                     <h:outputLabel value=""/>
                     <b:commandButton action="#{userController.delete(_user)}" value="Delete"
                                      iconAwesome="trash" look="danger"/>
-                </b:panelGrid>
-            </h:form></b:panel>
-
+                </b:panelGrid></h:form>
+            </b:panel>
         </b:panel>
     </c:forEach>
 </ui:fragment>

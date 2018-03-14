@@ -1,8 +1,8 @@
 package is.stma.judgebean.beanpoll.controller;
 
 import is.stma.judgebean.beanpoll.model.User;
-import is.stma.judgebean.beanpoll.service.UserService;
 import is.stma.judgebean.beanpoll.util.AuthenticationException;
+import is.stma.judgebean.beanpoll.util.PasswordUtility;
 
 import javax.ejb.EJBException;
 import javax.enterprise.inject.Model;
@@ -24,7 +24,7 @@ public class SessionController extends AbstractFacesController {
     private SessionBean bean;
 
     @Inject
-    private UserService userService;
+    private UserController userController;
 
     private String username;
     private String password;
@@ -55,7 +55,7 @@ public class SessionController extends AbstractFacesController {
         // Find the user in question, or fail gracefully
         User checkUser;
         try {
-            checkUser = userService.getByName(username);
+            checkUser = userController.getByName(username);
         } catch (EJBException | NoResultException e) {
             errorOut(e, AuthenticationException.LOGIN_INCORRECT);
             return LOGIN_PAGE;
@@ -79,8 +79,7 @@ public class SessionController extends AbstractFacesController {
 
     private String failAuthentication(String summary) {
         bean.setUser(null);
-        password = null;
-        errorOut(new AuthenticationException(), summary);
+        errorOut(new AuthenticationException(summary), "");
         facesContext.getExternalContext().getFlash().setKeepMessages(true);
         return LOGIN_PAGE;
     }
@@ -96,7 +95,7 @@ public class SessionController extends AbstractFacesController {
         if (bean.isJudge()) {
             return null;
         }
-        return JUDGE_PAGE;
+        return LOGIN_PAGE;
     }
 
     public String checkTeamNavigation() {
@@ -125,6 +124,21 @@ public class SessionController extends AbstractFacesController {
             return USER_PAGE;
         }
         return LOGIN_PAGE;
+    }
+
+    public void changePassword() {
+        userController.changePassword(bean.getUser(), bean.getPassword(),
+                bean.getNewPassword(), false);
+        bean.setPassword(null);
+        bean.setNewPassword(null);
+    }
+
+    public String deleteAccount() {
+        if (bean.isAuthenticated()) {
+            userController.delete(bean.getUser());
+            bean.setUser(null);
+        }
+        return checkAuthenticated();
     }
 
 }

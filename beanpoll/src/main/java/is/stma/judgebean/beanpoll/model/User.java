@@ -1,6 +1,7 @@
 package is.stma.judgebean.beanpoll.model;
 
 import is.stma.judgebean.beanpoll.util.HashUtility;
+import is.stma.judgebean.beanpoll.util.PasswordUtility;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -59,9 +60,13 @@ public class User extends AbstractEntity implements Comparable<User> {
         return "";
     }
 
-    public void setPassword(String password) {
-        this.salt = UUID.randomUUID().toString();
-        this.secret = HashUtility.hash(salt + password);
+    public boolean setPassword(String password) {
+        if (PasswordUtility.meetsRequirements(password)) {
+            this.salt = UUID.randomUUID().toString();
+            this.secret = HashUtility.hash(salt + password);
+            return true;
+        }
+        return false;
     }
 
     public boolean isAdmin() {
@@ -89,7 +94,7 @@ public class User extends AbstractEntity implements Comparable<User> {
     }
 
     public boolean checkPassword(String password) {
-        return HashUtility.verify(salt + password, secret);
+        return null != password && HashUtility.verify(salt + password, secret);
     }
 
     @Override

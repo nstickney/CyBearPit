@@ -3,20 +3,26 @@ package is.stma.judgebean.beanpoll.controller;
 import is.stma.judgebean.beanpoll.model.User;
 import is.stma.judgebean.beanpoll.rules.UserRules;
 import is.stma.judgebean.beanpoll.service.UserService;
+import is.stma.judgebean.beanpoll.util.AuthenticationException;
 
 import javax.enterprise.inject.Model;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.xml.bind.ValidationException;
 
 @Model
 public class UserController extends AbstractEntityController<User, UserRules,
         UserService> {
 
+    private static final String PASSWORD_CHANGE_FAIL = "Cannot change password: ";
+
     @Inject
     private UserService service;
 
     private User newUser;
+
+    private String newPassword;
 
     @Override
     @Produces
@@ -31,6 +37,14 @@ public class UserController extends AbstractEntityController<User, UserRules,
     @Override
     void setNew(User entity) {
         newUser = entity;
+    }
+
+    public String getNewPassword() {
+        return newPassword;
+    }
+
+    public void setNewPassword(String newPassword) {
+        this.newPassword = newPassword;
     }
 
     @Override
@@ -48,10 +62,27 @@ public class UserController extends AbstractEntityController<User, UserRules,
         doDelete(entity);
     }
 
-    public void changePassword(User entity, String currentPassword, String newPassword) {
-        if (null != entity && null != currentPassword && null != newPassword && entity.checkPassword(currentPassword)) {
-            entity.setPassword(newPassword);
-            update(entity);
+    public User getByName(String name) {
+        return service.getByName(name);
+    }
+
+    public void changePassword(User entity, String password,
+                               String newPassword, boolean adminOverride) {
+        this.newPassword = null;
+        if (null != entity) {
+            if (entity.checkPassword(password) || adminOverride) {
+                if (entity.setPassword(newPassword)) {
+                    update(entity);
+                } else {
+                    errorOut(new ValidationException("password does not meet requirements"),
+                            PASSWORD_CHANGE_FAIL);
+                }
+            } else {
+                errorOut(new AuthenticationException(AuthenticationException.LOGIN_INCORRECT),
+                        PASSWORD_CHANGE_FAIL);
+            }
+        } else {
+            errorOut(new ValidationException("unknown user"), PASSWORD_CHANGE_FAIL);
         }
     }
 }

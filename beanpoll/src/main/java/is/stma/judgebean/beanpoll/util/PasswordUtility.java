@@ -1,6 +1,6 @@
 package is.stma.judgebean.beanpoll.util;
 
-class PasswordUtility {
+public class PasswordUtility {
 
     private static final int MINIMUM_LENGTH = 16;
     private static final int MAXIMUM_LENGTH = 160;

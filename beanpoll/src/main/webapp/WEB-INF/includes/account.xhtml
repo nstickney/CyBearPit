@@ -30,7 +30,7 @@
                     <f:facet name="prepend"><b:iconAwesome name="key"/></f:facet>
                 </b:inputSecret>
                 <b:commandButton value="Change Password" look="warning" iconAwesome="retweet"
-                                 action="#{userController.changePassword(sessionUser, sessionBean.password, sessionBean.newPassword)}"/>
+                                 action="#{sessionController.changePassword()}"/>
             </b:panelGrid>
         </h:form>
     </b:panel>
@@ -48,7 +48,8 @@
         <h:form>
             <b:panelGrid colSpans="9,3">
                 <h:outputText value=""/>
-                <b:commandButton value="Delete Account" action="#{userController.delete(sessionUser)}"
+                <b:commandButton value="Delete Account"
+                                 action="#{sessionController.deleteAccount()}"
                                  iconAwesome="trash" look="danger" />
             </b:panelGrid>
         </h:form>

@@ -64,6 +64,8 @@ public class SessionBean extends AbstractFacesController implements Serializable
 
     public void setUser(User user) {
         this.user = user;
+        password = null;
+        newPassword = null;
     }
 
     public boolean isAuthenticated() {
