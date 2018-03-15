@@ -26,6 +26,6 @@ public class PollListProducer extends AbstractEntityListProducer<Poll> {
     @Override
     @PostConstruct
     void retrieveAll() {
-        entities = repo.findAllOrderByNameAsc();
+        entities = repo.findAllOrderByTimestamp();
     }
 }

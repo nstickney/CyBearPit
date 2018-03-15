@@ -26,6 +26,6 @@ public class TaskResponseListProducer extends AbstractEntityListProducer<TaskRes
     @Override
     @PostConstruct
     void retrieveAll() {
-        entities = repo.findAll();
+        entities = repo.findAllOrderByTimestamp();
     }
 }

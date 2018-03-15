@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import java.time.LocalDate;
 
 @Entity
 public class TaskResponse extends AbstractEntity {
@@ -15,6 +16,9 @@ public class TaskResponse extends AbstractEntity {
     @ManyToOne
     @JoinColumn(name = "team_id")
     private Team team;
+
+    @Column
+    private LocalDate timestamp = LocalDate.now();
 
     @Column
     private String contents;
@@ -51,6 +55,14 @@ public class TaskResponse extends AbstractEntity {
 
     public void setTeam(Team team) {
         this.team = team;
+    }
+
+    public LocalDate getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(LocalDate timestamp) {
+        this.timestamp = timestamp;
     }
 
     public String getContents() {
