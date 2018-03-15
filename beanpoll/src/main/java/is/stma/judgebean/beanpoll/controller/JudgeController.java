@@ -1,38 +1,45 @@
 package is.stma.judgebean.beanpoll.controller;
 
 import is.stma.judgebean.beanpoll.model.Contest;
+import is.stma.judgebean.beanpoll.service.ContestService;
 
-import javax.ejb.AsyncResult;
-import javax.ejb.Asynchronous;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.*;
 import java.util.logging.Logger;
 
 @ApplicationScoped
 @Named("judge")
 public class JudgeController {
 
-    @Inject
-    private JudgeBean bean;
+    private static final int NUM_THREADS = 8;
 
     @Inject
-    private
-    ContestController contestController;
+    private Logger log;
 
-    private Future<String> runningContest;
+    @Inject
+    private ContestController contestController;
+
+    @Inject
+    private ContestService contestService;
+
+    private ExecutorService executorService = Executors.newFixedThreadPool(NUM_THREADS);
+
+    private List<Future> running = new ArrayList<>();
 
     public void run(Contest contest) {
         contest.setRunning(true);
+        JudgeCallable contestJudge = new JudgeCallable(contest, contestService, log);
+        Future<String> runningContest = executorService.submit(contestJudge);
+        running.add(runningContest);
         contestController.update(contest);
-        runningContest = bean.printContestName(contest);
     }
 
     public void stop(Contest contest) {
-        runningContest.cancel(true);
+//        runningContest.cancel(true);
         contest.setRunning(false);
         contestController.update(contest);
     }

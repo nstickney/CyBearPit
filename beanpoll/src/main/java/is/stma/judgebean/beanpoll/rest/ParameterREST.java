@@ -32,9 +32,9 @@ import java.util.List;
 /**
  * JAX-RS Example
  * <p/>
- * This class produces a RESTful service to read/write the contents of the resourceParameters table.
+ * This class produces a RESTful service to read/write the contents of the Parameters table.
  */
-@Path("/resourceParameters")
+@Path("/parameters")
 @RequestScoped
 public class ParameterREST extends AbstractREST<Parameter, AbstractRepo<Parameter>, ParameterRules, ParameterService> {
 

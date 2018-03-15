@@ -1,6 +1,6 @@
 package is.stma.judgebean.beanpoll.data;
 
-import is.stma.judgebean.beanpoll.model.Parameter;
+import is.stma.judgebean.beanpoll.model.Poll;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
@@ -10,16 +10,16 @@ import javax.inject.Named;
 import java.util.List;
 
 @RequestScoped
-public class ParameterListProducer extends AbstractEntityListProducer<Parameter> {
+public class PollListProducer extends AbstractEntityListProducer<Poll> {
 
     @Inject
-    private ParameterRepo repo;
+    private PollRepo repo;
 
-    private List<Parameter> entities;
+    private List<Poll> entities;
 
     @Produces
-    @Named("parameters")
-    public List<Parameter> getEntities() {
+    @Named("polls")
+    public List<Poll> getEntities() {
         return entities;
     }
 
