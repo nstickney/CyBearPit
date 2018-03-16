@@ -38,11 +38,15 @@ public class JudgeCallable implements Callable<String> {
         log.log(Level.INFO,0 + ": " + contest.getName());
         for (int i = 1; i < 60; i++) {
             try {
-                Thread.sleep(TimeUnit.SECONDS.toMillis(10));
+                Thread.sleep(TimeUnit.SECONDS.toMillis(5));
             } catch (Exception e) {
                 log.log(Level.INFO,"SLEEP INTERRUPTED");
             }
             contest = service.readById(contest.getId());
+            if (!contest.isRunning()) {
+                log.log(Level.INFO, contest.getName() + " stopped");
+                return contest.getId();
+            }
             log.log(Level.INFO,i + ": " + contest.getName());
         }
         return contest.getId();

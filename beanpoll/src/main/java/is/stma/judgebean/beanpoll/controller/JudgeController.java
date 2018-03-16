@@ -28,19 +28,57 @@ public class JudgeController {
 
     private ExecutorService executorService = Executors.newFixedThreadPool(NUM_THREADS);
 
-    private List<Future> running = new ArrayList<>();
+    private List<IdentifiableFuture> running = new ArrayList<>();
 
     public void run(Contest contest) {
         contest.setRunning(true);
         JudgeCallable contestJudge = new JudgeCallable(contest, contestService, log);
         Future<String> runningContest = executorService.submit(contestJudge);
-        running.add(runningContest);
+        running.add(new IdentifiableFuture(contest.getId(), runningContest));
         contestController.update(contest);
     }
 
     public void stop(Contest contest) {
-//        runningContest.cancel(true);
+        List<IdentifiableFuture> found = new ArrayList<>();
+        for (IdentifiableFuture i : running) {
+            if (i.getId() == contest.getId()) {
+                i.getFuture().cancel(true);
+                found.add(i);
+            }
+        }
+        for (IdentifiableFuture i : found) {
+            running.remove(i);
+        }
         contest.setRunning(false);
         contestController.update(contest);
+    }
+
+    private class IdentifiableFuture {
+
+        private String id;
+
+        private Future<String> future;
+
+        IdentifiableFuture(String id, Future<String> future) {
+            this.id = id;
+            this.future = future;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public Future<String> getFuture() {
+            return future;
+        }
+
+        public void setFuture(Future<String> future) {
+            this.future = future;
+        }
+
     }
 }
