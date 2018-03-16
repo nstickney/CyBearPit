@@ -1,12 +1,13 @@
 package is.stma.judgebean.beanpoll.controller;
 
+import is.stma.judgebean.beanpoll.controller.poller.PollerFactory;
+import is.stma.judgebean.beanpoll.controller.poller.AbstractPoller;
 import is.stma.judgebean.beanpoll.model.Contest;
 import is.stma.judgebean.beanpoll.model.Poll;
 import is.stma.judgebean.beanpoll.model.Resource;
 import is.stma.judgebean.beanpoll.service.ContestService;
 import is.stma.judgebean.beanpoll.service.PollService;
 
-import java.time.LocalDate;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -20,10 +21,6 @@ public class JudgeCallable implements Callable<String> {
     private ContestService contestService;
     private PollService pollService;
     private Logger log;
-
-    JudgeCallable() {
-        super();
-    }
 
     JudgeCallable(Contest contest, ContestService contestService, PollService pollService, Logger log) {
         super();
@@ -52,7 +49,7 @@ public class JudgeCallable implements Callable<String> {
             try {
                 Thread.sleep(TimeUnit.SECONDS.toMillis(POLLING_INTERVAL));
             } catch (Exception e) {
-                log.log(Level.INFO,"SLEEP INTERRUPTED");
+                log.log(Level.INFO, "SLEEP INTERRUPTED");
             }
 
             // Update the contest from the database, to see if we should keep going
@@ -66,12 +63,10 @@ public class JudgeCallable implements Callable<String> {
 
         // Check each competition resource
         for (Resource r : contest.getResources()) {
-            Poll newPoll = new Poll();
-            newPoll.setResource(r);
-            newPoll.setInformation("Checking " + r.getName() + " for " + contest.getName());
-            newPoll.setScore(r.getWeight());
-            newPoll.setTimestamp(LocalDate.now());
-            pollService.create(newPoll);
+            AbstractPoller poller = PollerFactory.getPoller(r);
+            Poll thisPoll = poller.poll();
+            log.log(Level.INFO, thisPoll.getName());
+            pollService.create(thisPoll);
         }
 
         log.log(Level.INFO, "Polled: " + contest.getName());

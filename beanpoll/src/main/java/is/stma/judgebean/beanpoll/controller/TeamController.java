@@ -6,6 +6,8 @@ import is.stma.judgebean.beanpoll.model.Team;
 import is.stma.judgebean.beanpoll.model.User;
 import is.stma.judgebean.beanpoll.rules.TeamRules;
 import is.stma.judgebean.beanpoll.service.TeamService;
+import is.stma.judgebean.beanpoll.service.UserService;
+import is.stma.judgebean.beanpoll.util.PasswordUtility;
 import is.stma.judgebean.beanpoll.util.StringUtility;
 
 import javax.ejb.EJBException;
@@ -33,7 +35,7 @@ public class TeamController extends AbstractEntityController<Team, TeamRules,
     private TaskResponseController taskResponseController;
 
     @Inject
-    private UserController userController;
+    private UserService userService;
 
     @Override
     @Produces
@@ -62,11 +64,26 @@ public class TeamController extends AbstractEntityController<Team, TeamRules,
     @Override
     public void create() {
         try {
-            String teamString = StringUtility.removeWhitespace(getNew().getLogName());
-            userController.getNew().setName(teamString);
-            userController.getNew().setPassword(teamString);
-            userController.getNew().setTeam(getService().create(getNew()));
-            userController.create();
+
+            // Team will need a user to access the system
+            User teamUser = new User();
+
+            // The new user will have the same name as the team
+            teamUser.setName(getNew().getName());
+
+            // The new password will be the team name, minus all whitespace, repeated the minimum
+            // number of times to create a string at least PasswordUtility.MINIMUM_LENGTH long
+            String teamString = StringUtility.removeWhitespace(getNew().getName());
+            StringBuilder buf = new StringBuilder();
+            while (! teamUser.setPassword(buf.toString())) {
+                buf.append(teamString);
+            }
+
+            // Create the team and set the user's team to the newly created team
+            teamUser.setTeam(getService().create(getNew()));
+
+            // Create the user
+            userService.create(teamUser);
             messageOut(getNew().getLogName() + " created.");
         } catch (EJBException | ValidationException e) {
             errorOut(e, "Failed to create " + getNew().getLogName() + ": ");
@@ -101,7 +118,7 @@ public class TeamController extends AbstractEntityController<Team, TeamRules,
         List<User> users = new ArrayList<>(entity.getUsers());
         for (User u : users) {
             u.setTeam(null);
-            userController.update(u);
+            userService.update(u);
         }
 
         // Remove the team itself

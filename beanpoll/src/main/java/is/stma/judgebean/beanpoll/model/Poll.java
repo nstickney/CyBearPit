@@ -1,8 +1,6 @@
 package is.stma.judgebean.beanpoll.model;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
@@ -16,10 +14,14 @@ public class Poll extends AbstractEntity {
     @JoinColumn(name = "resource_id")
     private Resource resource;
 
-    private int score;
+    @Column
+    private int score = 0;
 
+    @Column
     private LocalDate timestamp = LocalDate.now();
 
+    @Lob
+    @Column
     private String information;
 
     @Override

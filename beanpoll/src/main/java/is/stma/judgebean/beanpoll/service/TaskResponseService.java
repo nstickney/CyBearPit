@@ -13,6 +13,7 @@ import javax.inject.Inject;
 public class TaskResponseService extends AbstractService<TaskResponse, AbstractRepo<TaskResponse>,
         TaskResponseRules> {
 
+    @SuppressWarnings("CdiInjectionPointsInspection")
     @Inject
     private TaskResponseRepo repo;
 

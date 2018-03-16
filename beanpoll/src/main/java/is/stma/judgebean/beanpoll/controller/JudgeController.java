@@ -45,7 +45,7 @@ public class JudgeController {
     public void stop(Contest contest) {
         List<IdentifiableFuture> found = new ArrayList<>();
         for (IdentifiableFuture i : running) {
-            if (i.getId() == contest.getId()) {
+            if (i.getId().equals(contest.getId())) {
                 i.getFuture().cancel(true);
                 found.add(i);
             }
@@ -57,7 +57,7 @@ public class JudgeController {
         contestController.update(contest);
     }
 
-    private class IdentifiableFuture {
+    private static class IdentifiableFuture {
 
         private String id;
 

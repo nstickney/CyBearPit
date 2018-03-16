@@ -46,7 +46,7 @@ public class TeamRulesTest {
         File[] files = Maven.resolver().loadPomFromFile("pom.xml")
                 .importRuntimeDependencies().resolve().withTransitivity().asFile();
 
-        return ShrinkWrap.create(WebArchive.class, "teamServiceTest.war")
+        return ShrinkWrap.create(WebArchive.class, "teamRulesTest.war")
                 .addPackages(true, Team.class.getPackage(),
                         TeamRepo.class.getPackage(),
                         TeamService.class.getPackage(),

@@ -13,6 +13,7 @@ import javax.inject.Inject;
 public class ContestService extends AbstractService<Contest, AbstractRepo<Contest>,
         ContestRules> {
 
+    @SuppressWarnings("CdiInjectionPointsInspection")
     @Inject
     private ContestRepo repo;
 
