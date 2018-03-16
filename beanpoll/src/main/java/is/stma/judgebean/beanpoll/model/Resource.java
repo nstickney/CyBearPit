@@ -25,6 +25,9 @@ public class Resource extends ComparableByContest {
     @Column(nullable = false)
     private boolean scoring = false;
 
+    @Column(nullable = false)
+    private int weight = 1;
+
     @OneToMany(mappedBy = "resource")
     private List<Parameter> parameters = new ArrayList<>();
 
@@ -94,6 +97,14 @@ public class Resource extends ComparableByContest {
         this.scoring = scoring;
     }
 
+    public int getWeight() {
+        return weight;
+    }
+
+    public void setWeight(int weight) {
+        this.weight = weight;
+    }
+
     public List<Parameter> getParameters() {
         return parameters;
     }
@@ -119,7 +130,7 @@ public class Resource extends ComparableByContest {
     }
 
     public void addTeam(Team team) {
-        if (null != team) {
+        if (null != team && ! teams.contains(team)) {
             teams.add(team);
         }
     }

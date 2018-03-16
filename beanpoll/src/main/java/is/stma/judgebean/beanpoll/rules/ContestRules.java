@@ -28,5 +28,16 @@ public class ContestRules extends AbstractRules<Contest> {
     @Override
     void checkBeforeDelete(Contest entity) throws ValidationException {
 
+        // Cannot delete a running contest
+        checkNotRunning(entity);
+    }
+
+    private void checkNotRunning(Contest entity) throws ValidationException {
+
+        // Check both the entity we are handed, and the canonical version of said entity
+        if (entity.isRunning() || repo.findBy(entity.getId()).isRunning()) {
+            throw new ValidationException("cannot delete a running contest");
+        }
+
     }
 }

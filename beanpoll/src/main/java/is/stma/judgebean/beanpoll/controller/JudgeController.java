@@ -2,6 +2,7 @@ package is.stma.judgebean.beanpoll.controller;
 
 import is.stma.judgebean.beanpoll.model.Contest;
 import is.stma.judgebean.beanpoll.service.ContestService;
+import is.stma.judgebean.beanpoll.service.PollService;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -26,13 +27,16 @@ public class JudgeController {
     @Inject
     private ContestService contestService;
 
+    @Inject
+    private PollService pollService;
+
     private ExecutorService executorService = Executors.newFixedThreadPool(NUM_THREADS);
 
     private List<IdentifiableFuture> running = new ArrayList<>();
 
     public void run(Contest contest) {
         contest.setRunning(true);
-        JudgeCallable contestJudge = new JudgeCallable(contest, contestService, log);
+        JudgeCallable contestJudge = new JudgeCallable(contest, contestService, pollService, log);
         Future<String> runningContest = executorService.submit(contestJudge);
         running.add(new IdentifiableFuture(contest.getId(), runningContest));
         contestController.update(contest);
@@ -64,20 +68,12 @@ public class JudgeController {
             this.future = future;
         }
 
-        public String getId() {
+        String getId() {
             return id;
         }
 
-        public void setId(String id) {
-            this.id = id;
-        }
-
-        public Future<String> getFuture() {
+        Future<String> getFuture() {
             return future;
-        }
-
-        public void setFuture(Future<String> future) {
-            this.future = future;
         }
 
     }

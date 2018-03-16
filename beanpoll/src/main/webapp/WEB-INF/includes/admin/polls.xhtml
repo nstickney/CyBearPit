@@ -4,7 +4,7 @@
 
     <!-- Existing users, ordered by admins, then by teams -->
         <b:panel title="All Poll Data In Database" iconAwesome="user">
-            <b:dataTable var="_poll" value="#{polls}" scrollSize="100">
+            <b:dataTable var="_poll" value="#{polls}">
                 <b:dataTableColumn value="#{_poll.resource.name}" label="Resource"/>
                 <b:dataTableColumn value="#{_poll.information}" label="Poll Result"/>
                 <b:dataTableColumn value="#{_poll.team.name}" label="Team"/>

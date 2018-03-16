@@ -2,6 +2,7 @@ package is.stma.judgebean.beanpoll.controller;
 
 import is.stma.judgebean.beanpoll.model.Parameter;
 import is.stma.judgebean.beanpoll.model.Resource;
+import is.stma.judgebean.beanpoll.model.Team;
 import is.stma.judgebean.beanpoll.rules.ResourceRules;
 import is.stma.judgebean.beanpoll.service.ResourceService;
 
@@ -25,6 +26,8 @@ public class ResourceController extends AbstractEntityController<Resource, Resou
 
     private Resource newResource;
 
+    private Team addThisTeam;
+
     @Override
     @Produces
     @Named("newResource")
@@ -43,6 +46,14 @@ public class ResourceController extends AbstractEntityController<Resource, Resou
     @Override
     ResourceService getService() {
         return service;
+    }
+
+    public Team getAddThisTeam() {
+        return addThisTeam;
+    }
+
+    public void setAddThisTeam(Team addTeam) {
+        this.addThisTeam = addTeam;
     }
 
     /**
@@ -94,6 +105,47 @@ public class ResourceController extends AbstractEntityController<Resource, Resou
             parameterController.deleteSilent(p);
         }
         doDelete(entity);
+    }
+
+    public void addTeam(Resource entity) {
+        if (null != entity) {
+            if (null != addThisTeam) {
+                if (!entity.getTeams().contains(addThisTeam)) {
+                    entity.addTeam(addThisTeam);
+                    addThisTeam = null;
+                    update(entity);
+                } else {
+                    errorOut(new ValidationException(entity.getName() + " already includes " + addThisTeam.getName()),
+                            "Cannot add team: ");
+                }
+            } else {
+                errorOut(new ValidationException("team does not exist"),
+                        "Cannot add team: ");
+            }
+        } else {
+            errorOut(new ValidationException("resource does not exist"),
+                    "Cannot add team: ");
+        }
+    }
+
+    public void removeTeam(Resource entity, Team removeThisTeam) {
+        if (null != entity) {
+            if (null != removeThisTeam) {
+                if (entity.getTeams().contains(removeThisTeam)) {
+                    entity.removeTeam(removeThisTeam);
+                    update(entity);
+                } else {
+                    errorOut(new ValidationException(entity.getName() + " does not include " + removeThisTeam.getName()),
+                            "Cannot remove team: ");
+                }
+            } else {
+                errorOut(new ValidationException("team does not exist"),
+                        "Cannot remove team: ");
+            }
+        } else {
+            errorOut(new ValidationException("resource does not exist"),
+                    "Cannot remove team: ");
+        }
     }
 
 }

@@ -24,7 +24,7 @@ public class Poll extends AbstractEntity {
 
     @Override
     public String getName() {
-        return null;
+        return getId();
     }
 
     public Team getTeam() {
