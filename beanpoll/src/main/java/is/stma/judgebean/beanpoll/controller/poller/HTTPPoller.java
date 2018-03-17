@@ -59,13 +59,19 @@ public class HTTPPoller extends AbstractPoller {
         List<Team> scoringTeams = new ArrayList<>();
         if (!newPoll.getInformation().startsWith("ERROR: ")) {
 
-            // If the resource doesn't have any teams set, then any team in the contest is allowed
-            // to score on the resource
             List<Team> possibleTeams = resource.getTeams();
-            if (possibleTeams.isEmpty()) {
-                possibleTeams = resource.getContest().getTeams();
+
+            // If there is only a single team assigned to this resource, don't check flags
+            if (1 == possibleTeams.size()) {
+                scoringTeams = possibleTeams;
+            } else {
+                // If the resource doesn't have any teams set, then any team in the contest is allowed
+                // to score on the resource
+                if (possibleTeams.isEmpty()) {
+                    possibleTeams = resource.getContest().getTeams();
+                }
+                scoringTeams = checkTeams(possibleTeams, newPoll.getInformation());
             }
-            scoringTeams = checkTeams(possibleTeams, newPoll.getInformation());
         }
 
         // If exactly one team's flag was found...

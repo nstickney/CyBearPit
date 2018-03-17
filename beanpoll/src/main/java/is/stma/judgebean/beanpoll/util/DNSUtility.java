@@ -16,12 +16,12 @@ public class DNSUtility {
     private static final boolean DEFAULT_DNS_RECURSIVE = false;
     private static final int DEFAULT_DNS_TIMEOUT = 2;
     private static final int MAX_DNS_TIMEOUT = 5;
+    private static final boolean DEFAULT_DNS_FIRST_ONLY = true;
 
     /**
      * Runs a forward lookup for records on the given query at the specified
      * host address and port. Note that only DNS records of types A, AAAA,
-     * CNAME, DNAME, MX, NS, PTR, and TXT are properly filtered, and only the
-     * first record of any given type is returned.
+     * CNAME, DNAME, MX, NS, PTR, and TXT are properly filtered.
      *
      * @param hostAddress address or hostname of DNS server to query
      * @param hostPort    server port of the DNS server to query
@@ -30,10 +30,11 @@ public class DNSUtility {
      * @param type        the type of record to ask for
      * @param recursive   whether to request recursion (TODO: Unimplemented)
      * @param timeout     length of the timeout in seconds
+     * @param firstOnly   whether or not to return only the first result
      * @return top (first) response from the server, or ERROR
      */
-    private static String lookup(String hostAddress, int hostPort, String query, int type,
-                                 boolean tcp, boolean recursive, int timeout) {
+    public static String lookup(String hostAddress, int hostPort, String query, int type,
+                                boolean tcp, boolean recursive, int timeout, boolean firstOnly) {
         try {
 
             // Set up the resolution options
@@ -81,28 +82,45 @@ public class DNSUtility {
             }
 
             // Filter supported types
-            switch (type) {
-                case A:
-                    return ((ARecord) records[0]).getAddress().toString();
-                case AAAA:
-                    return ((AAAARecord) records[0]).getAddress().toString();
-                case CNAME:
-                    return ((CNAMERecord) records[0]).getAlias().toString();
-                case DNAME:
-                    return ((DNAMERecord) records[0]).getAlias().toString();
-                case MX:
-                    return records[0].getAdditionalName().toString();
-                case NS:
-                    return records[0].getAdditionalName().toString();
-                case PTR:
-                    return ((PTRRecord) records[0]).getTarget().toString();
-                case SOA:
-                    return ((SOARecord) records[0]).getHost().toString();
-                case TXT:
-                    return (String) ((TXTRecord) records[0]).getStrings().get(0);
+            StringBuilder result = new StringBuilder();
+            for (Record r : records) {
+                switch (type) {
+                    case A:
+                        result.append(((ARecord) r).getAddress().toString());
+                        break;
+                    case AAAA:
+                        result.append(((AAAARecord) r).getAddress().toString());
+                        break;
+                    case CNAME:
+                        result.append(((CNAMERecord) r).getAlias().toString());
+                        break;
+                    case DNAME:
+                        result.append(((DNAMERecord) r).getAlias().toString());
+                        break;
+                    case MX:
+                        result.append(r.getAdditionalName().toString());
+                        break;
+                    case NS:
+                        result.append(r.getAdditionalName().toString());
+                        break;
+                    case PTR:
+                        result.append(((PTRRecord) r).getTarget().toString());
+                        break;
+                    case SOA:
+                        result.append(((SOARecord) r).getHost().toString());
+                        break;
+                    case TXT:
+                        result.append(((TXTRecord) r).getStrings().get(0));
+                        break;
+                    default:
+                        result.append(r.toString());
+                        break;
+                }
+                if (firstOnly && !"".equals(result.toString())) {
+                    return result.toString();
+                }
             }
-
-            return records[0].toString();
+            return result.toString();
 
         } catch (UnknownHostException | TextParseException e) {
             return "ERROR: resolution failed";
@@ -110,18 +128,18 @@ public class DNSUtility {
     }
 
     public static String lookup(String query) {
-        return lookup(DEFAULT_DNS_ADDRESS, DEFAULT_DNS_PORT, query, DEFAULT_DNS_TYPE, DEFAULT_DNS_TCP, DEFAULT_DNS_RECURSIVE, DEFAULT_DNS_TIMEOUT);
+        return lookup(DEFAULT_DNS_ADDRESS, DEFAULT_DNS_PORT, query, DEFAULT_DNS_TYPE, DEFAULT_DNS_TCP, DEFAULT_DNS_RECURSIVE, DEFAULT_DNS_TIMEOUT, DEFAULT_DNS_FIRST_ONLY);
     }
 
     public static String lookup(String hostAddress, String query) {
-        return lookup(hostAddress, DEFAULT_DNS_PORT, query, DEFAULT_DNS_TYPE, DEFAULT_DNS_TCP, DEFAULT_DNS_RECURSIVE, DEFAULT_DNS_TIMEOUT);
+        return lookup(hostAddress, DEFAULT_DNS_PORT, query, DEFAULT_DNS_TYPE, DEFAULT_DNS_TCP, DEFAULT_DNS_RECURSIVE, DEFAULT_DNS_TIMEOUT, DEFAULT_DNS_FIRST_ONLY);
     }
 
     public static String lookup(String query, int type) {
-        return lookup(DEFAULT_DNS_ADDRESS, DEFAULT_DNS_PORT, query, type, DEFAULT_DNS_TCP, DEFAULT_DNS_RECURSIVE, DEFAULT_DNS_TIMEOUT);
+        return lookup(DEFAULT_DNS_ADDRESS, DEFAULT_DNS_PORT, query, type, DEFAULT_DNS_TCP, DEFAULT_DNS_RECURSIVE, DEFAULT_DNS_TIMEOUT, DEFAULT_DNS_FIRST_ONLY);
     }
 
     public static String lookup(String hostAddress, String query, int type) {
-        return lookup(hostAddress, DEFAULT_DNS_PORT, query, type, DEFAULT_DNS_TCP, DEFAULT_DNS_RECURSIVE, DEFAULT_DNS_TIMEOUT);
+        return lookup(hostAddress, DEFAULT_DNS_PORT, query, type, DEFAULT_DNS_TCP, DEFAULT_DNS_RECURSIVE, DEFAULT_DNS_TIMEOUT, DEFAULT_DNS_FIRST_ONLY);
     }
 }

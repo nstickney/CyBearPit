@@ -16,12 +16,12 @@ public class DNSParameterizer {
     public static final String DNS_EXPECTED = "DNS_EXPECTED";
 
     // DNS default value strings
-    private static final String DNS_DEFAULT_QUERY = "baylor.edu";
-    private static final String DNS_DEFAULT_RECORD_TYPE = "A";
-    private static final String DNS_DEFAULT_TCP = Parameter.TRUE;
-    private static final String DNS_DEFAULT_RECURSIVE = Parameter.FALSE;
-    private static final String DNS_DEFAULT_TIMEOUT = "3";
-    private static final String DNS_DEFAULT_EXPECTED = "129.62.3.230";
+    public static final String DNS_DEFAULT_QUERY = "baylor.edu";
+    public static final String DNS_DEFAULT_RECORD_TYPE = "A";
+    public static final String DNS_DEFAULT_TCP = Parameter.TRUE;
+    public static final String DNS_DEFAULT_RECURSIVE = Parameter.FALSE;
+    public static final String DNS_DEFAULT_TIMEOUT = "3";
+    public static final String DNS_DEFAULT_EXPECTED = "129.62.3.230";
 
 
     public static List<Parameter> createParameters() {
