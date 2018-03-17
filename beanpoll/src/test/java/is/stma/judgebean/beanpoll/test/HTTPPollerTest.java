@@ -1,17 +1,13 @@
 package is.stma.judgebean.beanpoll.test;
 
-import is.stma.judgebean.beanpoll.controller.parameterizer.DNSParameterizer;
 import is.stma.judgebean.beanpoll.controller.parameterizer.HTTPParameterizer;
 import is.stma.judgebean.beanpoll.controller.poller.AbstractPoller;
-import is.stma.judgebean.beanpoll.controller.poller.HTTPPoller;
 import is.stma.judgebean.beanpoll.controller.poller.PollerFactory;
 import is.stma.judgebean.beanpoll.data.PollRepo;
 import is.stma.judgebean.beanpoll.model.*;
 import is.stma.judgebean.beanpoll.rules.PollRules;
 import is.stma.judgebean.beanpoll.service.*;
 import is.stma.judgebean.beanpoll.util.EMProducer;
-import is.stma.judgebean.beanpoll.util.HTTPUtility;
-import is.stma.judgebean.beanpoll.util.LogProducer;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.Archive;
@@ -29,7 +25,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.logging.Logger;
 
 import static org.hamcrest.CoreMatchers.anyOf;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -38,16 +33,10 @@ import static org.hamcrest.CoreMatchers.equalTo;
 public class HTTPPollerTest {
 
     @Inject
-    private Logger log;
-
-    @Inject
     private ContestService contestService;
 
     @Inject
     private ParameterService parameterService;
-
-    @Inject
-    private PollService pollService;
 
     @Inject
     private ResourceService resourceService;
@@ -60,8 +49,10 @@ public class HTTPPollerTest {
 
     private Poll poll;
 
-    private Team team;
-    private String teamID;
+    private Team bonusTeam;
+    private Team baylorTeam;
+    private String bonusTeamID;
+    private String baylorTeamID;
 
     private Resource resource;
     private String resourceID;
@@ -96,9 +87,10 @@ public class HTTPPollerTest {
         }
 
         try {
-            team = teamService.readById(teamID);
+            bonusTeam = teamService.readById(bonusTeamID);
+            baylorTeam = teamService.readById(baylorTeamID);
         } catch (Exception e) {
-            buildTeam();
+            buildTeams();
         }
 
         try {
@@ -115,13 +107,19 @@ public class HTTPPollerTest {
         contestID = contest.getId();
     }
 
-    private void buildTeam() {
-        team = new Team();
-        team.setContest(contest);
-        team.setName(UUID.randomUUID().toString());
-        team.setFlag("BONUSPOINTS");
-        team = teamService.create(team);
-        teamID = team.getId();
+    private void buildTeams() {
+        bonusTeam = new Team();
+        bonusTeam.setContest(contest);
+        bonusTeam.setName(UUID.randomUUID().toString());
+        bonusTeam.setFlag("BONUSPOINTS");
+        bonusTeam = teamService.create(bonusTeam);
+        bonusTeamID = bonusTeam.getId();
+        baylorTeam = new Team();
+        baylorTeam.setContest(contest);
+        baylorTeam.setName(UUID.randomUUID().toString());
+        baylorTeam.setFlag("Baylor University");
+        baylorTeam = teamService.create(baylorTeam);
+        baylorTeamID = bonusTeam.getId();
         contest = contestService.readById(contestID);
     }
 
@@ -148,8 +146,8 @@ public class HTTPPollerTest {
         contest = contestService.readById(contestID);
     }
 
-    private void setBadAddress() {
-        resource.setAddress("baylor.ccdc");
+    private void setAddress(String address) {
+        resource.setAddress(address);
         resource = resourceService.update(resource);
     }
 
@@ -173,7 +171,7 @@ public class HTTPPollerTest {
         AbstractPoller poller = PollerFactory.getPoller(resource);
         poll = poller.poll();
         Assert.assertTrue(poll.getInformation().contains("BONUSPOINTS"));
-        Assert.assertTrue(poll.getTeam().equals(team));
+        Assert.assertTrue(poll.getTeam().equals(bonusTeam));
     }
 
     @Test
@@ -182,12 +180,12 @@ public class HTTPPollerTest {
         AbstractPoller poller = PollerFactory.getPoller(resource);
         poll = poller.poll();
         Assert.assertTrue(poll.getInformation().contains("BONUSPOINTS"));
-        Assert.assertTrue(poll.getTeam().equals(team));
+        Assert.assertTrue(poll.getTeam().equals(bonusTeam));
     }
 
     @Test
     public void testPollFails() {
-        setBadAddress();
+        setAddress("baylor.ccdc");
         AbstractPoller poller = PollerFactory.getPoller(resource);
         poll = poller.poll();
         Assert.assertEquals("ERROR: ", poll.getInformation().substring(0,7));
@@ -196,7 +194,6 @@ public class HTTPPollerTest {
 
     @Test
     public void testBadResolver() {
-        setBadAddress();
         setResovler("123.123.132.132");
         AbstractPoller poller = PollerFactory.getPoller(resource);
         poll = poller.poll();
@@ -205,7 +202,6 @@ public class HTTPPollerTest {
 
     @Test
     public void testBadResolverIP() {
-        setBadAddress();
         setResovler("256.0.0.1");
         AbstractPoller poller = PollerFactory.getPoller(resource);
         poll = poller.poll();
@@ -214,18 +210,35 @@ public class HTTPPollerTest {
 
     @Test
     public void testResolutionFails() {
-        setBadAddress();
+        setAddress("baylor.ccdc");
         setResovler("9.9.9.9");
         AbstractPoller poller = PollerFactory.getPoller(resource);
         poll = poller.poll();
-        Assert.assertEquals("DNS ERROR: host not found", poll.getInformation());
+        Assert.assertThat(poll.getInformation(), anyOf(equalTo("DNS ERROR: type not found"), equalTo("DNS ERROR: host not found")));
     }
 
     @Test
     public void testNoTeamGetsPoints() {
-        resource.setAddress("baylor.edu");
+        setAddress("usma.edu");
         AbstractPoller poller = PollerFactory.getPoller(resource);
         poll = poller.poll();
         Assert.assertEquals(null, poll.getTeam());
+    }
+
+    @Test
+    public void testMultipleTeams() {
+        setAddress("baylor.edu");
+        AbstractPoller poller = PollerFactory.getPoller(resource);
+        poll = poller.poll();
+        Assert.assertTrue(poll.getTeam().equals(baylorTeam));
+    }
+
+    @Test
+    public void testIPAddress() {
+        setAddress("208.123.73.69");
+        AbstractPoller poller = PollerFactory.getPoller(resource);
+        poll = poller.poll();
+        Assert.assertTrue(poll.getInformation().contains("Netgate"));
+        Assert.assertTrue(null == poll.getTeam());
     }
 }
