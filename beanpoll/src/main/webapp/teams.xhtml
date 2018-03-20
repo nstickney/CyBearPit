@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/WEB-INF/templates/default.xhtml">
+
+    <!-- Page title and content header string -->
+    <ui:define name="title">Teams</ui:define>
+
+    <!-- Main body content -->
+    <ui:define name="content">
+
+        <!-- Must be admin to view the teams page -->
+        <f:metadata>
+            <f:viewAction action="#{sessionController.checkAdminNavigation()}"/>
+        </f:metadata>
+
+        <!-- Option to create a new team -->
+        <b:panel title="Create a New Team" iconAwesome="plus" look="info" collapsed="#{true}"><h:form>
+            <b:panelGrid colSpans="2,6,4" size="sm">
+                <h:outputLabel value="Contest:" for="ncontest"/>
+                <b:selectOneMenu value="#{newTeam.contest}" id="ncontest">
+                    <f:facet name="prepend"><b:iconAwesome name="trophy"/></f:facet>
+                    <f:selectItems value="#{contests}" var="_ncontest"
+                                   itemLabel="#{_ncontest.name}" itemValue="#{_ncontest}"/>
+                </b:selectOneMenu>
+                <h:outputText value=""/>
+                <h:outputLabel value="Name:" for="nname"/>
+                <b:inputText value="#{newTeam.name}" id="nname" class="form-control">
+                    <f:facet name="prepend"><b:iconAwesome name="bullhorn"/></f:facet>
+                </b:inputText>
+                <h:outputText value=""/>
+                <h:outputLabel value="Flag:" for="nflag"/>
+                <b:inputText value="#{newTeam.flag}" id="nflag">
+                    <f:facet name="prepend"><b:iconAwesome name="flag"/></f:facet>
+                </b:inputText>
+                <b:commandButton action="#{teamController.create()}" value="Create"
+                                 iconAwesome="plus" look="success"/>
+            </b:panelGrid>
+        </h:form></b:panel>
+
+        <!-- Existing teams, grouped by contest -->
+        <c:forEach var="_team" items="#{teams}">
+            <b:panel title="#{_team.displayName} - #{_team.score}" iconAwesome="bullhorn"
+                     look="#{_team.look}" collapsed="#{true}">
+
+                <!-- Task Responses -->
+
+                <!-- Contest tasks -->
+                <b:panel title="Task Responses" iconAwesome="envelope-open" collapsed="#{true}"><h:form>
+                    <b:dataTable var="_taskResponse" value="#{_team.taskResponses}">
+                        <b:dataTableColumn value="#{_taskResponse.task.name}" label="Task"/>
+                        <b:dataTableColumn value="#{_taskResponse.task.pointValue}" label="Value"/>
+                        <b:dataTableColumn value="#{_taskResponse.contents}" label="Response"/>
+                        <b:dataTableColumn value="#{_taskResponse.score}"/>
+                        <b:dataTableColumn value="#{_taskResponse.comments}"/>
+                    </b:dataTable>
+                </h:form></b:panel>
+
+                <!-- Team settings -->
+                <b:panel title="Settings" iconAwesome="cog" collapsed="#{true}"><h:form>
+                    <b:panelGrid colSpans="2,6,4" size="sm">
+                        <h:outputLabel value="Contest:" for="contest"/>
+                        <b:selectOneMenu value="#{_team.contest}" id="contest">
+                            <f:facet name="prepend"><b:iconAwesome name="trophy"/></f:facet>
+                            <f:selectItems value="#{contests}" var="_contest"
+                                           itemLabel="#{_contest.name}" itemValue="#{_contest}"/>
+                        </b:selectOneMenu>
+                        <h:outputText value=""/>
+                        <h:outputLabel value="Name:" for="name"/>
+                        <b:inputText value="#{_team.name}" id="name" class="form-control">
+                            <f:facet name="prepend"><b:iconAwesome name="bullhorn"/></f:facet>
+                        </b:inputText>
+                        <h:outputText value=""/>
+                        <h:outputLabel value="Flag:" for="flag"/>
+                        <b:inputText value="#{_team.flag}" id="flag">
+                            <f:facet name="prepend"><b:iconAwesome name="flag"/></f:facet>
+                        </b:inputText>
+                        <b:commandButton action="#{teamController.update(_team)}" value="Update"
+                                         iconAwesome="retweet" look="info"/>
+                    </b:panelGrid>
+                    <b:panelGrid colSpans="9,3" size="sm">
+                        <h:outputLabel value=""/>
+                        <b:commandButton action="#{teamController.delete(_team)}" value="Delete"
+                                         iconAwesome="trash" look="danger"/>
+                    </b:panelGrid>
+                </h:form></b:panel>
+            </b:panel>
+        </c:forEach>
+    </ui:define>
+</ui:composition>

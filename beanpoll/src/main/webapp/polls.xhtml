@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/WEB-INF/templates/default.xhtml">
+
+    <!-- Page title and content header string -->
+    <ui:define name="title">Poll Data</ui:define>
+
+    <!-- Main body content -->
+    <ui:define name="content">
+
+        <!-- Must be admin to view the poll data page -->
+        <f:metadata>
+            <f:viewAction action="#{sessionController.checkAdminNavigation()}"/>
+        </f:metadata>
+
+    <!-- Existing users, ordered by admins, then by teams -->
+        <b:panel title="All Poll Data In Database" iconAwesome="warehouse">
+            <b:dataTable var="_poll" value="#{polls}">
+                <b:dataTableColumn value="#{_poll.resource.name}" label="Resource"/>
+                <b:dataTableColumn value="#{_poll.information}" label="Poll Result"/>
+                <b:dataTableColumn value="#{_poll.team.name}" label="Team"/>
+                <b:dataTableColumn value="#{_poll.score}" label="Points"/>
+            </b:dataTable>
+        </b:panel>
+
+    </ui:define>
+</ui:composition>

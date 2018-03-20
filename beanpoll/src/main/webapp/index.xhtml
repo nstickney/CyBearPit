@@ -18,25 +18,23 @@
             <f:viewAction action="#{sessionController.checkLoginNavigation()}"/>
         </f:metadata>
 
-        <b:tab title="Log In">
-            <f:facet name="anchor"><b:iconAwesome name="key"/></f:facet>
-            <h:form>
-                <b:panelGrid colSpans="2,6,4" size="sm">
-                    <h:outputLabel value="Username:" for="username"/>
-                    <b:inputText value="#{sessionController.username}" id="username" class="form-control">
-                        <f:facet name="prepend"><b:icon name="user"/></f:facet>
-                    </b:inputText>
-                    <h:outputText value=""/>
-                    <h:outputLabel value="Password:" for="password"/>
-                    <b:inputSecret value="#{sessionController.password}" id="password" class="form-control">
-                        <f:facet name="prepend"><b:iconAwesome name="key"/></f:facet>
-                    </b:inputSecret>
-                    <h:outputText value=""/>
-                    <h:outputText value=""/>
-                    <b:commandButton action="#{sessionController.authenticate()}" value="Log In"
-                                     icon="log-in" look="success"/>
-                </b:panelGrid>
-            </h:form>
-        </b:tab>
+        <f:facet name="anchor"><b:iconAwesome name="key"/></f:facet>
+        <h:form>
+            <b:panelGrid colSpans="2,6,4" size="sm">
+                <h:outputLabel value="Username:" for="username"/>
+                <b:inputText value="#{sessionController.username}" id="username" class="form-control">
+                    <f:facet name="prepend"><b:icon name="user"/></f:facet>
+                </b:inputText>
+                <h:outputText value=""/>
+                <h:outputLabel value="Password:" for="password"/>
+                <b:inputSecret value="#{sessionController.password}" id="password" class="form-control">
+                    <f:facet name="prepend"><b:iconAwesome name="key"/></f:facet>
+                </b:inputSecret>
+                <h:outputText value=""/>
+                <h:outputText value=""/>
+                <b:commandButton action="#{sessionController.authenticate()}" value="Log In"
+                                 icon="log-in" look="success"/>
+            </b:panelGrid>
+        </h:form>
     </ui:define>
 </ui:composition>

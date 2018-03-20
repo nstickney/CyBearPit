@@ -31,6 +31,8 @@ export DB_HOST="172.17.0.1"
 export DB_PORT="3306"
 export DB_USER="judgebeanmysql"
 export DB_PWD="judgebeanmysqlpassword"
+export KS_ALIAS="judgebean-wildfly"
+export KS_PWD="judgebeankeystorepassword"
 
 $JBOSS_CLI -c << EOF
 batch
@@ -45,6 +47,12 @@ echo "  => Configuring MySQL driver"
 
 echo "  => Creating MySQL datasource " $JUDGEBEAN_DS
 data-source add --name=$JUDGEBEAN_DB --driver-name=mysql --jndi-name=$JUDGEBEAN_DS --connection-url=jdbc:mysql://$DB_HOST:$DB_PORT/$JUDGEBEAN_DB --user-name=$DB_USER --password=$DB_PWD
+
+echo "  => Setting up TLSv1.2"
+/core-service=management/security-realm=ApplicationRealm/server-identity=ssl:write-attribute(name=protocol,value=openssl.TLSv1.2)
+
+echo "  => Redirecting HTTP to HTTPS"
+/subsystem=undertow/server=default-server/http-listener=default:write-attribute(name=redirect-socket,value=https)
 
 run-batch
 EOF

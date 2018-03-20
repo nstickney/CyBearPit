@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/WEB-INF/templates/default.xhtml">
+
+    <!-- Page title and content header string -->
+    <ui:define name="title">Tasks</ui:define>
+
+    <!-- Main body content -->
+    <ui:define name="content">
+
+        <!-- Must be admin to view the tasks page -->
+        <f:metadata>
+            <f:viewAction action="#{sessionController.checkAdminNavigation()}"/>
+        </f:metadata>
+
+        <!-- Option to create a new task -->
+        <b:panel title="Create a New Task" iconAwesome="plus" look="info" collapsed="#{true}"><h:form>
+            <b:panelGrid colSpans="2,6,4" size="sm">
+                <h:outputLabel value="Contest:" for="ncontest"/>
+                <b:selectOneMenu value="#{newTask.contest}" id="ncontest">
+                    <f:facet name="prepend"><b:iconAwesome name="trophy"/></f:facet>
+                    <f:selectItems value="#{contests}" var="_ncontest"
+                                   itemLabel="#{_ncontest.name}" itemValue="#{_ncontest}"/>
+                </b:selectOneMenu>
+                <h:outputText value=""/>
+                <h:outputLabel value="Name:" for="nname"/>
+                <b:inputText value="#{newTask.name}" id="nname" class="form-control">
+                    <f:facet name="prepend"><b:iconAwesome name="check"/></f:facet>
+                </b:inputText>
+                <h:outputText value=""/>
+                <h:outputLabel value="Description:" for="ndescription"/>
+                <b:inputTextarea value="#{newTask.description}" id="ndescription">
+                    <f:facet name="prepend"><b:iconAwesome name="info"/></f:facet>
+                </b:inputTextarea>
+                <b:commandButton action="#{taskController.create()}" value="Create"
+                                 iconAwesome="plus" look="success"/>
+            </b:panelGrid>
+        </h:form></b:panel>
+
+        <!-- Existing tasks, grouped by contest -->
+        <c:forEach var="_task" items="#{tasks}">
+            <b:panel title="#{_task.displayName}" iconAwesome="check" look="#{_task.look}" collapsed="#{true}">
+
+                <!-- Task responses -->
+                <b:panel title="Responses" iconAwesome="envelope-open" collapsed="#{true}">
+                    <b:dataTable var="_response" value="#{_task.responses}">
+                        <b:dataTableColumn value="#{_response.team.name}" label="Team"/>
+                        <b:dataTableColumn value="#{_response.contents}"/>
+                        <b:dataTableColumn value="#{_response.score}"/>
+                        <b:dataTableColumn value="#{_response.comments}"/>
+                    </b:dataTable>
+                </b:panel>
+
+                <!-- Task settings -->
+                <b:panel title="Settings" iconAwesome="cog" collapsed="#{true}">
+                    <h:form>
+                        <b:panelGrid colSpans="2,6,4" size="sm">
+                            <h:outputLabel value="Contest:" for="contest"/>
+                            <b:selectOneMenu value="#{_task.contest}" id="contest">
+                                <f:facet name="prepend"><b:iconAwesome name="trophy"/></f:facet>
+                                <f:selectItems value="#{contests}" var="_acontest"
+                                               itemLabel="#{_acontest.name}"
+                                               itemValue="#{_acontest}"/>
+                            </b:selectOneMenu>
+                            <h:outputText value=""/>
+                            <h:outputLabel value="Name:" for="nname"/>
+                            <b:inputText value="#{_task.name}" id="nname" class="form-control">
+                                <f:facet name="prepend"><b:iconAwesome name="check"/></f:facet>
+                            </b:inputText>
+                            <h:outputText value=""/>
+                            <h:outputLabel value="Description:" for="ndescription"/>
+                            <b:inputTextarea value="#{_task.description}" id="ndescription">
+                                <f:facet name="prepend"><b:iconAwesome name="info"/></f:facet>
+                            </b:inputTextarea>
+                            <b:commandButton action="#{taskController.update(_task)}" value="Update"
+                                             iconAwesome="retweet" look="info"/>
+                        </b:panelGrid>
+                        <b:panelGrid colSpans="9,3" size="sm">
+                            <h:outputText value=""/>
+                            <b:commandButton action="#{taskController.delete(_task)}" value="Delete"
+                                             iconAwesome="trash" look="danger"/>
+                        </b:panelGrid>
+                    </h:form>
+                </b:panel>
+            </b:panel>
+        </c:forEach>
+    </ui:define>
+</ui:composition>

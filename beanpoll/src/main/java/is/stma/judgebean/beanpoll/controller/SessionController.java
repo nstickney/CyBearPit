@@ -12,10 +12,10 @@ import javax.persistence.NoResultException;
 public class SessionController extends AbstractFacesController {
 
     public static final String LOGIN_PAGE = "index.xhtml";
-    private static final String ADMIN_PAGE = "admin.xhtml";
-    private static final String JUDGE_PAGE = "judge.xhtml";
+    private static final String ADMIN_PAGE = "contests.xhtml";
+    private static final String JUDGE_PAGE = "grading.xhtml";
     private static final String TEAM_PAGE = "team.xhtml";
-    private static final String USER_PAGE = "user.xhtml";
+    private static final String USER_PAGE = "account.xhtml";
 
     private static final String LOGIN_SUCCESS = "Welcome to BeanPoll";
 

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/WEB-INF/templates/default.xhtml">
+
+    <!-- Page title and content header string -->
+    <ui:define name="title">Users</ui:define>
+
+    <!-- Main body content -->
+    <ui:define name="content">
+
+        <!-- Must be admin to view the users page -->
+        <f:metadata>
+            <f:viewAction action="#{sessionController.checkAdminNavigation()}"/>
+        </f:metadata>
+
+        <!-- Option to create a new user -->
+        <b:panel title="Create a New User" look="info" collapsed="#{true}"><h:form>
+            <b:panelGrid colSpans="2,6,4" size="sm">
+                <h:outputLabel value="Admin:" for="nadmin"/>
+                <b:selectBooleanCheckbox value="#{newUser.admin}" id="nadmin"/>
+                <h:outputText value=""/>
+                <h:outputLabel value="Judge:" for="njudge"/>
+                <b:selectBooleanCheckbox value="#{newUser.judge}" id="njudge"/>
+                <h:outputText value=""/>
+                <h:outputLabel value="Team:" for="nteam"/>
+                <b:selectOneMenu value="#{newUser.team}" id="nteam" require="false">
+                    <f:facet name="prepend"><b:iconAwesome name="bullhorn"/></f:facet>
+                    <f:selectItem itemValue="#{null}" itemLabel=""/>
+                    <f:selectItems value="#{teams}" var="_nteam"
+                                   itemLabel="#{_nteam.displayName}" itemValue="#{_nteam}"/>
+                </b:selectOneMenu>
+                <h:outputText value=""/>
+                <h:outputLabel value="Name:" for="nname"/>
+                <b:inputText value="#{newUser.name}" id="nname" class="form-control">
+                    <f:facet name="prepend"><b:iconAwesome name="user"/></f:facet>
+                </b:inputText>
+                <h:outputText value=""/>
+                <h:outputLabel value="Password:" for="npassword"/>
+                <b:inputSecret value="#{newUser.password}" id="npassword"/>
+                <b:commandButton action="#{userController.create()}" value="Create"
+                                 iconAwesome="plus" look="success"/>
+            </b:panelGrid>
+        </h:form></b:panel>
+
+        <!-- Existing users, ordered by admins, then by teams -->
+        <c:forEach var="_user" items="#{users}">
+            <b:panel title="#{_user.displayName}" iconAwesome="user" look="#{_user.look}" collapsed="#{true}">
+
+                <!-- User settings -->
+                <b:panel title="Settings" iconAwesome="cog" collapsed="#{true}">
+                    <h:form><b:panelGrid colSpans="2,6,4" size="sm">
+                        <h:outputLabel value="Admin:" for="admin"/>
+                        <b:selectBooleanCheckbox value="#{_user.admin}" id="admin"/>
+                        <h:outputText value=""/>
+                        <h:outputLabel value="Judge:" for="judge"/>
+                        <b:selectBooleanCheckbox value="#{_user.judge}" id="judge"/>
+                        <h:outputText value=""/>
+                        <h:outputLabel value="Team:" for="team"/>
+                        <b:selectOneMenu value="#{_user.team}" id="team" require="false">
+                            <f:facet name="prepend"><b:iconAwesome name="bullhorn"/></f:facet>
+                            <f:selectItem itemValue="#{null}" itemLabel=""/>
+                            <f:selectItems value="#{teams}" var="_team"
+                                           itemLabel="#{_team.displayName}" itemValue="#{_nteam}"/>
+                        </b:selectOneMenu>
+                        <h:outputText value=""/>
+                        <h:outputLabel value="Name:" for="name"/>
+                        <b:inputText value="#{_user.name}" id="name" class="form-control">
+                            <f:facet name="prepend"><b:iconAwesome name="user"/></f:facet>
+                        </b:inputText>
+                        <b:commandButton action="#{userController.update(_user)}" value="Update"
+                                         iconAwesome="retweet" look="info"/>
+                    </b:panelGrid></h:form>
+                    <h:form><b:panelGrid colSpans="2,6,4" size="sm">
+                        <h:outputLabel value="Password:" for="password"/>
+                        <b:inputSecret value="#{userController.newPassword}" id="password"/>
+                        <b:commandButton value="Change Password" iconAwesome="key" look="warning"
+                                         action="#{userController.changePassword(_user, null, userController.newPassword, true)}"/>
+                    </b:panelGrid></h:form>
+                    <h:form><b:panelGrid colSpans="9,3" size="sm">
+                        <h:outputLabel value=""/>
+                        <b:commandButton action="#{userController.delete(_user)}" value="Delete"
+                                         iconAwesome="trash" look="danger"/>
+                    </b:panelGrid></h:form>
+                </b:panel>
+            </b:panel>
+        </c:forEach>
+    </ui:define>
+</ui:composition>
