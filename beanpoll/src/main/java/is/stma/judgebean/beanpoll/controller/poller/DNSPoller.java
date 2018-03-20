@@ -115,7 +115,7 @@ public class DNSPoller extends AbstractPoller {
                     possibleTeams = resource.getContest().getTeams();
                 }
 
-                List<Team> scoringTeams = new ArrayList<>();
+                List<Team> scoringTeams;
                 scoringTeams = checkTeams(possibleTeams, newPoll.getInformation());
 
                 if (1 == scoringTeams.size()) {
