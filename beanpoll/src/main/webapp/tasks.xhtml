@@ -38,6 +38,14 @@
                 <b:inputTextarea value="#{newTask.description}" id="ndescription">
                     <f:facet name="prepend"><b:iconAwesome name="info"/></f:facet>
                 </b:inputTextarea>
+                <h:outputText value=""/>
+                <h:outputLabel value="Available:" for="navailable"/>
+                <b:dateTimePicker iconPosition="left" value="#{newTask.available}" id="navailable"
+                                  converter="LocalDateTimeConverter"/>
+                <h:outputText value=""/>
+                <h:outputLabel value="Expires:" for="nexpiration"/>
+                <b:dateTimePicker iconPosition="left" value="#{newTask.expiration}" id="nexpiration"
+                                  converter="LocalDateTimeConverter"/>
                 <b:commandButton action="#{taskController.create()}" value="Create"
                                  iconAwesome="plus" look="success"/>
             </b:panelGrid>
@@ -78,6 +86,14 @@
                             <b:inputTextarea value="#{_task.description}" id="ndescription">
                                 <f:facet name="prepend"><b:iconAwesome name="info"/></f:facet>
                             </b:inputTextarea>
+                            <h:outputText value=""/>
+                            <h:outputLabel value="Available:" for="available"/>
+                            <b:dateTimePicker iconPosition="left" value="#{_task.available}"
+                                              id="available" converter="LocalDateTimeConverter"/>
+                            <h:outputText value=""/>
+                            <h:outputLabel value="Expires:" for="expiration"/>
+                            <b:dateTimePicker iconPosition="left" value="#{_task.expiration}"
+                                              id="expiration"  converter="LocalDateTimeConverter"/>
                             <b:commandButton action="#{taskController.update(_task)}" value="Update"
                                              iconAwesome="retweet" look="info"/>
                         </b:panelGrid>

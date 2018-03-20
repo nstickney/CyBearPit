@@ -1,13 +1,14 @@
 package is.stma.judgebean.beanpoll.controller;
 
-import is.stma.judgebean.beanpoll.controller.poller.PollerFactory;
 import is.stma.judgebean.beanpoll.controller.poller.AbstractPoller;
+import is.stma.judgebean.beanpoll.controller.poller.PollerFactory;
 import is.stma.judgebean.beanpoll.model.Contest;
 import is.stma.judgebean.beanpoll.model.Poll;
 import is.stma.judgebean.beanpoll.model.Resource;
 import is.stma.judgebean.beanpoll.service.ContestService;
 import is.stma.judgebean.beanpoll.service.PollService;
 
+import java.time.LocalDateTime;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -40,16 +41,44 @@ public class JudgeCallable implements Callable<String> {
 
     @Override
     public String call() {
-        while (contest.isRunning()) {
+        while (contest.isEnabled()) {
+
+            // Check to see if it's time to start actually polling this contest
+            if (!contest.isRunning() && null != contest.getStarts()) {
+                if (contest.getStarts().isBefore(LocalDateTime.now())) {
+                    contest.setRunning(true);
+                }
+            }
+
+            // If no start time is set, we should just start polling now!
+            if (!contest.isRunning() && null == contest.getStarts()) {
+                contest.setRunning(true);
+
+                // In this case we need to update the contest entirely
+                contest = contestService.update(contest);
+            }
+
+            // Check to see if it's time to stop polling this contest
+            if (contest.isRunning() && null != contest.getEnds()) {
+                if (contest.getEnds().isBefore(LocalDateTime.now())) {
+                    contest.setRunning(false);
+
+                    // In this case we need to update the contest entirely
+                    contest.setEnabled(false);
+                    contest = contestService.update(contest);
+                }
+            }
 
             // Do a poll cycle
-            doPoll();
+            if (contest.isRunning()) {
+                doPoll();
+            }
 
             // Wait one polling interval
             try {
                 Thread.sleep(TimeUnit.SECONDS.toMillis(POLLING_INTERVAL));
             } catch (Exception e) {
-                log.log(Level.INFO, "SLEEP INTERRUPTED");
+                log.log(Level.WARNING, contest.getLogName() + ": Polling interrupted");
             }
 
             // Update the contest from the database, to see if we should keep going
@@ -59,7 +88,7 @@ public class JudgeCallable implements Callable<String> {
     }
 
     private void doPoll() {
-        log.log(Level.INFO, "Polling: " + contest.getName());
+        log.log(Level.INFO, "Polling: " + contest.getLogName());
 
         // Check each competition resource
         for (Resource r : contest.getResources()) {
@@ -69,6 +98,6 @@ public class JudgeCallable implements Callable<String> {
             pollService.create(thisPoll);
         }
 
-        log.log(Level.INFO, "Polled: " + contest.getName());
+        log.log(Level.INFO, "Polled: " + contest.getLogName());
     }
 }

@@ -26,6 +26,14 @@
                 <b:inputText value="#{newContest.name}" id="nname" class="form-control">
                     <f:facet name="prepend"><b:iconAwesome name="trophy"/></f:facet>
                 </b:inputText>
+                <h:outputText value=""/>
+                <h:outputLabel value="Starts:" for="nstarts"/>
+                <b:dateTimePicker iconPosition="left" value="#{newContest.starts}" id="nstarts"
+                                  converter="LocalDateTimeConverter"/>
+                <h:outputText value=""/>
+                <h:outputLabel value="Ends:" for="nends"/>
+                <b:dateTimePicker iconPosition="left" value="#{newContest.ends}" id="nends"
+                                  converter="LocalDateTimeConverter"/>
                 <b:commandButton action="#{contestController.create()}" value="Create"
                                  iconAwesome="plus" look="success"/>
             </b:panelGrid>
@@ -69,7 +77,15 @@
                         <b:inputText value="#{_contest.name}" id="name" class="form-control">
                             <f:facet name="prepend"><b:iconAwesome name="trophy"/></f:facet>
                         </b:inputText>
-                        <b:commandButton action="#{contestController.update(_contest)}" value="Rename"
+                        <h:outputText value=""/>
+                        <h:outputLabel value="Starts:" for="starts"/>
+                        <b:dateTimePicker iconPosition="left" value="#{_contest.starts}" id="starts"
+                                          converter="LocalDateTimeConverter"/>
+                        <h:outputText value=""/>
+                        <h:outputLabel value="Ends:" for="ends"/>
+                        <b:dateTimePicker iconPosition="left" value="#{_contest.ends}" id="ends"
+                                          converter="LocalDateTimeConverter"/>
+                        <b:commandButton action="#{contestController.update(_contest)}" value="Update"
                                          iconAwesome="retweet" look="info"/>
                     </b:panelGrid>
                     <b:panelGrid colSpans="3,3,3,3" size="sm">

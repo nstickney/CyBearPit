@@ -4,6 +4,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +20,12 @@ public class Task extends ComparableByContest {
 
     @Column
     private String description;
+
+    @Column
+    private LocalDateTime available;
+
+    @Column
+    private LocalDateTime expiration;
 
     @ManyToOne
     private Contest contest;
@@ -48,6 +56,22 @@ public class Task extends ComparableByContest {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public LocalDateTime getAvailable() {
+        return available;
+    }
+
+    public void setAvailable(LocalDateTime available) {
+        this.available = available;
+    }
+
+    public LocalDateTime getExpiration() {
+        return expiration;
+    }
+
+    public void setExpiration(LocalDateTime expiration) {
+        this.expiration = expiration;
     }
 
     public Contest getContest() {

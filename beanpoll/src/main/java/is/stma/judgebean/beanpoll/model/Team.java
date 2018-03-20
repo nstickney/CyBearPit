@@ -1,6 +1,7 @@
 package is.stma.judgebean.beanpoll.model;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -101,6 +102,17 @@ public class Team extends ComparableByContest {
             }
         }
         return score;
+    }
+
+    public List<Task> getAvailableTasks() {
+        List<Task> available = new ArrayList<>();
+        for (Task t : contest.getTasks()) {
+            if (t.getAvailable().isBefore(LocalDateTime.now()) &&
+                    t.getExpiration().isAfter(LocalDateTime.now())) {
+                available.add(t);
+            }
+        }
+        return available;
     }
 
     @Override

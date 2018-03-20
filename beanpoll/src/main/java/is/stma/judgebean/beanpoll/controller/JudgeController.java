@@ -35,7 +35,7 @@ public class JudgeController {
     private List<IdentifiableFuture> running = new ArrayList<>();
 
     public void run(Contest contest) {
-        contest.setRunning(true);
+        contest.setEnabled(true);
         JudgeCallable contestJudge = new JudgeCallable(contest, contestService, pollService, log);
         Future<String> runningContest = executorService.submit(contestJudge);
         running.add(new IdentifiableFuture(contest.getId(), runningContest));
@@ -53,7 +53,7 @@ public class JudgeController {
         for (IdentifiableFuture i : found) {
             running.remove(i);
         }
-        contest.setRunning(false);
+        contest.setEnabled(false);
         contestController.update(contest);
     }
 

@@ -3,6 +3,7 @@ package is.stma.judgebean.beanpoll.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +12,15 @@ public class Contest extends AbstractEntity {
 
     @Column(nullable = false, unique = true)
     private String name;
+
+    @Column(nullable = false)
+    private boolean enabled = false;
+
+    @Column
+    private LocalDateTime starts;
+
+    @Column
+    private LocalDateTime ends;
 
     @Column(nullable = false)
     private boolean running = false;
@@ -36,8 +46,34 @@ public class Contest extends AbstractEntity {
     public String getLook() {
         if (running) {
             return "success";
+        } else if (enabled) {
+            return "warning";
         }
         return "default";
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public LocalDateTime getStarts() {
+        return starts;
+    }
+
+    public void setStarts(LocalDateTime start) {
+        this.starts = start;
+    }
+
+    public LocalDateTime getEnds() {
+        return ends;
+    }
+
+    public void setEnds(LocalDateTime end) {
+        this.ends = end;
     }
 
     public boolean isRunning() {
