@@ -1,6 +1,6 @@
 #!/bin/bash
 
-IMAGE_NAME='judgebean-wildfly'
+IMAGE_NAME='judgebean-wildfly-dev'
 CONTAINER_NAME="$IMAGE_NAME"
 
 # Create the image if "build" is specified, or it doesn't exist
@@ -36,9 +36,10 @@ if [ "$1" == "new" ] || [ "$1" == "build" ] || \
 	docker stop "$CONTAINER_NAME" > /dev/null 2>&1
 	docker rm "$CONTAINER_NAME" > /dev/null 2>&1
 
-	# Run the container, forwarding port 80 (to 8080)
+	# Run the container, forwarding ports 80 (to 8080) and 81 (to 9990)
 	docker run --name="$CONTAINER_NAME" \
-		-p 80:8080 \
+		-p 82:8080 \
+		-p 83:9990 \
 		-d "$IMAGE_NAME"
 
 else

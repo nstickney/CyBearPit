@@ -49,6 +49,9 @@ data-source add --name=$JUDGEBEAN_DB --driver-name=mysql --jndi-name=$JUDGEBEAN_
 run-batch
 EOF
 
+echo "=> Adding a user"
+/opt/jboss/wildfly/bin/add-user.sh judgebeanwildfly judgebeanwildflypassword
+
 echo "=> Shutting down wildfly"
 if [ "$JBOSS_MODE" = "standalone" ]; then
   $JBOSS_CLI -c ":shutdown"
