@@ -248,6 +248,13 @@
             <version>4.5.5</version>
         </dependency>
 
+        <!-- Reset browser CSS to useful default baseline -->
+        <dependency>
+            <groupId>org.webjars.npm</groupId>
+            <artifactId>normalize.css</artifactId>
+            <version>8.0.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>
