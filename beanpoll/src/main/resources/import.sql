@@ -1,21 +1,3 @@
--- noinspection SqlNoDataSourceInspectionForFile
-
---
--- JBoss, Home of Professional Open Source
--- Copyright 2013, Red Hat, Inc. and/or its affiliates, and individual
--- contributors by the @authors type. See the copyright.txt in the
--- distribution for a full listing of individual contributors.
---
--- Licensed under the Apache License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
--- http://www.apache.org/licenses/LICENSE-2.0
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
---
 
 -- User "beanpoll" is both an admin and a judge, and has password "beanpollpassword"
 INSERT INTO User (id, admin, judge, name, salt, secret, team_id) VALUES ('UA', true, true, 'beanpoll', 'b97ebe9b-4db5-4dc4-8c31-c1d46df88d83', '$argon2id$v=19$m=1024,t=2,p=2$/bDvwgcKFx/SLUhz768+mQ$qdptwK3x7Z8u6/LBE9FjW0+IAZtVINmczJjEOGmhBUc', NULL);
