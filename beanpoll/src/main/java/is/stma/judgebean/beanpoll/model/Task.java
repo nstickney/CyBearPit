@@ -40,11 +40,16 @@ public class Task extends ComparableByContest {
     private Contest contest;
 
     @OneToMany(mappedBy = "task")
-    private List<TaskResponse> responses = new ArrayList<>();
+    private List<Response> responses = new ArrayList<>();
 
     @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public int compareTo(ComparableByContest o) {
+        return compare(this, o);
     }
 
     public void setName(String name) {
@@ -91,21 +96,27 @@ public class Task extends ComparableByContest {
         this.contest = contest;
     }
 
-    public List<TaskResponse> getResponses() {
+    public List<Response> getResponses() {
         return responses;
     }
 
-    public void setResponses(List<TaskResponse> responses) {
+    public void setResponses(List<Response> responses) {
         this.responses = responses;
     }
 
-    public TaskResponse getResponseByTeam(Team team) {
-        for (TaskResponse r : responses) {
+    public Response getResponseByTeam(Team team) {
+        for (Response r : responses) {
             if (r.getTeam().equalByUUID(team)) {
                 return r;
             }
         }
         return null;
+    }
+
+    public boolean isAvailable() {
+        return contest.isEnabled() && contest.isRunning()
+                && starts.isBefore(LocalDateTime.now())
+                && ends.isAfter(LocalDateTime.now());
     }
 
     public String getLookFor(Team team) {
@@ -121,10 +132,5 @@ public class Task extends ComparableByContest {
             return "warning";
         }
         return "info";
-    }
-
-    @Override
-    public int compareTo(ComparableByContest o) {
-        return compare(this, o);
     }
 }

@@ -10,7 +10,7 @@
 
 package is.stma.judgebean.beanpoll.data;
 
-import is.stma.judgebean.beanpoll.model.TaskResponse;
+import is.stma.judgebean.beanpoll.model.Response;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
@@ -20,16 +20,16 @@ import javax.inject.Named;
 import java.util.List;
 
 @RequestScoped
-public class TaskResponseListProducer extends AbstractEntityListProducer<TaskResponse> {
+public class ResponseListProducer extends AbstractEntityListProducer<Response> {
 
     @Inject
-    private TaskResponseRepo repo;
+    private ResponseRepo repo;
 
-    private List<TaskResponse> entities;
+    private List<Response> entities;
 
     @Produces
-    @Named("taskResponses")
-    public List<TaskResponse> getEntities() {
+    @Named("responses")
+    public List<Response> getEntities() {
         return entities;
     }
 

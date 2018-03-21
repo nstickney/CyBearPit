@@ -11,13 +11,12 @@
 package is.stma.judgebean.beanpoll.controller;
 
 import is.stma.judgebean.beanpoll.model.Resource;
-import is.stma.judgebean.beanpoll.model.TaskResponse;
+import is.stma.judgebean.beanpoll.model.Response;
 import is.stma.judgebean.beanpoll.model.Team;
 import is.stma.judgebean.beanpoll.model.User;
 import is.stma.judgebean.beanpoll.rules.TeamRules;
 import is.stma.judgebean.beanpoll.service.TeamService;
 import is.stma.judgebean.beanpoll.service.UserService;
-import is.stma.judgebean.beanpoll.util.PasswordUtility;
 import is.stma.judgebean.beanpoll.util.StringUtility;
 
 import javax.ejb.EJBException;
@@ -42,7 +41,7 @@ public class TeamController extends AbstractEntityController<Team, TeamRules,
     private ResourceController resourceController;
 
     @Inject
-    private TaskResponseController taskResponseController;
+    private ResponseController responseController;
 
     @Inject
     private UserService userService;
@@ -118,10 +117,10 @@ public class TeamController extends AbstractEntityController<Team, TeamRules,
         }
 
         // Orphan all the team's task responses
-        List<TaskResponse> responses = new ArrayList<>(entity.getTaskResponses());
-        for (TaskResponse r : responses) {
+        List<Response> responses = new ArrayList<>(entity.getresponses());
+        for (Response r : responses) {
             r.setTeam(null);
-            taskResponseController.update(r);
+            responseController.update(r);
         }
 
         // Orphan all team users

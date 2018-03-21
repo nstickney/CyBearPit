@@ -30,8 +30,8 @@ body {
     background: linear-gradient(
             to right,
             rgba(255, 255, 255, 0),
-            rgba(255, 255, 255, 100) 2%,
-            rgba(255, 255, 255, 100) 98%,
+            rgba(255, 255, 255, 100) 1%,
+            rgba(255, 255, 255, 100) 99%,
             rgba(255, 255, 255, 0));
     min-height: 100%;
     padding: 0;

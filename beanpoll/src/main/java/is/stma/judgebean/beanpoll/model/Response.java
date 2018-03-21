@@ -14,7 +14,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-public class TaskResponse extends AbstractEntity {
+public class Response extends AbstractEntity {
 
     @ManyToOne
     @JoinColumn(name = "task_id")
@@ -52,6 +52,9 @@ public class TaskResponse extends AbstractEntity {
     }
 
     public String getLook() {
+        if (task.isAvailable()) {
+            return "danger";
+        }
         if (null == comments || comments.equals("")) {
             return "warning";
         }

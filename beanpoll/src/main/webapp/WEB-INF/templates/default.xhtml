@@ -27,7 +27,7 @@
 <h:body styleClass="container">
 
     <!-- A growl handler for all messages -->
-    <b:growl id="growlMsg" globalOnly="true" placementFrom="top" show-summary="true"
+    <b:growl id="growlMsg" globalOnly="true" placementAlign="left" show-summary="true"
              show-detail="true" allowDismiss="true" delay="5000" escape="true"/>
 
     <!-- The page header -->
@@ -52,7 +52,7 @@
     <span style="font-size: 3rem; font-variant: small-caps"><ui:insert name="title"/></span>
 
     <!-- The page main content -->
-    <div style="padding: 0 2rem;">
+    <div style="padding: 0 1rem;">
         <ui:insert name="content"/>
     </div>
 </h:body>

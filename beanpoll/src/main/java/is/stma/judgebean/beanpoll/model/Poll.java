@@ -11,24 +11,24 @@
 package is.stma.judgebean.beanpoll.model;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
-public class Poll extends AbstractEntity {
+public class Poll extends AbstractEntity implements Comparable<Poll> {
 
     @ManyToOne
-    @JoinColumn(name = "team_id")
+    @JoinColumn(name = "team_id", referencedColumnName = "id")
     private Team team;
 
     @ManyToOne
-    @JoinColumn(name = "resource_id")
+    @JoinColumn(name = "resource_id", referencedColumnName = "id")
     private Resource resource;
 
     @Column
     private int score = 0;
 
     @Column
-    private LocalDate timestamp = LocalDate.now();
+    private LocalDateTime timestamp = LocalDateTime.now();
 
     @Lob
     @Column
@@ -37,6 +37,17 @@ public class Poll extends AbstractEntity {
     @Override
     public String getName() {
         return getId();
+    }
+
+    @Override
+    public int compareTo(Poll poll) {
+        if (timestamp.isBefore(poll.timestamp)) {
+            return -1;
+        }
+        if (timestamp.isAfter(poll.timestamp)) {
+            return 1;
+        }
+        return getId().compareTo(poll.getId());
     }
 
     public Team getTeam() {
@@ -63,11 +74,11 @@ public class Poll extends AbstractEntity {
         this.score = total;
     }
 
-    public LocalDate getTimestamp() {
+    public LocalDateTime getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(LocalDate timestamp) {
+    public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;
     }
 

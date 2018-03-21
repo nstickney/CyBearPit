@@ -10,11 +10,11 @@
 
 package is.stma.judgebean.beanpoll.controller;
 
+import is.stma.judgebean.beanpoll.model.Response;
 import is.stma.judgebean.beanpoll.model.Task;
-import is.stma.judgebean.beanpoll.model.TaskResponse;
 import is.stma.judgebean.beanpoll.model.Team;
-import is.stma.judgebean.beanpoll.rules.TaskResponseRules;
-import is.stma.judgebean.beanpoll.service.TaskResponseService;
+import is.stma.judgebean.beanpoll.rules.ResponseRules;
+import is.stma.judgebean.beanpoll.service.ResponseService;
 import is.stma.judgebean.beanpoll.service.TaskService;
 import is.stma.judgebean.beanpoll.service.TeamService;
 import org.apache.commons.io.IOUtils;
@@ -30,11 +30,11 @@ import java.io.IOException;
 import java.io.InputStream;
 
 @Model
-public class TaskResponseController extends AbstractEntityController<TaskResponse,
-        TaskResponseRules, TaskResponseService> {
+public class ResponseController extends AbstractEntityController<Response,
+        ResponseRules, ResponseService> {
 
     @Inject
-    private TaskResponseService service;
+    private ResponseService service;
 
     @Inject
     private TaskService taskService;
@@ -42,37 +42,37 @@ public class TaskResponseController extends AbstractEntityController<TaskRespons
     @Inject
     private TeamService teamService;
 
-    private TaskResponse newTaskResponse;
+    private Response newResponse;
 
     private Part uploadedFile;
 
     @Override
     @Produces
-    @Named("newTaskResponse")
-    TaskResponse getNew() {
-        if (newTaskResponse == null) {
-            newTaskResponse = new TaskResponse();
+    @Named("newresponse")
+    Response getNew() {
+        if (newResponse == null) {
+            newResponse = new Response();
         }
-        return newTaskResponse;
+        return newResponse;
     }
 
     @Override
-    void setNew(TaskResponse entity) {
-        newTaskResponse = entity;
+    void setNew(Response entity) {
+        newResponse = entity;
     }
 
     @Override
-    TaskResponseService getService() {
+    ResponseService getService() {
         return service;
     }
 
     @Override
-    public void update(TaskResponse entity) {
+    public void update(Response entity) {
         doUpdate(entity);
     }
 
     @Override
-    public void delete(TaskResponse entity) {
+    public void delete(Response entity) {
         doDelete(entity);
     }
 
@@ -92,7 +92,7 @@ public class TaskResponseController extends AbstractEntityController<TaskRespons
             boolean createdNew = false;
             task = taskService.readById(task.getId());
             team = teamService.readById(team.getId());
-            TaskResponse response = task.getResponseByTeam(team);
+            Response response = task.getResponseByTeam(team);
 
             // If this team hasn't responded to this task yet, create a new response
             if (null == response) {
@@ -123,7 +123,7 @@ public class TaskResponseController extends AbstractEntityController<TaskRespons
         }
     }
 
-    public void downloadResponse(TaskResponse response) {
+    public void downloadResponse(Response response) {
         try {
             Faces.sendFile(response.getUploaded(), response.getFileName(), true);
         } catch (IOException e) {

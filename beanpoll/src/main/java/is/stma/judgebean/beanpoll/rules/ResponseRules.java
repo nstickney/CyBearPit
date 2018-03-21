@@ -11,26 +11,26 @@
 package is.stma.judgebean.beanpoll.rules;
 
 import is.stma.judgebean.beanpoll.data.AbstractRepo;
-import is.stma.judgebean.beanpoll.data.TaskResponseRepo;
-import is.stma.judgebean.beanpoll.model.TaskResponse;
+import is.stma.judgebean.beanpoll.data.ResponseRepo;
+import is.stma.judgebean.beanpoll.model.Response;
 
 import javax.enterprise.inject.Model;
 import javax.inject.Inject;
 import javax.validation.ValidationException;
 
 @Model
-public class TaskResponseRules extends AbstractRules<TaskResponse> {
+public class ResponseRules extends AbstractRules<Response> {
 
     @Inject
-    private TaskResponseRepo repo;
+    private ResponseRepo repo;
 
     @Override
-    public AbstractRepo<TaskResponse> getRepo() {
+    public AbstractRepo<Response> getRepo() {
         return repo;
     }
 
     @Override
-    public void runBusinessRules(TaskResponse entity, Target target)
+    public void runBusinessRules(Response entity, Target target)
             throws ValidationException {
 
         // Task must be available
@@ -44,11 +44,11 @@ public class TaskResponseRules extends AbstractRules<TaskResponse> {
     }
 
     @Override
-    void checkBeforeDelete(TaskResponse entity) throws ValidationException {
+    void checkBeforeDelete(Response entity) throws ValidationException {
 
     }
 
-    private void checkTaskIsAvailable(TaskResponse entity) {
+    private void checkTaskIsAvailable(Response entity) {
         if (!entity.getTask().getContest().isEnabled() || !entity.getTask().getContest().isRunning()) {
             throw new ValidationException("contest " + entity.getTask().getContest().getName() + " is not running");
         }
@@ -60,13 +60,13 @@ public class TaskResponseRules extends AbstractRules<TaskResponse> {
         }
     }
 
-    private void checkTeamIsInContest(TaskResponse entity) {
+    private void checkTeamIsInContest(Response entity) {
         if (!entity.getTeam().getContest().equalByUUID(entity.getTask().getContest())) {
             throw new ValidationException("team " + entity.getTeam().getName() + " is not in contest " + entity.getTask().getContest().getName());
         }
     }
 
-    private void checkScoreWithinTaskPointValue(TaskResponse entity) throws ValidationException {
+    private void checkScoreWithinTaskPointValue(Response entity) throws ValidationException {
         if (entity.getScore() < -entity.getTask().getPointValue()
                 || entity.getScore() > entity.getTask().getPointValue()) {
             throw new ValidationException("score " + entity.getScore() + " is not within plus or minus"

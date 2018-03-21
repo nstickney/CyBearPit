@@ -88,6 +88,9 @@ public class SessionController extends AbstractFacesController {
 
     private String failAuthentication(String summary) {
         bean.setUser(null);
+        bean.setPassword(null);
+        bean.setNewPassword(null);
+        password = null;
         errorOut(new AuthenticationException(summary), "");
         facesContext.getExternalContext().getFlash().setKeepMessages(true);
         return LOGIN_PAGE;

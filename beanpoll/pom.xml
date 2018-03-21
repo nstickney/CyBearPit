@@ -227,7 +227,7 @@
             <version>2.3</version>
         </dependency>
 
-        <!-- Used for file upload on TaskResponses -->
+        <!-- Used for file upload on Responses -->
         <!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -242,7 +242,7 @@
             <version>2.6</version>
         </dependency>
 
-        <!-- Used for file upload/download in grading.xhmtl -->
+        <!-- Used for file upload/download on Responses -->
         <dependency>
             <groupId>org.omnifaces</groupId>
             <artifactId>omnifaces</artifactId>

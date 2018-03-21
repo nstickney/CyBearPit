@@ -33,43 +33,63 @@
         <!-- Resources -->
         <b:well>
             <h2>#{sessionUser.team.contest.name}: Resources</h2>
+
+            <!-- No resources available -->
+            <h:panelGroup rendered="#{empty sessionUser.team.visibleResources}">
+                <b:panel look="warning"><h3>No resources available</h3></b:panel>
+            </h:panelGroup>
+
+            <c:forEach var="_resource" items="#{sessionUser.team.visibleResources}">
+                <b:panel title="#{_resource.displayName}" look="#{_resource.getLookFor(sessionUser.team)}" collapsed="#{true}">
+                    <b:row>
+                        <b:column style="text-align: center;" col-xs="6">
+                            <b:button rendered="#{_resource.up}" look="success" value="Up"/>
+                            <b:button rendered="#{!_resource.up}" look="danger" value="Down"/>
+                        </b:column>
+                        <b:column style="text-align: center;" col-xs="6">
+                            <b:button rendered="#{_resource.ownedBy(sessionUser.team)}" look="success" value="Owned"/>
+                            <b:button rendered="#{!_resource.ownedBy(sessionUser.team)}" look="danger" value="Pwned"/>
+                        </b:column>
+                    </b:row>
+                </b:panel>
+            </c:forEach>
+
         </b:well>
 
         <!-- Tasks -->
         <b:well>
             <h2>#{sessionUser.team.contest.name}: Tasks</h2>
+
+            <!-- No tasks available -->
+            <h:panelGroup rendered="#{empty sessionUser.team.availableTasks}">
+                <b:panel look="warning"><h3>No tasks available</h3></b:panel>
+            </h:panelGroup>
+
             <c:forEach var="_task" items="#{sessionUser.team.availableTasks}">
-                <b:panel title="#{_task.displayName}" iconAwesome="check" look="#{_task.getLookFor(sessionUser.team)}" collapsed="#{true}">
+                <b:panel title="#{_task.displayName}" iconAwesome="check" collapsed="#{true}"
+                         look="#{_task.getLookFor(sessionUser.team)}">
                     <h:form enctype="multipart/form-data">
                         <b:panelGrid colSpans="2,6,4" size="sm">
                             <h:outputLabel value="Name:" for="name"/>
-                            <b:inputText value="#{_task.name}" id="name" class="form-control">
-                                <f:facet name="prepend"><b:iconAwesome name="check"/></f:facet>
-                            </b:inputText>
+                            <h:outputText value="#{_task.name}" id="name"/>
                             <h:outputText value=""/>
                             <h:outputLabel value="Description:" for="description"/>
-                            <b:inputTextarea value="#{_task.description}" id="description">
-                                <f:facet name="prepend"><b:iconAwesome name="info"/></f:facet>
-                            </b:inputTextarea>
+                            <h:outputText value="#{_task.description}" id="description"/>
                             <h:outputText value=""/>
                             <h:outputLabel value="Available:" for="starts"/>
-                            <b:dateTimePicker iconPosition="left" value="#{_task.starts}"
-                                              id="starts" converter="LocalDateTimeConverter"/>
+                            <h:outputText iconPosition="left" value="#{_task.starts}" id="starts"
+                                          converter="LocalDateTimeConverter"/>
                             <h:outputText value=""/>
                             <h:outputLabel value="Expires:" for="ends"/>
-                            <b:dateTimePicker iconPosition="left" value="#{_task.ends}"
-                                              id="ends" converter="LocalDateTimeConverter"/>
+                            <h:outputText iconPosition="left" value="#{_task.ends}" id="ends"
+                                          converter="LocalDateTimeConverter"/>
                             <h:outputText value=""/>
                             <h:outputLabel value="Response:" for="response"/>
-                            <o:inputFile id="response" value="#{taskResponseController.uploadedFile}"
+                            <o:inputFile id="response"
+                                         value="#{responseController.uploadedFile}"
                                          accept="application/pdf, text/csv, text/plain"/>
                             <b:commandButton value="Submit" iconAwesome="upload" look="success"
-                                             action="#{taskResponseController.uploadResponse(sessionUser.team, _task)}"/>
-                        </b:panelGrid>
-                        <b:panelGrid colSpans="9,3" size="sm">
-                            <h:outputText value=""/>
-                            <b:commandButton action="#{taskController.delete(_task)}" value="Delete"
-                                             iconAwesome="trash" look="danger"/>
+                                             action="#{responseController.uploadResponse(sessionUser.team, _task)}"/>
                         </b:panelGrid>
                     </h:form>
                 </b:panel>

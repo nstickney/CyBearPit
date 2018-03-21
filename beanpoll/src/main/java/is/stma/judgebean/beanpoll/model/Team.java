@@ -34,7 +34,7 @@ public class Team extends ComparableByContest {
     private List<Resource> resources = new ArrayList<>();
 
     @OneToMany(mappedBy = "team")
-    private List<TaskResponse> taskResponses = new ArrayList<>();
+    private List<Response> responses = new ArrayList<>();
 
     @OneToMany(mappedBy = "team")
     private List<Poll> polls = new ArrayList<>();
@@ -42,6 +42,11 @@ public class Team extends ComparableByContest {
     @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public int compareTo(ComparableByContest o) {
+        return compare(this, o);
     }
 
     public void setName(String name) {
@@ -80,12 +85,12 @@ public class Team extends ComparableByContest {
         this.resources = resources;
     }
 
-    public List<TaskResponse> getTaskResponses() {
-        return taskResponses;
+    public List<Response> getresponses() {
+        return responses;
     }
 
-    public void setTaskResponses(List<TaskResponse> taskResponses) {
-        this.taskResponses = taskResponses;
+    public void setresponses(List<Response> responses) {
+        this.responses = responses;
     }
 
     public List<Poll> getPolls() {
@@ -101,7 +106,7 @@ public class Team extends ComparableByContest {
         for (Poll p : polls) {
             score += p.getScore();
         }
-        for (TaskResponse r : taskResponses) {
+        for (Response r : responses) {
             score += r.getScore();
         }
         return score;
@@ -117,6 +122,18 @@ public class Team extends ComparableByContest {
         return score;
     }
 
+    public List<Resource> getVisibleResources() {
+        List<Resource> visible = new ArrayList<>();
+        if (contest.isEnabled() && contest.isRunning()) {
+            for (Resource r : contest.getResources()) {
+                if (r.isScoring() && (r.getTeams().contains(this) || r.getTeams().isEmpty())) {
+                    visible.add(r);
+                }
+            }
+        }
+        return visible;
+    }
+
     public List<Task> getAvailableTasks() {
         List<Task> available = new ArrayList<>();
         if (contest.isEnabled() && contest.isRunning()) {
@@ -128,10 +145,5 @@ public class Team extends ComparableByContest {
             }
         }
         return available;
-    }
-
-    @Override
-    public int compareTo(ComparableByContest o) {
-        return compare(this, o);
     }
 }

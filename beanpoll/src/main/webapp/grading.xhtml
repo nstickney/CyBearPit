@@ -30,38 +30,45 @@
             <f:viewAction action="#{sessionController.checkJudgeNavigation()}"/>
         </f:metadata>
 
+        <!-- Color key -->
+        <b:panel title="Grading Color Key">
+            <b:panelGrid colSpans="2,2,2,2,2,2" size="sm">
+                <b:button value="Graded" look="default" disabled="#{true}"/>
+                <h:outputText value="Response has already been graded"/>
+                <b:button value="Ungraded" look="warning" disabled="#{true}"/>
+                <h:outputText value="Response is not yet graded"/>
+                <b:button value="Not Final" look="danger" disabled="#{true}"/>
+                <h:outputText value="Response may not be final (task still available)"/>
+            </b:panelGrid>
+        </b:panel>
+
         <!-- Responses, ungraded first, ordered by time -->
-        <h:panelGroup rendered="#{not empty taskResponses}">
-            <c:forEach var="_taskResponse" items="#{taskResponses}">
-                <b:panel title="#{_taskResponse.team.name} - #{_taskResponse.task.name}"
-                         iconAwesome="envelope-open" look="#{_taskResponse.look}" collapsed="#{true}">
+        <h:panelGroup rendered="#{not empty responses}">
+            <c:forEach var="_response" items="#{responses}">
+                <b:panel title="#{_response.team.name} - #{_response.task.name}"
+                         iconAwesome="envelope-open" look="#{_response.look}" collapsed="#{true}">
 
                     <h:form>
                         <b:panelGrid colSpans="2,6,4" size="sm">
                             <h:outputLabel value="Response:" for="response"/>
-                            <b:commandButton value="#{_taskResponse.fileName}" id="response" look="success"
-                                             action="#{taskResponseController.downloadResponse(_taskResponse)}">
+                            <b:commandButton value="#{_response.fileName}" id="response" look="success"
+                                             action="#{responseController.downloadResponse(_response)}">
                                 <f:facet name="prepend"><b:iconAwesome name="check"/></f:facet>
                             </b:commandButton>
                             <h:outputText value=""/>
                             <h:outputLabel value="Score:" for="score"/>
-                            <b:inputText value="#{_taskResponse.score}" id="score"
-                                         p:type="number" p:min="-#{_taskResponse.task.pointValue}"
-                                         p:max="#{_taskResponse.task.pointValue}">
+                            <b:inputText value="#{_response.score}" id="score"
+                                         p:type="number" p:min="-#{_response.task.pointValue}"
+                                         p:max="#{_response.task.pointValue}">
                                 <f:facet name="prepend"><b:iconAwesome name="thermometer-half"/></f:facet>
                             </b:inputText>
                             <h:outputText value=""/>
                             <h:outputLabel value="Comments:" for="comments"/>
-                            <b:inputTextarea value="#{_taskResponse.comments}" id="comments">
+                            <b:inputTextarea value="#{_response.comments}" id="comments">
                                 <f:facet name="prepend"><b:iconAwesome name="comment"/></f:facet>
                             </b:inputTextarea>
-                            <b:commandButton action="#{taskResponseController.update(_taskResponse)}" value="Update"
+                            <b:commandButton action="#{responseController.update(_response)}" value="Update"
                                              iconAwesome="retweet" look="info"/>
-                        </b:panelGrid>
-                        <b:panelGrid colSpans="9,3" size="sm">
-                            <h:outputText value=""/>
-                            <b:commandButton action="#{taskResponseController.delete(_taskResponse)}"
-                                             value="Delete" iconAwesome="trash" look="danger"/>
                         </b:panelGrid>
                     </h:form>
                 </b:panel>
@@ -69,7 +76,7 @@
         </h:panelGroup>
 
         <!-- No responses available -->
-        <h:panelGroup rendered="#{empty taskResponses}">
+        <h:panelGroup rendered="#{empty responses}">
             <b:panel look="warning"><h3>No responses available for grading</h3></b:panel>
         </h:panelGroup>
 

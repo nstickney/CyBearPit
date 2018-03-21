@@ -8,17 +8,43 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package is.stma.judgebean.beanpoll.data;
+package is.stma.judgebean.beanpoll.service;
 
-import is.stma.judgebean.beanpoll.model.TaskResponse;
-import org.apache.deltaspike.data.api.Repository;
+import is.stma.judgebean.beanpoll.data.AbstractRepo;
+import is.stma.judgebean.beanpoll.data.ResponseRepo;
+import is.stma.judgebean.beanpoll.model.Response;
+import is.stma.judgebean.beanpoll.rules.ResponseRules;
 
-import java.util.List;
+import javax.ejb.Stateless;
+import javax.enterprise.event.Event;
+import javax.inject.Inject;
 
-@SuppressWarnings("CdiManagedBeanInconsistencyInspection")
-@Repository(forEntity = TaskResponse.class)
-public interface TaskResponseRepo extends AbstractRepo<TaskResponse> {
+@Stateless
+public class ResponseService extends AbstractService<Response, AbstractRepo<Response>,
+        ResponseRules> {
 
-    List<TaskResponse> findAllOrderByTimestamp();
+    @SuppressWarnings("CdiInjectionPointsInspection")
+    @Inject
+    private ResponseRepo repo;
 
+    @Inject
+    private Event<Response> event;
+
+    @Inject
+    private ResponseRules rules;
+
+    @Override
+    AbstractRepo<Response> getRepo() {
+        return repo;
+    }
+
+    @Override
+    Event<Response> getEvent() {
+        return event;
+    }
+
+    @Override
+    ResponseRules getRules() {
+        return rules;
+    }
 }

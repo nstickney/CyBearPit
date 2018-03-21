@@ -62,12 +62,12 @@
 
                 <!-- Contest tasks -->
                 <b:panel title="Task Responses" iconAwesome="envelope-open" collapsed="#{true}"><h:form>
-                    <b:dataTable var="_taskResponse" value="#{_team.taskResponses}">
-                        <b:dataTableColumn value="#{_taskResponse.task.name}" label="Task"/>
-                        <b:dataTableColumn value="#{_taskResponse.task.pointValue}" label="Value"/>
-                        <b:dataTableColumn value="#{_taskResponse.fileName}" label="Response"/>
-                        <b:dataTableColumn value="#{_taskResponse.score}"/>
-                        <b:dataTableColumn value="#{_taskResponse.comments}"/>
+                    <b:dataTable var="_response" value="#{_team.responses}">
+                        <b:dataTableColumn value="#{_response.task.name}" label="Task"/>
+                        <b:dataTableColumn value="#{_response.task.pointValue}" label="Value"/>
+                        <b:dataTableColumn value="#{_response.fileName}" label="Response"/>
+                        <b:dataTableColumn value="#{_response.score}"/>
+                        <b:dataTableColumn value="#{_response.comments}"/>
                     </b:dataTable>
                 </h:form></b:panel>
 

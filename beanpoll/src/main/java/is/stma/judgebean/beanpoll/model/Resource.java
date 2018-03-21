@@ -12,6 +12,7 @@ package is.stma.judgebean.beanpoll.model;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Entity
@@ -51,7 +52,7 @@ public class Resource extends ComparableByContest {
     private List<Team> teams = new ArrayList<>();
 
     @OneToMany(mappedBy = "resource")
-    private List<Poll> points = new ArrayList<>();
+    private List<Poll> polls = new ArrayList<>();
 
     @Override
     public String getName() {
@@ -73,6 +74,11 @@ public class Resource extends ComparableByContest {
             return "warning";
         }
         return "default";
+    }
+
+    @Override
+    public int compareTo(ComparableByContest o) {
+        return compare(this, o);
     }
 
     public String getType() {
@@ -151,16 +157,37 @@ public class Resource extends ComparableByContest {
         }
     }
 
-    public List<Poll> getPoints() {
-        return points;
+    public List<Poll> getPolls() {
+        return polls;
     }
 
-    public void setPoints(List<Poll> points) {
-        this.points = points;
+    public void setPolls(List<Poll> polls) {
+        this.polls = polls;
     }
 
-    @Override
-    public int compareTo(ComparableByContest o) {
-        return compare(this, o);
+    public boolean isUp() {
+        if (contest.isEnabled() && contest.isRunning() && !polls.isEmpty()) {
+            List<Poll> toSort = new ArrayList<>(polls);
+            Collections.sort(toSort);
+            return !toSort.get(toSort.size() - 1).getInformation().startsWith("ERROR: ");
+        }
+        return false;
+    }
+
+    public boolean ownedBy(Team team) {
+        if (contest.isEnabled() && contest.isRunning() && !polls.isEmpty()) {
+            List<Poll> toSort = new ArrayList<>(polls);
+            Collections.sort(toSort);
+            Team owner = toSort.get(toSort.size() - 1).getTeam();
+            return null != owner && owner.equalByUUID(team);
+        }
+        return false;
+    }
+
+    public String getLookFor(Team team) {
+        if (isUp() && ownedBy(team)) {
+            return "success";
+        }
+        return "danger";
     }
 }
