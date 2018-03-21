@@ -21,39 +21,39 @@
           content="#{facesContext.externalContext.sessionMaxInactiveInterval};url=#{request.contextPath}/index.xhtml"/>
     <h:outputStylesheet library="webjars" name="normalize.css/8.0.0/normalize.css"/>
     <h:outputStylesheet name="css/charter.css"/>
+    <h:outputStylesheet name="css/style.css" position="last"/>
     <link rel="shortcut icon" href="resources/gfx/favicon.ico"/>
 </h:head>
-<h:body style="font: 16px 'Charter'">
+<h:body styleClass="container">
 
     <!-- A growl handler for all messages -->
     <b:growl id="growlMsg" globalOnly="true" placementFrom="top" show-summary="true"
              show-detail="true" allowDismiss="true" delay="5000" escape="true"/>
 
-    <b:container style="padding: 0; margin: 0 auto">
+    <!-- The page header -->
+    <b:navBar brand="BeanPoll" brandHref="index.xhtml" fluid="true" style="margin: 0">
+        <b:navbarLinks pull="right">
+            <b:dropMenu value="Controls" rendered="#{sessionBean.admin}" iconAwesome="cog">
+                <b:navLink value="Contests" href="contests.xhtml" iconAwesome="trophy"/>
+                <b:navLink value="Resources" href="resources.xhtml" iconAwesome="server"/>
+                <b:navLink value="Tasks" href="tasks.xhtml" iconAwesome="check"/>
+                <b:navLink value="Teams" href="teams.xhtml" iconAwesome="bullhorn"/>
+                <b:navLink value="Users" href="users.xhtml" iconAwesome="users"/>
+            </b:dropMenu>
+            <b:navLink value="Judging" href="grading.xhtml" rendered="#{sessionBean.judge}"
+                       iconAwesome="gavel"/>
+            <b:navLink value="#{sessionUser.team.name}" href="team.xhtml" rendered="#{sessionBean.hasTeam()}"
+                       iconAwesome="bullhorn"/>
+            <b:navLink value="#{sessionUser.name}" href="account.xhtml" rendered="#{sessionBean.authenticated}"
+                       iconAwesome="user"/>
+        </b:navbarLinks>
+    </b:navBar>
+    <b:image style="height: 7rem; margin: 0 2rem; vertical-align: -2rem;" value="resources/gfx/favicon.ico"/>
+    <span style="font-size: 3rem; font-variant: small-caps"><ui:insert name="title"/></span>
 
-        <!-- The page header -->
-        <b:navBar brand="BeanPoll" brandHref="index.xhtml" fluid="true" style="margin: 0">
-            <b:navbarLinks pull="right">
-                <b:dropMenu value="Controls" rendered="#{sessionBean.admin}" iconAwesome="cog">
-                    <b:navLink value="Contests" href="contests.xhtml" iconAwesome="trophy"/>
-                    <b:navLink value="Resources" href="resources.xhtml" iconAwesome="server"/>
-                    <b:navLink value="Tasks" href="tasks.xhtml" iconAwesome="check"/>
-                    <b:navLink value="Teams" href="teams.xhtml" iconAwesome="bullhorn"/>
-                    <b:navLink value="Users" href="users.xhtml" iconAwesome="users"/>
-                </b:dropMenu>
-                <b:navLink value="Judging" href="grading.xhtml" rendered="#{sessionBean.judge}"
-                           iconAwesome="gavel"/>
-                <b:navLink value="#{sessionUser.team.name}" href="team.xhtml" rendered="#{sessionBean.hasTeam()}"
-                           iconAwesome="bullhorn"/>
-                <b:navLink value="#{sessionUser.name}" href="account.xhtml" rendered="#{sessionBean.authenticated}"
-                           iconAwesome="user"/>
-            </b:navbarLinks>
-        </b:navBar>
-        <b:image style="height: 12rem; margin: 0 2rem; vertical-align: -2rem;" value="resources/gfx/favicon.ico"/>
-        <span style="font-size: 5rem; font-variant: small-caps"><ui:insert name="title"/></span>
-
-        <!-- The page main content (tabs) -->
+    <!-- The page main content -->
+    <div style="padding: 0 2rem;">
         <ui:insert name="content"/>
-    </b:container>
+    </div>
 </h:body>
 </html>

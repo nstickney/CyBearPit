@@ -33,6 +33,12 @@ public class TaskResponseRules extends AbstractRules<TaskResponse> {
     public void runBusinessRules(TaskResponse entity, Target target)
             throws ValidationException {
 
+        // Task must be available
+        checkTaskIsAvailable(entity);
+
+        // Team must be from correct contest
+        checkTeamIsInContest(entity);
+
         // Check score is within allowable range
         checkScoreWithinTaskPointValue(entity);
     }
@@ -40,6 +46,24 @@ public class TaskResponseRules extends AbstractRules<TaskResponse> {
     @Override
     void checkBeforeDelete(TaskResponse entity) throws ValidationException {
 
+    }
+
+    private void checkTaskIsAvailable(TaskResponse entity) {
+        if (!entity.getTask().getContest().isEnabled() || !entity.getTask().getContest().isRunning()) {
+            throw new ValidationException("contest " + entity.getTask().getContest().getName() + " is not running");
+        }
+        if (entity.getTask().getStarts().isAfter(entity.getTimestamp())) {
+            throw new ValidationException("task " + entity.getTask().getName() + " is not yet available");
+        }
+        if (entity.getTask().getEnds().isBefore(entity.getTimestamp())) {
+            throw new ValidationException("task " + entity.getTask().getName() + " has expired");
+        }
+    }
+
+    private void checkTeamIsInContest(TaskResponse entity) {
+        if (!entity.getTeam().getContest().equalByUUID(entity.getTask().getContest())) {
+            throw new ValidationException("team " + entity.getTeam().getName() + " is not in contest " + entity.getTask().getContest().getName());
+        }
     }
 
     private void checkScoreWithinTaskPointValue(TaskResponse entity) throws ValidationException {

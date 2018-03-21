@@ -49,12 +49,12 @@
                     <f:facet name="prepend"><b:iconAwesome name="info"/></f:facet>
                 </b:inputTextarea>
                 <h:outputText value=""/>
-                <h:outputLabel value="Available:" for="navailable"/>
-                <b:dateTimePicker iconPosition="left" value="#{newTask.available}" id="navailable"
+                <h:outputLabel value="Available:" for="nstarts"/>
+                <b:dateTimePicker iconPosition="left" value="#{newTask.starts}" id="nstarts"
                                   converter="LocalDateTimeConverter"/>
                 <h:outputText value=""/>
                 <h:outputLabel value="Expires:" for="nexpiration"/>
-                <b:dateTimePicker iconPosition="left" value="#{newTask.expiration}" id="nexpiration"
+                <b:dateTimePicker iconPosition="left" value="#{newTask.ends}" id="nexpiration"
                                   converter="LocalDateTimeConverter"/>
                 <b:commandButton action="#{taskController.create()}" value="Create"
                                  iconAwesome="plus" look="success"/>
@@ -69,7 +69,7 @@
                 <b:panel title="Responses" iconAwesome="envelope-open" collapsed="#{true}">
                     <b:dataTable var="_response" value="#{_task.responses}">
                         <b:dataTableColumn value="#{_response.team.name}" label="Team"/>
-                        <b:dataTableColumn value="#{_response.contents}"/>
+                        <b:dataTableColumn value="#{_response.fileName}"/>
                         <b:dataTableColumn value="#{_response.score}"/>
                         <b:dataTableColumn value="#{_response.comments}"/>
                     </b:dataTable>
@@ -97,13 +97,13 @@
                                 <f:facet name="prepend"><b:iconAwesome name="info"/></f:facet>
                             </b:inputTextarea>
                             <h:outputText value=""/>
-                            <h:outputLabel value="Available:" for="available"/>
-                            <b:dateTimePicker iconPosition="left" value="#{_task.available}"
-                                              id="available" converter="LocalDateTimeConverter"/>
+                            <h:outputLabel value="Available:" for="starts"/>
+                            <b:dateTimePicker iconPosition="left" value="#{_task.starts}"
+                                              id="starts" converter="LocalDateTimeConverter"/>
                             <h:outputText value=""/>
-                            <h:outputLabel value="Expires:" for="expiration"/>
-                            <b:dateTimePicker iconPosition="left" value="#{_task.expiration}"
-                                              id="expiration"  converter="LocalDateTimeConverter"/>
+                            <h:outputLabel value="Expires:" for="ends"/>
+                            <b:dateTimePicker iconPosition="left" value="#{_task.ends}"
+                                              id="ends"  converter="LocalDateTimeConverter"/>
                             <b:commandButton action="#{taskController.update(_task)}" value="Update"
                                              iconAwesome="retweet" look="info"/>
                         </b:panelGrid>

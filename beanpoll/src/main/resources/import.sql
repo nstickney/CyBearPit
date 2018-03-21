@@ -8,20 +8,23 @@ INSERT INTO User (id, admin, judge, name, salt, secret, team_id) VALUES ('UBA', 
 -- User "beanadmin" is a judge but not an admin, and has password "beanjudgepassword"
 INSERT INTO User (id, admin, judge, name, salt, secret, team_id) VALUES ('UBJ', false, true, 'beanjudge', 'b7cb9d0b-bdd1-41f7-ba03-702462f129a3', '$argon2id$v=19$m=1024,t=2,p=2$6JmQTLgp2EwfJ/10htuLWw$vvn79tSS5RdaZSCZV9oaZybaDm5BcYXR3RDthUufH9U', NULL);
 
--- User "TestTeamUser" is a team user for TestTeam and has password "asdfasdfasdfasdf"
-INSERT INTO User (id, admin, judge, name, salt, secret, team_id) VALUES ('9939c6da-a2be-4e56-be0e-6b48241dee53', false, false,'TestTeamUser', 'fa2e0ad8-2021-4a6c-8be1-0dbe72f54610', '$argon2id$v=19$m=1024,t=2,p=2$IANVy6Ninr3hxQaWFEnuzA$8p8M0xD3nvT9kRigf/uwYrZiImYQtNtrM6BYezGTQSs', '17cf9dc4-f82a-4c55-b927-c8804e76a36c');
-
 -- TestContest
-INSERT INTO Contest (id, name, running) VALUES ('873a7207-7fb2-4aa4-bf9b-562da607c3d7', 'TestContest', false);
+INSERT INTO Contest (id, enabled, ends, name, running, starts) VALUES ('a51c930e-ea6a-4c27-8764-06ee921dca3b', false, '2018-05-31 18:00:00', 'TestContest', false, '2018-01-01 08:00:00');
 
 -- TestTeam
-INSERT INTO Team (id, flag, name, contest_id) VALUES ('17cf9dc4-f82a-4c55-b927-c8804e76a36c', 'BONUSPOINTS', 'TestTeam', '873a7207-7fb2-4aa4-bf9b-562da607c3d7');
+INSERT INTO Team (id, flag, name, contest_id) VALUES ('744dce04-1126-4d65-a2f9-daebb8cfec5b', 'BONUSPOINTS', 'TestTeam', 'a51c930e-ea6a-4c27-8764-06ee921dca3b');
+
+-- User "TestTeamUser" is a team user for TestTeam and has password "TestTeamTestTeam"
+INSERT INTO User (id, admin, judge, name, salt, secret, team_id) VALUES ('f91405ca-5750-4845-82c5-c8c40abc81fb', false, false,'TestTeamUser', '8b8e089c-c093-4541-997a-7fa6d5efe202', '$argon2id$v=19$m=1024,t=2,p=2$qdiP4n1m7AS9/SM5L1XJ3g$vP/2EcD/jtS67d3RzKSR0QTORivPPSiC0MG9EGwkIIc', '744dce04-1126-4d65-a2f9-daebb8cfec5b');
 
 -- TestResource
-INSERT INTO Resource (id, address, name, port, scoring, type, weight, contest_id) VALUES ('ac1985ec-e5b2-4501-bffa-3a5d65826aad', 'http://httpbin.org', 'httpbin.org', 80, true, 'HTTP', 1, '873a7207-7fb2-4aa4-bf9b-562da607c3d7');
+INSERT INTO Resource (id, address, name, port, scoring, type, weight, contest_id) VALUES ('d24ceab6-b371-42ee-9de5-9b94814300f3', 'httpbin.org', 'TestHTTP', 80, true, 'HTTP', 1, 'a51c930e-ea6a-4c27-8764-06ee921dca3b');
 
 -- Parameters for TestResource
-INSERT INTO `Parameter` VALUES ('927adb3e-3097-4fe4-8599-39fdfc730666', 'HTTP_RESOLVER', NULL, 'ac1985ec-e5b2-4501-bffa-3a5d65826aad');
+INSERT INTO Parameter VALUES ('b7e9aac3-990e-4f48-a513-6a49d9debcf8', 'HTTP_RESOLVER', NULL, 'd24ceab6-b371-42ee-9de5-9b94814300f3');
+
+-- TestTask
+INSERT INTO Task (id, starts, description, ends, name, pointValue, contest_id) VALUES ('d59f69a0-b789-40ca-a45d-d1c5bd8adceb', '2018-01-01 08:00:00', 'Upload a file.', '2018-05-31 18:00:00', 'TestTask', 100, 'a51c930e-ea6a-4c27-8764-06ee921dca3b');
 
 
 -- Values below this line are for testing only

@@ -37,7 +37,7 @@ public class Team extends ComparableByContest {
     private List<TaskResponse> taskResponses = new ArrayList<>();
 
     @OneToMany(mappedBy = "team")
-    private List<Poll> points = new ArrayList<>();
+    private List<Poll> polls = new ArrayList<>();
 
     @Override
     public String getName() {
@@ -88,25 +88,28 @@ public class Team extends ComparableByContest {
         this.taskResponses = taskResponses;
     }
 
-    public List<Poll> getPoints() {
-        return points;
+    public List<Poll> getPolls() {
+        return polls;
     }
 
-    public void setPoints(List<Poll> points) {
-        this.points = points;
+    public void setPolls(List<Poll> polls) {
+        this.polls = polls;
     }
 
     public int getScore() {
         int score = 0;
-        for (Poll p : points) {
+        for (Poll p : polls) {
             score += p.getScore();
+        }
+        for (TaskResponse r : taskResponses) {
+            score += r.getScore();
         }
         return score;
     }
 
     public int getResourceScore(Resource resource) {
         int score = 0;
-        for (Poll p : points) {
+        for (Poll p : polls) {
             if (null != p.getResource() && p.getResource().equalByUUID(resource)) {
                 score += p.getScore();
             }
@@ -116,10 +119,12 @@ public class Team extends ComparableByContest {
 
     public List<Task> getAvailableTasks() {
         List<Task> available = new ArrayList<>();
-        for (Task t : contest.getTasks()) {
-            if (t.getAvailable().isBefore(LocalDateTime.now()) &&
-                    t.getExpiration().isAfter(LocalDateTime.now())) {
-                available.add(t);
+        if (contest.isEnabled() && contest.isRunning()) {
+            for (Task t : contest.getTasks()) {
+                if (t.getStarts().isBefore(LocalDateTime.now()) &&
+                        t.getEnds().isAfter(LocalDateTime.now())) {
+                    available.add(t);
+                }
             }
         }
         return available;

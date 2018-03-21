@@ -39,9 +39,10 @@
                     <h:form>
                         <b:panelGrid colSpans="2,6,4" size="sm">
                             <h:outputLabel value="Response:" for="response"/>
-                            <b:inputText value="#{_taskResponse.contents}" id="response" class="form-control">
+                            <b:commandButton value="#{_taskResponse.fileName}" id="response" look="success"
+                                             action="#{taskResponseController.downloadResponse(_taskResponse)}">
                                 <f:facet name="prepend"><b:iconAwesome name="check"/></f:facet>
-                            </b:inputText>
+                            </b:commandButton>
                             <h:outputText value=""/>
                             <h:outputLabel value="Score:" for="score"/>
                             <b:inputText value="#{_taskResponse.score}" id="score"

@@ -72,6 +72,10 @@ public class UserController extends AbstractEntityController<User, UserRules,
         doDelete(entity);
     }
 
+    public User getById(String id) {
+        return service.readById(id);
+    }
+
     public User getByName(String name) {
         return service.getByName(name);
     }

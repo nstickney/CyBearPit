@@ -11,11 +11,13 @@
 package is.stma.judgebean.beanpoll.controller;
 
 import is.stma.judgebean.beanpoll.model.User;
+import is.stma.judgebean.beanpoll.service.TeamService;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Produces;
+import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 

@@ -10,11 +10,8 @@
 
 package is.stma.judgebean.beanpoll.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import java.time.LocalDate;
+import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 public class TaskResponse extends AbstractEntity {
@@ -28,10 +25,20 @@ public class TaskResponse extends AbstractEntity {
     private Team team;
 
     @Column
-    private LocalDate timestamp = LocalDate.now();
+    private LocalDateTime timestamp = LocalDateTime.now();
 
     @Column
-    private String contents;
+    private String fileName;
+
+    @Column
+    private String fileType;
+
+    @Column
+    private long fileSize;
+
+    @Column
+    @Lob
+    private byte[] uploaded;
 
     @Column
     private int score = 0;
@@ -67,20 +74,44 @@ public class TaskResponse extends AbstractEntity {
         this.team = team;
     }
 
-    public LocalDate getTimestamp() {
+    public LocalDateTime getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(LocalDate timestamp) {
+    public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;
     }
 
-    public String getContents() {
-        return contents;
+    public String getFileName() {
+        return fileName;
     }
 
-    public void setContents(String contents) {
-        this.contents = contents;
+    public void setFileName(String contents) {
+        this.fileName = contents;
+    }
+
+    public String getFileType() {
+        return fileType;
+    }
+
+    public void setFileType(String fileType) {
+        this.fileType = fileType;
+    }
+
+    public long getFileSize() {
+        return fileSize;
+    }
+
+    public void setFileSize(long fileSize) {
+        this.fileSize = fileSize;
+    }
+
+    public byte[] getUploaded() {
+        return uploaded;
+    }
+
+    public void setUploaded(byte[] uploaded) {
+        this.uploaded = uploaded;
     }
 
     public int getScore() {

@@ -14,7 +14,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,10 +31,10 @@ public class Task extends ComparableByContest {
     private String description;
 
     @Column
-    private LocalDateTime available;
+    private LocalDateTime starts;
 
     @Column
-    private LocalDateTime expiration;
+    private LocalDateTime ends;
 
     @ManyToOne
     private Contest contest;
@@ -68,20 +67,20 @@ public class Task extends ComparableByContest {
         this.description = description;
     }
 
-    public LocalDateTime getAvailable() {
-        return available;
+    public LocalDateTime getStarts() {
+        return starts;
     }
 
-    public void setAvailable(LocalDateTime available) {
-        this.available = available;
+    public void setStarts(LocalDateTime available) {
+        this.starts = available;
     }
 
-    public LocalDateTime getExpiration() {
-        return expiration;
+    public LocalDateTime getEnds() {
+        return ends;
     }
 
-    public void setExpiration(LocalDateTime expiration) {
-        this.expiration = expiration;
+    public void setEnds(LocalDateTime expiration) {
+        this.ends = expiration;
     }
 
     public Contest getContest() {
@@ -98,6 +97,30 @@ public class Task extends ComparableByContest {
 
     public void setResponses(List<TaskResponse> responses) {
         this.responses = responses;
+    }
+
+    public TaskResponse getResponseByTeam(Team team) {
+        for (TaskResponse r : responses) {
+            if (r.getTeam().equalByUUID(team)) {
+                return r;
+            }
+        }
+        return null;
+    }
+
+    public String getLookFor(Team team) {
+
+        long WARNING_TIME_LIMIT = 15L;
+        long DANGER_TIME_LIMIT = 5L;
+
+        if (null != getResponseByTeam(team)) {
+            return "success";
+        } else if (ends.isBefore(LocalDateTime.now().plusMinutes(DANGER_TIME_LIMIT))) {
+            return "danger";
+        } else if (ends.isBefore(LocalDateTime.now().plusMinutes(WARNING_TIME_LIMIT))) {
+            return "warning";
+        }
+        return "info";
     }
 
     @Override

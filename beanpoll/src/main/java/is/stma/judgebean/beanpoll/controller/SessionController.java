@@ -93,7 +93,12 @@ public class SessionController extends AbstractFacesController {
         return LOGIN_PAGE;
     }
 
+    private void updateBean() {
+        bean.setUser(userController.getById(bean.getUser().getId()));
+    }
+
     public String checkAdminNavigation() {
+        updateBean();
         if (bean.isAdmin()) {
             return null;
         }
@@ -101,6 +106,7 @@ public class SessionController extends AbstractFacesController {
     }
 
     public String checkJudgeNavigation() {
+        updateBean();
         if (bean.isJudge()) {
             return null;
         }
@@ -108,6 +114,7 @@ public class SessionController extends AbstractFacesController {
     }
 
     public String checkTeamNavigation() {
+        updateBean();
         if (bean.hasTeam()) {
             return null;
         }
@@ -115,6 +122,7 @@ public class SessionController extends AbstractFacesController {
     }
 
     public String checkAuthenticated() {
+        updateBean();
         if (bean.isAuthenticated()) {
             return null;
         }
@@ -122,6 +130,7 @@ public class SessionController extends AbstractFacesController {
     }
 
     public String checkLoginNavigation() {
+        updateBean();
         if (bean.isAuthenticated()) {
             if (bean.hasTeam()) {
                 return TEAM_PAGE;
@@ -140,6 +149,7 @@ public class SessionController extends AbstractFacesController {
                 bean.getNewPassword(), false);
         bean.setPassword(null);
         bean.setNewPassword(null);
+        updateBean();
     }
 
     public String deleteAccount() {
