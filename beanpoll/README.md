@@ -1,96 +1,57 @@
-BeanPoll
-========================
-Author: Pete Muir
-Level: Intermediate
-Technologies: CDI, JSF, JPA, EJB, JPA, JAX-RS, BV
-Summary: An example that incorporates multiple technologies
-Target Project: WildFly
-Source: <https://github.com/wildfly/quickstart/>
+# BeanPoll
 
-What is it?
------------
+[![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT "MIT License") [![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg)](https://github.com/RichardLitt/standard-readme "RichardLitt/standard-readme")
 
-This is your project! It is a sample, deployable Maven 3 project to help you get your foot in the door developing with Java EE 7 on JBoss WildFly.
+> A polling engine for network security contests, in Java EE
 
-This project is setup to allow you to create a compliant Java EE 7 application using JSF 2.2, CDI 1.1, EJB 3.3, JPA 2.1 and Bean Validation 1.1. It includes a persistence unit and some sample persistence and transaction code to introduce you to database access in enterprise Java.
+BeanPoll is the actual polling engine inside the [JudgeBean](https://github.com/nstickneyjudgebean "nstickney/judgebean") network security contest system. It is a Java EE web application designed to run on the [Wild**Fly**](http://wildfly.org "WildFly") application server (currently building against version 12, "High Noon").  
 
-System requirements
--------------------
+## Table of Contents
 
-All you need to build this project is Java 7.0 (Java SDK 1.7) or better, Maven 3.1 or better.
+- [Security](#security)
+- [Background](#background)
+- [Install](#install)
+- [Usage](#usage)
+- [API](#api)
+- [Contribute](#contribute)
+- [License](#license)
 
-The application this project produces is designed to be run on JBoss WildFly.
+## Security
 
- 
-Configure Maven
----------------
+As with any web application, security must be considered from the perspectives of both the application itself and the  server(s) it runs on. As BeanPoll is meant for Wild**Fly** and requires a database backend, it is imperative that Wild**Fly** be properly secured, along with its database connection.
+* Disable the Wild**Fly** management interface by blocking off ports 9990 and 9993
+* Secure connections from clients to Wild**Fly** using TLS
+* Secure the connection from Wild**Fly** to the database using TLS
+* Secure the database server and host system
 
-If you have not yet done so, you must [Configure Maven](https://github.com/jboss-developer/jboss-developer-shared-resources/blob/master/guides/CONFIGURE_MAVEN.md) before testing the quickstarts.
+The Docker image [judgebean-wildfly](../containers/wildfly/prod "judgebean-wildfly") is set up to only expose port 8443, on the host port 443. This corresponds to `https`-only access to the application listener only. It is also set up to use TLSv1.2 or higher with a (default, dynamically-generated) self-signed certificate. The Docker image [judgebean-mysql](../containers/mysql "judgebean-mysql") is not yet set up to secure connections over TLS; it currently runs the default [mysql/mysql-server](https://hub.docker.com/r/mysql/mysql-server/ "Docker: mysql/mysql-server") image, using Docker environment variables to set up a database, non-root user, and non-root password.
 
+Since the entire purpose of JudgeBean is to be used in network security competitions, it is imperative that every security precaution available be taken short of disconnection. At the very least, change the passwords! The default passwords for the BeanPoll administrative users are set from [import.sql](src/main/resources/import.sql "import.sql") and are listed in plain text in that file. The easiest way to change them is to remove all but the first user line from the file, build the web application archive, deploy and start the application, log in as `beanpoll` (the default admin user), and change both the username and password from the account page.
 
-Start JBoss WildFly with the Web Profile
--------------------------
+## Background
 
-1. Open a command line and navigate to the root of the JBoss server directory.
-2. The following shows the command line to start the server with the web profile:
+BeanPoll is the largest portion of the JudgeBean project, and builds most directly on other scoring engine projects like [Judge](https://github.com/cobbr/judge "cobbr/judge"), [scoring-engine](https://github.com/pwnbus/scoring_engine "pwnbus/scoring_engine"), and [Scoring-Engine](https://github.com/reedwilkins/Scoring-Engine "reedwilkins/Scoring-Engine"). It sits at the center of a network security competition and manages multiple contests, polling resources for each and providing a platform for task/inject dissemination, response submission, and grading.
 
-        For Linux:   JBOSS_HOME/bin/standalone.sh
-        For Windows: JBOSS_HOME\bin\standalone.bat
+## Install
 
- 
-Build and Deploy the Quickstart
--------------------------
+`mvn clean install` in this folder will build the web application archive, which is then saved to [ROOT.war](target/ROOT.war "target/ROOT.war"). Deploy the application on a Wild**Fly** server with a preconfigured datasource called `java:/JudgeBeanDS` (see [persistence.xml](src/main/resources/META-INF/persistence.xml "persistence.xml") for the required configuration).
 
-_NOTE: The following build command assumes you have configured your Maven user settings. If you have not, you must include Maven setting arguments on the command line. See [Build and Deploy the Quickstarts](https://github.com/jboss-developer/jboss-eap-quickstarts#build-and-deploy-the-quickstarts) for complete instructions and additional options._
+You can also use `mvn spotbugs:spotbugs` to check the code for errors, and `./runTests.sh` will build and run the Arquillian/JUnit tests in a purpose-built Docker container with a built-in H2 datasource.
 
-1. Make sure you have started the JBoss Server as described above.
-2. Open a command line and navigate to the root directory of this quickstart.
-3. Type this command to build and deploy the archive:
+## Usage
 
-        mvn clean package wildfly:deploy
+All functionality of BeanPoll is available from the web interface. Once the application is deployed, open a browser and visit the server IP address or hostname (preferably over `https`) and log in. The default administrative user is `beanpoll`, and the default password is `beanpollpassword`.
 
-4. This will deploy `target/beanpoll.war` to the running instance of the server.
- 
+## API
 
-Access the application 
----------------------
+TBP
 
-The application will be running at the following URL: <http://localhost:8080/beanpoll/>.
+## Contribute
 
+> This project subscribes to the [Contributor Covenant](CODE_OF_CONDUCT.md "Code of Conduct").
 
-Undeploy the Archive
---------------------
+I welcome [issues](../docs/issue_template.md "Issue template"), but I prefer [pull requests](../docs/pull_request_template.md "Pull request template")! See the [contribution guidelines](../docs/contributing.md "Contributing") for more information.
 
-1. Make sure you have started the JBoss Server as described above.
-2. Open a command line and navigate to the root directory of this quickstart.
-3. When you are finished testing, type this command to undeploy the archive:
+## License
 
-        mvn wildfly:undeploy
-
-
-Run the Arquillian Tests 
--------------------------
-
-This quickstart provides Arquillian tests. By default, these tests are configured to be skipped as Arquillian tests require the use of a container. 
-
-_NOTE: The following commands assume you have configured your Maven user settings. If you have not, you must include Maven setting arguments on the command line. See [Run the Arquillian Tests](https://github.com/jboss-developer/jboss-developer-shared-resources/blob/master/guides/RUN_ARQUILLIAN_TESTS.md) for complete instructions and additional options._
-
-1. Make sure you have started the JBoss Server as described above.
-2. Open a command line and navigate to the root directory of this quickstart.
-3. Type the following command to run the test goal with the following profile activated:
-
-        mvn clean test -Parq-wildfly-remote
-
-
-Run the Quickstart in JBoss Developer Studio or Eclipse
--------------------------------------
-You can also start the server and deploy the quickstarts from Eclipse using JBoss tools. For more information, see [Use JBoss Developer Studio or Eclipse to Run the Quickstarts](https://github.com/jboss-developer/jboss-developer-shared-resources/blob/master/guides/USE_JBDS.md) 
-
-
-Debug the Application
-------------------------------------
-
-If you want to debug the source code or look at the Javadocs of any library in the project, run either of the following commands to pull them into your local repository. The IDE should then detect them.
-
-    mvn dependency:sources
-    mvn dependency:resolve -Dclassifier=javadoc
+[MIT ©2018 Nathaniel Stickney](LICENSE)

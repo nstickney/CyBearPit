@@ -47,14 +47,13 @@ public class JudgeCallable implements Callable<String> {
             if (!contest.isRunning() && null != contest.getStarts()) {
                 if (contest.getStarts().isBefore(LocalDateTime.now())) {
                     contest.setRunning(true);
+                    contest = contestService.update(contest);
                 }
             }
 
             // If no start time is set, we should just start polling now!
             if (!contest.isRunning() && null == contest.getStarts()) {
                 contest.setRunning(true);
-
-                // In this case we need to update the contest entirely
                 contest = contestService.update(contest);
             }
 
@@ -84,11 +83,16 @@ public class JudgeCallable implements Callable<String> {
             // Update the contest from the database, to see if we should keep going
             contest = contestService.readById(contest.getId());
         }
+
+        // If the contest is no longer enabled, it shouldn't be running either
+        contest.setRunning(false);
+        contest = contestService.update(contest);
+
         return contest.getId();
     }
 
     private void doPoll() {
-        log.log(Level.INFO, "Polling: " + contest.getLogName());
+        log.log(Level.INFO, "Polling " + contest.getLogName());
 
         // Check each competition resource
         for (Resource r : contest.getResources()) {
@@ -98,6 +102,6 @@ public class JudgeCallable implements Callable<String> {
             pollService.create(thisPoll);
         }
 
-        log.log(Level.INFO, "Polled: " + contest.getLogName());
+        log.log(Level.INFO, "Poll complete for " + contest.getLogName());
     }
 }

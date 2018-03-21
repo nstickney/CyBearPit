@@ -36,10 +36,9 @@ public class JudgeController {
 
     public void run(Contest contest) {
         contest.setEnabled(true);
-        JudgeCallable contestJudge = new JudgeCallable(contest, contestService, pollService, log);
-        Future<String> runningContest = executorService.submit(contestJudge);
-        running.add(new IdentifiableFuture(contest.getId(), runningContest));
         contestController.update(contest);
+        running.add(new IdentifiableFuture(contest.getId(),
+                executorService.submit(new JudgeCallable(contest, contestService, pollService, log))));
     }
 
     public void stop(Contest contest) {

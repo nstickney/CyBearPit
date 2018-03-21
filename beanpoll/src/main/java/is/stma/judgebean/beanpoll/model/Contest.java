@@ -45,7 +45,11 @@ public class Contest extends AbstractEntity {
 
     public String getLook() {
         if (running) {
-            return "success";
+            if (enabled) {
+                return "success";
+            } else {
+                return "danger";
+            }
         } else if (enabled) {
             return "warning";
         }

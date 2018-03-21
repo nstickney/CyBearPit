@@ -8,7 +8,6 @@ import is.stma.judgebean.beanpoll.model.Team;
 import is.stma.judgebean.beanpoll.util.DNSUtility;
 import org.xbill.DNS.Type;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class DNSPoller extends AbstractPoller {

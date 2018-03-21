@@ -39,6 +39,18 @@
             </b:panelGrid>
         </h:form></b:panel>
 
+        <!-- Color key -->
+        <b:panel title="Contest Color Key">
+            <b:panelGrid colSpans="1,3,1,3,1,3" size="sm">
+                <b:button value="Enabled" look="warning" disabled="#{true}"/>
+                <h:outputText value="Contest will start at scheduled time"/>
+                <b:button value="Running" look="success" disabled="#{true}"/>
+                <h:outputText value="Contest is polling now"/>
+                <b:button value="Stopping" look="danger" disabled="#{true}"/>
+                <h:outputText value="Contest polling is finishing"/>
+            </b:panelGrid>
+        </b:panel>
+
         <!-- Existing contests -->
         <c:forEach var="_contest" items="#{contests}">
             <b:panel title="#{_contest.name}" iconAwesome="trophy" look="#{_contest.look}" collapsed="#{true}">
@@ -91,10 +103,10 @@
                     <b:panelGrid colSpans="3,3,3,3" size="sm">
                         <h:outputLabel value="Controls"/>
                         <b:buttonGroup>
-                            <b:commandButton action="#{judge.run(_contest)}" value="Run" iconAwesome="play"
-                                             disabled="#{_contest.running}" look="success"/>
+                            <b:commandButton action="#{judge.run(_contest)}" value="Schedule/Run" iconAwesome="play"
+                                             disabled="#{_contest.enabled}" look="success"/>
                             <b:commandButton action="#{judge.stop(_contest)}" value="Stop" iconAwesome="stop"
-                                             disabled="#{!_contest.running}" look="warning"/>
+                                             disabled="#{!_contest.enabled}" look="warning"/>
                         </b:buttonGroup>
                         <b:commandButton action="#{contestController.clone(_contest)}" iconAwesome="copy"
                                          value="Clone" look="info"/>
