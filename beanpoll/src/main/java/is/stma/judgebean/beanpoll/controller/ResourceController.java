@@ -81,7 +81,8 @@ public class ResourceController extends AbstractEntityController<Resource, Resou
                 p.setResource(created);
                 parameterController.updateSilent(p);
             }
-            created = getService().readById(created.getId());
+            created.setParameters(parameters);
+            created = getService().update(created);
             messageOut(getNew().getLogName() + " created.");
         } catch (Exception e) {
 
