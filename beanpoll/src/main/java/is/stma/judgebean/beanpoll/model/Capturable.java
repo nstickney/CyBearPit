@@ -14,12 +14,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Task extends AbstractComparableByContest {
+public class Capturable extends AbstractComparableByContest {
 
     @Column(nullable = false, unique = true)
     private String name;
@@ -28,19 +27,16 @@ public class Task extends AbstractComparableByContest {
     private int pointValue;
 
     @Column
-    private String description;
+    private String flag;
 
     @Column
-    private LocalDateTime starts;
-
-    @Column
-    private LocalDateTime ends;
+    private boolean scoring;
 
     @ManyToOne
     private Contest contest;
 
-    @OneToMany(mappedBy = "task")
-    private List<Response> responses = new ArrayList<>();
+    @OneToMany(mappedBy = "capturable")
+    private List<Captured> capturedBy = new ArrayList<>();
 
     @Override
     public String getName() {
@@ -64,28 +60,12 @@ public class Task extends AbstractComparableByContest {
         this.pointValue = pointValue;
     }
 
-    public String getDescription() {
-        return description;
+    public String getFlag() {
+        return flag;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public LocalDateTime getStarts() {
-        return starts;
-    }
-
-    public void setStarts(LocalDateTime available) {
-        this.starts = available;
-    }
-
-    public LocalDateTime getEnds() {
-        return ends;
-    }
-
-    public void setEnds(LocalDateTime expiration) {
-        this.ends = expiration;
+    public void setFlag(String description) {
+        this.flag = description;
     }
 
     public Contest getContest() {
@@ -96,41 +76,20 @@ public class Task extends AbstractComparableByContest {
         this.contest = contest;
     }
 
-    public List<Response> getResponses() {
-        return responses;
+    public List<Captured> getCapturedBy() {
+        return capturedBy;
     }
 
-    public void setResponses(List<Response> responses) {
-        this.responses = responses;
+    public void setCapturedBy(List<Captured> responses) {
+        this.capturedBy = responses;
     }
 
-    public Response getResponseByTeam(Team team) {
-        for (Response r : responses) {
-            if (r.getTeam().equalByUUID(team)) {
-                return r;
+    public Captured getCapturedByTeam(Team team) {
+        for (Captured c : capturedBy) {
+            if (c.getTeam().equalByUUID(team)) {
+                return c;
             }
         }
         return null;
-    }
-
-    public boolean isAvailable() {
-        return contest.isEnabled() && contest.isRunning()
-                && starts.isBefore(LocalDateTime.now())
-                && ends.isAfter(LocalDateTime.now());
-    }
-
-    public String getLookFor(Team team) {
-
-        long WARNING_TIME_LIMIT = 15L;
-        long DANGER_TIME_LIMIT = 5L;
-
-        if (null != getResponseByTeam(team)) {
-            return "success";
-        } else if (ends.isBefore(LocalDateTime.now().plusMinutes(DANGER_TIME_LIMIT))) {
-            return "danger";
-        } else if (ends.isBefore(LocalDateTime.now().plusMinutes(WARNING_TIME_LIMIT))) {
-            return "warning";
-        }
-        return "info";
     }
 }

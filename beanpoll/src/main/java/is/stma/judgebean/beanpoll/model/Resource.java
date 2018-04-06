@@ -16,7 +16,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Entity
-public class Resource extends ComparableByContest {
+public class Resource extends AbstractComparableByContest {
 
     public static final String DNS = "DNS";
     public static final String HTTP = "HTTP";
@@ -77,7 +77,7 @@ public class Resource extends ComparableByContest {
     }
 
     @Override
-    public int compareTo(ComparableByContest o) {
+    public int compareTo(AbstractComparableByContest o) {
         return compare(this, o);
     }
 

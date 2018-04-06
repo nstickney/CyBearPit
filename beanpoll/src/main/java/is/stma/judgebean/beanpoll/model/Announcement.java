@@ -13,34 +13,22 @@ package is.stma.judgebean.beanpoll.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
-public class Task extends AbstractComparableByContest {
+public class Announcement extends AbstractComparableByContest {
 
     @Column(nullable = false, unique = true)
     private String name;
-
-    @Column(nullable = false)
-    private int pointValue;
 
     @Column
     private String description;
 
     @Column
-    private LocalDateTime starts;
-
-    @Column
-    private LocalDateTime ends;
+    private LocalDateTime published;
 
     @ManyToOne
     private Contest contest;
-
-    @OneToMany(mappedBy = "task")
-    private List<Response> responses = new ArrayList<>();
 
     @Override
     public String getName() {
@@ -56,14 +44,6 @@ public class Task extends AbstractComparableByContest {
         this.name = name;
     }
 
-    public int getPointValue() {
-        return pointValue;
-    }
-
-    public void setPointValue(int pointValue) {
-        this.pointValue = pointValue;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -72,20 +52,12 @@ public class Task extends AbstractComparableByContest {
         this.description = description;
     }
 
-    public LocalDateTime getStarts() {
-        return starts;
+    public LocalDateTime getPublished() {
+        return published;
     }
 
-    public void setStarts(LocalDateTime available) {
-        this.starts = available;
-    }
-
-    public LocalDateTime getEnds() {
-        return ends;
-    }
-
-    public void setEnds(LocalDateTime expiration) {
-        this.ends = expiration;
+    public void setPublished(LocalDateTime available) {
+        this.published = available;
     }
 
     public Contest getContest() {
@@ -94,43 +66,5 @@ public class Task extends AbstractComparableByContest {
 
     public void setContest(Contest contest) {
         this.contest = contest;
-    }
-
-    public List<Response> getResponses() {
-        return responses;
-    }
-
-    public void setResponses(List<Response> responses) {
-        this.responses = responses;
-    }
-
-    public Response getResponseByTeam(Team team) {
-        for (Response r : responses) {
-            if (r.getTeam().equalByUUID(team)) {
-                return r;
-            }
-        }
-        return null;
-    }
-
-    public boolean isAvailable() {
-        return contest.isEnabled() && contest.isRunning()
-                && starts.isBefore(LocalDateTime.now())
-                && ends.isAfter(LocalDateTime.now());
-    }
-
-    public String getLookFor(Team team) {
-
-        long WARNING_TIME_LIMIT = 15L;
-        long DANGER_TIME_LIMIT = 5L;
-
-        if (null != getResponseByTeam(team)) {
-            return "success";
-        } else if (ends.isBefore(LocalDateTime.now().plusMinutes(DANGER_TIME_LIMIT))) {
-            return "danger";
-        } else if (ends.isBefore(LocalDateTime.now().plusMinutes(WARNING_TIME_LIMIT))) {
-            return "warning";
-        }
-        return "info";
     }
 }

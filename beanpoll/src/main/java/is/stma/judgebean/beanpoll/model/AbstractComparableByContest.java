@@ -10,13 +10,13 @@
 
 package is.stma.judgebean.beanpoll.model;
 
-public abstract class ComparableByContest extends AbstractEntity implements Comparable<ComparableByContest> {
+public abstract class AbstractComparableByContest extends AbstractEntity implements Comparable<AbstractComparableByContest> {
 
     @Override
     public boolean equals(Object o) {
         return null != o &&
                 o.getClass().equals(getClass()) &&
-                equalByUUID((ComparableByContest) o);
+                equalByUUID((AbstractComparableByContest) o);
     }
 
     @Override
@@ -43,7 +43,7 @@ public abstract class ComparableByContest extends AbstractEntity implements Comp
         return "default";
     }
 
-    int compare(ComparableByContest e1, ComparableByContest e2) {
+    int compare(AbstractComparableByContest e1, AbstractComparableByContest e2) {
 
         // If both are assigned to contests, decide based on which contest is running
         if (null != e1.getContest() && null != e2.getContest()) {

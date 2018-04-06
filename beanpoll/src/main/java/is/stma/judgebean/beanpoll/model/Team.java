@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Team extends ComparableByContest {
+public class Team extends AbstractComparableByContest {
 
     @Column(nullable = false)
     private String name;
@@ -45,7 +45,7 @@ public class Team extends ComparableByContest {
     }
 
     @Override
-    public int compareTo(ComparableByContest o) {
+    public int compareTo(AbstractComparableByContest o) {
         return compare(this, o);
     }
 
