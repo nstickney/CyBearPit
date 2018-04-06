@@ -36,6 +36,12 @@ public class Contest extends AbstractEntity {
     private boolean running = false;
 
     @OneToMany(mappedBy = "contest")
+    private List<Announcement> announcements = new ArrayList<>();
+
+    @OneToMany(mappedBy = "contest")
+    private List<Capturable> capturables = new ArrayList<>();
+
+    @OneToMany(mappedBy = "contest")
     private List<Resource> resources = new ArrayList<>();
 
     @OneToMany(mappedBy = "contest")
@@ -96,6 +102,22 @@ public class Contest extends AbstractEntity {
 
     public void setRunning(boolean running) {
         this.running = running;
+    }
+
+    public List<Announcement> getAnnouncements() {
+        return announcements;
+    }
+
+    public void setAnnouncements(List<Announcement> announcements) {
+        this.announcements = announcements;
+    }
+
+    public List<Capturable> getCapturables() {
+        return capturables;
+    }
+
+    public void setCapturables(List<Capturable> capturables) {
+        this.capturables = capturables;
     }
 
     public List<Resource> getResources() {

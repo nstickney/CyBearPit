@@ -40,7 +40,7 @@
                 <h:outputText value=""/>
                 <h:outputLabel value="Team:" for="nteam"/>
                 <b:selectOneMenu value="#{newUser.team}" id="nteam" require="false">
-                    <f:facet name="prepend"><b:iconAwesome name="bullhorn"/></f:facet>
+                    <f:facet name="prepend"><b:iconAwesome name="shield"/></f:facet>
                     <f:selectItem itemValue="#{null}" itemLabel=""/>
                     <f:selectItems value="#{teams}" var="_nteam"
                                    itemLabel="#{_nteam.displayName}" itemValue="#{_nteam}"/>
@@ -73,7 +73,7 @@
                         <h:outputText value=""/>
                         <h:outputLabel value="Team:" for="team"/>
                         <b:selectOneMenu value="#{_user.team}" id="team" require="false">
-                            <f:facet name="prepend"><b:iconAwesome name="bullhorn"/></f:facet>
+                            <f:facet name="prepend"><b:iconAwesome name="shield"/></f:facet>
                             <f:selectItem itemValue="#{null}" itemLabel=""/>
                             <f:selectItems value="#{teams}" var="_team"
                                            itemLabel="#{_team.displayName}" itemValue="#{_nteam}"/>

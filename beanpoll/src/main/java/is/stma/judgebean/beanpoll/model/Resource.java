@@ -11,6 +11,8 @@
 package is.stma.judgebean.beanpoll.model;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -182,6 +184,13 @@ public class Resource extends AbstractComparableByContest {
             return null != owner && owner.equalByUUID(team);
         }
         return false;
+    }
+
+    public LocalDateTime getLastCheck() {
+        if (!polls.isEmpty()) {
+            return polls.get(polls.size() - 1).getTimestamp();
+        }
+        return null;
     }
 
     public String getLookFor(Team team) {

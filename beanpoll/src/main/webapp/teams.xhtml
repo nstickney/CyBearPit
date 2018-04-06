@@ -41,7 +41,7 @@
                 <h:outputText value=""/>
                 <h:outputLabel value="Name:" for="nname"/>
                 <b:inputText value="#{newTeam.name}" id="nname" class="form-control">
-                    <f:facet name="prepend"><b:iconAwesome name="bullhorn"/></f:facet>
+                    <f:facet name="prepend"><b:iconAwesome name="shield"/></f:facet>
                 </b:inputText>
                 <h:outputText value=""/>
                 <h:outputLabel value="Flag:" for="nflag"/>
@@ -55,7 +55,7 @@
 
         <!-- Existing teams, grouped by contest -->
         <c:forEach var="_team" items="#{teams}">
-            <b:panel title="#{_team.displayName} - #{_team.score}" iconAwesome="bullhorn"
+            <b:panel title="#{_team.displayName} - #{_team.score}" iconAwesome="shield"
                      look="#{_team.look}" collapsed="#{true}">
 
                 <!-- Task Responses -->
@@ -83,7 +83,7 @@
                         <h:outputText value=""/>
                         <h:outputLabel value="Name:" for="name"/>
                         <b:inputText value="#{_team.name}" id="name" class="form-control">
-                            <f:facet name="prepend"><b:iconAwesome name="bullhorn"/></f:facet>
+                            <f:facet name="prepend"><b:iconAwesome name="shield"/></f:facet>
                         </b:inputText>
                         <h:outputText value=""/>
                         <h:outputLabel value="Flag:" for="flag"/>

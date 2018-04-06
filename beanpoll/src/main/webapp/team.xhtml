@@ -30,6 +30,24 @@
             <f:viewAction action="#{sessionController.checkTeamNavigation()}"/>
         </f:metadata>
 
+        <!-- Announcements -->
+        <b:well>
+            <h2>#{sessionUser.team.contest.name}: Announcements</h2>
+
+            <!-- No announcements available -->
+            <h:panelGroup rendered="#{empty sessionUser.team.contest.announcements}">
+                <b:panel look="warning"><h3>No current announcements</h3></b:panel>
+            </h:panelGroup>
+
+            <c:forEach var="_announcement" items="#{sessionUser.team.contest.announcements}">
+                <b:panel title="#{_announcement.displayName}" collapsed="#{true}" iconAwesome="bullhorn">
+                    <h:outputText style="font-weight: bold" value="#{_announcement.published}: "/>
+                    <h:outputText value="#{_announcement.description}"/>
+                </b:panel>
+            </c:forEach>
+
+        </b:well>
+
         <!-- Resources -->
         <b:well>
             <h2>#{sessionUser.team.contest.name}: Resources</h2>
@@ -40,15 +58,22 @@
             </h:panelGroup>
 
             <c:forEach var="_resource" items="#{sessionUser.team.visibleResources}">
-                <b:panel title="#{_resource.displayName}" look="#{_resource.getLookFor(sessionUser.team)}" collapsed="#{true}">
+                <b:panel title="#{_resource.displayName}" look="#{_resource.getLookFor(sessionUser.team)}"
+                         iconAwesome="server" collapsed="#{true}">
                     <b:row>
                         <b:column style="text-align: center;" col-xs="6">
-                            <b:button rendered="#{_resource.up}" look="success" value="Up"/>
-                            <b:button rendered="#{!_resource.up}" look="danger" value="Down"/>
+                            <h:outputLabel for="isup" value="Up:"/>
+                            <b:button rendered="#{_resource.up}" look="success" id="isup"
+                                      value="#{_resource.lastCheck}" converter="LocalDateTimeConverter"/>
+                            <b:button rendered="#{!_resource.up}" look="danger" id="isup"
+                                      value="#{_resource.lastCheck}" converter="LocalDateTimeConverter"/>
                         </b:column>
                         <b:column style="text-align: center;" col-xs="6">
-                            <b:button rendered="#{_resource.ownedBy(sessionUser.team)}" look="success" value="Owned"/>
-                            <b:button rendered="#{!_resource.ownedBy(sessionUser.team)}" look="danger" value="Pwned"/>
+                            <h:outputLabel for="isowned" value="Owned:"/>
+                            <b:button rendered="#{_resource.ownedBy(sessionUser.team)}" look="success" id="isowned"
+                                      value="#{_resource.lastCheck}" converter="LocalDateTimeConverter"/>
+                            <b:button rendered="#{!_resource.ownedBy(sessionUser.team)}" look="danger" id="isowned"
+                                      value="#{_resource.lastCheck}" converter="LocalDateTimeConverter"/>
                         </b:column>
                     </b:row>
                 </b:panel>

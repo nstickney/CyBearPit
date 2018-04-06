@@ -37,13 +37,13 @@
                 <b:navLink value="Contests" href="contests.xhtml" iconAwesome="trophy"/>
                 <b:navLink value="Resources" href="resources.xhtml" iconAwesome="server"/>
                 <b:navLink value="Tasks" href="tasks.xhtml" iconAwesome="check"/>
-                <b:navLink value="Teams" href="teams.xhtml" iconAwesome="bullhorn"/>
+                <b:navLink value="Teams" href="teams.xhtml" iconAwesome="shield"/>
                 <b:navLink value="Users" href="users.xhtml" iconAwesome="users"/>
             </b:dropMenu>
             <b:navLink value="Judging" href="grading.xhtml" rendered="#{sessionBean.judge}"
                        iconAwesome="gavel"/>
             <b:navLink value="#{sessionUser.team.name}" href="team.xhtml" rendered="#{sessionBean.hasTeam()}"
-                       iconAwesome="bullhorn"/>
+                       iconAwesome="shield"/>
             <b:navLink value="#{sessionUser.name}" href="account.xhtml" rendered="#{sessionBean.authenticated}"
                        iconAwesome="user"/>
         </b:navbarLinks>
