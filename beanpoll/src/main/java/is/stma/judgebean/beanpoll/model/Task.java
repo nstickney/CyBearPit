@@ -47,13 +47,13 @@ public class Task extends AbstractComparableByContest {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @Override
     public int compareTo(AbstractComparableByContest o) {
         return compare(this, o);
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public int getPointValue() {
@@ -117,6 +117,19 @@ public class Task extends AbstractComparableByContest {
         return contest.isEnabled() && contest.isRunning()
                 && starts.isBefore(LocalDateTime.now())
                 && ends.isAfter(LocalDateTime.now());
+    }
+
+    public String getLook() {
+        if (contest == null) {
+            return "danger";
+        } else if (!contest.isRunning()) {
+            return "default";
+        } else if (ends.isBefore(LocalDateTime.now())) {
+            return "warning";
+        } else if (starts.isAfter(LocalDateTime.now())) {
+            return "info";
+        }
+        return "success";
     }
 
     public String getLookFor(Team team) {

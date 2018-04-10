@@ -38,6 +38,13 @@ public class Captured extends AbstractEntity {
         return getId();
     }
 
+    public String getDisplayName() {
+        if (null != team && null != team.getContest()) {
+            return team.getContest().getName() + ": " + getName();
+        }
+        return getName();
+    }
+
     public Capturable getCapturable() {
         return capturable;
     }

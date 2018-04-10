@@ -34,6 +34,9 @@ public class Team extends AbstractComparableByContest {
     private List<Resource> resources = new ArrayList<>();
 
     @OneToMany(mappedBy = "team")
+    private List<Captured> captureds = new ArrayList<>();
+
+    @OneToMany(mappedBy = "team")
     private List<Response> responses = new ArrayList<>();
 
     @OneToMany(mappedBy = "team")
@@ -85,11 +88,19 @@ public class Team extends AbstractComparableByContest {
         this.resources = resources;
     }
 
-    public List<Response> getresponses() {
+    public List<Captured> getCaptureds() {
+        return captureds;
+    }
+
+    public void setCaptureds(List<Captured> captureds) {
+        this.captureds = captureds;
+    }
+
+    public List<Response> getResponses() {
         return responses;
     }
 
-    public void setresponses(List<Response> responses) {
+    public void setResponses(List<Response> responses) {
         this.responses = responses;
     }
 

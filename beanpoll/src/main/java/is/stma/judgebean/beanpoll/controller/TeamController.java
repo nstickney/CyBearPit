@@ -117,7 +117,7 @@ public class TeamController extends AbstractEntityController<Team, TeamRules,
         }
 
         // Orphan all the team's task responses
-        List<Response> responses = new ArrayList<>(entity.getresponses());
+        List<Response> responses = new ArrayList<>(entity.getResponses());
         for (Response r : responses) {
             r.setTeam(null);
             responseController.update(r);

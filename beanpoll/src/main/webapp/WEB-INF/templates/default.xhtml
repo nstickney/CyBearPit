@@ -35,9 +35,13 @@
         <b:navbarLinks pull="right">
             <b:dropMenu value="Controls" rendered="#{sessionBean.admin}" iconAwesome="cog">
                 <b:navLink value="Contests" href="contests.xhtml" iconAwesome="trophy"/>
+                <b:navLink />
+                <b:navLink value="Announcments" href="announcements.xhtml" iconAwesome="bullhorn"/>
+                <b:navLink value="Capturables" href="capturables.xhtml" iconAwesome="flag"/>
                 <b:navLink value="Resources" href="resources.xhtml" iconAwesome="server"/>
                 <b:navLink value="Tasks" href="tasks.xhtml" iconAwesome="check"/>
                 <b:navLink value="Teams" href="teams.xhtml" iconAwesome="shield"/>
+                <b:navLink />
                 <b:navLink value="Users" href="users.xhtml" iconAwesome="users"/>
             </b:dropMenu>
             <b:navLink value="Judging" href="grading.xhtml" rendered="#{sessionBean.judge}"

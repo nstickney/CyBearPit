@@ -12,6 +12,7 @@ package is.stma.judgebean.beanpoll.rules;
 
 import is.stma.judgebean.beanpoll.data.AbstractRepo;
 import is.stma.judgebean.beanpoll.data.CapturedRepo;
+import is.stma.judgebean.beanpoll.model.Capturable;
 import is.stma.judgebean.beanpoll.model.Captured;
 
 import javax.enterprise.inject.Model;
@@ -36,8 +37,11 @@ public class CapturedRules extends AbstractRules<Captured> {
         // Capturable must be available
         checkCapturableIsAvailable(entity);
 
-        // Team must be from correct contest
+        // Team must be from correct contest (same contest as capturable)
         checkTeamIsInContest(entity);
+
+        // Captured flag must be correct
+        checkFlagIsCorrect(entity);
 
         // Check score is within allowable range
         checkScoreWithinCapturablePointValue(entity);
@@ -57,6 +61,12 @@ public class CapturedRules extends AbstractRules<Captured> {
     private void checkTeamIsInContest(Captured entity) {
         if (!entity.getTeam().getContest().equalByUUID(entity.getCapturable().getContest())) {
             throw new ValidationException("team " + entity.getTeam().getName() + " is not in contest " + entity.getCapturable().getContest().getName());
+        }
+    }
+
+    private void checkFlagIsCorrect(Captured entity) throws ValidationException {
+        if (!entity.getCapturable().getFlag().equals(entity.getFlag())) {
+            throw new ValidationException("flag " + entity.getFlag() + " is incorrect");
         }
     }
 

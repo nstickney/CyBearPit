@@ -31,31 +31,38 @@
         </f:metadata>
 
         <!-- Announcements -->
-        <b:well>
-            <h2>#{sessionUser.team.contest.name}: Announcements</h2>
-
-            <!-- No announcements available -->
-            <h:panelGroup rendered="#{empty sessionUser.team.contest.announcements}">
-                <b:panel look="warning"><h3>No current announcements</h3></b:panel>
-            </h:panelGroup>
-
+        <b:panel rendered="#{not empty sessionUser.team.contest.announcements}" title="#{sessionUser.team.contest.name}: Announcements">
+            <h2></h2>
             <c:forEach var="_announcement" items="#{sessionUser.team.contest.announcements}">
                 <b:panel title="#{_announcement.displayName}" collapsed="#{true}" iconAwesome="bullhorn">
                     <h:outputText style="font-weight: bold" value="#{_announcement.published}: "/>
                     <h:outputText value="#{_announcement.description}"/>
                 </b:panel>
             </c:forEach>
+        </b:panel>
 
-        </b:well>
+        <!-- Capturables -->
+        <b:panel rendered="#{not empty sessionUser.team.contest.capturables}" title="#{sessionUser.team.contest.name}: Captured">
+
+            <!-- No flags captured -->
+            <b:well rendered="#{empty sessionUser.team.captureds}">
+                No flags captured
+            </b:well>
+
+            <c:forEach var="_captured" items="#{sessionUser.team.captureds}">
+                <b:panel title="#{_captured.displayName}" iconAwesome="flag" collapsed="#{true}">
+                </b:panel>
+            </c:forEach>
+
+        </b:panel>
 
         <!-- Resources -->
-        <b:well>
-            <h2>#{sessionUser.team.contest.name}: Resources</h2>
+        <b:panel title="#{sessionUser.team.contest.name}: Resources">
 
             <!-- No resources available -->
-            <h:panelGroup rendered="#{empty sessionUser.team.visibleResources}">
-                <b:panel look="warning"><h3>No resources available</h3></b:panel>
-            </h:panelGroup>
+            <b:well rendered="#{empty sessionUser.team.visibleResources}">
+                No resources available
+            </b:well>
 
             <c:forEach var="_resource" items="#{sessionUser.team.visibleResources}">
                 <b:panel title="#{_resource.displayName}" look="#{_resource.getLookFor(sessionUser.team)}"
@@ -79,16 +86,15 @@
                 </b:panel>
             </c:forEach>
 
-        </b:well>
+        </b:panel>
 
         <!-- Tasks -->
-        <b:well>
-            <h2>#{sessionUser.team.contest.name}: Tasks</h2>
+        <b:panel rendered="#{not empty sessionUser.team.contest.tasks}" title="#{sessionUser.team.contest.name}: Tasks">
 
             <!-- No tasks available -->
-            <h:panelGroup rendered="#{empty sessionUser.team.availableTasks}">
-                <b:panel look="warning"><h3>No tasks available</h3></b:panel>
-            </h:panelGroup>
+            <b:well rendered="#{empty sessionUser.team.availableTasks}">
+                No tasks available
+            </b:well>
 
             <c:forEach var="_task" items="#{sessionUser.team.availableTasks}">
                 <b:panel title="#{_task.displayName}" iconAwesome="check" collapsed="#{true}"
@@ -119,7 +125,7 @@
                     </h:form>
                 </b:panel>
             </c:forEach>
-        </b:well>
+        </b:panel>
 
     </ui:define>
 </ui:composition>

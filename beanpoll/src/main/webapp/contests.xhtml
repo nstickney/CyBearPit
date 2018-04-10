@@ -33,16 +33,16 @@
         <b:panel title="Create a New Contest" iconAwesome="plus" look="info"
                  collapsed="#{true}"><h:form>
             <b:panelGrid colSpans="2,6,4" size="sm">
-                <h:outputLabel value="Name:" for="nname"/>
+                <h:outputLabel value="Name: " for="nname"/>
                 <b:inputText value="#{newContest.name}" id="nname" class="form-control">
                     <f:facet name="prepend"><b:iconAwesome name="trophy"/></f:facet>
                 </b:inputText>
                 <h:outputText value=""/>
-                <h:outputLabel value="Starts:" for="nstarts"/>
+                <h:outputLabel value="Starts: " for="nstarts"/>
                 <b:dateTimePicker iconPosition="left" value="#{newContest.starts}" id="nstarts"
                                   converter="LocalDateTimeConverter"/>
                 <h:outputText value=""/>
-                <h:outputLabel value="Ends:" for="nends"/>
+                <h:outputLabel value="Ends: " for="nends"/>
                 <b:dateTimePicker iconPosition="left" value="#{newContest.ends}" id="nends"
                                   converter="LocalDateTimeConverter"/>
                 <b:commandButton action="#{contestController.create()}" value="Create"
@@ -53,12 +53,12 @@
         <!-- Color key -->
         <b:panel title="Contest Color Key">
             <b:panelGrid colSpans="2,2,2,2,2,2" size="sm">
-                <b:button value="Enabled" look="warning" disabled="#{true}"/>
-                <h:outputText value="Contest is starting, or will start at scheduled time"/>
-                <b:button value="Running" look="success" disabled="#{true}"/>
-                <h:outputText value="Contest is polling now"/>
-                <b:button value="Stopping" look="danger" disabled="#{true}"/>
-                <h:outputText value="Contest is stopping after finishing the final poll"/>
+                <h:outputLabel value="Contest is polling now: " for="running"/>
+                <b:button value="Running" look="success" disabled="#{true}" id="running"/>
+                <h:outputLabel value="Contest is starting, or will start at scheduled time: " for="enabled"/>
+                <b:button value="Enabled" look="warning" disabled="#{true}" id="enabled"/>
+                <h:outputLabel value="Contest is stopping after finishing the final poll: " for="disabled"/>
+                <b:button value="Stopping" look="danger" disabled="#{true}" id="disabled"/>
             </b:panelGrid>
         </b:panel>
 
@@ -66,6 +66,23 @@
         <c:forEach var="_contest" items="#{contests}">
             <b:panel title="#{_contest.name}" iconAwesome="trophy" look="#{_contest.look}"
                      collapsed="#{true}">
+
+                <!-- Contest announcements -->
+                <b:panel title="Announcements" iconAwesome="bullhorn" collapsed="#{true}"><h:form>
+                    <b:dataTable var="_announcement" value="#{_contest.announcements}">
+                        <b:dataTableColumn value="#{_announcement.name}"/>
+                        <b:dataTableColumn value="#{_announcement.published}" converter="LocalDateTimeConverter"/>
+                        <b:dataTableColumn value="#{_announcement.description}"/>
+                    </b:dataTable>
+                </h:form></b:panel>
+
+                <!-- Contest flags -->
+                <b:panel title="Capturables" iconAwesome="flag" collapsed="#{true}"><h:form>
+                    <b:dataTable var="_capturable" value="#{_contest.capturables}">
+                        <b:dataTableColumn value="#{_capturable.name}"/>
+                        <b:dataTableColumn value="#{_capturable.pointValue}" label="Value"/>
+                    </b:dataTable>
+                </h:form></b:panel>
 
                 <!-- Contest resources -->
                 <b:panel title="Resources" iconAwesome="server" collapsed="#{true}"><h:form>
@@ -97,42 +114,44 @@
                 <!-- Contest settings -->
                 <b:panel title="Settings" iconAwesome="cog" collapsed="#{true}"><h:form>
                     <b:panelGrid colSpans="2,6,4" size="sm">
-                        <h:outputLabel value="Name:" for="name"/>
+                        <h:outputLabel value="Name: " for="name"/>
                         <b:inputText value="#{_contest.name}" id="name" class="form-control">
                             <f:facet name="prepend"><b:iconAwesome name="trophy"/></f:facet>
                         </b:inputText>
                         <h:outputText value=""/>
-                        <h:outputLabel value="Starts:" for="starts"/>
+                        <h:outputLabel value="Starts: " for="starts"/>
                         <b:dateTimePicker iconPosition="left" value="#{_contest.starts}" id="starts"
                                           converter="LocalDateTimeConverter"/>
                         <h:outputText value=""/>
-                        <h:outputLabel value="Ends:" for="ends"/>
+                        <h:outputLabel value="Ends: " for="ends"/>
                         <b:dateTimePicker iconPosition="left" value="#{_contest.ends}" id="ends"
                                           converter="LocalDateTimeConverter"/>
                         <b:commandButton action="#{contestController.update(_contest)}"
                                          value="Update" iconAwesome="retweet" look="info"/>
                     </b:panelGrid>
-                    <b:row style="margin-top: 1rem;">
-                        <b:column colSm="2">
-                            <h:outputLabel value="Controls"/>
-                        </b:column>
-                        <b:column colMd="4" style="text-align: center;">
-                            <b:commandButton action="#{judge.run(_contest)}" value="Schedule/Run"
-                                             iconAwesome="play" rendered="#{!_contest.enabled}"
-                                             look="success"/>
-                            <b:commandButton action="#{judge.stop(_contest)}" value="Stop"
-                                             iconAwesome="stop" rendered="#{_contest.enabled}"
-                                             look="warning"/>
-                        </b:column>
-                        <b:column colMd="3" style="text-align: center;">
-                            <b:commandButton action="#{contestController.clone(_contest)}"
-                                             iconAwesome="copy" value="Clone" look="info"/>
-                        </b:column>
-                        <b:column colMd="3" style="text-align: center;">
-                            <b:commandButton action="#{contestController.delete(_contest)}"
-                                             value="Delete" iconAwesome="trash" look="danger"/>
-                        </b:column>
-                    </b:row>
+                    <b:well style="margin-top: 1rem;">
+                        <b:row style="margin-top: 1rem;">
+                            <b:column colSm="2">
+                                <h:outputLabel value="Controls: "/>
+                            </b:column>
+                            <b:column colSm="4" style="text-align: center;">
+                                <b:commandButton action="#{judge.run(_contest)}" value="Schedule/Run"
+                                                 iconAwesome="play" rendered="#{!_contest.enabled}"
+                                                 look="success"/>
+                                <b:commandButton action="#{judge.stop(_contest)}" value="Stop"
+                                                 iconAwesome="stop" rendered="#{_contest.enabled}"
+                                                 look="warning"/>
+                            </b:column>
+                            <b:column colSm="3" style="text-align: center;">
+                                <b:commandButton action="#{contestController.clone(_contest)}"
+                                                 iconAwesome="copy" value="Clone" look="info"/>
+                            </b:column>
+                            <b:column colSm="3" style="text-align: center;">
+                                <b:commandButton action="#{contestController.delete(_contest)}"
+                                                 value="Delete" iconAwesome="trash" look="danger"/>
+                            </b:column>
+                        </b:row>
+                    </b:well>
                 </h:form></b:panel>
             </b:panel>
         </c:forEach>

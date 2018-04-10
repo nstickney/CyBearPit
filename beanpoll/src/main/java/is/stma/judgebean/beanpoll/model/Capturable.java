@@ -29,9 +29,6 @@ public class Capturable extends AbstractComparableByContest {
     @Column
     private String flag;
 
-    @Column
-    private boolean scoring;
-
     @ManyToOne
     private Contest contest;
 

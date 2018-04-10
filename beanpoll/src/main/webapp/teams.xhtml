@@ -93,11 +93,11 @@
                         <b:commandButton action="#{teamController.update(_team)}" value="Update"
                                          iconAwesome="retweet" look="info"/>
                     </b:panelGrid>
-                    <b:panelGrid colSpans="9,3" size="sm">
-                        <h:outputLabel value=""/>
-                        <b:commandButton action="#{teamController.delete(_team)}" value="Delete"
+                    <b:well style="margin-top: 1rem;"><h:form><b:panelGrid colSpans="6,6" size="sm">
+                        <h:outputLabel value="Delete this team: " for="delete"/>
+                        <b:commandButton action="#{teamController.delete(_team)}" value="Delete" id="delete"
                                          iconAwesome="trash" look="danger"/>
-                    </b:panelGrid>
+                    </b:panelGrid></h:form></b:well>
                 </h:form></b:panel>
             </b:panel>
         </c:forEach>

@@ -33,12 +33,12 @@
         <!-- Color key -->
         <b:panel title="Grading Color Key">
             <b:panelGrid colSpans="2,2,2,2,2,2" size="sm">
-                <b:button value="Graded" look="default" disabled="#{true}"/>
-                <h:outputText value="Response has already been graded"/>
-                <b:button value="Ungraded" look="warning" disabled="#{true}"/>
-                <h:outputText value="Response is not yet graded"/>
-                <b:button value="Not Final" look="danger" disabled="#{true}"/>
-                <h:outputText value="Response may not be final (task still available)"/>
+                <h:outputLabel value="Response has already been graded: " for="graded"/>
+                <b:button value="Graded" look="default" disabled="#{true}" id="graded"/>
+                <h:outputLabel value="Response is not yet graded: " for="ungraded"/>
+                <b:button value="Ungraded" look="warning" disabled="#{true}" id="ungraded"/>
+                <h:outputLabel value="Response may not be final (task still available): " for="notfinal"/>
+                <b:button value="Not Final" look="danger" disabled="#{true}" id="notfinal"/>
             </b:panelGrid>
         </b:panel>
 

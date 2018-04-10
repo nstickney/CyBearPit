@@ -64,12 +64,30 @@
                         <f:facet name="prepend"><b:iconAwesome name="plug"/></f:facet>
                     </b:inputText>
                     <h:outputText value=""/>
+                    <h:outputLabel value="Weight:" for="nweight"/>
+                    <b:inputText value="#{newResource.weight}" id="nweight" class="form-control"
+                                 p:type="number" p:min="1" p:max="65535">
+                        <f:facet name="prepend"><b:iconAwesome name="plug"/></f:facet>
+                    </b:inputText>
+                    <h:outputText value=""/>
                     <h:outputLabel value="Scoring:" for="nscoring"/>
                     <b:selectBooleanCheckbox value="#{newResource.scoring}" id="nscoring"/>
                     <b:commandButton action="#{resourceController.create()}" value="Create"
                                      iconAwesome="plus" look="success"/>
                 </b:panelGrid>
             </h:form>
+        </b:panel>
+
+        <!-- Color key -->
+        <b:panel title="Resource Color Key">
+            <b:panelGrid colSpans="2,2,2,2,2,2" size="sm">
+                <h:outputLabel value="Resource is being scored: " for="isscoring"/>
+                <b:button value="Active" look="success" disabled="#{true}" id="isscoring"/>
+                <h:outputLabel value="Resource will be scored when contest starts: " for="isenabled"/>
+                <b:button value="Enabled" look="warning" disabled="#{true}" id="isenabled"/>
+                <h:outputLabel value="Resource is not being scored: " for="isdisabled"/>
+                <b:button value="Not Enabled" look="danger" disabled="#{true}" id="isdisabled"/>
+            </b:panelGrid>
         </b:panel>
 
         <!-- Existing resources, grouped by contest -->
@@ -110,16 +128,22 @@
                             <f:facet name="prepend"><b:iconAwesome name="plug"/></f:facet>
                         </b:inputText>
                         <h:outputText value=""/>
+                        <h:outputLabel value="Weight:" for="weight"/>
+                        <b:inputText value="#{_resource.weight}" id="weight" class="form-control"
+                                     p:type="number" p:min="1" p:max="65535">
+                            <f:facet name="prepend"><b:iconAwesome name="calculator"/></f:facet>
+                        </b:inputText>
+                        <h:outputText value=""/>
                         <h:outputLabel value="Scoring:" for="scoring"/>
                         <b:selectBooleanCheckbox value="#{_resource.scoring}" id="scoring"/>
                         <b:commandButton action="#{resourceController.update(_resource)}"
                                          value="Update" iconAwesome="retweet" look="info"/>
                     </b:panelGrid>
-                    <b:panelGrid colSpans="9,3" size="sm">
-                        <h:outputLabel value=""/>
-                        <b:commandButton action="#{resourceController.delete(_resource)}" value="Delete"
+                    <b:well style="margin-top: 1rem;"><h:form><b:panelGrid colSpans="6,6" size="sm">
+                        <h:outputLabel value="Delete this resource: " for="delete"/>
+                        <b:commandButton action="#{resourceController.delete(_resource)}" value="Delete" id="delete"
                                          iconAwesome="trash" look="danger"/>
-                    </b:panelGrid>
+                    </b:panelGrid></h:form></b:well>
                 </h:form></b:panel>
 
                 <!-- Resource parameters -->
@@ -127,10 +151,10 @@
                          collapsed="#{true}"><h:form>
                     <b:dataTable var="_parameter" value="#{_resource.parameters}">
                         <b:dataTableColumn value="#{_parameter.tag}"/>
-                        <b:dataTableColumn>
+                        <b:dataTableColumn label="Value">
                             <b:inputText value="#{_parameter.value}"/>
                         </b:dataTableColumn>
-                        <b:dataTableColumn>
+                        <b:dataTableColumn label="Update">
                             <b:commandButton value="Update" iconAwesome="retweet"
                                              action="#{parameterController.update(_parameter)}"/>
                         </b:dataTableColumn>
@@ -142,7 +166,7 @@
                     <h:form><b:dataTable var="_team" value="#{_resource.teams}">
                         <b:dataTableColumn value="#{_team.name}"/>
                         <b:dataTableColumn value="#{_team.getResourceScore(_resource)}" label="Score"/>
-                        <b:dataTableColumn>
+                        <b:dataTableColumn label="Unassign">
                             <b:commandButton value="Unassign Team From Resource" iconAwesome="minus"
                                              action="#{resourceController.removeTeam(_resource, _team)}"/>
                         </b:dataTableColumn>

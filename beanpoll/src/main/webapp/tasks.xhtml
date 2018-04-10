@@ -15,6 +15,7 @@
                 xmlns:c="http://java.sun.com/jsp/jstl/core"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 template="/WEB-INF/templates/default.xhtml">
 
@@ -56,10 +57,32 @@
                 <h:outputLabel value="Expires:" for="nexpiration"/>
                 <b:dateTimePicker iconPosition="left" value="#{newTask.ends}" id="nexpiration"
                                   converter="LocalDateTimeConverter"/>
+                <h:outputText value=""/>
+                <h:outputLabel value="Point Value:" for="npoints"/>
+                <b:inputText value="#{newTask.pointValue}" id="npoints" class="form-control"
+                             p:type="number" p:min="1" p:max="65535">
+                    <f:facet name="prepend"><b:iconAwesome name="calculator"/></f:facet>
+                </b:inputText>
                 <b:commandButton action="#{taskController.create()}" value="Create"
                                  iconAwesome="plus" look="success"/>
             </b:panelGrid>
         </h:form></b:panel>
+
+        <!-- Color key -->
+        <b:panel title="Tasks Color Key">
+            <b:panelGrid colSpans="2,2,2,2,2,2" size="sm">
+                <h:outputLabel value="Task is being scored: " for="isscoring"/>
+                <b:button value="Active" look="success" disabled="#{true}" id="isscoring"/>
+                <h:outputLabel value="Task is expired: " for="isexpired"/>
+                <b:button value="Enabled" look="warning" disabled="#{true}" id="isexpired"/>
+                <h:outputLabel value="Task is not yet active: " for="isactive"/>
+                <b:button value="Scheduled" look="info" disabled="#{true}" id="isactive"/>
+                <h:outputLabel value="Task contest is not running: " for="notrunning"/>
+                <b:button value="Not running" look="default" disabled="#{true}" id="notrunning"/>
+                <h:outputLabel value="Task is not assigned to contest: " for="notassigned"/>
+                <b:button value="Unassigned" look="danger" disabled="#{true}" id="notassigned"/>
+            </b:panelGrid>
+        </b:panel>
 
         <!-- Existing tasks, grouped by contest -->
         <c:forEach var="_task" items="#{tasks}">
@@ -104,14 +127,20 @@
                             <h:outputLabel value="Expires:" for="ends"/>
                             <b:dateTimePicker iconPosition="left" value="#{_task.ends}"
                                               id="ends"  converter="LocalDateTimeConverter"/>
+                            <h:outputText value=""/>
+                            <h:outputLabel value="Point Value:" for="points"/>
+                            <b:inputText value="#{_task.pointValue}" id="points" class="form-control"
+                                         p:type="number" p:min="1" p:max="65535">
+                                <f:facet name="prepend"><b:iconAwesome name="calculator"/></f:facet>
+                            </b:inputText>
                             <b:commandButton action="#{taskController.update(_task)}" value="Update"
                                              iconAwesome="retweet" look="info"/>
                         </b:panelGrid>
-                        <b:panelGrid colSpans="9,3" size="sm">
-                            <h:outputText value=""/>
-                            <b:commandButton action="#{taskController.delete(_task)}" value="Delete"
+                        <b:well style="margin-top: 1rem;"><h:form><b:panelGrid colSpans="6,6" size="sm">
+                            <h:outputLabel value="Delete this task: " for="delete"/>
+                            <b:commandButton action="#{taskController.delete(_task)}" value="Delete" id="delete"
                                              iconAwesome="trash" look="danger"/>
-                        </b:panelGrid>
+                        </b:panelGrid></h:form></b:well>
                     </h:form>
                 </b:panel>
             </b:panel>

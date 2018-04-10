@@ -92,11 +92,11 @@
                         <b:commandButton value="Change Password" iconAwesome="key" look="warning"
                                          action="#{userController.changePassword(_user, null, userController.newPassword, true)}"/>
                     </b:panelGrid></h:form>
-                    <h:form><b:panelGrid colSpans="9,3" size="sm">
-                        <h:outputLabel value=""/>
-                        <b:commandButton action="#{userController.delete(_user)}" value="Delete"
+                    <b:well style="margin-top: 1rem;"><h:form><b:panelGrid colSpans="6,6" size="sm">
+                        <h:outputLabel value="Delete this user: " for="delete"/>
+                        <b:commandButton action="#{userController.delete(_user)}" value="Delete" id="delete"
                                          iconAwesome="trash" look="danger"/>
-                    </b:panelGrid></h:form>
+                    </b:panelGrid></h:form></b:well>
                 </b:panel>
             </b:panel>
         </c:forEach>
