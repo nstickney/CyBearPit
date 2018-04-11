@@ -10,10 +10,14 @@
 
 package is.stma.judgebean.beanpoll.test;
 
-import is.stma.judgebean.beanpoll.data.TeamRepo;
+import is.stma.judgebean.beanpoll.data.CapturedRepo;
+import is.stma.judgebean.beanpoll.model.Capturable;
+import is.stma.judgebean.beanpoll.model.Captured;
 import is.stma.judgebean.beanpoll.model.Contest;
 import is.stma.judgebean.beanpoll.model.Team;
-import is.stma.judgebean.beanpoll.rules.TeamRules;
+import is.stma.judgebean.beanpoll.rules.CapturedRules;
+import is.stma.judgebean.beanpoll.service.CapturableService;
+import is.stma.judgebean.beanpoll.service.CapturedService;
 import is.stma.judgebean.beanpoll.service.ContestService;
 import is.stma.judgebean.beanpoll.service.TeamService;
 import is.stma.judgebean.beanpoll.util.EMProducer;
@@ -28,28 +32,33 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import javax.ejb.EJBException;
 import javax.inject.Inject;
+import javax.validation.ValidationException;
 import java.io.File;
-import java.time.LocalDateTime;
-import java.util.UUID;
 import java.util.logging.Logger;
 
 @RunWith(Arquillian.class)
-public class TeamRulesTest {
+public class CapturedRulesTest {
 
     @Inject
     private Logger log;
 
     @Inject
+    private CapturedService capturedService;
+
+    @Inject
     private ContestService contestService;
+
+    @Inject
+    private CapturableService capturableService;
 
     @Inject
     private TeamService teamService;
 
+    private Captured testCaptured;
     private Contest testContest;
+    private Capturable testCapturable;
     private Team testTeam;
-    private Team checkTeam;
 
     @Deployment
     public static WebArchive createDeployment() {
@@ -57,13 +66,14 @@ public class TeamRulesTest {
         File[] files = Maven.resolver().loadPomFromFile("pom.xml")
                 .importRuntimeDependencies().resolve().withTransitivity().asFile();
 
-        return ShrinkWrap.create(WebArchive.class, "teamRulesTest.war")
-                .addPackages(true, Team.class.getPackage(),
-                        TeamRepo.class.getPackage(),
-                        TeamService.class.getPackage(),
-                        TeamRules.class.getPackage(),
+        return ShrinkWrap.create(WebArchive.class, "capturedRulesTest.war")
+                .addPackages(true, Captured.class.getPackage(),
+                        CapturedRepo.class.getPackage(),
+                        CapturedService.class.getPackage(),
+                        CapturedRules.class.getPackage(),
                         EMProducer.class.getPackage())
                 .addClass(TestUtility.class)
+                .addClass(ValidationException.class)
                 .addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml")
                 .addAsResource("META-INF/apache-deltaspike.properties")
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
@@ -75,60 +85,46 @@ public class TeamRulesTest {
     public void setUp() {
         if (null == testContest) {
             testContest = TestUtility.makeContest();
+            testContest.setEnabled(true);
+            testContest.setRunning(true);
             contestService.create(testContest);
         }
-
+        if (null == testCapturable) {
+            testCapturable = TestUtility.makeCapturable(testContest, "TEST_FLAG", 10);
+            capturableService.create(testCapturable);
+        }
         if (null == testTeam) {
-            testTeam = TestUtility.makeTeam(testContest, "TEST");
+            testTeam = TestUtility.makeTeam(testContest, "TEST_TEAM_FLAG");
             teamService.create(testTeam);
+        }
+        if (null == testCaptured) {
+            testCaptured = TestUtility.makeCaptured(testCapturable, testTeam);
+            capturedService.create(testCaptured);
         }
     }
 
     @Test
-    public void testTeamCreation() {
-        checkTeam = teamService.readById(testTeam.getId());
-        Assert.assertTrue(testTeam.equalByUUID(checkTeam));
-        Assert.assertEquals(testTeam, checkTeam);
+    public void testCapturedCreation() {
+        Captured checkCaptured = capturedService.readById(testCaptured.getId());
+        Assert.assertTrue(testCaptured.equalByUUID(checkCaptured));
+        Assert.assertEquals(testCaptured, checkCaptured);
     }
 
     @Test
-    public void testTeamUpdate() {
-        String newTeamUUID = testTeam.getId();
-        testTeam.setFlag("UPDATED");
-        teamService.update(testTeam);
-        testTeam = null;
-        testTeam = teamService.readById(newTeamUUID);
-        Assert.assertEquals("UPDATED", testTeam.getFlag());
-        testTeam.setFlag("TEST");
-        testTeam = null;
-        testTeam = teamService.readById(newTeamUUID);
-        teamService.update(testTeam);
-        Assert.assertEquals("TEST", testTeam.getFlag());
+    public void testCapturedDeletion() {
+        capturedService.delete(testCaptured);
+        testCaptured = capturedService.readById(testCaptured.getId());
+        Assert.assertNull(testCaptured);
     }
 
-    @Test(expected = EJBException.class)
-    public void testUpdateNonexistent() {
-        checkTeam = new Team();
-        checkTeam.setName("Check Team");
-        checkTeam.setFlag("CHECK");
-        teamService.update(checkTeam);
-    }
-
-    @Test(expected = EJBException.class)
-    public void testNonUniqueUUID() {
-        checkTeam = testTeam;
-        checkTeam.setFlag("We Copied You!");
-        teamService.create(checkTeam);
-    }
-
-    //TODO: Arquillian catches the wrong error here(?!)
-    @Test(expected = java.lang.AssertionError.class)
-//    @Test(expected = EJBException.class)
-    public void testNonUniqueFlag() {
-        checkTeam = new Team();
-        checkTeam.setName("Test Team 2");
-        checkTeam.setFlag("TEST");
-        checkTeam.setContest(testContest);
-        teamService.create(checkTeam);
+    @Test(expected = ValidationException.class)
+    public void testContestNotRunning() {
+        capturedService.delete(testCaptured);
+        testContest.setEnabled(false);
+        testContest.setRunning(false);
+        contestService.update(testContest);
+        testCapturable = capturableService.readById(testCapturable.getId());
+        testCaptured.setCapturable(testCapturable);
+        capturedService.create(testCaptured);
     }
 }
