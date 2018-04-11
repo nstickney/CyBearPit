@@ -24,18 +24,22 @@ public class Captured extends AbstractEntity {
     @JoinColumn(name = "team_id")
     private Team team;
 
-    @Column
-    private String flag;
-
-    @Column
+    @Column(nullable = false)
     private LocalDateTime timestamp = LocalDateTime.now();
-
-    @Column
-    private int score = 0;
 
     @Override
     public String getName() {
-        return getId();
+        String name = "";
+        if (null != capturable) {
+            name += capturable.getName() + " - ";
+        }
+        if (null != team) {
+            name += team.getName();
+        }
+        if (name.equals("")) {
+            return getId();
+        }
+        return name;
     }
 
     public String getDisplayName() {
@@ -62,11 +66,7 @@ public class Captured extends AbstractEntity {
     }
 
     public String getFlag() {
-        return flag;
-    }
-
-    public void setFlag(String flag) {
-        this.flag = flag;
+        return capturable.getFlag();
     }
 
     public LocalDateTime getTimestamp() {
@@ -78,10 +78,6 @@ public class Captured extends AbstractEntity {
     }
 
     public int getScore() {
-        return score;
-    }
-
-    public void setScore(int score) {
-        this.score = score;
+        return capturable.getPointValue();
     }
 }

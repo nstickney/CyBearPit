@@ -41,8 +41,11 @@
                 </b:selectOneMenu>
                 <h:outputText value=""/>
                 <h:outputLabel value="Name:" for="nname"/>
-                <b:inputText value="#{newCapturable.name}" id="nname" class="form-control">
-                    <f:facet name="prepend"><b:iconAwesome name="check"/></f:facet>
+                <b:inputText value="#{newCapturable.name}" id="nname" class="form-control"/>
+                <h:outputText value=""/>
+                <h:outputLabel value="Flag:" for="nflag"/>
+                <b:inputText value="#{newCapturable.flag}" id="nflag" class="form-control">
+                    <f:facet name="prepend"><b:iconAwesome name="flag"/></f:facet>
                 </b:inputText>
                 <h:outputText value=""/>
                 <h:outputLabel value="Point Value:" for="npoints"/>

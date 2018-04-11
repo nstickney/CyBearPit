@@ -20,7 +20,7 @@
                 template="/WEB-INF/templates/default.xhtml">
 
     <!-- Page title and content header string -->
-    <ui:define name="title">#{sessionUser.team.name}</ui:define>
+    <ui:define name="title">#{sessionUser.team.name}: #{sessionUser.team.score}</ui:define>
 
     <!-- Main body content -->
     <ui:define name="content">
@@ -30,9 +30,14 @@
             <f:viewAction action="#{sessionController.checkTeamNavigation()}"/>
         </f:metadata>
 
+        <!-- Contest not running -->
+        <b:well rendered="#{not sessionUser.team.contest.enabled}">
+            #{sessionUser.team.contest.name} not available at this time.
+        </b:well>
+
         <!-- Announcements -->
-        <b:panel rendered="#{not empty sessionUser.team.contest.announcements}" title="#{sessionUser.team.contest.name}: Announcements">
-            <h2></h2>
+        <b:panel rendered="#{not empty sessionUser.team.contest.announcements}"
+                 title="#{sessionUser.team.contest.name}: Announcements">
             <c:forEach var="_announcement" items="#{sessionUser.team.contest.announcements}">
                 <b:panel title="#{_announcement.displayName}" collapsed="#{true}" iconAwesome="bullhorn">
                     <h:outputText style="font-weight: bold" value="#{_announcement.published}: "/>
@@ -42,27 +47,33 @@
         </b:panel>
 
         <!-- Capturables -->
-        <b:panel rendered="#{not empty sessionUser.team.contest.capturables}" title="#{sessionUser.team.contest.name}: Captured">
+        <b:panel rendered="#{sessionUser.team.contest.enabled and not empty sessionUser.team.contest.capturables}"
+                 title="#{sessionUser.team.contest.name}: Captured">
 
-            <!-- No flags captured -->
-            <b:well rendered="#{empty sessionUser.team.captureds}">
-                No flags captured
+            <!-- Option to capture a new flag -->
+            <h:form><b:panelGrid colSpans="4,4,4" size="sm">
+                    <h:outputLabel value="Capture a Flag: " for="captureFlag"/>
+                    <b:inputText value="#{capturedController.captureFlag}" id="captureFlag" class="form-control">
+                        <f:facet name="prepend"><b:iconAwesome name="flag"/></f:facet>
+                    </b:inputText>
+                    <b:commandButton action="#{capturedController.submitFlag(sessionUser.team)}" value="Submit"
+                                     iconAwesome="upload" look="info"/>
+            </b:panelGrid></h:form>
+
+            <!-- Flags captured -->
+            <b:well>
+                <b:dataTable var="_captured" value="#{sessionUser.team.captureds}">
+                    <b:dataTableColumn value="#{_captured.capturable.name}" label="Name"/>
+                    <b:dataTableColumn value="#{_captured.timestamp}" converter="LocalDateTimeConverter"/>
+                    <b:dataTableColumn value="#{_captured.flag}"/>
+                    <b:dataTableColumn value="#{_captured.score}"/>
+                </b:dataTable>
             </b:well>
-
-            <c:forEach var="_captured" items="#{sessionUser.team.captureds}">
-                <b:panel title="#{_captured.displayName}" iconAwesome="flag" collapsed="#{true}">
-                </b:panel>
-            </c:forEach>
-
         </b:panel>
 
         <!-- Resources -->
-        <b:panel title="#{sessionUser.team.contest.name}: Resources">
-
-            <!-- No resources available -->
-            <b:well rendered="#{empty sessionUser.team.visibleResources}">
-                No resources available
-            </b:well>
+        <b:panel title="#{sessionUser.team.contest.name}: Resources"
+                 rendered="#{sessionUser.team.contest.enabled and not empty sessionUser.team.visibleResources}">
 
             <c:forEach var="_resource" items="#{sessionUser.team.visibleResources}">
                 <b:panel title="#{_resource.displayName}" look="#{_resource.getLookFor(sessionUser.team)}"
@@ -89,12 +100,8 @@
         </b:panel>
 
         <!-- Tasks -->
-        <b:panel rendered="#{not empty sessionUser.team.contest.tasks}" title="#{sessionUser.team.contest.name}: Tasks">
-
-            <!-- No tasks available -->
-            <b:well rendered="#{empty sessionUser.team.availableTasks}">
-                No tasks available
-            </b:well>
+        <b:panel title="#{sessionUser.team.contest.name}: Tasks"
+                 rendered="#{sessionUser.team.contest.enabled and not empty sessionUser.team.availableTasks}">
 
             <c:forEach var="_task" items="#{sessionUser.team.availableTasks}">
                 <b:panel title="#{_task.displayName}" iconAwesome="check" collapsed="#{true}"

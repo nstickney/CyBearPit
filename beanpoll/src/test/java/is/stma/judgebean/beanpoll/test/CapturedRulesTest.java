@@ -175,9 +175,18 @@ public class CapturedRulesTest {
 
     @Test(expected = EJBException.class)
     //@Test(expected = ValidationException.class)
+    public void testDoubleCapturableSubmission() {
+        Captured checkCaptured = TestUtility.makeCaptured(testCapturable, testTeam);
+        capturedService.create(checkCaptured);
+    }
+
+    @Test(expected = EJBException.class)
+    //@Test(expected = ValidationException.class)
     public void testNonUniqueCapturedUUID() {
-        Captured checkCaptured = testCaptured;
-        checkCaptured.setFlag("We Copied You!");
+        Team checkTeam = TestUtility.makeTeam(testContest, "CHECK_TEAM_FLAG");
+        teamService.create(checkTeam);
+        Captured checkCaptured = capturedService.readById(testCaptured.getId());
+        checkCaptured.setTeam(checkTeam);
         capturedService.create(checkCaptured);
     }
 }

@@ -16,5 +16,7 @@ import org.apache.deltaspike.data.api.Repository;
 @SuppressWarnings("CdiManagedBeanInconsistencyInspection")
 @Repository(forEntity = Capturable.class)
 public interface CapturableRepo extends AbstractRepo<Capturable> {
+
+    Capturable findByFlag(String flag);
     
 }

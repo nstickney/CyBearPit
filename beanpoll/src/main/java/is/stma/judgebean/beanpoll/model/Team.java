@@ -114,6 +114,9 @@ public class Team extends AbstractComparableByContest {
 
     public int getScore() {
         int score = 0;
+        for (Captured c : captureds) {
+            score += c.getScore();
+        }
         for (Poll p : polls) {
             score += p.getScore();
         }

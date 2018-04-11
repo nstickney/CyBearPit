@@ -10,14 +10,19 @@
 
 package is.stma.judgebean.beanpoll.controller;
 
+import is.stma.judgebean.beanpoll.model.Capturable;
 import is.stma.judgebean.beanpoll.model.Captured;
+import is.stma.judgebean.beanpoll.model.Team;
 import is.stma.judgebean.beanpoll.rules.CapturedRules;
+import is.stma.judgebean.beanpoll.service.CapturableService;
 import is.stma.judgebean.beanpoll.service.CapturedService;
 
 import javax.enterprise.inject.Model;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.persistence.NoResultException;
+import javax.validation.ValidationException;
 
 @Model
 public class CapturedController extends AbstractEntityController<Captured, CapturedRules,
@@ -26,7 +31,12 @@ public class CapturedController extends AbstractEntityController<Captured, Captu
     @Inject
     private CapturedService service;
 
+    @Inject
+    private CapturableService capturableService;
+
     private Captured newCaptured;
+
+    private String captureFlag = "";
 
     @Override
     @Produces
@@ -56,5 +66,29 @@ public class CapturedController extends AbstractEntityController<Captured, Captu
     @Override
     public void delete(Captured entity) {
         doDelete(entity);
+    }
+
+    public String getCaptureFlag() {
+        return captureFlag;
+    }
+
+    public void setCaptureFlag(String captureFlag) {
+        this.captureFlag = captureFlag;
+    }
+
+    public void submitFlag(Team team) {
+        try {
+            Capturable capturable = capturableService.getByFlag(captureFlag);
+            if (null == capturable) {
+                errorOut(new ValidationException("no capturable flag \"" + captureFlag + "\" available"), "");
+            } else {
+                getNew().setTeam(team);
+                getNew().setCapturable(capturable);
+                create();
+            }
+        } catch (Exception e) {
+            errorOut(e, "no capturable flag \"" + captureFlag + "\" available");
+        }
+
     }
 }

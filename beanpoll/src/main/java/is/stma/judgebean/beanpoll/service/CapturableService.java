@@ -47,4 +47,8 @@ public class CapturableService extends AbstractService<Capturable, AbstractRepo<
     CapturableRules getRules() {
         return rules;
     }
+
+    public Capturable getByFlag(String flag) {
+        return repo.findByFlag(flag);
+    }
 }

@@ -14,17 +14,22 @@ import is.stma.judgebean.beanpoll.data.AbstractRepo;
 import is.stma.judgebean.beanpoll.data.CapturedRepo;
 import is.stma.judgebean.beanpoll.model.Capturable;
 import is.stma.judgebean.beanpoll.model.Captured;
+import is.stma.judgebean.beanpoll.service.CapturableService;
 
 import javax.enterprise.inject.Model;
 import javax.inject.Inject;
 import javax.validation.ValidationException;
 import java.util.List;
+import java.util.logging.Level;
 
 @Model
 public class CapturedRules extends AbstractRules<Captured> {
 
     @Inject
     private CapturedRepo repo;
+
+    @Inject
+    private CapturableService capturableService;
 
     @Override
     public AbstractRepo<Captured> getRepo() {
@@ -40,12 +45,6 @@ public class CapturedRules extends AbstractRules<Captured> {
 
         // Team must be from correct contest (same contest as capturable)
         checkTeamIsInContest(entity);
-
-        // Captured flag must be correct
-        checkFlagIsCorrect(entity);
-
-        // Check score correct
-        checkScoreIsCorrect(entity);
 
         // Check this team hasn't already scored for this capturable
         checkSingleScoring(entity);
@@ -70,21 +69,11 @@ public class CapturedRules extends AbstractRules<Captured> {
         }
     }
 
-    private void checkFlagIsCorrect(Captured entity) throws ValidationException {
-        if (!entity.getCapturable().getFlag().equals(entity.getFlag())) {
-            throw new ValidationException("flag " + entity.getFlag() + " is incorrect");
-        }
-    }
-
-    private void checkScoreIsCorrect(Captured entity) throws ValidationException {
-        if (entity.getScore() != entity.getCapturable().getPointValue()) {
-            throw new ValidationException("score (" + entity.getScore() + ") should be "
-                    + entity.getCapturable().getPointValue());
-        }
-    }
-
     private void checkSingleScoring(Captured entity) throws ValidationException {
-        for (Captured c : entity.getCapturable().getCapturedBy()) {
+        Capturable capturable = capturableService.readById(entity.getCapturable().getId());
+        log.log(Level.INFO, capturable.getId() + " / " + entity.getTeam().getId());
+        for (Captured c : capturable.getCapturedBy()) {
+            log.log(Level.INFO, c.getCapturable().getId() + " / " + entity.getTeam().getId());
             if (c.getTeam().equalByUUID(entity.getTeam()) && c.getCapturable().equalByUUID(entity.getCapturable())) {
                 throw new ValidationException("team " + entity.getTeam() + " has already captured "
                         + entity.getCapturable().getName());

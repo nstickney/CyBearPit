@@ -52,8 +52,6 @@ class TestUtility {
         Captured captured = new Captured();
         captured.setCapturable(capturable);
         captured.setTeam(team);
-        captured.setFlag(capturable.getFlag());
-        captured.setScore(capturable.getPointValue());
         return captured;
     }
 }
