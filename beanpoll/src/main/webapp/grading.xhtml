@@ -68,7 +68,7 @@
                                 <f:facet name="prepend"><b:iconAwesome name="comment"/></f:facet>
                             </b:inputTextarea>
                             <b:commandButton action="#{responseController.update(_response)}" value="Update"
-                                             iconAwesome="retweet" look="info"/>
+                                             iconAwesome="retweet" look="info" rendered="#{!_response.task.available}"/>
                         </b:panelGrid>
                     </h:form>
                 </b:panel>

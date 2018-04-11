@@ -12,6 +12,7 @@ package is.stma.judgebean.beanpoll.model;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 
 @Entity
 public class Response extends AbstractEntity {
@@ -110,11 +111,11 @@ public class Response extends AbstractEntity {
     }
 
     public byte[] getUploaded() {
-        return uploaded;
+        return uploaded.clone();
     }
 
     public void setUploaded(byte[] uploaded) {
-        this.uploaded = uploaded;
+        this.uploaded = uploaded.clone();
     }
 
     public int getScore() {

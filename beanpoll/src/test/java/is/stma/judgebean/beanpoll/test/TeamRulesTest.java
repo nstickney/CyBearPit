@@ -31,6 +31,7 @@ import org.junit.runner.RunWith;
 import javax.ejb.EJBException;
 import javax.inject.Inject;
 import java.io.File;
+import java.time.LocalDateTime;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -46,8 +47,8 @@ public class TeamRulesTest {
     @Inject
     private TeamService teamService;
 
-    private Contest newContest;
-    private Team newTeam;
+    private Contest testContest;
+    private Team testTeam;
     private Team checkTeam;
 
     @Deployment
@@ -62,6 +63,7 @@ public class TeamRulesTest {
                         TeamService.class.getPackage(),
                         TeamRules.class.getPackage(),
                         EMProducer.class.getPackage())
+                .addClass(TestUtility.class)
                 .addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml")
                 .addAsResource("META-INF/apache-deltaspike.properties")
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
@@ -71,45 +73,44 @@ public class TeamRulesTest {
 
     @Before
     public void setUp() {
-        if (null == newContest) {
-            newContest = new Contest();
-            newContest.setName(UUID.randomUUID().toString());
-            contestService.create(newContest);
+        if (null == testContest) {
+            testContest = TestUtility.makeContest();
+            contestService.create(testContest);
         }
 
-        if (null == newTeam) {
-            newTeam = new Team();
-            newTeam.setName("Test Team");
-            newTeam.setFlag("TEST");
-            newTeam.setContest(newContest);
-            teamService.create(newTeam);
+        if (null == testTeam) {
+            testTeam = TestUtility.makeTeam(testContest, TestUtility.TEST_TEAM_FLAG);
+            teamService.create(testTeam);
         }
     }
 
     @Test
     public void testTeamCreation() {
-        checkTeam = teamService.readById(newTeam.getId());
-        Assert.assertTrue(newTeam.equalByUUID(checkTeam));
-        Assert.assertTrue(newTeam.equals(checkTeam));
+        checkTeam = teamService.readById(testTeam.getId());
+        Assert.assertTrue(testTeam.equalByUUID(checkTeam));
+        Assert.assertEquals(testTeam, checkTeam);
     }
 
     @Test
     public void testTeamUpdate() {
-        String newTeamUUID = newTeam.getId();
-        newTeam.setFlag("UPDATED");
-        teamService.update(newTeam);
-        newTeam = null;
-        newTeam = teamService.readById(newTeamUUID);
-        Assert.assertEquals("UPDATED", newTeam.getFlag());
-        newTeam.setFlag("TEST");
-        newTeam = null;
-        newTeam = teamService.readById(newTeamUUID);
-        teamService.update(newTeam);
-        Assert.assertEquals("TEST", newTeam.getFlag());
+        String newTeamUUID = testTeam.getId();
+        testTeam.setFlag("UPDATED");
+        teamService.update(testTeam);
+        testTeam = null;
+        testTeam = teamService.readById(newTeamUUID);
+        Assert.assertEquals("UPDATED", testTeam.getFlag());
+    }
+
+    @Test
+    public void testTeamDeletion() {
+        teamService.delete(testTeam);
+        testTeam = teamService.readById(testTeam.getId());
+        Assert.assertNull(testTeam);
     }
 
     @Test(expected = EJBException.class)
-    public void testUpdateNonexistent() {
+    //@Test(expected = ValidationException.class)
+    public void testUpdateNonexistentTeam() {
         checkTeam = new Team();
         checkTeam.setName("Check Team");
         checkTeam.setFlag("CHECK");
@@ -117,20 +118,22 @@ public class TeamRulesTest {
     }
 
     @Test(expected = EJBException.class)
-    public void testNonUniqueUUID() {
-        checkTeam = newTeam;
+    //@Test(expected = ValidationException.class)
+    public void testNonUniqueTeamUUID() {
+        checkTeam = testTeam;
         checkTeam.setFlag("We Copied You!");
         teamService.create(checkTeam);
     }
 
     //TODO: Arquillian catches the wrong error here(?!)
     @Test(expected = java.lang.AssertionError.class)
-//    @Test(expected = EJBException.class)
-    public void testNonUniqueFlag() {
+    //@Test(expected = EJBException.class)
+    //@Test(expected = ValidationException.class)
+    public void testNonUniqueTeamFlag() {
         checkTeam = new Team();
         checkTeam.setName("Test Team 2");
         checkTeam.setFlag("TEST");
-        checkTeam.setContest(newContest);
+        checkTeam.setContest(testContest);
         teamService.create(checkTeam);
     }
 }

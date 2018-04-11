@@ -23,14 +23,14 @@ public class Capturable extends AbstractComparableByContest {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @Column(nullable = false)
-    private int pointValue;
+    @ManyToOne
+    private Contest contest;
 
     @Column
     private String flag;
 
-    @ManyToOne
-    private Contest contest;
+    @Column(nullable = false)
+    private int pointValue;
 
     @OneToMany(mappedBy = "capturable")
     private List<Captured> capturedBy = new ArrayList<>();
@@ -77,8 +77,8 @@ public class Capturable extends AbstractComparableByContest {
         return capturedBy;
     }
 
-    public void setCapturedBy(List<Captured> responses) {
-        this.capturedBy = responses;
+    public void setCapturedBy(List<Captured> capturedBy) {
+        this.capturedBy = capturedBy;
     }
 
     public Captured getCapturedByTeam(Team team) {

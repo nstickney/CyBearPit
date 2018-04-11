@@ -18,6 +18,7 @@ import is.stma.judgebean.beanpoll.model.Captured;
 import javax.enterprise.inject.Model;
 import javax.inject.Inject;
 import javax.validation.ValidationException;
+import java.util.List;
 
 @Model
 public class CapturedRules extends AbstractRules<Captured> {
@@ -43,8 +44,11 @@ public class CapturedRules extends AbstractRules<Captured> {
         // Captured flag must be correct
         checkFlagIsCorrect(entity);
 
-        // Check score is within allowable range
-        checkScoreWithinCapturablePointValue(entity);
+        // Check score correct
+        checkScoreIsCorrect(entity);
+
+        // Check this team hasn't already scored for this capturable
+        checkSingleScoring(entity);
     }
 
     @Override
@@ -54,13 +58,15 @@ public class CapturedRules extends AbstractRules<Captured> {
 
     private void checkCapturableIsAvailable(Captured entity) {
         if (!entity.getCapturable().getContest().isEnabled() || !entity.getCapturable().getContest().isRunning()) {
-            throw new ValidationException("contest " + entity.getCapturable().getContest().getName() + " is not running");
+            throw new ValidationException("contest " + entity.getCapturable().getContest().getName()
+                    + " is not running");
         }
     }
 
     private void checkTeamIsInContest(Captured entity) {
         if (!entity.getTeam().getContest().equalByUUID(entity.getCapturable().getContest())) {
-            throw new ValidationException("team " + entity.getTeam().getName() + " is not in contest " + entity.getCapturable().getContest().getName());
+            throw new ValidationException("team " + entity.getTeam().getName() + " is not in contest "
+                    + entity.getCapturable().getContest().getName());
         }
     }
 
@@ -70,10 +76,20 @@ public class CapturedRules extends AbstractRules<Captured> {
         }
     }
 
-    private void checkScoreWithinCapturablePointValue(Captured entity) throws ValidationException {
-        if (entity.getScore() < 0 || entity.getScore() > entity.getCapturable().getPointValue()) {
-            throw new ValidationException("score " + entity.getScore() + " is not within plus or minus"
-                    + entity.getCapturable().getPointValue() + " of zero");
+    private void checkScoreIsCorrect(Captured entity) throws ValidationException {
+        if (entity.getScore() != entity.getCapturable().getPointValue()) {
+            throw new ValidationException("score (" + entity.getScore() + ") should be "
+                    + entity.getCapturable().getPointValue());
         }
+    }
+
+    private void checkSingleScoring(Captured entity) throws ValidationException {
+        for (Captured c : entity.getCapturable().getCapturedBy()) {
+            if (c.getTeam().equalByUUID(entity.getTeam()) && c.getCapturable().equalByUUID(entity.getCapturable())) {
+                throw new ValidationException("team " + entity.getTeam() + " has already captured "
+                        + entity.getCapturable().getName());
+            }
+        }
+
     }
 }

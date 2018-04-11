@@ -144,6 +144,6 @@ public class Task extends AbstractComparableByContest {
         } else if (ends.isBefore(LocalDateTime.now().plusMinutes(WARNING_TIME_LIMIT))) {
             return "warning";
         }
-        return "info";
+        return "default";
     }
 }

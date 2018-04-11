@@ -50,6 +50,19 @@ public class Poll extends AbstractEntity implements Comparable<Poll> {
         return getId().compareTo(poll.getId());
     }
 
+    @Override
+    public boolean equals(Object o) {
+        return null != o &&
+                o.getClass().equals(getClass()) &&
+                0 == compareTo((Poll) o);
+    }
+
+    @Override
+    public int hashCode() {
+        String hashCodeString = getId();
+        return hashCodeString.hashCode();
+    }
+
     public Team getTeam() {
         return team;
     }
