@@ -4,7 +4,7 @@
 
 > A polling engine for network security contests, in Java EE
 
-BeanPoll is the actual polling engine inside the [JudgeBean](https://github.com/nstickneyjudgebean "nstickney/judgebean") network security contest system. It is a Java EE web application designed to run on the [Wild**Fly**](http://wildfly.org "WildFly") application server (currently building against version 12, "High Noon").  
+BeanPoll is a contest management system and polling engine developed as part of the [CyBearPit](https://github./com/nstickney/CyBearPit "nstickney/CyBearPit") project. It is a Java EE web application designed to run on the [Wild**Fly**](http://wildfly.org "WildFly") application server (currently building against version 12, "High Noon").  
 
 ## Table of Contents
 

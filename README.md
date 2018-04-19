@@ -1,8 +1,8 @@
-# JudgeBean
+# CyBearPit
 
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT "MIT License") [![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg)](https://github.com/RichardLitt/standard-readme "RichardLitt/standard-readme")
 
-> A polling engine for network security contests, in Java EE
+> A cyber defense training facility
 
 More to follow.
 
