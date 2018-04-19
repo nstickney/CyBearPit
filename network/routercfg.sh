@@ -2,7 +2,6 @@
 # Creates the router configuration file for the CyBearPit N3
 
 # External addresses
-DHCP_ADDR=192.168.7.100
 GATEWAY=172.25.22.1
 
 # Router addresses
@@ -19,7 +18,17 @@ GAME_NET=10.128.0.0
 TEAM_BITS=0.0.255.255
 TEAM_MASK=255.255.0.0
 
-# Number of teams to create VLANs for (MINIMUM 1, MAXIMUM 99)
+# Router ports (not teams)
+WAN_PORT=ge.2.22
+SW1_PORT=ge.2.24
+SW2_PORT=ge.2.26
+SW3_PORT=ge.2.28
+SW4_PORT=ge.2.30
+BLACK_PORT=ge.2.29
+WHITE_PORT=ge.2.27
+RED_PORT=ge.2.25
+
+# Number of teams to create VLANs for (from argument; MINIMUM 1, MAXIMUM 99)
 if [[ ! "$1" =~ ^-?[0-9]+$ ]]; then
 	>&2 echo "ERROR: First argument ($1) is the number of teams"
 	exit
@@ -78,6 +87,14 @@ for i in $(seq -f "%02g" 1 "$NUM_TEAMS"); do
 done
 echo "!"
 
+# IP address pool (Game Network)
+echo "ip local pool GameNetwork 10.255.0.0/16"
+
+# IP address pools (team external networks)
+for i in $(seq -f "%02g" 1 "$NUM_TEAMS"); do
+	echo "ip local pool Team$i 10.$i.255.0/24"
+done
+
 # WAN VLAN interface
 echo "interface vlan.0.$WAN_VLAN"
 echo "  description \"WAN (External)\""
@@ -91,6 +108,7 @@ echo "!"
 echo "interface vlan.0.$GAME_VLAN"
 echo "  description \"LAN (Game Network)\""
 echo "  ip address $GAME_ADDR $GAME_MASK primary"
+echo "  ip dhcp server"
 echo "  no ip proxy-arp"
 echo "  no shutdown"
 echo "  exit"
@@ -103,7 +121,8 @@ for i in $(seq -f "%02g" 1 "$NUM_TEAMS"); do
 	echo "  ip address 10.$i.0.1 $TEAM_MASK primary"
 	echo "  ip access-group AllowMgmt in"
 	echo "  ip access-group AllowMgmt out"
-	echo "  ip helper-address $DHCP_ADDR"
+	echo "  ip dhcp pool Team$i"
+	echo "  ip dhcp server"
 	echo "  no ip proxy-arp"
 	echo "  no shutdown"
 	echo "  exit"
@@ -124,7 +143,7 @@ done
 echo "ip route 0.0.0.0/0 $GATEWAY interface vlan.0.$WAN_VLAN"
 echo "!"
 
-# End the CLI session?
+# End the CLI session
 echo "exit"
 echo "!"
 
@@ -147,7 +166,7 @@ for i in $(seq -f "%02g" 1 "$NUM_TEAMS"); do
 	echo "!"
 done
 
-# Ports (physical)
+# Set PVID for each port
 echo "set port vlan ge.2.1 201"
 echo "set port vlan ge.2.2 101"
 echo "set port vlan ge.2.3 202"
@@ -168,16 +187,10 @@ echo "set port vlan ge.2.17 209"
 echo "set port vlan ge.2.18 109"
 echo "set port vlan ge.2.19 210"
 echo "set port vlan ge.2.20 110"
-#echo "set port vlan ge.2.21 0"
-echo "set port vlan ge.2.22 $WAN_VLAN"
-#echo0 "set port vlan ge.2.23 0"
-echo "set port vlan ge.2.24 101-1$FIX_TEAMS,$WAN_VLAN"
-echo "set port vlan ge.2.25 201-2$FIX_TEAMS"
-echo "set port vlan ge.2.26 301-3$FIX_TEAMS"
-echo "set port vlan ge.2.27 $GAME_VLAN"
-echo "set port vlan ge.2.28 $GAME_VLAN"
-echo "set port vlan ge.2.29 $GAME_VLAN"
-echo "set port vlan ge.2.30 $GAME_VLAN,$WAN_VLAN"
+echo "set port vlan $WAN_PORT $WAN_VLAN"
+echo "set port vlan $RED_PORT $GAME_VLAN"
+echo "set port vlan $WHITE_PORT $GAME_VLAN"
+echo "set port vlan $BLACK_PORT $GAME_VLAN"
 echo "!"
 
 # Prompt
@@ -220,8 +233,8 @@ for i in $(seq -f "%02g" 1 "$NUM_TEAMS"); do
 done
 echo "!"
 
-# Set VLAN egress
-echo "clear vlan egress 1 ge.2.1-30"
+# Set VLAN egress (teams 1-10)
+echo "clear vlan egress 1 ge.2.*"
 echo "set vlan egress 201 ge.2.1 untagged"
 echo "set vlan egress 101 ge.2.2 untagged"
 echo "set vlan egress 202 ge.2.3 untagged"
@@ -242,16 +255,22 @@ echo "set vlan egress 209 ge.2.17 untagged"
 echo "set vlan egress 109 ge.2.18 untagged"
 echo "set vlan egress 210 ge.2.19 untagged"
 echo "set vlan egress 110 ge.2.20 untagged"
-# ge.2.21 unused
-echo "set vlan egress $WAN_VLAN ge.2.22 untagged"
-# ge.2.23 unused
-# ge.2.24 $WAN_VLAN and 100-199, tagged
-echo "set vlan egress $GAME_VLAN ge.2.25 untagged"
-# ge.2.26 200-299, tagged
-echo "set vlan egress $GAME_VLAN ge.2.27 untagged"
-# ge.2.28 300-399, tagged
-# ge.2.29 $WAN_VLAN and $GAME_VLAN, tagged
-echo "set vlan egress $GAME_VLAN ge.2.30 untagged"
+echo "!"
+
+# Set VLAN egress (non-team ports)
+echo "set vlan egress $WAN_VLAN $WAN_PORT untagged"
+echo "set vlan egress $WAN_VLAN,101-1$FIX_TEAMS $SW1_PORT tagged"
+echo "set vlan egress $GAME_VLAN $RED_PORT untagged"
+echo "set vlan egress 201-2$FIX_TEAMS $SW2_PORT tagged"
+echo "set vlan egress $GAME_VLAN $WHITE_PORT untagged"
+echo "set vlan egress 301-3$FIX_TEAMS $SW3_PORT tagged"
+echo "set vlan egress $WAN_VLAN $BLACK_PORT tagged"
+echo "set vlan egress $GAME_VLAN $BLACK_PORT untagged"
+echo "set vlan egress $GAME_VLAN $SW4_PORT untagged"
+echo "!"
+
+# Enable VLAN ingress filtering
+echo "set port ingress-filter ge.2.* enable"
 echo "!"
 
 # Create VLAN iterfaces
