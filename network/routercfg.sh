@@ -8,14 +8,16 @@ DNS_2=129.62.148.42
 
 # Router addresses
 WAN_ADDR=172.25.22.2
+WAN_BITS=0.0.0.255
 WAN_MASK=255.255.255.0
+WAN_NET=172.25.22.0
 WAN_VLAN=4094
 
 GAME_ADDR=10.128.0.1
 GAME_BITS=0.0.255.255
 GAME_MASK=255.255.0.0
-GAME_VLAN=400
 GAME_NET=10.128.0.0
+GAME_VLAN=400
 
 TEAM_BITS=0.0.255.255
 TEAM_MASK=255.255.0.0
@@ -41,7 +43,7 @@ MAX_TEAMS=84
 if [[ ! "$1" =~ ^-?[0-9]+$ ]]; then
 	>&2 echo "ERROR: First argument ($1) is the number of teams"
 	exit
-elif [[ "$1" -lt 1 ]] || [[ "$1" -gt $MAX_TEAMS ]]; then
+elif [ "$1" -lt 1 ] || [ "$1" -gt $MAX_TEAMS ]; then
 	>&2 echo "ERROR: Number of teams must be between 1 and $MAX_TEAMS"
 	exit
 else
@@ -81,16 +83,31 @@ echo "!"
 echo "configure terminal"
 echo "!"
 
-# IP access lists (management, etc)
-echo "ip access-list standard AllowMgmt"
+# IP access lists (Game Network)
+echo "ip access-list standard GameNetworkIn"
 echo "  permit $GAME_NET $GAME_BITS"
+echo "  permit host 0.0.0.0"
+echo "  exit"
+echo "ip access-list standard GameNetworkOut"
+echo "  deny $WAN_NET $WAN_BITS"
+echo "  permit any"
 echo "  exit"
 echo "!"
 
 # IP access lists (teams on vlans)
 for i in $(seq -f "%02g" 1 "$NUM_TEAMS"); do
-	echo "ip access-list standard AllowTeam$i"
+	echo "ip access-list standard InTeam$i"
 	echo "  permit 10.$i.0.0 $TEAM_BITS"
+	echo "  permit host 0.0.0.0"
+	echo "  exit"
+	echo "ip access-list standard OutTeam$i"
+	echo "  deny $WAN_NET $WAN_BITS"
+	for j in $(seq -f "%02g" 1 "$NUM_TEAMS"); do
+		if [ "$j" != "$i" ]; then
+			echo "  deny 10.$j.0.0 $TEAM_BITS"
+		fi
+	done
+	echo "permit any"
 	echo "  exit"
 done
 echo "!"
@@ -108,6 +125,8 @@ echo "!"
 echo "interface vlan.0.$GAME_VLAN"
 echo "  description \"LAN (Game Network)\""
 echo "  ip address $GAME_ADDR $GAME_MASK primary"
+echo "  ip access-group GameNetworkIn in"
+echo "  ip access-group GameNetworkOut out"
 echo "  ip dhcp server"
 echo "  no ip proxy-arp"
 echo "  no shutdown"
@@ -119,8 +138,8 @@ for i in $(seq -f "%02g" 1 "$NUM_TEAMS"); do
 	echo "interface vlan.0.1$i"
 	echo "  description \"Team $i WAN\""
 	echo "  ip address 10.$i.0.1 $TEAM_MASK primary"
-	echo "  ip access-group AllowMgmt in"
-	echo "  ip access-group AllowMgmt out"
+	echo "  ip access-group InTeam$i in"
+	echo "  ip access-group OutTeam$i out"
 	echo "  ip dhcp server"
 	echo "  no ip proxy-arp"
 	echo "  no shutdown"
@@ -159,7 +178,7 @@ for i in $(seq -f "%02g" 1 "$NUM_TEAMS"); do
 done
 
 # Routes
-echo "ip route 0.0.0.0/0 $GATEWAY interface vlan.0.$WAN_VLAN"
+echo "ip route 0.0.0.0/0 $GATEWAY interface vlan.0.$WAN_VLAN 1"
 echo "!"
 
 # End the CLI session
@@ -208,16 +227,24 @@ echo "set port vlan ge.2.19 210 modify-egress"
 echo "set port vlan ge.2.20 110 modify-egress"
 echo "set port vlan ge.2.21 211 modify-egress"
 echo "set port vlan ge.2.22 111 modify-egress"
-echo "set port vlan $WAN_PORT $WAN_VLAN modify-egress"
 echo "set port vlan $RED_PORT $GAME_VLAN modify-egress"
 echo "set port vlan $WHITE_PORT $GAME_VLAN modify-egress"
 echo "set port vlan $BLACK_PORT $GAME_VLAN modify-egress"
+echo "set port vlan $WAN_PORT $WAN_VLAN modify-egress"
 echo "!"
 
 # Prompt
 echo "# prompt"
 echo "set prompt CyBearPit-N3"
 echo "!"
+
+# DNS
+echo "# dns"
+echo "set ip dns disable"
+
+# GVRP
+echo "# gvrp"
+echo "set gvrp disable"
 
 # SNMP
 #echo "# snmp"
