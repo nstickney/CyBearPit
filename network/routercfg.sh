@@ -3,6 +3,8 @@
 
 # External addresses
 GATEWAY=172.25.22.1
+DNS_1=129.62.148.40
+DNS_2=129.62.148.42
 
 # Router addresses
 WAN_ADDR=172.25.22.2
@@ -10,8 +12,8 @@ WAN_MASK=255.255.255.0
 WAN_VLAN=4094
 
 GAME_ADDR=10.128.0.1
-GAME_BITS=0.127.255.255
-GAME_MASK=255.128.0.0
+GAME_BITS=0.0.255.255
+GAME_MASK=255.255.0.0
 GAME_VLAN=400
 GAME_NET=10.128.0.0
 
@@ -28,12 +30,18 @@ BLACK_PORT=ge.2.29
 WHITE_PORT=ge.2.27
 RED_PORT=ge.2.25
 
-# Number of teams to create VLANs for (from argument; MINIMUM 1, MAXIMUM 99)
+# The router can only support up to 256 total interfaces, and we need one for
+# the WAN (uplink) and one for the LAN (Game Network), leaving 254 for the
+# teams. Each team needs 3 interfaces (WAN, LAN, DMZ). 84*3 = 252, leaving two
+# interfaces to spare.
+MAX_TEAMS=84
+
+# Number of teams to create VLANs for (from argument; MINIMUM 1, MAXIMUM 84)
 if [[ ! "$1" =~ ^-?[0-9]+$ ]]; then
 	>&2 echo "ERROR: First argument ($1) is the number of teams"
 	exit
-elif [[ "$1" -lt 1 ]] || [[ "$1" -gt 99 ]]; then
-	>&2 echo "ERROR: Number of teams must be between 1 and 99"
+elif [[ "$1" -lt 1 ]] || [[ "$1" -gt $MAX_TEAMS ]]; then
+	>&2 echo "ERROR: Number of teams must be between 1 and $MAX_TEAMS"
 	exit
 else
 	NUM_TEAMS=$1
@@ -74,7 +82,6 @@ echo "!"
 
 # IP access lists (management, etc)
 echo "ip access-list standard AllowMgmt"
-#echo "  permit $MGMT_NET $MGMT_BITS" 
 echo "  permit $GAME_NET $GAME_BITS"
 echo "  exit"
 echo "!"
@@ -86,14 +93,6 @@ for i in $(seq -f "%02g" 1 "$NUM_TEAMS"); do
 	echo "  exit"
 done
 echo "!"
-
-# IP address pool (Game Network)
-echo "ip local pool GameNetwork 10.255.0.0/16"
-
-# IP address pools (team external networks)
-for i in $(seq -f "%02g" 1 "$NUM_TEAMS"); do
-	echo "ip local pool Team$i 10.$i.255.0/24"
-done
 
 # WAN VLAN interface
 echo "interface vlan.0.$WAN_VLAN"
@@ -121,20 +120,39 @@ for i in $(seq -f "%02g" 1 "$NUM_TEAMS"); do
 	echo "  ip address 10.$i.0.1 $TEAM_MASK primary"
 	echo "  ip access-group AllowMgmt in"
 	echo "  ip access-group AllowMgmt out"
-	echo "  ip dhcp pool Team$i"
 	echo "  ip dhcp server"
 	echo "  no ip proxy-arp"
 	echo "  no shutdown"
 	echo "  exit"
 	echo "interface vlan.0.2$i"
 	echo "  description \"Team $i LAN\""
-#	echo "  no ip proxy-arp"
 	echo "  no shutdown"
 	echo "  exit"
 	echo "interface vlan.0.3$i"
 	echo "  description \"Team $i DMZ\""
-#	echo "  no ip proxy-arp"
 	echo "  no shutdown"
+	echo "  exit"
+	echo "!"
+done
+
+# IP address pool (Game Network)
+echo "ip local pool GameNetwork $GAME_NET $GAME_MASK"
+echo "  exclude $GAME_NET 65281"
+echo "  exit"
+echo "ip dhcp pool GameNetwork"
+echo "  default-router $GAME_ADDR"
+echo "  dns-server $DNS_1 $DNS_2"
+echo "  exit"
+echo "!"
+
+# IP address pools (team external networks)
+for i in $(seq -f "%02g" 1 "$NUM_TEAMS"); do
+	echo "ip local pool Team$i 10.$i.0.0 $TEAM_MASK"
+	echo "  exclude 10.$i.0.0 65281"
+	echo "  exit"
+	echo "ip dhcp pool Team$i"
+	echo "  default-router 10.$i.0.1"
+	echo "  dns-server $DNS_1 $DNS_2"
 	echo "  exit"
 	echo "!"
 done
