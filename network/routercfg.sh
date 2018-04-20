@@ -276,15 +276,20 @@ echo "set vlan egress 209 ge.2.17 untagged"
 echo "set vlan egress 109 ge.2.18 untagged"
 echo "set vlan egress 210 ge.2.19 untagged"
 echo "set vlan egress 110 ge.2.20 untagged"
+echo "set vlan egress 211 ge.2.21 untagged"
+echo "set vlan egress 111 ge.2.22 untagged"
 echo "!"
 
 # Set VLAN egress (non-team ports)
 echo "set vlan egress $WAN_VLAN $WAN_PORT untagged"
-echo "set vlan egress $WAN_VLAN,101-1$FIX_TEAMS $SW1_PORT tagged"
+echo "set vlan egress $WAN_VLAN $SW1_PORT tagged"
+for i in $(seq -f "%02g" 1 "$NUM_TEAMS"); do
+	echo "set vlan egress 1$i $SW1_PORT tagged"
+	echo "set vlan egress 2$i $SW2_PORT tagged"
+	echo "set vlan egress 3$i $SW3_PORT tagged"
+done
 echo "set vlan egress $GAME_VLAN $RED_PORT untagged"
-echo "set vlan egress 201-2$FIX_TEAMS $SW2_PORT tagged"
 echo "set vlan egress $GAME_VLAN $WHITE_PORT untagged"
-echo "set vlan egress 301-3$FIX_TEAMS $SW3_PORT tagged"
 echo "set vlan egress $WAN_VLAN $BLACK_PORT tagged"
 echo "set vlan egress $GAME_VLAN $BLACK_PORT untagged"
 echo "set vlan egress $GAME_VLAN $SW4_PORT untagged"
