@@ -21,11 +21,11 @@ TEAM_BITS=0.0.255.255
 TEAM_MASK=255.255.0.0
 
 # Router ports (not teams)
-WAN_PORT=ge.2.22
 SW1_PORT=ge.2.24
 SW2_PORT=ge.2.26
 SW3_PORT=ge.2.28
 SW4_PORT=ge.2.30
+WAN_PORT=ge.2.23
 BLACK_PORT=ge.2.29
 WHITE_PORT=ge.2.27
 RED_PORT=ge.2.25
@@ -33,7 +33,8 @@ RED_PORT=ge.2.25
 # The router can only support up to 256 total interfaces, and we need one for
 # the WAN (uplink) and one for the LAN (Game Network), leaving 254 for the
 # teams. Each team needs 3 interfaces (WAN, LAN, DMZ). 84*3 = 252, leaving two
-# interfaces to spare.
+# interfaces to spare. For physical connections, only 11 teams are supported
+# due to the number of physical ports available.
 MAX_TEAMS=84
 
 # Number of teams to create VLANs for (from argument; MINIMUM 1, MAXIMUM 84)
@@ -205,6 +206,8 @@ echo "set port vlan ge.2.17 209 modify-egress"
 echo "set port vlan ge.2.18 109 modify-egress"
 echo "set port vlan ge.2.19 210 modify-egress"
 echo "set port vlan ge.2.20 110 modify-egress"
+echo "set port vlan ge.2.21 211 modify-egress"
+echo "set port vlan ge.2.22 111 modify-egress"
 echo "set port vlan $WAN_PORT $WAN_VLAN modify-egress"
 echo "set port vlan $RED_PORT $GAME_VLAN modify-egress"
 echo "set port vlan $WHITE_PORT $GAME_VLAN modify-egress"
