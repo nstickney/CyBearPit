@@ -52,12 +52,12 @@
 
             <!-- Option to capture a new flag -->
             <h:form><b:panelGrid colSpans="4,4,4" size="sm">
-                    <h:outputLabel value="Capture a Flag: " for="captureFlag"/>
-                    <b:inputText value="#{capturedController.captureFlag}" id="captureFlag" class="form-control">
-                        <f:facet name="prepend"><b:iconAwesome name="flag"/></f:facet>
-                    </b:inputText>
-                    <b:commandButton action="#{capturedController.submitFlag(sessionUser.team)}" value="Submit"
-                                     iconAwesome="upload" look="info"/>
+                <h:outputLabel value="Capture a Flag: " for="captureFlag"/>
+                <b:inputText value="#{capturedController.captureFlag}" id="captureFlag" class="form-control">
+                    <f:facet name="prepend"><b:iconAwesome name="flag"/></f:facet>
+                </b:inputText>
+                <b:commandButton action="#{capturedController.submitFlag(sessionUser.team)}" value="Submit"
+                                 iconAwesome="upload" look="info"/>
             </b:panelGrid></h:form>
 
             <!-- Flags captured -->
@@ -99,6 +99,18 @@
 
         </b:panel>
 
+        <!-- Reports -->
+        <b:panel title="Submit an Incident Report" iconAwesome="exclamation" collapsed="#{true}"
+                 rendered="#{sessionUser.team.contest.enabled}">
+            <h:form enctype="multipart/form-data">
+                <h:outputLabel value="Report:" for="report"/>
+                <o:inputFile id="report" value="#{reportController.uploadedFile}"
+                             accept="application/pdf, text/csv, text/plain"/>
+                <b:commandButton value="Submit" iconAwesome="upload" look="success"
+                                 action="#{reportController.uploadReport(sessionUser.team)}"/>
+            </h:form>
+        </b:panel>
+
         <!-- Tasks -->
         <b:panel title="#{sessionUser.team.contest.name}: Tasks"
                  rendered="#{sessionUser.team.contest.enabled and not empty sessionUser.team.availableTasks}">
@@ -123,8 +135,7 @@
                                           converter="LocalDateTimeConverter"/>
                             <h:outputText value=""/>
                             <h:outputLabel value="Response:" for="response"/>
-                            <o:inputFile id="response"
-                                         value="#{responseController.uploadedFile}"
+                            <o:inputFile id="response" value="#{responseController.uploadedFile}"
                                          accept="application/pdf, text/csv, text/plain"/>
                             <b:commandButton value="Submit" iconAwesome="upload" look="success"
                                              action="#{responseController.uploadResponse(sessionUser.team, _task)}"/>

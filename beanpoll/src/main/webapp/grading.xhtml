@@ -76,9 +76,42 @@
         </h:panelGroup>
 
         <!-- No responses available -->
-        <h:panelGroup rendered="#{empty responses}">
-            <b:panel look="warning"><h3>No responses available for grading</h3></b:panel>
+        <b:well rendered="#{empty responses}"><h3>No responses available for grading</h3></b:well>
+
+        <!-- Reports, ungraded first, ordered by time -->
+        <h:panelGroup rendered="#{not empty reports}">
+            <c:forEach var="_report" items="#{reports}">
+                <b:panel title="#{_report.team.name} - #{_report.timestampString}"
+                         iconAwesome="envelope-open" look="#{_report.look}" collapsed="#{true}">
+
+                    <h:form>
+                        <b:panelGrid colSpans="2,6,4" size="sm">
+                            <h:outputLabel value="Report:" for="report"/>
+                            <b:commandButton value="#{_report.fileName}" id="report" look="success"
+                                             action="#{reportController.downloadReport(_report)}">
+                                <f:facet name="prepend"><b:iconAwesome name="exclamation-triangle"/></f:facet>
+                            </b:commandButton>
+                            <h:outputText value=""/>
+                            <h:outputLabel value="Score:" for="score"/>
+                            <b:inputText value="#{_report.score}" id="score"
+                                         p:type="number">
+                                <f:facet name="prepend"><b:iconAwesome name="thermometer-half"/></f:facet>
+                            </b:inputText>
+                            <h:outputText value=""/>
+                            <h:outputLabel value="Comments:" for="comments"/>
+                            <b:inputTextarea value="#{_report.comments}" id="comments">
+                                <f:facet name="prepend"><b:iconAwesome name="comment"/></f:facet>
+                            </b:inputTextarea>
+                            <b:commandButton action="#{reportController.update(_report)}" value="Update"
+                                             iconAwesome="retweet" look="info"/>
+                        </b:panelGrid>
+                    </h:form>
+                </b:panel>
+            </c:forEach>
         </h:panelGroup>
+
+        <!-- No reports available -->
+        <b:well rendered="#{empty reports}"><h3>No reports available for grading</h3></b:well>
 
     </ui:define>
 </ui:composition>

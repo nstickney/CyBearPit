@@ -40,6 +40,9 @@ public class Team extends AbstractComparableByContest {
     private List<Response> responses = new ArrayList<>();
 
     @OneToMany(mappedBy = "team")
+    private List<Report> reports = new ArrayList<>();
+
+    @OneToMany(mappedBy = "team")
     private List<Poll> polls = new ArrayList<>();
 
     @Override
@@ -104,6 +107,14 @@ public class Team extends AbstractComparableByContest {
         this.responses = responses;
     }
 
+    public List<Report> getReports() {
+        return reports;
+    }
+
+    public void setReports(List<Report> reports) {
+        this.reports = reports;
+    }
+
     public List<Poll> getPolls() {
         return polls;
     }
@@ -121,6 +132,9 @@ public class Team extends AbstractComparableByContest {
             score += p.getScore();
         }
         for (Response r : responses) {
+            score += r.getScore();
+        }
+        for (Report r : reports) {
             score += r.getScore();
         }
         return score;
