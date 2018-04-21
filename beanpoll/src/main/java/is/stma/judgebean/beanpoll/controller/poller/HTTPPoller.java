@@ -54,7 +54,7 @@ public class HTTPPoller extends AbstractPoller {
 
         // If the DNS resolution failed, fail
         if (address.startsWith("ERROR: ")) {
-            newPoll.setInformation("DNS " + address);
+            newPoll.setResults("DNS " + address);
             return newPoll;
         }
 
@@ -63,11 +63,11 @@ public class HTTPPoller extends AbstractPoller {
         }
 
         // Do the check
-        newPoll.setInformation(HTTPUtility.get(address));
+        newPoll.setResults(HTTPUtility.get(address));
 
         // Score the new poll - but only if there wasn't an error
         List<Team> scoringTeams = new ArrayList<>();
-        if (!newPoll.getInformation().startsWith("ERROR: ")) {
+        if (!newPoll.getResults().startsWith("ERROR: ")) {
 
             List<Team> possibleTeams = resource.getTeams();
 
@@ -80,7 +80,7 @@ public class HTTPPoller extends AbstractPoller {
                 if (possibleTeams.isEmpty()) {
                     possibleTeams = resource.getContest().getTeams();
                 }
-                scoringTeams = checkTeams(possibleTeams, newPoll.getInformation());
+                scoringTeams = checkTeams(possibleTeams, newPoll.getResults());
             }
         }
 
@@ -88,7 +88,7 @@ public class HTTPPoller extends AbstractPoller {
         if (null != scoringTeams && 1 == scoringTeams.size()) {
             try {
                 newPoll.setTeam(scoringTeams.get(0));
-                newPoll.setScore(resource.getWeight());
+                newPoll.setScore(resource.getPointValue());
             } catch (NullPointerException e) {
                 newPoll.setTeam(null);
                 newPoll.setScore(0);

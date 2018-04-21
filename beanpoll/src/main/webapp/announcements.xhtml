@@ -45,7 +45,7 @@
                 </b:inputText>
                 <h:outputText value=""/>
                 <h:outputLabel value="Description:" for="ndescription"/>
-                <b:inputTextarea value="#{newAnnouncement.description}" id="ndescription">
+                <b:inputTextarea value="#{newAnnouncement.contents}" id="ndescription">
                     <f:facet name="prepend"><b:iconAwesome name="info"/></f:facet>
                 </b:inputTextarea>
                 <h:outputText value=""/>
@@ -86,7 +86,7 @@
                             </b:inputText>
                             <h:outputText value=""/>
                             <h:outputLabel value="Description:" for="description"/>
-                            <b:inputTextarea value="#{_announcement.description}" id="description">
+                            <b:inputTextarea value="#{_announcement.contents}" id="description">
                                 <f:facet name="prepend"><b:iconAwesome name="info"/></f:facet>
                             </b:inputTextarea>
                             <h:outputText value=""/>

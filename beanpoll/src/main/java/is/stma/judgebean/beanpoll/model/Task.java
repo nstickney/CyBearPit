@@ -28,13 +28,13 @@ public class Task extends AbstractComparableByContest {
     private int pointValue;
 
     @Column
-    private String description;
+    private String contents;
 
     @Column
-    private LocalDateTime starts;
+    private LocalDateTime published;
 
     @Column
-    private LocalDateTime ends;
+    private LocalDateTime due;
 
     @ManyToOne
     private Contest contest;
@@ -64,28 +64,28 @@ public class Task extends AbstractComparableByContest {
         this.pointValue = pointValue;
     }
 
-    public String getDescription() {
-        return description;
+    public String getContents() {
+        return contents;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setContents(String description) {
+        this.contents = description;
     }
 
-    public LocalDateTime getStarts() {
-        return starts;
+    public LocalDateTime getPublished() {
+        return published;
     }
 
-    public void setStarts(LocalDateTime available) {
-        this.starts = available;
+    public void setPublished(LocalDateTime available) {
+        this.published = available;
     }
 
-    public LocalDateTime getEnds() {
-        return ends;
+    public LocalDateTime getDue() {
+        return due;
     }
 
-    public void setEnds(LocalDateTime expiration) {
-        this.ends = expiration;
+    public void setDue(LocalDateTime expiration) {
+        this.due = expiration;
     }
 
     public Contest getContest() {
@@ -115,8 +115,8 @@ public class Task extends AbstractComparableByContest {
 
     public boolean isAvailable() {
         return contest.isEnabled() && contest.isRunning()
-                && starts.isBefore(LocalDateTime.now())
-                && ends.isAfter(LocalDateTime.now());
+                && published.isBefore(LocalDateTime.now())
+                && due.isAfter(LocalDateTime.now());
     }
 
     public String getLook() {
@@ -124,9 +124,9 @@ public class Task extends AbstractComparableByContest {
             return "danger";
         } else if (!contest.isRunning()) {
             return "default";
-        } else if (ends.isBefore(LocalDateTime.now())) {
+        } else if (due.isBefore(LocalDateTime.now())) {
             return "warning";
-        } else if (starts.isAfter(LocalDateTime.now())) {
+        } else if (published.isAfter(LocalDateTime.now())) {
             return "info";
         }
         return "success";
@@ -139,9 +139,9 @@ public class Task extends AbstractComparableByContest {
 
         if (null != getResponseByTeam(team)) {
             return "success";
-        } else if (ends.isBefore(LocalDateTime.now().plusMinutes(DANGER_TIME_LIMIT))) {
+        } else if (due.isBefore(LocalDateTime.now().plusMinutes(DANGER_TIME_LIMIT))) {
             return "danger";
-        } else if (ends.isBefore(LocalDateTime.now().plusMinutes(WARNING_TIME_LIMIT))) {
+        } else if (due.isBefore(LocalDateTime.now().plusMinutes(WARNING_TIME_LIMIT))) {
             return "warning";
         }
         return "default";

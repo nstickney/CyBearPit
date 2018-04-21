@@ -31,7 +31,7 @@
         <b:panel title="All Poll Data In Database" iconAwesome="warehouse">
             <b:dataTable var="_poll" value="#{polls}">
                 <b:dataTableColumn value="#{_poll.resource.name}" label="Resource"/>
-                <b:dataTableColumn value="#{_poll.information}" label="Poll Result"/>
+                <b:dataTableColumn value="#{_poll.results}" label="Poll Result"/>
                 <b:dataTableColumn value="#{_poll.team.name}" label="Team"/>
                 <b:dataTableColumn value="#{_poll.score}" label="Points"/>
             </b:dataTable>

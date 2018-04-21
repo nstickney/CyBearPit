@@ -11,7 +11,6 @@
 package is.stma.judgebean.beanpoll.model;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,10 +35,10 @@ public class Resource extends AbstractComparableByContest {
     private int port = 53;
 
     @Column(nullable = false)
-    private boolean scoring = false;
+    private boolean available = false;
 
     @Column(nullable = false)
-    private int weight = 1;
+    private int pointValue = 1;
 
     @OneToMany(mappedBy = "resource")
     private List<Parameter> parameters = new ArrayList<>();
@@ -47,7 +46,7 @@ public class Resource extends AbstractComparableByContest {
     @ManyToOne
     private Contest contest;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "ResourceTeams",
             joinColumns = {@JoinColumn(name = "resource_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "team_id", referencedColumnName = "id")})
@@ -67,7 +66,7 @@ public class Resource extends AbstractComparableByContest {
 
     @Override
     public String getLook() {
-        if (scoring) {
+        if (available) {
             if (null == contest || !contest.isRunning()) {
                 return "warning";
             }
@@ -107,20 +106,20 @@ public class Resource extends AbstractComparableByContest {
         this.port = port;
     }
 
-    public boolean isScoring() {
-        return scoring;
+    public boolean isAvailable() {
+        return available;
     }
 
-    public void setScoring(boolean scoring) {
-        this.scoring = scoring;
+    public void setAvailable(boolean scoring) {
+        this.available = scoring;
     }
 
-    public int getWeight() {
-        return weight;
+    public int getPointValue() {
+        return pointValue;
     }
 
-    public void setWeight(int weight) {
-        this.weight = weight;
+    public void setPointValue(int weight) {
+        this.pointValue = weight;
     }
 
     public List<Parameter> getParameters() {
@@ -171,7 +170,7 @@ public class Resource extends AbstractComparableByContest {
         if (contest.isEnabled() && contest.isRunning() && !polls.isEmpty()) {
             List<Poll> toSort = new ArrayList<>(polls);
             Collections.sort(toSort);
-            return !toSort.get(toSort.size() - 1).getInformation().startsWith("ERROR: ");
+            return !toSort.get(toSort.size() - 1).getResults().startsWith("ERROR: ");
         }
         return false;
     }

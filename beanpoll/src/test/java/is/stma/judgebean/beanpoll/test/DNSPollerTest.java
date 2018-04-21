@@ -11,7 +11,6 @@
 package is.stma.judgebean.beanpoll.test;
 
 import is.stma.judgebean.beanpoll.controller.parameterizer.DNSParameterizer;
-import is.stma.judgebean.beanpoll.controller.parameterizer.HTTPParameterizer;
 import is.stma.judgebean.beanpoll.controller.poller.AbstractPoller;
 import is.stma.judgebean.beanpoll.controller.poller.PollerFactory;
 import is.stma.judgebean.beanpoll.data.PollRepo;
@@ -38,7 +37,6 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.hamcrest.CoreMatchers.anyOf;
-import static org.hamcrest.CoreMatchers.equalTo;
 
 @RunWith(Arquillian.class)
 public class DNSPollerTest {
@@ -141,7 +139,7 @@ public class DNSPollerTest {
         resource.setAddress("9.9.9.9");
         resource.setPort(53);
         resource.setType(Resource.DNS);
-        resource.setScoring(true);
+        resource.setAvailable(true);
         Parameter testQueryParameter = new Parameter();
         testQueryParameter.setTag(DNSParameterizer.DNS_QUERY);
         testQueryParameter.setValue("baylor.edu");
@@ -167,7 +165,7 @@ public class DNSPollerTest {
     public void testPollWorks() {
         AbstractPoller poller = PollerFactory.getPoller(resource);
         poll = poller.poll();
-        Assert.assertTrue(poll.getInformation().contains("129.62.3.230"));
+        Assert.assertTrue(poll.getResults().contains("129.62.3.230"));
         Assert.assertTrue(poll.getTeam().equals(baylorTeam));
     }
 }

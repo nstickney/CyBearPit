@@ -41,7 +41,7 @@
             <c:forEach var="_announcement" items="#{sessionUser.team.contest.announcements}">
                 <b:panel title="#{_announcement.displayName}" collapsed="#{true}" iconAwesome="bullhorn">
                     <h:outputText style="font-weight: bold" value="#{_announcement.published}: "/>
-                    <h:outputText value="#{_announcement.description}"/>
+                    <h:outputText value="#{_announcement.contents}"/>
                 </b:panel>
             </c:forEach>
         </b:panel>
@@ -112,14 +112,14 @@
                             <h:outputText value="#{_task.name}" id="name"/>
                             <h:outputText value=""/>
                             <h:outputLabel value="Description:" for="description"/>
-                            <h:outputText value="#{_task.description}" id="description"/>
+                            <h:outputText value="#{_task.contents}" id="description"/>
                             <h:outputText value=""/>
                             <h:outputLabel value="Available:" for="starts"/>
-                            <h:outputText iconPosition="left" value="#{_task.starts}" id="starts"
+                            <h:outputText iconPosition="left" value="#{_task.published}" id="starts"
                                           converter="LocalDateTimeConverter"/>
                             <h:outputText value=""/>
                             <h:outputLabel value="Expires:" for="ends"/>
-                            <h:outputText iconPosition="left" value="#{_task.ends}" id="ends"
+                            <h:outputText iconPosition="left" value="#{_task.due}" id="ends"
                                           converter="LocalDateTimeConverter"/>
                             <h:outputText value=""/>
                             <h:outputLabel value="Response:" for="response"/>

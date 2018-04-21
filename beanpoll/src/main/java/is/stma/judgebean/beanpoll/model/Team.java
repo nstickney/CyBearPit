@@ -140,7 +140,7 @@ public class Team extends AbstractComparableByContest {
         List<Resource> visible = new ArrayList<>();
         if (contest.isEnabled() && contest.isRunning()) {
             for (Resource r : contest.getResources()) {
-                if (r.isScoring() && (r.getTeams().contains(this) || r.getTeams().isEmpty())) {
+                if (r.isAvailable() && (r.getTeams().contains(this) || r.getTeams().isEmpty())) {
                     visible.add(r);
                 }
             }
@@ -152,8 +152,8 @@ public class Team extends AbstractComparableByContest {
         List<Task> available = new ArrayList<>();
         if (contest.isEnabled() && contest.isRunning()) {
             for (Task t : contest.getTasks()) {
-                if (t.getStarts().isBefore(LocalDateTime.now()) &&
-                        t.getEnds().isAfter(LocalDateTime.now())) {
+                if (t.getPublished().isBefore(LocalDateTime.now()) &&
+                        t.getDue().isAfter(LocalDateTime.now())) {
                     available.add(t);
                 }
             }

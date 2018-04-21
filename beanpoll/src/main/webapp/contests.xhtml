@@ -115,7 +115,7 @@
                     <b:dataTable var="_announcement" value="#{_contest.announcements}">
                         <b:dataTableColumn value="#{_announcement.name}"/>
                         <b:dataTableColumn value="#{_announcement.published}" converter="LocalDateTimeConverter"/>
-                        <b:dataTableColumn value="#{_announcement.description}"/>
+                        <b:dataTableColumn value="#{_announcement.contents}"/>
                     </b:dataTable>
                 </h:form></b:panel>
 

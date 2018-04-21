@@ -46,16 +46,16 @@
                 </b:inputText>
                 <h:outputText value=""/>
                 <h:outputLabel value="Description:" for="ndescription"/>
-                <b:inputTextarea value="#{newTask.description}" id="ndescription">
+                <b:inputTextarea value="#{newTask.contents}" id="ndescription">
                     <f:facet name="prepend"><b:iconAwesome name="info"/></f:facet>
                 </b:inputTextarea>
                 <h:outputText value=""/>
                 <h:outputLabel value="Available:" for="nstarts"/>
-                <b:dateTimePicker iconPosition="left" value="#{newTask.starts}" id="nstarts"
+                <b:dateTimePicker iconPosition="left" value="#{newTask.published}" id="nstarts"
                                   converter="LocalDateTimeConverter"/>
                 <h:outputText value=""/>
                 <h:outputLabel value="Expires:" for="nexpiration"/>
-                <b:dateTimePicker iconPosition="left" value="#{newTask.ends}" id="nexpiration"
+                <b:dateTimePicker iconPosition="left" value="#{newTask.due}" id="nexpiration"
                                   converter="LocalDateTimeConverter"/>
                 <h:outputText value=""/>
                 <h:outputLabel value="Point Value:" for="npoints"/>
@@ -116,16 +116,16 @@
                             </b:inputText>
                             <h:outputText value=""/>
                             <h:outputLabel value="Description:" for="ndescription"/>
-                            <b:inputTextarea value="#{_task.description}" id="ndescription">
+                            <b:inputTextarea value="#{_task.contents}" id="ndescription">
                                 <f:facet name="prepend"><b:iconAwesome name="info"/></f:facet>
                             </b:inputTextarea>
                             <h:outputText value=""/>
                             <h:outputLabel value="Available:" for="starts"/>
-                            <b:dateTimePicker iconPosition="left" value="#{_task.starts}"
+                            <b:dateTimePicker iconPosition="left" value="#{_task.published}"
                                               id="starts" converter="LocalDateTimeConverter"/>
                             <h:outputText value=""/>
                             <h:outputLabel value="Expires:" for="ends"/>
-                            <b:dateTimePicker iconPosition="left" value="#{_task.ends}"
+                            <b:dateTimePicker iconPosition="left" value="#{_task.due}"
                                               id="ends"  converter="LocalDateTimeConverter"/>
                             <h:outputText value=""/>
                             <h:outputLabel value="Point Value:" for="points"/>

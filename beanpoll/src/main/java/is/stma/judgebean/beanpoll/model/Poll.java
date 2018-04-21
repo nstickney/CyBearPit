@@ -25,18 +25,18 @@ public class Poll extends AbstractEntity implements Comparable<Poll> {
     private Resource resource;
 
     @Column
-    private int score = 0;
+    private LocalDateTime timestamp = LocalDateTime.now();
 
     @Column
-    private LocalDateTime timestamp = LocalDateTime.now();
+    private int score = 0;
 
     @Lob
     @Column
-    private String information;
+    private String results;
 
     @Override
     public String getName() {
-        return getId();
+        return resource.getName() + ": " + timestamp.toString();
     }
 
     @Override
@@ -95,11 +95,11 @@ public class Poll extends AbstractEntity implements Comparable<Poll> {
         this.timestamp = timestamp;
     }
 
-    public String getInformation() {
-        return information;
+    public String getResults() {
+        return results;
     }
 
-    public void setInformation(String information) {
-        this.information = information;
+    public void setResults(String information) {
+        this.results = information;
     }
 }

@@ -65,13 +65,13 @@
                     </b:inputText>
                     <h:outputText value=""/>
                     <h:outputLabel value="Weight:" for="nweight"/>
-                    <b:inputText value="#{newResource.weight}" id="nweight" class="form-control"
+                    <b:inputText value="#{newResource.pointValue}" id="nweight" class="form-control"
                                  p:type="number" p:min="1" p:max="65535">
                         <f:facet name="prepend"><b:iconAwesome name="plug"/></f:facet>
                     </b:inputText>
                     <h:outputText value=""/>
                     <h:outputLabel value="Scoring:" for="nscoring"/>
-                    <b:selectBooleanCheckbox value="#{newResource.scoring}" id="nscoring"/>
+                    <b:selectBooleanCheckbox value="#{newResource.available}" id="nscoring"/>
                     <b:commandButton action="#{resourceController.create()}" value="Create"
                                      iconAwesome="plus" look="success"/>
                 </b:panelGrid>
@@ -129,13 +129,13 @@
                         </b:inputText>
                         <h:outputText value=""/>
                         <h:outputLabel value="Weight:" for="weight"/>
-                        <b:inputText value="#{_resource.weight}" id="weight" class="form-control"
+                        <b:inputText value="#{_resource.pointValue}" id="weight" class="form-control"
                                      p:type="number" p:min="1" p:max="65535">
                             <f:facet name="prepend"><b:iconAwesome name="calculator"/></f:facet>
                         </b:inputText>
                         <h:outputText value=""/>
                         <h:outputLabel value="Scoring:" for="scoring"/>
-                        <b:selectBooleanCheckbox value="#{_resource.scoring}" id="scoring"/>
+                        <b:selectBooleanCheckbox value="#{_resource.available}" id="scoring"/>
                         <b:commandButton action="#{resourceController.update(_resource)}"
                                          value="Update" iconAwesome="retweet" look="info"/>
                     </b:panelGrid>

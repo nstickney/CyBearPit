@@ -52,10 +52,10 @@ public class ResponseRules extends AbstractRules<Response> {
         if (!entity.getTask().getContest().isEnabled() || !entity.getTask().getContest().isRunning()) {
             throw new ValidationException("contest " + entity.getTask().getContest().getName() + " is not running");
         }
-        if (entity.getTask().getStarts().isAfter(entity.getTimestamp())) {
+        if (entity.getTask().getPublished().isAfter(entity.getTimestamp())) {
             throw new ValidationException("task " + entity.getTask().getName() + " is not yet available");
         }
-        if (entity.getTask().getEnds().isBefore(entity.getTimestamp())) {
+        if (entity.getTask().getDue().isBefore(entity.getTimestamp())) {
             throw new ValidationException("task " + entity.getTask().getName() + " has expired");
         }
     }

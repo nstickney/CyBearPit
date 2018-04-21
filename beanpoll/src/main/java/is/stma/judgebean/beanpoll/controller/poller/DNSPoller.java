@@ -101,20 +101,20 @@ public class DNSPoller extends AbstractPoller {
         newPoll.setResource(resource);
 
         // Do the poll
-        newPoll.setInformation(DNSUtility.lookup(resource.getAddress(), resource.getPort(), query,
+        newPoll.setResults(DNSUtility.lookup(resource.getAddress(), resource.getPort(), query,
                 type, tcp, recursive, timeout, false));
 
         // Check if it worked, and if it did, score the poll
-        if (newPoll.getInformation().contains(expected)) {
+        if (newPoll.getResults().contains(expected)) {
 
             // No need to check flags if only one team is assigned
             if (1 == resource.getTeams().size()) {
                 newPoll.setTeam(resource.getTeams().get(0));
-                newPoll.setScore(resource.getWeight());
+                newPoll.setScore(resource.getPointValue());
             } else {
 
                 // Check the flags
-                newPoll.setInformation(newPoll.getInformation() + ", flag: " +
+                newPoll.setResults(newPoll.getResults() + ", flag: " +
                         DNSUtility.lookup(resource.getAddress(), resource.getPort(), query, Type.TXT, tcp, recursive, timeout, false));
 
                 List<Team> possibleTeams = resource.getTeams();
@@ -125,11 +125,11 @@ public class DNSPoller extends AbstractPoller {
                 }
 
                 List<Team> scoringTeams;
-                scoringTeams = checkTeams(possibleTeams, newPoll.getInformation());
+                scoringTeams = checkTeams(possibleTeams, newPoll.getResults());
 
                 if (1 == scoringTeams.size()) {
                     newPoll.setTeam(scoringTeams.get(0));
-                    newPoll.setScore(resource.getWeight());
+                    newPoll.setScore(resource.getPointValue());
                 }
             }
         }

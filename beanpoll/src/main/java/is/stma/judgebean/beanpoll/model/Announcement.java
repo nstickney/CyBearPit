@@ -13,27 +13,30 @@ package is.stma.judgebean.beanpoll.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
 public class Announcement extends AbstractComparableByContest {
 
+    @ManyToOne
+    private Contest contest;
+
     @Column(nullable = false, unique = true)
     private String name;
 
     @Column
-    private String description;
+    private String contents;
 
-    @Column
+    @Column(nullable = false)
     private LocalDateTime published = LocalDateTime.now();
-
-    @ManyToOne
-    private Contest contest;
 
     @Override
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
@@ -41,16 +44,12 @@ public class Announcement extends AbstractComparableByContest {
         return compare(this, o);
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getContents() {
+        return contents;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
+    public void setContents(String description) {
+        this.contents = description;
     }
 
     public LocalDateTime getPublished() {

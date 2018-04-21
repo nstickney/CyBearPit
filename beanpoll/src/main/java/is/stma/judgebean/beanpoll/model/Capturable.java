@@ -20,11 +20,11 @@ import java.util.List;
 @Entity
 public class Capturable extends AbstractComparableByContest {
 
-    @Column(nullable = false, unique = true)
-    private String name;
-
     @ManyToOne
     private Contest contest;
+
+    @Column(nullable = false, unique = true)
+    private String name;
 
     @Column
     private String flag;
@@ -40,13 +40,13 @@ public class Capturable extends AbstractComparableByContest {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @Override
     public int compareTo(AbstractComparableByContest o) {
         return compare(this, o);
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public int getPointValue() {

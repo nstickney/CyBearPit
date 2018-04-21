@@ -140,7 +140,7 @@ public class HTTPPollerTest {
         resource.setAddress("httpbin.org");
         resource.setPort(80);
         resource.setType(Resource.HTTP);
-        resource.setScoring(true);
+        resource.setAvailable(true);
         Parameter testParameter = new Parameter();
         testParameter.setTag(HTTPParameterizer.HTTP_RESOLVER);
         testParameter = parameterService.create(testParameter);
@@ -180,7 +180,7 @@ public class HTTPPollerTest {
     public void testPollWorks() {
         AbstractPoller poller = PollerFactory.getPoller(resource);
         poll = poller.poll();
-        Assert.assertTrue(poll.getInformation().contains("BONUSPOINTS"));
+        Assert.assertTrue(poll.getResults().contains("BONUSPOINTS"));
         Assert.assertTrue(poll.getTeam().equals(bonusTeam));
     }
 
@@ -189,7 +189,7 @@ public class HTTPPollerTest {
         resource.setAddress("http://httpbin.org");
         AbstractPoller poller = PollerFactory.getPoller(resource);
         poll = poller.poll();
-        Assert.assertTrue(poll.getInformation().contains("BONUSPOINTS"));
+        Assert.assertTrue(poll.getResults().contains("BONUSPOINTS"));
         Assert.assertTrue(poll.getTeam().equals(bonusTeam));
     }
 
@@ -198,7 +198,7 @@ public class HTTPPollerTest {
         setAddress("baylor.ccdc");
         AbstractPoller poller = PollerFactory.getPoller(resource);
         poll = poller.poll();
-        Assert.assertEquals("ERROR: ", poll.getInformation().substring(0,7));
+        Assert.assertEquals("ERROR: ", poll.getResults().substring(0,7));
         Assert.assertEquals(null, poll.getTeam());
     }
 
@@ -207,7 +207,7 @@ public class HTTPPollerTest {
         setResovler("123.123.132.132");
         AbstractPoller poller = PollerFactory.getPoller(resource);
         poll = poller.poll();
-        Assert.assertThat(poll.getInformation(), anyOf(equalTo("DNS ERROR: network error"), equalTo("DNS ERROR: timed out")));
+        Assert.assertThat(poll.getResults(), anyOf(equalTo("DNS ERROR: network error"), equalTo("DNS ERROR: timed out")));
     }
 
     @Test
@@ -215,7 +215,7 @@ public class HTTPPollerTest {
         setResovler("256.0.0.1");
         AbstractPoller poller = PollerFactory.getPoller(resource);
         poll = poller.poll();
-        Assert.assertEquals("DNS ERROR: resolution failed", poll.getInformation());
+        Assert.assertEquals("DNS ERROR: resolution failed", poll.getResults());
     }
 
     @Test
@@ -224,7 +224,7 @@ public class HTTPPollerTest {
         setResovler("9.9.9.9");
         AbstractPoller poller = PollerFactory.getPoller(resource);
         poll = poller.poll();
-        Assert.assertThat(poll.getInformation(), anyOf(equalTo("DNS ERROR: type not found"), equalTo("DNS ERROR: host not found")));
+        Assert.assertThat(poll.getResults(), anyOf(equalTo("DNS ERROR: type not found"), equalTo("DNS ERROR: host not found")));
     }
 
     @Test
@@ -248,7 +248,7 @@ public class HTTPPollerTest {
         setAddress("208.123.73.69");
         AbstractPoller poller = PollerFactory.getPoller(resource);
         poll = poller.poll();
-        Assert.assertTrue(poll.getInformation().contains("Netgate"));
+        Assert.assertTrue(poll.getResults().contains("Netgate"));
         Assert.assertTrue(null == poll.getTeam());
     }
 }
