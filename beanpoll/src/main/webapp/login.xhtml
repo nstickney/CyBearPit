@@ -12,29 +12,39 @@
 
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:b="http://bootsfaces.net/ui"
-                xmlns:c="http://java.sun.com/jsp/jstl/core"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 template="/WEB-INF/templates/default.xhtml">
 
     <!-- Page title and content header string -->
-    <ui:define name="title">Current Scoreboard</ui:define>
+    <ui:define name="title">Authentication</ui:define>
 
     <!-- Main body content -->
     <ui:define name="content">
-        <b:well rendered="#{empty runningContests}">
-            <h3>No contests are currently running.</h3>
-        </b:well>
 
-        <c:forEach var="_contest" items="#{runningContests}">
-            <b:panel title="#{_contest.name}">
-                <b:dataTable var="_team" value="#{_contest.teams}">
-                    <b:dataTableColumn value="#{_team.name}"/>
-                    <b:dataTableColumn value="#{_team.score}"/>
-                </b:dataTable>
-            </b:panel>
-        </c:forEach>
+        <!-- Redirect logged-in users to the appropriate page -->
+        <f:metadata>
+            <f:viewAction action="#{sessionController.checkLoginNavigation()}"/>
+        </f:metadata>
 
+        <f:facet name="anchor"><b:iconAwesome name="key"/></f:facet>
+        <h:form>
+            <b:panelGrid colSpans="2,6,4" size="sm">
+                <h:outputLabel value="Username:" for="username"/>
+                <b:inputText value="#{sessionController.username}" id="username" class="form-control">
+                    <f:facet name="prepend"><b:icon name="user"/></f:facet>
+                </b:inputText>
+                <h:outputText value=""/>
+                <h:outputLabel value="Password:" for="password"/>
+                <b:inputSecret value="#{sessionController.password}" id="password" class="form-control">
+                    <f:facet name="prepend"><b:iconAwesome name="key"/></f:facet>
+                </b:inputSecret>
+                <h:outputText value=""/>
+                <h:outputText value=""/>
+                <b:commandButton action="#{sessionController.authenticate()}" value="Log In"
+                                 icon="log-in" look="success"/>
+            </b:panelGrid>
+        </h:form>
     </ui:define>
 </ui:composition>

@@ -103,7 +103,7 @@ public class HTTPPollerTest {
             testContest = contestService.update(testContest);
         }
         if (null == testResource) {
-            testResource = TestUtility.makeResource(testContest, Resource.HTTP);
+            testResource = TestUtility.makeResource(testContest, ResourceType.HTTP);
             testResource = resourceService.create(testResource);
         }
     }
@@ -125,6 +125,7 @@ public class HTTPPollerTest {
         testPoll = PollerFactory.getPoller(testResource).poll();
         Assert.assertTrue(testPoll.getResults().contains("BONUSPOINTS"));
         Assert.assertEquals(checkTeam, testPoll.getTeam());
+        Assert.assertEquals(testResource.getPointValue(), testPoll.getScore());
     }
 
     @Test
@@ -135,6 +136,7 @@ public class HTTPPollerTest {
         testPoll = PollerFactory.getPoller(testResource).poll();
         Assert.assertTrue(testPoll.getResults().contains("Baylor"));
         Assert.assertEquals(testTeam, testPoll.getTeam());
+        Assert.assertEquals(testResource.getPointValue(), testPoll.getScore());
     }
 
     @Test
@@ -145,6 +147,7 @@ public class HTTPPollerTest {
         testPoll = PollerFactory.getPoller(testResource).poll();
         Assert.assertTrue(testPoll.getResults().startsWith("ERROR"));
         Assert.assertNull(testPoll.getTeam());
+        Assert.assertEquals(0, testPoll.getScore());
     }
 
     @Test
@@ -156,6 +159,7 @@ public class HTTPPollerTest {
         testPoll = PollerFactory.getPoller(testResource).poll();
         Assert.assertTrue(testPoll.getResults().contains("Built for developers"));
         Assert.assertNull(testPoll.getTeam());
+        Assert.assertEquals(0, testPoll.getScore());
     }
 
     @Test
@@ -167,6 +171,7 @@ public class HTTPPollerTest {
         testPoll = PollerFactory.getPoller(testResource).poll();
         Assert.assertTrue(testPoll.getResults().startsWith("ERROR"));
         Assert.assertNull(testPoll.getTeam());
+        Assert.assertEquals(0, testPoll.getScore());
     }
 
     @Test
@@ -178,10 +183,7 @@ public class HTTPPollerTest {
         testPoll = PollerFactory.getPoller(testResource).poll();
         Assert.assertTrue(testPoll.getResults().startsWith("ERROR"));
         Assert.assertNull(testPoll.getTeam());
-    }
-
-    @Test
-    public void testHTTPPollMultipleTeamFlagsFound() {
+        Assert.assertEquals(0, testPoll.getScore());
     }
 
     @Test
@@ -192,5 +194,6 @@ public class HTTPPollerTest {
         testPoll = PollerFactory.getPoller(testResource).poll();
         Assert.assertTrue(testPoll.getResults().contains("Baylor"));
         Assert.assertEquals(testTeam, testPoll.getTeam());
+        Assert.assertEquals(testResource.getPointValue(), testPoll.getScore());
     }
 }

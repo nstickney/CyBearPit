@@ -34,9 +34,43 @@ BeanPoll is the largest portion of the CyBearPit project, and builds most direct
 
 ## Install
 
+### Quick Docker Installation Guide
+**Note that you must have Docker installed and running to use this option!**
+
+1) Clone the CyBearPit repository:
+
+```git clone https://github.com/nstickney/CyBearPit```
+
+2) Change directory into the BeanPoll directory:
+
+```cd CyBearPit/beanpoll```
+
+3) Run the Maven build command:
+
+```mvn clean install```
+
+4) Change directory into the MySQL container directory:
+
+```cd ../containers/mysql```
+
+5) Run the MySQL container:
+**Note that you should probably change the `MYSQL_PASSWORD` line in `runServer.sh` before starting it.** Otherwise, you will have the password, "judgebeanmysqlpassword", which is written in plain text in this repository!
+
+```./runServer.sh load```
+
+The `load` parameter causes the database to load the dump.sql file into the database after it is created. The script waits ten seconds for MySQL to start up, then connects, at which point you will need to enter that password you set (or "judgebeanmysqlpassword" if you didn't set it).
+
+6) Change directory into the Wild**Fly** production container directory:
+
+```cd ../wildfly/prod/```
+
+7) 
+
+### Installation Notes
+
 `mvn clean install` in this folder will build the web application archive, which is then saved to [ROOT.war](target/ROOT.war "target/ROOT.war"). Deploy the application on a Wild**Fly** server with a preconfigured datasource called `java:/JudgeBeanDS` (see [persistence.xml](src/main/resources/META-INF/persistence.xml "persistence.xml") for the required configuration).
 
-You can also use `mvn spotbugs:spotbugs` to check the code for errors, and `./runTests.sh` will build and run the Arquillian/JUnit tests in a purpose-built Docker container with a built-in H2 datasource.
+From the `CyBearPit/beanpoll` directory, you can also use `mvn spotbugs:spotbugs` to check the code for errors, and `./runTests.sh` will build and run the Arquillian/JUnit tests in a purpose-built Docker container with a built-in H2 datasource.
 
 ## Usage
 

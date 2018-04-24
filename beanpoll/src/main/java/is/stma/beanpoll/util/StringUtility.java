@@ -20,6 +20,11 @@ public class StringUtility {
 
     public static void checkString(String string) throws ValidationException {
 
+        // Don't allow null strings
+        if (null == string) {
+            throw new ValidationException("string is null");
+        }
+
         // Allow only valid characters (alphanumeric, punctuation, and single space)
         if (!string.matches(REGEX_VALID_CHARACTERS)) {
             throw new ValidationException(INVALID_CHARACTERS);

@@ -8,24 +8,16 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package is.stma.beanpoll.test;/*
- * Copyright 2018 Nathaniel Stickney
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
+package is.stma.beanpoll.test;
 
-import is.stma.beanpoll.data.PollRepo;
+import is.stma.beanpoll.data.ParameterRepo;
 import is.stma.beanpoll.model.Contest;
-import is.stma.beanpoll.model.Poll;
+import is.stma.beanpoll.model.Parameter;
 import is.stma.beanpoll.model.Resource;
 import is.stma.beanpoll.model.ResourceType;
-import is.stma.beanpoll.rules.PollRules;
+import is.stma.beanpoll.rules.ParameterRules;
 import is.stma.beanpoll.service.ContestService;
-import is.stma.beanpoll.service.PollService;
+import is.stma.beanpoll.service.ParameterService;
 import is.stma.beanpoll.service.ResourceService;
 import is.stma.beanpoll.util.EMProducer;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -42,24 +34,23 @@ import org.junit.runner.RunWith;
 import javax.ejb.EJBException;
 import javax.inject.Inject;
 import java.io.File;
-import java.time.LocalDateTime;
 
 @RunWith(Arquillian.class)
-public class PollTest {
+public class ParameterTest {
 
     @Inject
     private ContestService contestService;
 
     @Inject
-    private PollService pollService;
+    private ParameterService parameterService;
 
     @Inject
     private ResourceService resourceService;
 
     private Contest testContest;
 
-    private Poll testPoll;
-    private Poll checkPoll;
+    private Parameter testParameter;
+    private Parameter checkParameter;
 
     private Resource testResource;
 
@@ -73,11 +64,11 @@ public class PollTest {
         File[] files = Maven.resolver().loadPomFromFile("pom.xml")
                 .importRuntimeDependencies().resolve().withTransitivity().asFile();
 
-        return ShrinkWrap.create(WebArchive.class, "ResourceRulesTest.war")
-                .addPackages(true, Poll.class.getPackage(),
-                        PollRepo.class.getPackage(),
-                        PollService.class.getPackage(),
-                        PollRules.class.getPackage(),
+        return ShrinkWrap.create(WebArchive.class, "ParameterRulesTest.war")
+                .addPackages(true, Parameter.class.getPackage(),
+                        ParameterRepo.class.getPackage(),
+                        ParameterService.class.getPackage(),
+                        ParameterRules.class.getPackage(),
                         EMProducer.class.getPackage())
                 .addClass(TestUtility.class)
                 .addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml")
@@ -88,7 +79,7 @@ public class PollTest {
     }
 
     /**
-     * Create a test contest and a test Resource in that contest, and persist both
+     * Create a test contest and a test Parameter in that contest, and persist both
      */
     @Before
     public void setUp() {
@@ -100,51 +91,51 @@ public class PollTest {
             testResource = TestUtility.makeResource(testContest, ResourceType.DNS);
             resourceService.create(testResource);
         }
-        if (null == testPoll) {
-            testPoll = TestUtility.makePoll(testResource);
-            pollService.create(testPoll);
+        if (null == testParameter) {
+            testParameter = TestUtility.makeParameter(testResource);
+            parameterService.create(testParameter);
         }
     }
 
     @Test
-    public void testPollCreation() {
-        checkPoll = pollService.readById(testPoll.getId());
-        Assert.assertTrue(testPoll.equalByUUID(checkPoll));
-        Assert.assertEquals(testPoll, checkPoll);
+    public void testParameterCreation() {
+        checkParameter = parameterService.readById(testParameter.getId());
+        Assert.assertTrue(testParameter.equalByUUID(checkParameter));
+        Assert.assertEquals(testParameter, checkParameter);
     }
 
     @Test
-    public void testPollUpdate() {
-        LocalDateTime dtg = LocalDateTime.now();
-        testPoll.setTimestamp(dtg);
-        pollService.update(testPoll);
-        String UUID = testPoll.getId();
-        testPoll = null;
-        testPoll = pollService.readById(UUID);
-        Assert.assertEquals(dtg, testPoll.getTimestamp());
+    public void testParameterUpdate() {
+        testParameter.setValue("UPDATED");
+        parameterService.update(testParameter);
+        String UUID = testParameter.getId();
+        testParameter = null;
+        testParameter = parameterService.readById(UUID);
+        Assert.assertEquals("UPDATED", testParameter.getValue());
     }
 
     @Test
-    public void testPollDeletion() {
-        pollService.delete(testPoll);
-        String UUID = testPoll.getId();
-        testPoll = null;
-        testPoll = pollService.readById(UUID);
-        Assert.assertNull(testPoll);
+    public void testParameterDeletion() {
+        parameterService.delete(testParameter);
+        String UUID = testParameter.getId();
+        testParameter = null;
+        testParameter = parameterService.readById(UUID);
+        Assert.assertNull(testParameter);
     }
 
     @Test(expected = EJBException.class)
     //@Test(expected = ValidationException.class)
-    public void testPollUpdateNonexistent() {
-        checkPoll = TestUtility.makePoll(testResource);
-        pollService.update(checkPoll);
+    public void testParameterUpdateNonexistent() {
+        checkParameter = TestUtility.makeParameter(testResource);
+        checkParameter.setValue("Check Parameter");
+        parameterService.update(checkParameter);
     }
 
     @Test(expected = EJBException.class)
     //@Test(expected = ValidationException.class)
-    public void testPollNonUniqueUUID() {
-        checkPoll = testPoll;
-        checkPoll.setTimestamp(LocalDateTime.now());
-        pollService.create(checkPoll);
+    public void testParameterNonUniqueUUID() {
+        checkParameter = testParameter;
+        checkParameter.setValue("We Copied You!");
+        parameterService.create(checkParameter);
     }
 }

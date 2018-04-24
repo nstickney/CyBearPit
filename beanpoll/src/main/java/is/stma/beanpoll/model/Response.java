@@ -48,7 +48,17 @@ public class Response extends AbstractEntity {
 
     @Override
     public String getName() {
-        return getId();
+        String name = "";
+        if (null != task) {
+            name += task.getName();
+        }
+        if (null != team) {
+            if (!name.equals("")) {
+                name += ": ";
+            }
+            name += team.getName();
+        }
+        return name.equals("") ? getId() : name;
     }
 
     public String getLook() {

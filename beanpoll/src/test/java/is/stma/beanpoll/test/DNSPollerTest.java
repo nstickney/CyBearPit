@@ -133,7 +133,7 @@ public class DNSPollerTest {
     }
 
     private void buildResource(String address, String query, String expected) {
-        testResource = TestUtility.makeResource(testContest, Resource.DNS);
+        testResource = TestUtility.makeResource(testContest, ResourceType.DNS);
         testResource.setAddress(address);
         testResource.setPort(53);
         testResource.setAvailable(true);
@@ -168,7 +168,7 @@ public class DNSPollerTest {
 
     @Test
     public void testNoTeamGetsPoints() {
-        Resource checkResource = TestUtility.makeResource(testContest, Resource.HTTP);
+        Resource checkResource = TestUtility.makeResource(testContest, ResourceType.DNS);
         checkResource = resourceService.create(checkResource);
         AbstractPoller poller = PollerFactory.getPoller(checkResource);
         testPoll = poller.poll();

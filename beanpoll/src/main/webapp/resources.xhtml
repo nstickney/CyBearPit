@@ -16,6 +16,7 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns:o="http://omnifaces.org/ui"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 template="/WEB-INF/templates/default.xhtml">
 
@@ -24,6 +25,7 @@
 
     <!-- Main body content -->
     <ui:define name="content">
+        <o:importConstants type="is.stma.beanpoll.model.ResourceType"/>
 
         <!-- Must be admin to view the resources page -->
         <f:metadata>
@@ -49,8 +51,7 @@
                     <h:outputLabel value="Type:" for="ntype"/>
                     <b:selectOneMenu value="#{newResource.type}" id="ntype">
                         <f:facet name="prepend"><b:iconAwesome name="tag"/></f:facet>
-                        <f:selectItem itemValue="DNS" itemLabel="DNS"/>
-                        <f:selectItem itemValue="HTTP" itemLabel="HTTP"/>
+                        <f:selectItems value="#{ResourceType}"/>
                     </b:selectOneMenu>
                     <h:outputText value=""/>
                     <h:outputLabel value="Address:" for="naddress"/>
@@ -119,8 +120,7 @@
                         <h:outputLabel value="Type:" for="type"/>
                         <b:selectOneMenu value="#{_resource.type}" id="type">
                             <f:facet name="prepend"><b:iconAwesome name="tag"/></f:facet>
-                            <f:selectItem itemValue="DNS" itemLabel="DNS"/>
-                            <f:selectItem itemValue="HTTP" itemLabel="HTTP"/>
+                            <f:selectItems value="#{ResourceType}"/>
                         </b:selectOneMenu>
                         <h:outputText value=""/>
                         <h:outputLabel value="Address:" for="address"/>
@@ -137,11 +137,11 @@
                         <h:outputLabel value="Timeout:" for="timeout"/>
                         <b:inputText value="#{_resource.timeout}" id="timeout" class="form-control"
                                      p:type="number" p:min="1" p:max="5">
-                            <f:facet name="prepend"><b:iconAwesome name="clock"/></f:facet>
+                            <f:facet name="prepend"><b:iconAwesome name="spinner"/></f:facet>
                         </b:inputText>
                         <h:outputText value=""/>
-                        <h:outputLabel value="Weight:" for="weight"/>
-                        <b:inputText value="#{_resource.pointValue}" id="weight" class="form-control"
+                        <h:outputLabel value="Point Value:" for="pointvalue"/>
+                        <b:inputText value="#{_resource.pointValue}" id="pointvalue" class="form-control"
                                      p:type="number" p:min="1" p:max="65535">
                             <f:facet name="prepend"><b:iconAwesome name="calculator"/></f:facet>
                         </b:inputText>

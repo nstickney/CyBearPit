@@ -66,41 +66,6 @@ public class TeamController extends AbstractEntityController<Team, TeamRules,
         return service;
     }
 
-    /**
-     * Persist the Team from getNew(). This is overridden here in order to
-     * attach a new User to the Team before the team is persisted.
-     */
-    @Override
-    public void create() {
-        try {
-
-            // Team will need a user to access the system
-            User teamUser = new User();
-
-            // The new user will have the same name as the team
-            teamUser.setName(getNew().getName());
-
-            // The new password will be the team name, minus all whitespace, repeated the minimum
-            // number of times to create a string at least PasswordUtility.MINIMUM_LENGTH long
-            String teamString = StringUtility.removeWhitespace(getNew().getName());
-            StringBuilder buf = new StringBuilder();
-            while (! teamUser.setPassword(buf.toString())) {
-                buf.append(teamString);
-            }
-
-            // Create the team and set the user's team to the newly created team
-            teamUser.setTeam(getService().create(getNew()));
-
-            // Create the user
-            userService.create(teamUser);
-            messageOut(getNew().getLogName() + " created.");
-        } catch (EJBException | ValidationException e) {
-            errorOut(e, "Failed to create " + getNew().getLogName() + ": ");
-        } catch (Exception e) {
-            errorOut(e, getNew().getLogName() + " creation failed: ");
-        }
-    }
-
     @Override
     public void update(Team entity) {
         doUpdate(entity);

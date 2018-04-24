@@ -26,7 +26,7 @@ public class Resource extends AbstractComparableByContest {
     private String name;
 
     @Column(nullable = false)
-    private String type = DNS;
+    private ResourceType type = ResourceType.DNS;
 
     @Column(nullable = false)
     private String address = "ns1.baylor.edu";
@@ -85,12 +85,12 @@ public class Resource extends AbstractComparableByContest {
         return compare(this, o);
     }
 
-    public String getType() {
+    public ResourceType getType() {
         return type;
     }
 
-    public void setType(String tag) {
-        this.type = tag;
+    public void setType(ResourceType type) {
+        this.type = type;
     }
 
     public String getAddress() {

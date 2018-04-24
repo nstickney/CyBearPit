@@ -8,19 +8,10 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package is.stma.beanpoll.controller.poller;
+package is.stma.beanpoll.model;
 
-import is.stma.beanpoll.model.Resource;
+public enum ResourceType {
 
-public class PollerFactory {
-
-    public static AbstractPoller getPoller(Resource resource) {
-        switch (resource.getType()) {
-            case DNS:
-                return new DNSPoller(resource);
-            default:
-                return new HTTPPoller(resource);
-        }
-    }
+    DNS, HTTP, POP, SMTP
 
 }

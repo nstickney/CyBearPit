@@ -59,10 +59,10 @@ public class ParameterService extends AbstractService<Parameter, AbstractRepo<Pa
         // Create the correct parameters for the resource
         List<Parameter> parameters;
         switch (resource.getType()) {
-            case Resource.DNS:
+            case DNS:
                 parameters = DNSParameterizer.createParameters();
                 break;
-            case Resource.HTTP:
+            case HTTP:
                 parameters = HTTPParameterizer.createParameters();
                 break;
             default:

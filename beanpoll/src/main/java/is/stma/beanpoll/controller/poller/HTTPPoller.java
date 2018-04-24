@@ -60,6 +60,7 @@ public class HTTPPoller extends AbstractPoller {
         List<Team> teams = resource.getTeams().isEmpty() ? resource.getContest().getTeams() : resource.getTeams();
         if (1 == teams.size()) {
             newPoll.setTeam(teams.get(0));
+            newPoll.setScore(resource.getPointValue());
         } else if (1 < teams.size()) {
             List<Team> matching = new ArrayList<>();
             for (Team t : teams) {
@@ -69,6 +70,7 @@ public class HTTPPoller extends AbstractPoller {
             }
             if (1 == matching.size()) {
                 newPoll.setTeam(matching.get(0));
+                newPoll.setScore(resource.getPointValue());
             }
         }
 

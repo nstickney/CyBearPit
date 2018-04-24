@@ -40,6 +40,8 @@ import javax.ejb.EJBException;
 import javax.inject.Inject;
 import java.io.File;
 
+import static is.stma.beanpoll.model.ResourceType.DNS;
+
 @RunWith(Arquillian.class)
 public class ResourceTest {
 
@@ -87,7 +89,7 @@ public class ResourceTest {
             contestService.create(testContest);
         }
         if (null == testResource) {
-            testResource = TestUtility.makeResource(testContest, Resource.DNS);
+            testResource = TestUtility.makeResource(testContest, DNS);
             resourceService.create(testResource);
         }
     }
@@ -121,7 +123,7 @@ public class ResourceTest {
     @Test(expected = EJBException.class)
     //@Test(expected = ValidationException.class)
     public void testResourceUpdateNonexistent() {
-        checkResource = TestUtility.makeResource(testContest, Resource.DNS);
+        checkResource = TestUtility.makeResource(testContest, DNS);
         checkResource.setName("Check Resource");
         resourceService.update(checkResource);
     }

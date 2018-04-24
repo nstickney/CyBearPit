@@ -19,7 +19,10 @@
         <jta-data-source>java:/JudgeBeanDS</jta-data-source>
         <properties>
             <!-- Properties for Hibernate -->
-            <property name="hibernate.hbm2ddl.auto" value="create"/>
+            <!-- Uncomment the line below if you are OK with hibernate -->
+            <!-- deleting your entire database every time you deploy the -->
+            <!-- BeanPoll application. -->
+            <!--<property name="hibernate.hbm2ddl.auto" value="create"/>-->
             <property name="hibernate.show_sql" value="false"/>
             <property name="hibernate.enable_lazy_load_no_trans" value="true"/>
         </properties>

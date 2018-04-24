@@ -18,15 +18,16 @@ package is.stma.beanpoll.test;/*
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import is.stma.beanpoll.data.PollRepo;
+import is.stma.beanpoll.data.ResponseRepo;
 import is.stma.beanpoll.model.Contest;
-import is.stma.beanpoll.model.Poll;
-import is.stma.beanpoll.model.Resource;
-import is.stma.beanpoll.model.ResourceType;
-import is.stma.beanpoll.rules.PollRules;
+import is.stma.beanpoll.model.Response;
+import is.stma.beanpoll.model.Task;
+import is.stma.beanpoll.model.Team;
+import is.stma.beanpoll.rules.ResponseRules;
 import is.stma.beanpoll.service.ContestService;
-import is.stma.beanpoll.service.PollService;
-import is.stma.beanpoll.service.ResourceService;
+import is.stma.beanpoll.service.ResponseService;
+import is.stma.beanpoll.service.TaskService;
+import is.stma.beanpoll.service.TeamService;
 import is.stma.beanpoll.util.EMProducer;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -42,30 +43,33 @@ import org.junit.runner.RunWith;
 import javax.ejb.EJBException;
 import javax.inject.Inject;
 import java.io.File;
-import java.time.LocalDateTime;
 
 @RunWith(Arquillian.class)
-public class PollTest {
+public class ResponseTest {
 
     @Inject
     private ContestService contestService;
 
     @Inject
-    private PollService pollService;
+    private ResponseService responseservice;
 
     @Inject
-    private ResourceService resourceService;
+    private TaskService taskService;
+
+    @Inject
+    private TeamService teamService;
 
     private Contest testContest;
 
-    private Poll testPoll;
-    private Poll checkPoll;
+    private Task testTask;
 
-    private Resource testResource;
+    private Response testResponse;
+    private Response checkResponse;
+
+    private Team testTeam;
 
     /**
      * Create a web archive (WAR) for deployment via Arquillian
-     *
      * @return the web archive
      */
     @Deployment
@@ -73,11 +77,11 @@ public class PollTest {
         File[] files = Maven.resolver().loadPomFromFile("pom.xml")
                 .importRuntimeDependencies().resolve().withTransitivity().asFile();
 
-        return ShrinkWrap.create(WebArchive.class, "ResourceRulesTest.war")
-                .addPackages(true, Poll.class.getPackage(),
-                        PollRepo.class.getPackage(),
-                        PollService.class.getPackage(),
-                        PollRules.class.getPackage(),
+        return ShrinkWrap.create(WebArchive.class, "ResponseRulesTest.war")
+                .addPackages(true, Response.class.getPackage(),
+                        ResponseRepo.class.getPackage(),
+                        ResponseService.class.getPackage(),
+                        ResponseRules.class.getPackage(),
                         EMProducer.class.getPackage())
                 .addClass(TestUtility.class)
                 .addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml")
@@ -88,63 +92,69 @@ public class PollTest {
     }
 
     /**
-     * Create a test contest and a test Resource in that contest, and persist both
+     * Create a test contest and a test Response in that contest, and persist both
      */
     @Before
     public void setUp() {
         if (null == testContest) {
             testContest = TestUtility.makeContest();
-            contestService.create(testContest);
+            testContest.setEnabled(true);
+            testContest.setRunning(true);
+            testContest = contestService.create(testContest);
         }
-        if (null == testResource) {
-            testResource = TestUtility.makeResource(testContest, ResourceType.DNS);
-            resourceService.create(testResource);
+        if (null == testTeam) {
+            testTeam = TestUtility.makeTeam(testContest);
+            testTeam = teamService.create(testTeam);
         }
-        if (null == testPoll) {
-            testPoll = TestUtility.makePoll(testResource);
-            pollService.create(testPoll);
+        if (null == testTask) {
+            testTask = TestUtility.makeTask(testContest);
+            testTask = taskService.create(testTask);
+        }
+        if (null == testResponse) {
+            testResponse = TestUtility.makeResponse(testTask, testTeam);
+            testResponse = responseservice.create(testResponse);
         }
     }
 
     @Test
-    public void testPollCreation() {
-        checkPoll = pollService.readById(testPoll.getId());
-        Assert.assertTrue(testPoll.equalByUUID(checkPoll));
-        Assert.assertEquals(testPoll, checkPoll);
+    public void testResponseCreation() {
+        checkResponse = responseservice.readById(testResponse.getId());
+        Assert.assertTrue(testResponse.equalByUUID(checkResponse));
+        Assert.assertEquals(testResponse, checkResponse);
     }
 
     @Test
-    public void testPollUpdate() {
-        LocalDateTime dtg = LocalDateTime.now();
-        testPoll.setTimestamp(dtg);
-        pollService.update(testPoll);
-        String UUID = testPoll.getId();
-        testPoll = null;
-        testPoll = pollService.readById(UUID);
-        Assert.assertEquals(dtg, testPoll.getTimestamp());
+    public void testResponseUpdate() {
+        testResponse.setComments("UPDATED");
+        responseservice.update(testResponse);
+        String UUID = testResponse.getId();
+        testResponse = null;
+        testResponse = responseservice.readById(UUID);
+        Assert.assertEquals("UPDATED", testResponse.getComments());
     }
 
     @Test
-    public void testPollDeletion() {
-        pollService.delete(testPoll);
-        String UUID = testPoll.getId();
-        testPoll = null;
-        testPoll = pollService.readById(UUID);
-        Assert.assertNull(testPoll);
+    public void testResponseDeletion() {
+        responseservice.delete(testResponse);
+        String UUID = testResponse.getId();
+        testResponse = null;
+        testResponse = responseservice.readById(UUID);
+        Assert.assertNull(testResponse);
     }
 
     @Test(expected = EJBException.class)
     //@Test(expected = ValidationException.class)
-    public void testPollUpdateNonexistent() {
-        checkPoll = TestUtility.makePoll(testResource);
-        pollService.update(checkPoll);
+    public void testResponseUpdateNonexistent() {
+        checkResponse = TestUtility.makeResponse(testTask, testTeam);
+        checkResponse.setComments("Check Response");
+        responseservice.update(checkResponse);
     }
 
     @Test(expected = EJBException.class)
     //@Test(expected = ValidationException.class)
-    public void testPollNonUniqueUUID() {
-        checkPoll = testPoll;
-        checkPoll.setTimestamp(LocalDateTime.now());
-        pollService.create(checkPoll);
+    public void testResponseNonUniqueUUID() {
+        checkResponse = testResponse;
+        checkResponse.setComments("We Copied You!");
+        responseservice.create(checkResponse);
     }
 }

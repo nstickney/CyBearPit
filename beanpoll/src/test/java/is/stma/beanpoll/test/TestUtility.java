@@ -50,6 +50,14 @@ class TestUtility {
         return contest;
     }
 
+    static Parameter makeParameter(Resource testResource) {
+        Parameter parameter = new Parameter();
+        parameter.setResource(testResource);
+        parameter.setTag(UUID.randomUUID().toString());
+        parameter.setValue(UUID.randomUUID().toString());
+        return parameter;
+    }
+
     static Poll makePoll(Resource testResource) {
         Poll poll = new Poll();
         poll.setResource(testResource);
@@ -58,7 +66,13 @@ class TestUtility {
         return poll;
     }
 
-    static Resource makeResource(Contest contest, String type) {
+    static Report makeReport(Team team) {
+        Report report = new Report();
+        report.setTeam(team);
+        return report;
+    }
+
+    static Resource makeResource(Contest contest, ResourceType type) {
         Resource resource = new Resource();
         resource.setContest(contest);
         resource.setType(type);
@@ -67,6 +81,21 @@ class TestUtility {
         resource.setPort(ThreadLocalRandom.current().nextInt(1, 65536));
         resource.setPointValue(ThreadLocalRandom.current().nextInt(1, 101));
         return resource;
+    }
+
+    static Response makeResponse(Task task, Team team) {
+        Response response = new Response();
+        response.setTask(task);
+        response.setTeam(team);
+        return response;
+    }
+
+    static Task makeTask(Contest contest) {
+        Task task = new Task();
+        task.setContest(contest);
+        task.setPublished(LocalDateTime.now().minusMinutes(1));
+        task.setPublished(LocalDateTime.now().plusMinutes(1));
+        return task;
     }
 
     static Team makeTeam(Contest contest) {

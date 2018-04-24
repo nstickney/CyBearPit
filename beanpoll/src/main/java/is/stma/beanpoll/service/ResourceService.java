@@ -76,6 +76,37 @@ public class ResourceService extends AbstractService<Resource, AbstractRepo<Reso
         return entity;
     }
 
+    /**
+     * Update a Resource. This is overridden here in order to attach a new set
+     * of Parameters when the ResourceType of a Resource is changed.
+     * @param entity Resource to update
+     * @return the updated Resource
+     * @throws ValidationException if validation of entity or Parameters fails
+     */
+    @Override
+    public Resource update(Resource entity) throws ValidationException {
+        em.detach(entity);
+        Resource before = getRepo().findBy(entity.getId());
+        if (before.getType() != entity.getType()) {
+            List<Parameter> oldParameters = before.getParameters();
+            for (Parameter p : oldParameters) {
+                parameterService.delete(p);
+            }
+            entity.setParameters(parameterService.createParameters(entity));
+        }
+        log.log(Level.INFO, "Updating " + before.getName());
+        getRules().validate(entity, AbstractRules.Target.UPDATE);
+        entity = getRepo().save(entity);
+        log.log(Level.INFO, "Updated " + entity.getName());
+        getEvent().fire(entity);
+        return entity;
+    }
+
+    /**
+     * Delete a Resource. This is overridden here to delete the Resource's
+     * Parameters before the Resource itself is removed.
+     * @param entity
+     */
     @Override
     public void delete(Resource entity) {
         getRules().validate(entity, AbstractRules.Target.DELETE);

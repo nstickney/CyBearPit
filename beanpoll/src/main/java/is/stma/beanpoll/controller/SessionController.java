@@ -21,7 +21,7 @@ import javax.persistence.NoResultException;
 @Model
 public class SessionController extends AbstractFacesController {
 
-    public static final String LOGIN_PAGE = "index.xhtml";
+    public static final String LOGIN_PAGE = "login.xhtml";
     private static final String ADMIN_PAGE = "contests.xhtml";
     private static final String JUDGE_PAGE = "grading.xhtml";
     private static final String TEAM_PAGE = "team.xhtml";
