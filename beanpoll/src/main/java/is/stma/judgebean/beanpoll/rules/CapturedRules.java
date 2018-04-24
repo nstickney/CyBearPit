@@ -15,6 +15,7 @@ import is.stma.judgebean.beanpoll.data.CapturedRepo;
 import is.stma.judgebean.beanpoll.model.Capturable;
 import is.stma.judgebean.beanpoll.model.Captured;
 import is.stma.judgebean.beanpoll.service.CapturableService;
+import is.stma.judgebean.beanpoll.service.CapturedService;
 
 import javax.enterprise.inject.Model;
 import javax.inject.Inject;
@@ -29,7 +30,7 @@ public class CapturedRules extends AbstractRules<Captured> {
     private CapturedRepo repo;
 
     @Inject
-    private CapturableService capturableService;
+    private CapturedService capturedService;
 
     @Override
     public AbstractRepo<Captured> getRepo() {
@@ -70,15 +71,12 @@ public class CapturedRules extends AbstractRules<Captured> {
     }
 
     private void checkSingleScoring(Captured entity) throws ValidationException {
-        Capturable capturable = capturableService.readById(entity.getCapturable().getId());
-        log.log(Level.INFO, capturable.getId() + " / " + entity.getTeam().getId());
-        for (Captured c : capturable.getCapturedBy()) {
-            log.log(Level.INFO, c.getCapturable().getId() + " / " + entity.getTeam().getId());
-            if (c.getTeam().equalByUUID(entity.getTeam()) && c.getCapturable().equalByUUID(entity.getCapturable())) {
-                throw new ValidationException("team " + entity.getTeam() + " has already captured "
-                        + entity.getCapturable().getName());
+        List<Captured> already = capturedService.getByTeam(entity.getTeam());
+        for (Captured c : already) {
+            if (!c.equalByUUID(entity) && c.getCapturable().equalByUUID(entity.getCapturable())) {
+                throw new ValidationException("team " + entity.getTeam().getName() + " has already captured flag "
+                        + entity.getCapturable().getFlag());
             }
         }
-
     }
 }

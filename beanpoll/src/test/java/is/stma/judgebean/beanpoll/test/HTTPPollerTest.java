@@ -10,13 +10,13 @@
 
 package is.stma.judgebean.beanpoll.test;
 
-import is.stma.judgebean.beanpoll.controller.parameterizer.HTTPParameterizer;
 import is.stma.judgebean.beanpoll.controller.poller.AbstractPoller;
 import is.stma.judgebean.beanpoll.controller.poller.PollerFactory;
 import is.stma.judgebean.beanpoll.data.PollRepo;
 import is.stma.judgebean.beanpoll.model.*;
 import is.stma.judgebean.beanpoll.rules.PollRules;
 import is.stma.judgebean.beanpoll.service.*;
+import is.stma.judgebean.beanpoll.service.parameterizer.HTTPParameterizer;
 import is.stma.judgebean.beanpoll.util.EMProducer;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -143,6 +143,7 @@ public class HTTPPollerTest {
         resource.setAvailable(true);
         Parameter testParameter = new Parameter();
         testParameter.setTag(HTTPParameterizer.HTTP_RESOLVER);
+        testParameter.setValue("");
         testParameter = parameterService.create(testParameter);
         List<Parameter> parameters = new ArrayList<>();
         parameters.add(testParameter);
@@ -181,7 +182,7 @@ public class HTTPPollerTest {
         AbstractPoller poller = PollerFactory.getPoller(resource);
         poll = poller.poll();
         Assert.assertTrue(poll.getResults().contains("BONUSPOINTS"));
-        Assert.assertTrue(poll.getTeam().equals(bonusTeam));
+        Assert.assertEquals(poll.getTeam(), bonusTeam);
     }
 
     @Test
@@ -190,7 +191,7 @@ public class HTTPPollerTest {
         AbstractPoller poller = PollerFactory.getPoller(resource);
         poll = poller.poll();
         Assert.assertTrue(poll.getResults().contains("BONUSPOINTS"));
-        Assert.assertTrue(poll.getTeam().equals(bonusTeam));
+        Assert.assertEquals(poll.getTeam(), bonusTeam);
     }
 
     @Test
@@ -198,8 +199,8 @@ public class HTTPPollerTest {
         setAddress("baylor.ccdc");
         AbstractPoller poller = PollerFactory.getPoller(resource);
         poll = poller.poll();
-        Assert.assertEquals("ERROR: ", poll.getResults().substring(0,7));
-        Assert.assertEquals(null, poll.getTeam());
+        Assert.assertEquals("ERROR: ", poll.getResults().substring(0, 7));
+        Assert.assertNull(poll.getTeam());
     }
 
     @Test
@@ -232,7 +233,7 @@ public class HTTPPollerTest {
         setAddress("usma.edu");
         AbstractPoller poller = PollerFactory.getPoller(resource);
         poll = poller.poll();
-        Assert.assertEquals(null, poll.getTeam());
+        Assert.assertNull(poll.getTeam());
     }
 
     @Test
@@ -240,7 +241,7 @@ public class HTTPPollerTest {
         setAddress("baylor.edu");
         AbstractPoller poller = PollerFactory.getPoller(resource);
         poll = poller.poll();
-        Assert.assertTrue(poll.getTeam().equals(baylorTeam));
+        Assert.assertEquals(poll.getTeam(), baylorTeam);
     }
 
     @Test
@@ -249,6 +250,6 @@ public class HTTPPollerTest {
         AbstractPoller poller = PollerFactory.getPoller(resource);
         poll = poller.poll();
         Assert.assertTrue(poll.getResults().contains("Netgate"));
-        Assert.assertTrue(null == poll.getTeam());
+        Assert.assertNull(poll.getTeam());
     }
 }

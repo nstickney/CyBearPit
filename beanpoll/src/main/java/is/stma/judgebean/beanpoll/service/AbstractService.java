@@ -27,10 +27,10 @@ public abstract class AbstractService<E extends AbstractEntity,
         V extends AbstractRules<E>> {
 
     @Inject
-    private Logger log;
+    Logger log;
 
     @Inject
-    private EntityManager em;
+    EntityManager em;
 
     abstract R getRepo();
 

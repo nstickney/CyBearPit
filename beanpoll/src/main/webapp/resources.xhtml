@@ -64,8 +64,14 @@
                         <f:facet name="prepend"><b:iconAwesome name="plug"/></f:facet>
                     </b:inputText>
                     <h:outputText value=""/>
-                    <h:outputLabel value="Weight:" for="nweight"/>
-                    <b:inputText value="#{newResource.pointValue}" id="nweight" class="form-control"
+                    <h:outputLabel value="Timeout:" for="ntimeout"/>
+                    <b:inputText value="#{newResource.timeout}" id="ntimeout" class="form-control"
+                                 p:type="number" p:min="1" p:max="5">
+                        <f:facet name="prepend"><b:iconAwesome name="clock"/></f:facet>
+                    </b:inputText>
+                    <h:outputText value=""/>
+                    <h:outputLabel value="Point Value:" for="npointvalue"/>
+                    <b:inputText value="#{newResource.pointValue}" id="npointvalue" class="form-control"
                                  p:type="number" p:min="1" p:max="65535">
                         <f:facet name="prepend"><b:iconAwesome name="plug"/></f:facet>
                     </b:inputText>
@@ -126,6 +132,12 @@
                         <b:inputText value="#{_resource.port}" id="port" class="form-control"
                                      p:type="number" p:min="1" p:max="65535">
                             <f:facet name="prepend"><b:iconAwesome name="plug"/></f:facet>
+                        </b:inputText>
+                        <h:outputText value=""/>
+                        <h:outputLabel value="Timeout:" for="timeout"/>
+                        <b:inputText value="#{_resource.timeout}" id="timeout" class="form-control"
+                                     p:type="number" p:min="1" p:max="5">
+                            <f:facet name="prepend"><b:iconAwesome name="clock"/></f:facet>
                         </b:inputText>
                         <h:outputText value=""/>
                         <h:outputLabel value="Weight:" for="weight"/>

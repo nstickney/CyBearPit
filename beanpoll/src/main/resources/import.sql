@@ -21,10 +21,10 @@ INSERT INTO User (id, admin, judge, name, salt, secret, team_id) VALUES ('f91405
 INSERT INTO Capturable (id, flag, name, pointValue, contest_id) VALUES ('2fd71b73-6b7c-46d6-ab28-7f3363cac465', 'TEST_CAPTURABLE_FLAG', 'TestCapturable', 1234, 'a51c930e-ea6a-4c27-8764-06ee921dca3b');
 
 -- TestResource
-INSERT INTO Resource (id, address, name, port, scoring, type, weight, contest_id) VALUES ('d24ceab6-b371-42ee-9de5-9b94814300f3', 'httpbin.org', 'TestHTTP', 80, true, 'HTTP', 1, 'a51c930e-ea6a-4c27-8764-06ee921dca3b');
+INSERT INTO Resource (id, address, name, port, available, type, pointValue, timeout, contest_id) VALUES ('d24ceab6-b371-42ee-9de5-9b94814300f3', 'httpbin.org', 'TestHTTP', 80, true, 'HTTP', 1, 3, 'a51c930e-ea6a-4c27-8764-06ee921dca3b');
 
 -- Parameters for TestResource
 INSERT INTO Parameter VALUES ('b7e9aac3-990e-4f48-a513-6a49d9debcf8', 'HTTP_RESOLVER', NULL, 'd24ceab6-b371-42ee-9de5-9b94814300f3');
 
 -- TestTask
-INSERT INTO Task (id, starts, description, ends, name, pointValue, contest_id) VALUES ('d59f69a0-b789-40ca-a45d-d1c5bd8adceb', '2018-01-01 08:00:00', 'Upload a file.', '2018-05-31 18:00:00', 'TestTask', 100, 'a51c930e-ea6a-4c27-8764-06ee921dca3b');
+INSERT INTO Task (id, published, contents, due, name, pointValue, contest_id) VALUES ('d59f69a0-b789-40ca-a45d-d1c5bd8adceb', '2018-01-01 08:00:00', 'Upload a file.', '2018-05-31 18:00:00', 'TestTask', 100, 'a51c930e-ea6a-4c27-8764-06ee921dca3b');

@@ -11,6 +11,7 @@
 package is.stma.judgebean.beanpoll.data;
 
 import is.stma.judgebean.beanpoll.model.Captured;
+import org.apache.deltaspike.data.api.Query;
 import org.apache.deltaspike.data.api.Repository;
 
 import java.util.List;
@@ -20,5 +21,8 @@ import java.util.List;
 public interface CapturedRepo extends AbstractRepo<Captured> {
 
     List<Captured> findAllOrderByTimestamp();
+
+    @Query("select c from Captured c where c.team.id = ?1")
+    List<Captured> findByTeamId(String teamId);
 
 }

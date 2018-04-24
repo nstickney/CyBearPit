@@ -11,21 +11,46 @@
 package is.stma.judgebean.beanpoll.util;
 
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpHost;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.ssl.SSLContextBuilder;
 import org.apache.http.util.EntityUtils;
 
+import javax.net.ssl.SSLContext;
 import java.io.IOException;
+import java.net.URI;
 
 public class HTTPUtility {
 
-    public static String get(String query) {
+    public static String get(String address, String query, int port, int timeout) {
         try {
-            CloseableHttpClient httpClient = HttpClients.createDefault();
+
+            // Time out properly
+            RequestConfig httpConfig = RequestConfig.custom()
+                    .setConnectTimeout(timeout * 1000)
+                    .setConnectionRequestTimeout(timeout * 1000)
+                    .setSocketTimeout(timeout * 1000).build();
+
+            // Allow self-signed HTTPS certificates
+            SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(new SSLContextBuilder().loadTrustMaterial(new TrustSelfSignedStrategy()).build());
+
+            // Create the client
+            CloseableHttpClient httpClient = HttpClientBuilder.create()
+                    .setDefaultRequestConfig(httpConfig)
+                    .setSSLSocketFactory(sslsf).build();
+
+            String scheme = new URI(address).getScheme();
+            address = new URI(address).getHost();
+            HttpHost httpHost = new HttpHost(address, port, scheme);
             HttpGet httpGet = new HttpGet(query);
-            try (CloseableHttpResponse response = httpClient.execute(httpGet)) {
+            try (CloseableHttpResponse response = httpClient.execute(httpHost, httpGet)) {
                 HttpEntity entity = response.getEntity();
                 if (null != entity) {
                     return EntityUtils.toString(entity);
@@ -33,7 +58,7 @@ public class HTTPUtility {
                     return "ERROR: No Response";
                 }
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             return "ERROR: " + e.getMessage();
         }
     }

@@ -45,14 +45,26 @@ public class HTTPUtilityTest {
     }
 
     @Test
-    public void testGetRequest() {
-        String response = HTTPUtility.get("https://www.baylor.edu");
+    public void testHTTPSRequest() {
+        String response = HTTPUtility.get("https://baylor.edu", "/", 443, 3);
         Assert.assertTrue(response.contains("Baylor"));
     }
 
     @Test
-    public void testAnotherGetRequest() {
-        String response = HTTPUtility.get("http://httpbin.org");
+    public void testHTTPSSelfSigned() {
+        String response = HTTPUtility.get("https://self-signed.badssl.com", "/", 443, 3);
+        Assert.assertTrue(response.contains("self-signed"));
+    }
+
+    @Test
+    public void testHTTPRequest() {
+        String response = HTTPUtility.get("http://httpbin.org", "/", 80, 3);
         Assert.assertTrue(response.contains("BONUSPOINTS"));
+    }
+
+    @Test
+    public void testHTTPNoSuchPage() {
+        String response = HTTPUtility.get("https://httpbin.org", "/bluemoon", 80, 3);
+        Assert.assertTrue(response.startsWith("ERROR"));
     }
 }

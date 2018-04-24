@@ -23,7 +23,7 @@ public class Capturable extends AbstractComparableByContest {
     @ManyToOne
     private Contest contest;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String name;
 
     @Column

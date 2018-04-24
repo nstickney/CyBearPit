@@ -10,18 +10,37 @@
 
 package is.stma.judgebean.beanpoll.test;
 
-import is.stma.judgebean.beanpoll.model.Capturable;
-import is.stma.judgebean.beanpoll.model.Captured;
-import is.stma.judgebean.beanpoll.model.Contest;
-import is.stma.judgebean.beanpoll.model.Team;
+import is.stma.judgebean.beanpoll.model.*;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 
 class TestUtility {
 
-    static final String TEST_CAPTURABLE_FLAG = "TEST_FLAG";
-    static final String TEST_TEAM_FLAG = "TEST_TEAM_FLAG";
+    static Announcement makeAnnouncement(Contest contest) {
+        Announcement announcement = new Announcement();
+        announcement.setContest(contest);
+        announcement.setName(UUID.randomUUID().toString());
+        announcement.setContents(UUID.randomUUID().toString());
+        return announcement;
+    }
+
+    static Capturable makeCapturable(Contest contest) {
+        Capturable capturable = new Capturable();
+        capturable.setContest(contest);
+        capturable.setName(UUID.randomUUID().toString());
+        capturable.setFlag(UUID.randomUUID().toString());
+        capturable.setPointValue(ThreadLocalRandom.current().nextInt(1, 101));
+        return capturable;
+    }
+
+    static Captured makeCaptured(Capturable capturable, Team team) {
+        Captured captured = new Captured();
+        captured.setCapturable(capturable);
+        captured.setTeam(team);
+        return captured;
+    }
 
     static Contest makeContest() {
         Contest contest = new Contest();
@@ -31,27 +50,30 @@ class TestUtility {
         return contest;
     }
 
-    static Capturable makeCapturable(Contest contest, String flag, int points) {
-        Capturable capturable = new Capturable();
-        capturable.setContest(contest);
-        capturable.setName(UUID.randomUUID().toString());
-        capturable.setFlag(flag);
-        capturable.setPointValue(points);
-        return capturable;
+    static Poll makePoll(Resource testResource) {
+        Poll poll = new Poll();
+        poll.setResource(testResource);
+        poll.setScore(0);
+        poll.setResults("ERROR: Test Poll");
+        return poll;
     }
 
-    static Team makeTeam(Contest contest, String flag) {
+    static Resource makeResource(Contest contest, String type) {
+        Resource resource = new Resource();
+        resource.setContest(contest);
+        resource.setType(type);
+        resource.setName(UUID.randomUUID().toString());
+        resource.setAddress("127.0.0.,1");
+        resource.setPort(ThreadLocalRandom.current().nextInt(1, 65536));
+        resource.setPointValue(ThreadLocalRandom.current().nextInt(1, 101));
+        return resource;
+    }
+
+    static Team makeTeam(Contest contest) {
         Team team = new Team();
         team.setContest(contest);
         team.setName(UUID.randomUUID().toString());
-        team.setFlag(flag);
+        team.setFlag(UUID.randomUUID().toString());
         return team;
-    }
-
-    static Captured makeCaptured(Capturable capturable, Team team) {
-        Captured captured = new Captured();
-        captured.setCapturable(capturable);
-        captured.setTeam(team);
-        return captured;
     }
 }

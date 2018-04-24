@@ -35,6 +35,9 @@ public class Resource extends AbstractComparableByContest {
     private int port = 53;
 
     @Column(nullable = false)
+    private int timeout = 3;
+
+    @Column(nullable = false)
     private boolean available = false;
 
     @Column(nullable = false)
@@ -104,6 +107,14 @@ public class Resource extends AbstractComparableByContest {
 
     public void setPort(int port) {
         this.port = port;
+    }
+
+    public int getTimeout() {
+        return timeout;
+    }
+
+    public void setTimeout(int timeout) {
+        this.timeout = timeout;
     }
 
     public boolean isAvailable() {

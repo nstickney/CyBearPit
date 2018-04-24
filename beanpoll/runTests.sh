@@ -8,8 +8,12 @@ printf '%s\n' "        $(pwd)"
 ./runServer.sh new
 cd "$NOWDIR" || exit
 
-# Run the tests
-mvn clean test -Parq-wildfly-remote
+# Run the test(s)
+if [ "$1" == "" ]; then
+	mvn clean test -Parq-wildfly-remote
+else
+	mvn clean -Dtest="$1" test -Parq-wildfly-remote
+fi
 
 # Kill the container
 printf '%s\n' " => Stopping WildFly-Arquillian container"

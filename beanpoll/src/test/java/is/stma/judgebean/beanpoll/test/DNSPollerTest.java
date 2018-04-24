@@ -10,7 +10,7 @@
 
 package is.stma.judgebean.beanpoll.test;
 
-import is.stma.judgebean.beanpoll.controller.parameterizer.DNSParameterizer;
+import is.stma.judgebean.beanpoll.service.parameterizer.DNSParameterizer;
 import is.stma.judgebean.beanpoll.controller.poller.AbstractPoller;
 import is.stma.judgebean.beanpoll.controller.poller.PollerFactory;
 import is.stma.judgebean.beanpoll.data.PollRepo;
@@ -80,6 +80,7 @@ public class DNSPollerTest {
                         DNSParameterizer.class.getPackage(),
                         AbstractPoller.class.getPackage(),
                         EMProducer.class.getPackage())
+                .addClass(TestUtility.class)
                 .addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml")
                 .addAsResource("META-INF/apache-deltaspike.properties")
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
@@ -166,6 +167,6 @@ public class DNSPollerTest {
         AbstractPoller poller = PollerFactory.getPoller(resource);
         poll = poller.poll();
         Assert.assertTrue(poll.getResults().contains("129.62.3.230"));
-        Assert.assertTrue(poll.getTeam().equals(baylorTeam));
+        Assert.assertEquals(poll.getTeam(), baylorTeam);
     }
 }

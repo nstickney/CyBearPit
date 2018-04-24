@@ -13,11 +13,13 @@ package is.stma.judgebean.beanpoll.service;
 import is.stma.judgebean.beanpoll.data.AbstractRepo;
 import is.stma.judgebean.beanpoll.data.CapturedRepo;
 import is.stma.judgebean.beanpoll.model.Captured;
+import is.stma.judgebean.beanpoll.model.Team;
 import is.stma.judgebean.beanpoll.rules.CapturedRules;
 
 import javax.ejb.Stateless;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
+import java.util.List;
 
 @Stateless
 public class CapturedService extends AbstractService<Captured, AbstractRepo<Captured>,
@@ -46,5 +48,9 @@ public class CapturedService extends AbstractService<Captured, AbstractRepo<Capt
     @Override
     CapturedRules getRules() {
         return rules;
+    }
+
+    public List<Captured> getByTeam(Team team) {
+        return repo.findByTeamId(team.getId());
     }
 }

@@ -8,7 +8,7 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package is.stma.judgebean.beanpoll.controller.parameterizer;
+package is.stma.judgebean.beanpoll.service.parameterizer;
 
 import is.stma.judgebean.beanpoll.model.Parameter;
 
@@ -22,7 +22,6 @@ public class DNSParameterizer {
     public static final String DNS_RECORD_TYPE = "DNS_RECORD_TYPE";
     public static final String DNS_TCP = "DNS_TCP";
     public static final String DNS_RECURSIVE = "DNS_RECURSIVE";
-    public static final String DNS_TIMEOUT = "DNS_TIMEOUT";
     public static final String DNS_EXPECTED = "DNS_EXPECTED";
 
     // DNS default value strings
@@ -30,7 +29,6 @@ public class DNSParameterizer {
     public static final String DNS_DEFAULT_RECORD_TYPE = "A";
     public static final String DNS_DEFAULT_TCP = Parameter.TRUE;
     public static final String DNS_DEFAULT_RECURSIVE = Parameter.FALSE;
-    public static final String DNS_DEFAULT_TIMEOUT = "3";
     public static final String DNS_DEFAULT_EXPECTED = "129.62.3.230";
 
 
@@ -40,7 +38,6 @@ public class DNSParameterizer {
         parameters.add(new Parameter(DNS_RECORD_TYPE, DNS_DEFAULT_RECORD_TYPE));
         parameters.add(new Parameter(DNS_TCP, DNS_DEFAULT_TCP));
         parameters.add(new Parameter(DNS_RECURSIVE, DNS_DEFAULT_RECURSIVE));
-        parameters.add(new Parameter(DNS_TIMEOUT, DNS_DEFAULT_TIMEOUT));
         parameters.add(new Parameter(DNS_EXPECTED, DNS_DEFAULT_EXPECTED));
         return parameters;
     }

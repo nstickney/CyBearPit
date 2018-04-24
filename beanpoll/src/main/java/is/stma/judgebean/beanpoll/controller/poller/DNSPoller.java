@@ -10,7 +10,7 @@
 
 package is.stma.judgebean.beanpoll.controller.poller;
 
-import is.stma.judgebean.beanpoll.controller.parameterizer.DNSParameterizer;
+import is.stma.judgebean.beanpoll.service.parameterizer.DNSParameterizer;
 import is.stma.judgebean.beanpoll.model.Parameter;
 import is.stma.judgebean.beanpoll.model.Poll;
 import is.stma.judgebean.beanpoll.model.Resource;
@@ -29,13 +29,11 @@ public class DNSPoller extends AbstractPoller {
     @Override
     public Poll poll() {
 
-
         // Set values based on the resource parameters
         String query = DNSParameterizer.DNS_DEFAULT_QUERY;
         String recordType = DNSParameterizer.DNS_DEFAULT_RECORD_TYPE;
         String tcpString = DNSParameterizer.DNS_DEFAULT_TCP;
         String recursiveString = DNSParameterizer.DNS_DEFAULT_RECURSIVE;
-        String timeoutString = DNSParameterizer.DNS_DEFAULT_TIMEOUT;
         String expected = DNSParameterizer.DNS_DEFAULT_EXPECTED;
 
         for (Parameter p : resource.getParameters()) {
@@ -51,9 +49,6 @@ public class DNSPoller extends AbstractPoller {
                     break;
                 case DNSParameterizer.DNS_RECURSIVE:
                     recursiveString = p.getValue();
-                    break;
-                case DNSParameterizer.DNS_TIMEOUT:
-                    timeoutString = p.getValue();
                     break;
                 case DNSParameterizer.DNS_EXPECTED:
                     expected = p.getValue();
@@ -95,14 +90,13 @@ public class DNSPoller extends AbstractPoller {
         }
         boolean tcp = tcpString.equals(Parameter.TRUE);
         boolean recursive = recursiveString.equals(Parameter.TRUE);
-        int timeout = Integer.parseInt(timeoutString);
 
         Poll newPoll = new Poll();
         newPoll.setResource(resource);
 
         // Do the poll
         newPoll.setResults(DNSUtility.lookup(resource.getAddress(), resource.getPort(), query,
-                type, tcp, recursive, timeout, false));
+                type, tcp, recursive, resource.getTimeout(), false));
 
         // Check if it worked, and if it did, score the poll
         if (newPoll.getResults().contains(expected)) {
@@ -115,7 +109,7 @@ public class DNSPoller extends AbstractPoller {
 
                 // Check the flags
                 newPoll.setResults(newPoll.getResults() + ", flag: " +
-                        DNSUtility.lookup(resource.getAddress(), resource.getPort(), query, Type.TXT, tcp, recursive, timeout, false));
+                        DNSUtility.lookup(resource.getAddress(), resource.getPort(), query, Type.TXT, tcp, recursive, resource.getTimeout(), false));
 
                 List<Team> possibleTeams = resource.getTeams();
 

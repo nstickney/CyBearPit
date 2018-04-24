@@ -66,46 +66,6 @@ public class ResourceController extends AbstractEntityController<Resource, Resou
         this.addThisTeam = addTeam;
     }
 
-    /**
-     * Persist the Resource from getNew(). This is overridden here in order to
-     * attach a new set of Parameters to the Resource before the resource is persisted.
-     */
-    @Override
-    public void create() {
-        List<Parameter> parameters = null;
-        Resource created = null;
-        try {
-            parameters = parameterController.createParameters(getNew());
-            created = getService().create(getNew());
-            for (Parameter p : parameters) {
-                p.setResource(created);
-                parameterController.updateSilent(p);
-            }
-            created.setParameters(parameters);
-            created = getService().update(created);
-            setNew(null);
-            messageOut(getNew().getLogName() + " created.");
-        } catch (Exception e) {
-
-            // Clean up anything we've created so far
-            if (null != parameters) {
-                for (Parameter p : parameters) {
-                    parameterController.deleteSilent(p);
-                }
-            }
-            if (null != created) {
-                getService().delete(created);
-            }
-
-            // Give a useful error message
-            if (EJBException.class == e.getClass() || ValidationException.class == e.getClass()) {
-                errorOut(e, "Failed to create " + getNew().getLogName() + ": ");
-            } else {
-                errorOut(e, getNew().getLogName() + " creation failed: ");
-            }
-        }
-    }
-
     @Override
     public void update(Resource entity) {
         doUpdate(entity);
@@ -113,10 +73,6 @@ public class ResourceController extends AbstractEntityController<Resource, Resou
 
     @Override
     public void delete(Resource entity) {
-        List<Parameter> parameters = entity.getParameters();
-        for (Parameter p : parameters) {
-            parameterController.deleteSilent(p);
-        }
         doDelete(entity);
     }
 

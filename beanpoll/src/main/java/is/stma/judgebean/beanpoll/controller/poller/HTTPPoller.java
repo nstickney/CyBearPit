@@ -10,7 +10,7 @@
 
 package is.stma.judgebean.beanpoll.controller.poller;
 
-import is.stma.judgebean.beanpoll.controller.parameterizer.HTTPParameterizer;
+import is.stma.judgebean.beanpoll.service.parameterizer.HTTPParameterizer;
 import is.stma.judgebean.beanpoll.model.Parameter;
 import is.stma.judgebean.beanpoll.model.Poll;
 import is.stma.judgebean.beanpoll.model.Resource;
@@ -18,6 +18,8 @@ import is.stma.judgebean.beanpoll.model.Team;
 import is.stma.judgebean.beanpoll.util.DNSUtility;
 import is.stma.judgebean.beanpoll.util.HTTPUtility;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,29 +43,29 @@ public class HTTPPoller extends AbstractPoller {
         Poll newPoll = new Poll();
         newPoll.setResource(resource);
 
-        // Find the resource address - don't want the protocol portion
-        String address = resource.getAddress();
-        if (address.contains("://")) {
-            address = address.substring(address.indexOf("://") + 3);
-        }
+        try {
+            // Find the resource address - don't want the protocol portion
+            String address = getAddress(resource.getAddress());
 
-        // If the HTTP_RESOLVER is set, use it to look up the resource address
-        if (null != resolver && !resolver.equals("")) {
-            address = DNSUtility.lookup(resolver, address);
-        }
+            // If the HTTP_RESOLVER is set, use it to look up the resource address
+            if (null != resolver && !resolver.equals("")) {
+                address = DNSUtility.lookup(resolver, address);
+            }
 
-        // If the DNS resolution failed, fail
-        if (address.startsWith("ERROR: ")) {
-            newPoll.setResults("DNS " + address);
+            // If the DNS resolution failed, fail
+            if (address.startsWith("ERROR: ")) {
+                newPoll.setResults("DNS " + address);
+                return newPoll;
+            }
+
+            // Do the check
+            newPoll.setResults(HTTPUtility.get(address, getPath(resource.getAddress()),
+                    resource.getPort(), resource.getTimeout()));
+
+        } catch (URISyntaxException e) {
+            newPoll.setResults("ERROR: address " + resource.getAddress() + " is not valid");
             return newPoll;
         }
-
-        if (!address.startsWith("http://") || !address.startsWith("https://")) {
-            address = "http://" + address;
-        }
-
-        // Do the check
-        newPoll.setResults(HTTPUtility.get(address));
 
         // Score the new poll - but only if there wasn't an error
         List<Team> scoringTeams = new ArrayList<>();
@@ -96,5 +98,13 @@ public class HTTPPoller extends AbstractPoller {
         }
 
         return newPoll;
+    }
+
+    private String getAddress(String url) throws URISyntaxException {
+        return new URI(url).getHost();
+    }
+
+    private String getPath(String url) throws URISyntaxException {
+        return new URI(url).getPath();
     }
 }

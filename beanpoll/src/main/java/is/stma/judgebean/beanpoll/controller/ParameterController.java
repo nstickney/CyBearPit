@@ -10,8 +10,8 @@
 
 package is.stma.judgebean.beanpoll.controller;
 
-import is.stma.judgebean.beanpoll.controller.parameterizer.DNSParameterizer;
-import is.stma.judgebean.beanpoll.controller.parameterizer.HTTPParameterizer;
+import is.stma.judgebean.beanpoll.service.parameterizer.DNSParameterizer;
+import is.stma.judgebean.beanpoll.service.parameterizer.HTTPParameterizer;
 import is.stma.judgebean.beanpoll.model.Parameter;
 import is.stma.judgebean.beanpoll.model.Resource;
 import is.stma.judgebean.beanpoll.rules.ParameterRules;
@@ -63,49 +63,5 @@ public class ParameterController extends AbstractEntityController<Parameter, Par
     @Override
     public void delete(Parameter entity) {
         doDelete(entity);
-    }
-
-    public List<Parameter> createParameters(Resource resource) throws ValidationException {
-
-        // Create the correct parameters for the resource
-        List<Parameter> parameters;
-        switch (resource.getType()) {
-            case Resource.DNS:
-                parameters = DNSParameterizer.createParameters();
-                break;
-            case Resource.HTTP:
-                parameters = HTTPParameterizer.createParameters();
-                break;
-            default:
-                throw new ValidationException("unknown resource type " + resource.getType());
-        }
-
-        // Attempt to persist all created parameters
-        List<Parameter> createdParameters = new ArrayList<>();
-        try {
-            for (Parameter p : parameters) {
-                setNew(p);
-                getService().create(p);
-                createdParameters.add(p);
-            }
-
-            // If there is a problem, undo everything done so far
-        } catch (EJBException e) {
-            for (Parameter p : createdParameters) {
-                delete(p);
-            }
-            throw new ValidationException("could not create resource parameters");
-        }
-
-        // Return the created list
-        return createdParameters;
-    }
-
-    public void updateSilent(Parameter parameter) {
-        getService().update(parameter);
-    }
-
-    public void deleteSilent(Parameter parameter) {
-        getService().delete(parameter);
     }
 }

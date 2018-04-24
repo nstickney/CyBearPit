@@ -17,7 +17,7 @@ import is.stma.judgebean.beanpoll.model.Team;
 import javax.enterprise.inject.Model;
 import javax.inject.Inject;
 import javax.validation.ValidationException;
-import java.util.Objects;
+import java.util.List;
 
 @Model
 public class TeamRules extends AbstractRules<Team> {
@@ -43,14 +43,15 @@ public class TeamRules extends AbstractRules<Team> {
 
     private void checkTeamNameAndFlagAreUniqueInContest(Team entity) throws ValidationException {
         if (null != entity.getContest()) {
-            for (Team team : entity.getContest().getTeams()) {
-                if (Objects.equals(team.getName(), entity.getName())
-                        && !Objects.equals(team.getId(), entity.getId())) {
-                    throw new ValidationException("Team name must be unique in the contest");
-                }
-                if (Objects.equals(team.getFlag(), entity.getFlag())
-                        && !Objects.equals(team.getId(), entity.getId())) {
-                    throw new ValidationException("Team flag must be unique in the contest");
+            List<Team> others = repo.findByContest(entity.getContest().getId());
+            for (Team t : others) {
+                if (!t.equalByUUID(entity)) {
+                    if (t.getFlag().equals(entity.getFlag())) {
+                        throw new ValidationException("a team in contest " + entity.getContest().getName() + " already has flag " + entity.getFlag());
+                    }
+                    if (t.getName().equals(entity.getName())) {
+                        throw new ValidationException("a team in contest " + entity.getContest().getName() + " already has name " + entity.getName());
+                    }
                 }
             }
         }

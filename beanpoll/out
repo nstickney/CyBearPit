@@ -1,0 +1,9 @@
+ => Starting WildFly-Arquillian container from
+        /home/nstickney/Projects/CyBearPit/containers/wildfly/arqtest
+Running judgebean-arqtest-wildfly from judgebean-arqtest-wildfly...
+da107169f550896c0cba73098e449e587c05cf7ff2589d1414a49ce077bd935e
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] Building BeanPoll 0.0.1.Snapshot
+[INFO] ------------------------------------------------------------------------
