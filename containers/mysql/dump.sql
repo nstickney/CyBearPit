@@ -1,6 +1,6 @@
 -- MySQL dump 10.16  Distrib 10.1.32-MariaDB, for Linux (x86_64)
 --
--- Host: 172.17.0.1    Database: JudgeBeanDS
+-- Host: 172.17.0.1    Database: beanpollDS
 -- ------------------------------------------------------
 -- Server version	5.7.21
 
@@ -405,7 +405,7 @@ CREATE TABLE `User` (
 
 LOCK TABLES `User` WRITE;
 /*!40000 ALTER TABLE `User` DISABLE KEYS */;
-INSERT INTO `User` VALUES ('f91405ca-5750-4845-82c5-c8c40abc81fb','\0','\0','TestTeamUser','8b8e089c-c093-4541-997a-7fa6d5efe202','$argon2id$v=19$m=1024,t=2,p=2$qdiP4n1m7AS9/SM5L1XJ3g$vP/2EcD/jtS67d3RzKSR0QTORivPPSiC0MG9EGwkIIc','744dce04-1126-4d65-a2f9-daebb8cfec5b'),('UA','','','beanpoll','b97ebe9b-4db5-4dc4-8c31-c1d46df88d83','$argon2id$v=19$m=1024,t=2,p=2$/bDvwgcKFx/SLUhz768+mQ$qdptwK3x7Z8u6/LBE9FjW0+IAZtVINmczJjEOGmhBUc',NULL),('UBA','','\0','beanadmin','fd981cdb-fe4e-42e6-893d-2935f21e95ab','$argon2id$v=19$m=1024,t=2,p=2$5/afcBFwYdIw2Rof2wBTXg$KLlRoawxCr51fcesq+Q8YB65PRrHPqDQFX0WlO35b9s',NULL),('UBJ','\0','','beanjudge','b7cb9d0b-bdd1-41f7-ba03-702462f129a3','$argon2id$v=19$m=1024,t=2,p=2$6JmQTLgp2EwfJ/10htuLWw$vvn79tSS5RdaZSCZV9oaZybaDm5BcYXR3RDthUufH9U',NULL);
+INSERT INTO `User` VALUES ('f91405ca-5750-4845-82c5-c8c40abc81fb','\0','\0','TestTeamUser','8b8e089c-c093-4541-997a-7fa6d5efe202','$argon2id$v=19$m=1024,t=2,p=2$qdiP4n1m7AS9/SM5L1XJ3g$vP/2EcD/jtS67d3RzKSR0QTORivPPSiC0MG9EGwkIIc','744dce04-1126-4d65-a2f9-daebb8cfec5b'),('UA','','','beanpoll','b97ebe9b-4db5-4dc4-8c31-c1d46df88d83','$argon2id$v=19$m=1024,t=2,p=2$/bDvwgcKFx/SLUhz768+mQ$qdptwK3x7Z8u6/LBE9FjW0+IAZtVINmczJjEOGmhBUc',NULL);
 /*!40000 ALTER TABLE `User` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

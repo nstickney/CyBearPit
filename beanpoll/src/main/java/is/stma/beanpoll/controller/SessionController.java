@@ -17,6 +17,7 @@ import javax.ejb.EJBException;
 import javax.enterprise.inject.Model;
 import javax.inject.Inject;
 import javax.persistence.NoResultException;
+import javax.validation.ValidationException;
 
 @Model
 public class SessionController extends AbstractFacesController {
@@ -148,8 +149,13 @@ public class SessionController extends AbstractFacesController {
     }
 
     public void changePassword() {
-        userController.changePassword(bean.getUser(), bean.getPassword(),
-                bean.getNewPassword(), false);
+        if (password.equals(bean.getNewPassword())) {
+            userController.changePassword(bean.getUser(), bean.getPassword(),
+                    bean.getNewPassword(), false);
+        } else {
+            errorOut(new ValidationException("Password strings must match"), "Password strings do not match");
+        }
+        password = null;
         bean.setPassword(null);
         bean.setNewPassword(null);
         updateBean();

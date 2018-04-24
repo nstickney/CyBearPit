@@ -25,12 +25,12 @@ echo "=> Waiting for the server to boot"
 wait_for_server
 
 echo "=> Executing the commands"
-export JUDGEBEAN_DB="JudgeBeanDS"
-export JUDGEBEAN_DS="java:/$JUDGEBEAN_DB"
+export beanpoll_DB="beanpollDS"
+export beanpoll_DS="java:/$beanpoll_DB"
 export DB_HOST="172.17.0.1"
 export DB_PORT="3306"
-export DB_USER="judgebeanmysql"
-export DB_PWD="judgebeanmysqlpassword"
+export DB_USER="beanpollmysql"
+export DB_PWD="beanpollmysqlpassword"
 
 $JBOSS_CLI -c << EOF
 batch
@@ -43,14 +43,14 @@ module add --name=com.mysql --resources=/opt/jboss/wildfly/mysql-connector-java-
 echo "  => Configuring MySQL driver"
 /subsystem=datasources/jdbc-driver=mysql:add(driver-name=mysql,driver-module-name=com.mysql)
 
-echo "  => Creating MySQL datasource " $JUDGEBEAN_DS
-data-source add --name=$JUDGEBEAN_DB --driver-name=mysql --jndi-name=$JUDGEBEAN_DS --connection-url=jdbc:mysql://$DB_HOST:$DB_PORT/$JUDGEBEAN_DB --user-name=$DB_USER --password=$DB_PWD
+echo "  => Creating MySQL datasource " $beanpoll_DS
+data-source add --name=$beanpoll_DB --driver-name=mysql --jndi-name=$beanpoll_DS --connection-url=jdbc:mysql://$DB_HOST:$DB_PORT/$beanpoll_DB --user-name=$DB_USER --password=$DB_PWD
 
 run-batch
 EOF
 
 echo "=> Adding a user"
-/opt/jboss/wildfly/bin/add-user.sh judgebeanwildfly judgebeanwildflypassword
+/opt/jboss/wildfly/bin/add-user.sh beanpollwildfly beanpollwildflypassword
 
 echo "=> Shutting down wildfly"
 if [ "$JBOSS_MODE" = "standalone" ]; then

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-IMAGE_NAME='judgebean-wildfly-dev'
+IMAGE_NAME='beanpoll-wildfly-dev'
 CONTAINER_NAME="$IMAGE_NAME"
 
 # Create the image if "build" is specified, or it doesn't exist

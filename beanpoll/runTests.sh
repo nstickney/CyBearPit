@@ -17,6 +17,6 @@ fi
 
 # Kill the container
 printf '%s\n' " => Stopping WildFly-Arquillian container"
-docker stop judgebean-arqtest-wildfly
-docker rm judgebean-arqtest-wildfly
+docker stop beanpoll-arqtest-wildfly
+docker rm beanpoll-arqtest-wildfly
 

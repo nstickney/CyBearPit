@@ -49,8 +49,13 @@
                         <f:facet name="prepend"><b:iconAwesome name="key"/></f:facet>
                     </b:inputSecret>
                     <h:outputText value=""/>
-                    <h:outputLabel value="New Password:"/>
+                    <h:outputLabel value="New Password:" for="newPassword"/>
                     <b:inputSecret value="#{sessionBean.newPassword}" id="newPassword" class="form-control">
+                        <f:facet name="prepend"><b:iconAwesome name="key"/></f:facet>
+                    </b:inputSecret>
+                    <h:outputText value=""/>
+                    <h:outputLabel value="Repeat New Password:" for="newPassword2"/>
+                    <b:inputSecret value="#{sessionController.password}" id="newPassword2" class="form-control">
                         <f:facet name="prepend"><b:iconAwesome name="key"/></f:facet>
                     </b:inputSecret>
                     <b:commandButton value="Change Password" look="warning" iconAwesome="retweet"

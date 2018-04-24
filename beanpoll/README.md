@@ -24,7 +24,7 @@ As with any web application, security must be considered from the perspectives o
 * Secure the connection from Wild**Fly** to the database using TLS
 * Secure the database server and host system
 
-The Docker image [judgebean-wildfly](../containers/wildfly/prod "judgebean-wildfly") is set up to only expose port 8443, on the host port 443. This corresponds to `https`-only access to the application listener only. It is also set up to use TLSv1.2 or higher with a (default, dynamically-generated) self-signed certificate. The Docker image [judgebean-mysql](../containers/mysql "judgebean-mysql") is not yet set up to secure connections over TLS; it currently runs the default [mysql/mysql-server](https://hub.docker.com/r/mysql/mysql-server/ "Docker: mysql/mysql-server") image, using Docker environment variables to set up a database, non-root user, and non-root password.
+The Docker image [beanpoll-wildfly](../containers/wildfly/prod "beanpoll-wildfly") is set up to only expose port 8443, on the host port 443. This corresponds to `https`-only access to the application listener only. It is also set up to use TLSv1.2 or higher with a (default, dynamically-generated) self-signed certificate. The Docker image [beanpoll-mysql](../containers/mysql "beanpoll-mysql") is not yet set up to secure connections over TLS; it currently runs the default [mysql/mysql-server](https://hub.docker.com/r/mysql/mysql-server/ "Docker: mysql/mysql-server") image, using Docker environment variables to set up a database, non-root user, and non-root password.
 
 Since the entire purpose of BeanPoll is to be used in network security competitions, it is imperative that every security precaution available be taken short of disconnection. At the very least, change the passwords! The default passwords for the BeanPoll administrative users are set from [import.sql](src/main/resources/import.sql "import.sql") and are listed in plain text in that file. The easiest way to change them is to remove all but the first user line from the file, build the web application archive, deploy and start the application, log in as `beanpoll` (the default admin user), and change both the username and password from the account page.
 
@@ -35,40 +35,37 @@ BeanPoll is the largest portion of the CyBearPit project, and builds most direct
 ## Install
 
 ### Quick Docker Installation Guide
-**Note that you must have Docker installed and running to use this option!**
+**Note that you must have Docker (and Maven) installed and running to use this option!**
 
-1) Clone the CyBearPit repository:
+1) Read this entire section, to make sure that you know what is required and have it ready.
 
-```git clone https://github.com/nstickney/CyBearPit```
+1) Clone the CyBearPit repository: `git clone https://github.com/nstickney/CyBearPit`
 
-2) Change directory into the BeanPoll directory:
+1) Change directory into the BeanPoll directory: `cd CyBearPit/beanpoll`
 
-```cd CyBearPit/beanpoll```
+1) Run the Maven build command: `mvn clean install`
 
-3) Run the Maven build command:
+1) Change directory into the MySQL container directory: `cd ../containers/mysql`
 
-```mvn clean install```
+1) Run the MySQL container: `./runServer.sh load`
 
-4) Change directory into the MySQL container directory:
+    Note that you should probably change the `MYSQL_PASSWORD` line in `runServer.sh` before starting it. Otherwise, you will have the password, "beanpollmysqlpassword", which is written in plain text in this repository!
 
-```cd ../containers/mysql```
+    The `load` parameter causes the database to load the dump.sql file into the database after it is created. The script waits ten seconds for MySQL to start up, then connects, at which point you will need to enter that password you set (or "beanpollmysqlpassword" if you didn't set it). If you get the password wrong, just run the entire command again; it will stop the old Docker container, remove its generated image, and start again.
 
-5) Run the MySQL container:
-**Note that you should probably change the `MYSQL_PASSWORD` line in `runServer.sh` before starting it.** Otherwise, you will have the password, "judgebeanmysqlpassword", which is written in plain text in this repository!
+1) Change directory into the Wild**Fly** production container directory: `cd ../wildfly/prod/`
 
-```./runServer.sh load```
+1) Run the production server: `./runServer.sh build`
 
-The `load` parameter causes the database to load the dump.sql file into the database after it is created. The script waits ten seconds for MySQL to start up, then connects, at which point you will need to enter that password you set (or "judgebeanmysqlpassword" if you didn't set it).
+1) Open a browser and head to [https://localhost](https://localhost "localhost") to view your BeanPoll server! You can log in as `beanpoll` with password `beanpollpassword`. I recommend changing this password immediately! To do so, click the user icon (or the word `beanpoll`) in the navigation bar menu (top of the page, far right). Enter your current and new passwords on the screen, and select the "Change Password" button.
 
-6) Change directory into the Wild**Fly** production container directory:
+1) To shut down the system, turn off the Wild**Fly** container (`docker stop beanpoll-wildfly`) and the MySQL container (`docker stop beanpoll-mysql`).
 
-```cd ../wildfly/prod/```
+1) Now that you have read the instructions, there is a script called `runBeanPoll.sh` in the [CyBearPit](https://github.com/nstickney/CyBearPit "nstickney/CyBearPit") directory that will do everything but open a browser for you.
 
-7) 
+### Build and Install Notes
 
-### Installation Notes
-
-`mvn clean install` in this folder will build the web application archive, which is then saved to [ROOT.war](target/ROOT.war "target/ROOT.war"). Deploy the application on a Wild**Fly** server with a preconfigured datasource called `java:/JudgeBeanDS` (see [persistence.xml](src/main/resources/META-INF/persistence.xml "persistence.xml") for the required configuration).
+`mvn clean install` in this folder will build the web application archive, which is then saved to [ROOT.war](target/ROOT.war "target/ROOT.war"). Deploy the application on a Wild**Fly** server with a preconfigured datasource called `java:/beanpollDS` (see [persistence.xml](src/main/resources/META-INF/persistence.xml "persistence.xml") for the required configuration).
 
 From the `CyBearPit/beanpoll` directory, you can also use `mvn spotbugs:spotbugs` to check the code for errors, and `./runTests.sh` will build and run the Arquillian/JUnit tests in a purpose-built Docker container with a built-in H2 datasource.
 

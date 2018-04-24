@@ -25,11 +25,11 @@ echo "=> Waiting for the server to boot"
 wait_for_server
 
 echo "=> Executing the commands"
-export JUDGEBEAN_DB="JudgeBeanDS"
-export JUDGEBEAN_DS="java:/$JUDGEBEAN_DB"
-export H2_URI="jdbc:h2:mem:JUDGEBEAN_DB;DB_CLOSE_DELAY=-1"
-export H2_USER="judgebeanwildfly"
-export H2_PWD="judgebeanwildflypassword"
+export BEANPOLL_DB="beanpollDS"
+export BEANPOLL_DS="java:/$BEANPOLL_DB"
+export H2_URI="jdbc:h2:mem:BEANPOLL_DB;DB_CLOSE_DELAY=-1"
+export H2_USER="beanpollwildfly"
+export H2_PWD="beanpollwildflypassword"
 
 $JBOSS_CLI -c << EOF
 batch
@@ -37,14 +37,14 @@ batch
 echo "Connection URL: " $CONNECTION_URL
 
 # First step : Add the datasource
-data-source add --name=$JUDGEBEAN_DB --driver-name=h2 --jndi-name=$JUDGEBEAN_DS --connection-url=$H2_URI --user-name=$H2_USER --password=$H2_PWD --use-ccm=false --max-pool-size=25 --blocking-timeout-wait-millis=5000 
+data-source add --name=$BEANPOLL_DB --driver-name=h2 --jndi-name=$BEANPOLL_DS --connection-url=$H2_URI --user-name=$H2_USER --password=$H2_PWD --use-ccm=false --max-pool-size=25 --blocking-timeout-wait-millis=5000 
 
 # Execute the batch
 run-batch
 EOF
 
 # Finally, let's add an admin that can be used by the IDE to deploy the tests
-/opt/jboss/wildfly/bin/add-user.sh judgebeanwildfly judgebeanwildflypassword
+/opt/jboss/wildfly/bin/add-user.sh beanpollwildfly beanpollwildflypassword
 
 echo "=> Shutting down wildfly"
 if [ "$JBOSS_MODE" = "standalone" ]; then

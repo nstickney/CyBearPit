@@ -21,8 +21,8 @@
         <configuration>
             <property name="managementAddress">172.17.0.1</property>
             <property name="managementPort">9990</property>
-            <property name="username">judgebeanwildfly</property>
-            <property name="password">judgebeanwildflypassword</property>
+            <property name="username">beanpollwildfly</property>
+            <property name="password">beanpollwildflypassword</property>
         </configuration>
     </container>
 
