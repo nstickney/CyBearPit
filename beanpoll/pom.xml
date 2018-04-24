@@ -14,14 +14,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>is.stma.judgebean</groupId>
+    <groupId>is.stma</groupId>
     <artifactId>beanpoll</artifactId>
     <version>0.0.1.Snapshot</version>
     <packaging>war</packaging>
     <name>BeanPoll</name>
-    <description>A polling engine for network security contests, in JavaEE</description>
+    <description>A polling engine for network security contests, in Jakarta EE</description>
 
-    <url>https://github.com/nstickney/judgebean</url>
+    <url>https://github.com/nstickney/CyBearPit/tree/master/beanpoll</url>
     <licenses>
         <license>
             <name>MIT License</name>

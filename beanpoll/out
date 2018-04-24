@@ -1,9 +1,52 @@
  => Starting WildFly-Arquillian container from
         /home/nstickney/Projects/CyBearPit/containers/wildfly/arqtest
 Running judgebean-arqtest-wildfly from judgebean-arqtest-wildfly...
-da107169f550896c0cba73098e449e587c05cf7ff2589d1414a49ce077bd935e
+57563db3ca64dbd2b913509d9edb78eba8f53432e4b3182095dcab658826c50a
 [INFO] Scanning for projects...
 [INFO] 
 [INFO] ------------------------------------------------------------------------
 [INFO] Building BeanPoll 0.0.1.Snapshot
 [INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:2.5:clean (default-clean) @ beanpoll ---
+[INFO] Deleting /home/nstickney/Projects/CyBearPit/beanpoll/target
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ beanpoll ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 3 resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.7.0:compile (default-compile) @ beanpoll ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 106 source files to /home/nstickney/Projects/CyBearPit/beanpoll/target/classes
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ beanpoll ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 4 resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.7.0:testCompile (default-testCompile) @ beanpoll ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 12 source files to /home/nstickney/Projects/CyBearPit/beanpoll/target/test-classes
+[INFO] 
+[INFO] --- maven-surefire-plugin:2.12.4:test (default-test) @ beanpoll ---
+[INFO] Surefire report directory: /home/nstickney/Projects/CyBearPit/beanpoll/target/surefire-reports
+
+-------------------------------------------------------
+ T E S T S
+-------------------------------------------------------
+Running is.stma.beanpoll.test.HTTPPollerTest
+Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 21.639 sec
+
+Results :
+
+Tests run: 9, Failures: 0, Errors: 0, Skipped: 0
+
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 31.855 s
+[INFO] Finished at: 2018-04-24T12:03:26-05:00
+[INFO] Final Memory: 38M/270M
+[INFO] ------------------------------------------------------------------------
+ => Stopping WildFly-Arquillian container
+judgebean-arqtest-wildfly
+judgebean-arqtest-wildfly
