@@ -70,24 +70,22 @@ public class DNSUtilityTest {
 
     @Test
     public void testNoResults() {
-        Assert.assertThat(DNSUtility.lookup("baylor.ccdc"), anyOf(equalTo("ERROR: host not found"), equalTo("ERROR: type not found")));
+        Assert.assertTrue(DNSUtility.lookup("baylor.ccdc").startsWith("ERROR"));
     }
 
     @Test
     public void testNoSuchIP() {
-        Assert.assertThat(DNSUtility.lookup("129.62.148.39", query),
-                anyOf(equalTo("ERROR: network error"), equalTo("ERROR: timed out")));
+        Assert.assertTrue(DNSUtility.lookup("129.62.148.39", query).startsWith("ERROR"));
     }
 
     @Test
     public void testBadIP() {
-        Assert.assertEquals("ERROR: resolution failed",
-                DNSUtility.lookup("256.0.0.1", query));
+        Assert.assertTrue("ERROR: resolution failed",
+                DNSUtility.lookup("256.0.0.1", query).startsWith("ERROR: resolution failed"));
     }
 
     @Test
     public void testBadHostname() {
-        Assert.assertEquals("ERROR: resolution failed",
-                DNSUtility.lookup("ns1.baylor.ccdc", query));
+        Assert.assertTrue(DNSUtility.lookup("ns1.baylor.ccdc", query).startsWith("ERROR: resolution failed"));
     }
 }

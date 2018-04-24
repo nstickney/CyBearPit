@@ -15,7 +15,9 @@ import org.apache.http.HttpHost;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.conn.ssl.TrustAllStrategy;
 import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -29,6 +31,13 @@ import java.net.URI;
 
 public class HTTPUtility {
 
+    /**
+     * Make an HTTP request for the query given, on the given port, within the given timeout
+     * @param query http or https query URI
+     * @param port port number of the listening server
+     * @param timeout number of seconds to wait before timing out
+     * @return the response to the given request
+     */
     public static String get(String query, int port, int timeout) {
         try {
 
@@ -38,18 +47,14 @@ public class HTTPUtility {
                     .setConnectionRequestTimeout(timeout * 1000)
                     .setSocketTimeout(timeout * 1000).build();
 
-            // Allow self-signed HTTPS certificates
-            SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(new SSLContextBuilder().loadTrustMaterial(new TrustSelfSignedStrategy()).build());
-
-            // Create the client
+            // Create the client (it should accept any hostname on certificates)
             CloseableHttpClient httpClient = HttpClientBuilder.create()
                     .setDefaultRequestConfig(httpConfig)
-                    .setSSLSocketFactory(sslsf).build();
+                    .setSSLContext(new SSLContextBuilder().loadTrustMaterial(new TrustSelfSignedStrategy()).build())
+                    .setSSLHostnameVerifier(new NoopHostnameVerifier()).build();
 
             // Create the request
-            if (!query.startsWith("https://") && !query.startsWith("http://")) {
-                query = "http://" + query; // Assume HTTP as default
-            }
+            query = setDefaultHTTPProtocol(query);
             String scheme = new URI(query).getScheme();
             String path = new URI(query).getPath();
             String domain = new URI(query).getHost();
@@ -69,5 +74,17 @@ public class HTTPUtility {
         } catch (Exception e) {
             return "ERROR: " + e.getMessage();
         }
+    }
+
+    /**
+     * If the protocol of a query address is not given, assume it is http.
+     * @param address the address to check for a protocol
+     * @return the address, with a correct protocol string
+     */
+    public static String setDefaultHTTPProtocol(String address) {
+        if (!address.startsWith("https://") && !address.startsWith("http://")) {
+            address = "http://" + address; // Assume HTTP as default
+        }
+        return address;
     }
 }

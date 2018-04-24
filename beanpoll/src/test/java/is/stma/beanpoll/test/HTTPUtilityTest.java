@@ -69,7 +69,7 @@ public class HTTPUtilityTest {
 
     @Test
     public void testHTTPSBadCert() {
-        String response = HTTPUtility.get("https://wrong.host.badssl.com/", 443, 3);
+        String response = HTTPUtility.get("https://expired.badssl.com//", 443, 3);
         Assert.assertTrue(response.startsWith("ERROR"));
     }
 

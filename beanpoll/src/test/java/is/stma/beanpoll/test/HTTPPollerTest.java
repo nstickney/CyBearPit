@@ -118,7 +118,7 @@ public class HTTPPollerTest {
     }
 
     @Test
-    public void testPollWorks() {
+    public void testHTTPPollWorks() {
         testResource.setAddress("httpbin.org");
         testResource.setPort(80);
         testResource = resourceService.update(testResource);
@@ -128,7 +128,7 @@ public class HTTPPollerTest {
     }
 
     @Test
-    public void testFullURL() {
+    public void testHTTPPollFullURL() {
         testResource.setAddress("https://www.baylor.edu/");
         testResource.setPort(443);
         testResource = resourceService.update(testResource);
@@ -138,7 +138,7 @@ public class HTTPPollerTest {
     }
 
     @Test
-    public void testPollFails() {
+    public void testHTTPPollNameResolutionFails() {
         testResource.setAddress("http://thissitedoesnotexist.edu");
         testResource.setPort(80);
         testResource = resourceService.update(testResource);
@@ -148,26 +148,49 @@ public class HTTPPollerTest {
     }
 
     @Test
-    public void testBadResolver() {
+    public void testHTTPSpecificResolver() {
+        testResource.setAddress("https://github.com");
+        testResource.setPort(443);
+        setResourceParameter(testResource, HTTPParameterizer.HTTP_RESOLVER, "129.62.148.42");
+        testResource = resourceService.update(testResource);
+        testPoll = PollerFactory.getPoller(testResource).poll();
+        Assert.assertTrue(testPoll.getResults().contains("Built for developers"));
+        Assert.assertNull(testPoll.getTeam());
     }
 
     @Test
-    public void testBadResolverIP() {
+    public void testHTTPPollBadResolver() {
+        testResource.setAddress("http://httpbin.org");
+        testResource.setPort(80);
+        setResourceParameter(testResource, HTTPParameterizer.HTTP_RESOLVER, "thissitedoesnotexist.edu");
+        testResource = resourceService.update(testResource);
+        testPoll = PollerFactory.getPoller(testResource).poll();
+        Assert.assertTrue(testPoll.getResults().startsWith("ERROR"));
+        Assert.assertNull(testPoll.getTeam());
     }
 
     @Test
-    public void testResolutionFails() {
+    public void testHTTPPollBadResolverIP() {
+        testResource.setAddress("httpbin.org");
+        testResource.setPort(80);
+        setResourceParameter(testResource, HTTPParameterizer.HTTP_RESOLVER, "1.1.1.1.1");
+        testResource = resourceService.update(testResource);
+        testPoll = PollerFactory.getPoller(testResource).poll();
+        Assert.assertTrue(testPoll.getResults().startsWith("ERROR"));
+        Assert.assertNull(testPoll.getTeam());
     }
 
     @Test
-    public void testNoTeamGetsPoints() {
+    public void testHTTPPollMultipleTeamFlagsFound() {
     }
 
     @Test
-    public void testMultipleTeams() {
-    }
-
-    @Test
-    public void testIPAddress() {
+    public void testHTTPPollByIPAddress() {
+        testResource.setAddress("https://129.62.3.230");
+        testResource.setPort(443);
+        testResource = resourceService.update(testResource);
+        testPoll = PollerFactory.getPoller(testResource).poll();
+        Assert.assertTrue(testPoll.getResults().contains("Baylor"));
+        Assert.assertEquals(testTeam, testPoll.getTeam());
     }
 }

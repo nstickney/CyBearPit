@@ -133,7 +133,7 @@ public class DNSUtility {
             return result.toString();
 
         } catch (UnknownHostException | TextParseException e) {
-            return "ERROR: resolution failed";
+            return "ERROR: resolution failed (" + e.getMessage() + ")";
         }
     }
 

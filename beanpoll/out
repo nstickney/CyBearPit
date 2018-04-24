@@ -1,7 +1,7 @@
  => Starting WildFly-Arquillian container from
         /home/nstickney/Projects/CyBearPit/containers/wildfly/arqtest
 Running judgebean-arqtest-wildfly from judgebean-arqtest-wildfly...
-57563db3ca64dbd2b913509d9edb78eba8f53432e4b3182095dcab658826c50a
+adee424f8110413a561e36236e0ecccd1174fec28a344dcc7a147d7b6f55bd88
 [INFO] Scanning for projects...
 [INFO] 
 [INFO] ------------------------------------------------------------------------
@@ -33,19 +33,19 @@ Running judgebean-arqtest-wildfly from judgebean-arqtest-wildfly...
 -------------------------------------------------------
  T E S T S
 -------------------------------------------------------
-Running is.stma.beanpoll.test.HTTPPollerTest
-Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 21.639 sec
+Running is.stma.beanpoll.test.HTTPUtilityTest
+Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 17.184 sec
 
 Results :
 
-Tests run: 9, Failures: 0, Errors: 0, Skipped: 0
+Tests run: 6, Failures: 0, Errors: 0, Skipped: 0
 
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time: 31.855 s
-[INFO] Finished at: 2018-04-24T12:03:26-05:00
-[INFO] Final Memory: 38M/270M
+[INFO] Total time: 28.409 s
+[INFO] Finished at: 2018-04-24T14:03:01-05:00
+[INFO] Final Memory: 37M/268M
 [INFO] ------------------------------------------------------------------------
  => Stopping WildFly-Arquillian container
 judgebean-arqtest-wildfly
