@@ -61,7 +61,7 @@ BeanPoll is the largest portion of the CyBearPit project, and builds most direct
 
 1) To shut down the system, turn off the Wild**Fly** container (`docker stop beanpoll-wildfly`) and the MySQL container (`docker stop beanpoll-mysql`).
 
-1) Now that you have read the instructions, there is a script called `runBeanPoll.sh` in the [CyBearPit](https://github.com/nstickney/CyBearPit "nstickney/CyBearPit") directory that will do everything but open a browser for you.
+1) Now that you have read the instructions, there is a script called `runBeanPoll.sh` in the [CyBearPit](https://github.com/nstickney/CyBearPit "nstickney/CyBearPit") directory that will do everything but open a browser for you. Find out how it works by running `./runBeanPoll.sh help`.
 
 ### Build and Install Notes
 
