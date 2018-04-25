@@ -64,7 +64,7 @@ public class ParameterTest {
         File[] files = Maven.resolver().loadPomFromFile("pom.xml")
                 .importRuntimeDependencies().resolve().withTransitivity().asFile();
 
-        return ShrinkWrap.create(WebArchive.class, "ParameterRulesTest.war")
+        return ShrinkWrap.create(WebArchive.class, "ParameterTest.war")
                 .addPackages(true, Parameter.class.getPackage(),
                         ParameterRepo.class.getPackage(),
                         ParameterService.class.getPackage(),

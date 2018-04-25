@@ -17,14 +17,11 @@ import is.stma.beanpoll.model.User;
 import is.stma.beanpoll.rules.TeamRules;
 import is.stma.beanpoll.service.TeamService;
 import is.stma.beanpoll.service.UserService;
-import is.stma.beanpoll.util.StringUtility;
 
-import javax.ejb.EJBException;
 import javax.enterprise.inject.Model;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.validation.ValidationException;
 import java.util.ArrayList;
 import java.util.List;
 

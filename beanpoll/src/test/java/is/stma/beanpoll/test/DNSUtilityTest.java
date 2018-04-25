@@ -28,9 +28,6 @@ import org.xbill.DNS.Type;
 
 import java.io.File;
 
-import static org.hamcrest.CoreMatchers.anyOf;
-import static org.hamcrest.CoreMatchers.equalTo;
-
 @RunWith(Arquillian.class)
 public class DNSUtilityTest {
 

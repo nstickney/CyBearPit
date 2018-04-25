@@ -158,7 +158,7 @@ public class Resource extends AbstractComparableByContest {
     }
 
     public void addTeam(Team team) {
-        if (null != team && ! teams.contains(team)) {
+        if (null != team && !teams.contains(team)) {
             teams.add(team);
         }
     }

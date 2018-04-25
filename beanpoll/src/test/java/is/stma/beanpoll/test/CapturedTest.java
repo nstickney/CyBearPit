@@ -71,6 +71,7 @@ public class CapturedTest {
 
     /**
      * Create a web archive (WAR) for deployment via Arquillian
+     *
      * @return the web archive
      */
     @Deployment
@@ -78,7 +79,7 @@ public class CapturedTest {
         File[] files = Maven.resolver().loadPomFromFile("pom.xml")
                 .importRuntimeDependencies().resolve().withTransitivity().asFile();
 
-        return ShrinkWrap.create(WebArchive.class, "CapturedRulesTest.war")
+        return ShrinkWrap.create(WebArchive.class, "CapturedTest.war")
                 .addPackages(true, Captured.class.getPackage(),
                         CapturedRepo.class.getPackage(),
                         CapturedService.class.getPackage(),
@@ -101,19 +102,19 @@ public class CapturedTest {
             testContest = TestUtility.makeContest();
             testContest.setEnabled(true);
             testContest.setRunning(true);
-            contestService.create(testContest);
+            testContest = contestService.create(testContest);
         }
         if (null == testCapturable) {
             testCapturable = TestUtility.makeCapturable(testContest);
-            capturableService.create(testCapturable);
+            testCapturable = capturableService.create(testCapturable);
         }
         if (null == testTeam) {
             testTeam = TestUtility.makeTeam(testContest);
-            teamService.create(testTeam);
+            testTeam = teamService.create(testTeam);
         }
         if (null == testCaptured) {
             testCaptured = TestUtility.makeCaptured(testCapturable, testTeam);
-            capturedService.create(testCaptured);
+            testCaptured = capturedService.create(testCaptured);
         }
     }
 

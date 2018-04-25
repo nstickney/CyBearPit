@@ -10,8 +10,8 @@
 
 package is.stma.beanpoll.service;
 
-import is.stma.beanpoll.data.TaskRepo;
 import is.stma.beanpoll.data.AbstractRepo;
+import is.stma.beanpoll.data.TaskRepo;
 import is.stma.beanpoll.model.Task;
 import is.stma.beanpoll.rules.TaskRules;
 

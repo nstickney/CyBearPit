@@ -73,7 +73,7 @@ public class PollTest {
         File[] files = Maven.resolver().loadPomFromFile("pom.xml")
                 .importRuntimeDependencies().resolve().withTransitivity().asFile();
 
-        return ShrinkWrap.create(WebArchive.class, "ResourceRulesTest.war")
+        return ShrinkWrap.create(WebArchive.class, "ResourceTest.war")
                 .addPackages(true, Poll.class.getPackage(),
                         PollRepo.class.getPackage(),
                         PollService.class.getPackage(),

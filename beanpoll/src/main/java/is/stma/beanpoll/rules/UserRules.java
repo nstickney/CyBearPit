@@ -10,8 +10,8 @@
 
 package is.stma.beanpoll.rules;
 
-import is.stma.beanpoll.data.UserRepo;
 import is.stma.beanpoll.data.AbstractRepo;
+import is.stma.beanpoll.data.UserRepo;
 import is.stma.beanpoll.model.User;
 
 import javax.enterprise.inject.Model;
@@ -52,8 +52,6 @@ public class UserRules extends AbstractRules<User> {
         // Don't delete the last admin user
         checkNotLastAdmin(entity);
 
-        // Don't delete the last user in a team
-        checkNotLastUserOfTeam(entity);
     }
 
     private void checkUniqueUsername(User entity) throws ValidationException {
@@ -82,12 +80,6 @@ public class UserRules extends AbstractRules<User> {
     private void checkNotLastAdmin(User entity) {
         if (entity.isAdmin() && 1 >= repo.findByAdmin(true).size()) {
             throw new ValidationException(entity.getName() + " is the last administrator");
-        }
-    }
-
-    private void checkNotLastUserOfTeam(User entity) {
-        if (null != entity.getTeam() && 1 >= entity.getTeam().getUsers().size()) {
-            throw new ValidationException("team " + entity.getTeam().getName() + " has no other users");
         }
     }
 }

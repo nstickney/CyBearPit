@@ -31,7 +31,7 @@ public class Parameter extends AbstractEntity {
     private String tag = UNUSED;
 
     @Column
-    private String value= UNUSED;
+    private String value = UNUSED;
 
     public Parameter() {
         super();

@@ -69,40 +69,41 @@
 
         <!-- Existing announcements, grouped by contest -->
         <c:forEach var="_announcement" items="#{announcements}">
-            <b:panel title="#{_announcement.displayName}" iconAwesome="check" look="#{_announcement.look}" collapsed="#{true}">
-                    <h:form>
-                        <b:panelGrid colSpans="2,6,4" size="sm">
-                            <h:outputLabel value="Contest:" for="contest"/>
-                            <b:selectOneMenu value="#{_announcement.contest}" id="contest">
-                                <f:facet name="prepend"><b:iconAwesome name="trophy"/></f:facet>
-                                <f:selectItems value="#{contests}" var="_acontest"
-                                               itemLabel="#{_acontest.name}"
-                                               itemValue="#{_acontest}"/>
-                            </b:selectOneMenu>
-                            <h:outputText value=""/>
-                            <h:outputLabel value="Name:" for="name"/>
-                            <b:inputText value="#{_announcement.name}" id="name" class="form-control">
-                                <f:facet name="prepend"><b:iconAwesome name="check"/></f:facet>
-                            </b:inputText>
-                            <h:outputText value=""/>
-                            <h:outputLabel value="Description:" for="description"/>
-                            <b:inputTextarea value="#{_announcement.contents}" id="description">
-                                <f:facet name="prepend"><b:iconAwesome name="info"/></f:facet>
-                            </b:inputTextarea>
-                            <h:outputText value=""/>
-                            <h:outputLabel value="Published:" for="published"/>
-                            <b:dateTimePicker iconPosition="left" value="#{_announcement.published}"
-                                              id="published" converter="LocalDateTimeConverter"/>
-                            <b:commandButton action="#{announcementController.update(_announcement)}" value="Update"
-                                             iconAwesome="retweet" look="info"/>
-                        </b:panelGrid>
-                        <b:well style="margin-top: 1rem;"><h:form><b:panelGrid colSpans="6,6" size="sm">
-                            <h:outputLabel value="Delete this announcement: " for="delete"/>
-                            <b:commandButton action="#{announcementController.delete(_announcement)}" value="Delete"
-                                             id="delete" iconAwesome="trash" look="danger"/>
-                        </b:panelGrid></h:form></b:well>
-                    </h:form>
-                </b:panel>
+            <b:panel title="#{_announcement.displayName}" iconAwesome="check" look="#{_announcement.look}"
+                     collapsed="#{true}">
+                <h:form>
+                    <b:panelGrid colSpans="2,6,4" size="sm">
+                        <h:outputLabel value="Contest:" for="contest"/>
+                        <b:selectOneMenu value="#{_announcement.contest}" id="contest">
+                            <f:facet name="prepend"><b:iconAwesome name="trophy"/></f:facet>
+                            <f:selectItems value="#{contests}" var="_acontest"
+                                           itemLabel="#{_acontest.name}"
+                                           itemValue="#{_acontest}"/>
+                        </b:selectOneMenu>
+                        <h:outputText value=""/>
+                        <h:outputLabel value="Name:" for="name"/>
+                        <b:inputText value="#{_announcement.name}" id="name" class="form-control">
+                            <f:facet name="prepend"><b:iconAwesome name="check"/></f:facet>
+                        </b:inputText>
+                        <h:outputText value=""/>
+                        <h:outputLabel value="Description:" for="description"/>
+                        <b:inputTextarea value="#{_announcement.contents}" id="description">
+                            <f:facet name="prepend"><b:iconAwesome name="info"/></f:facet>
+                        </b:inputTextarea>
+                        <h:outputText value=""/>
+                        <h:outputLabel value="Published:" for="published"/>
+                        <b:dateTimePicker iconPosition="left" value="#{_announcement.published}"
+                                          id="published" converter="LocalDateTimeConverter"/>
+                        <b:commandButton action="#{announcementController.update(_announcement)}" value="Update"
+                                         iconAwesome="retweet" look="info"/>
+                    </b:panelGrid>
+                    <b:well style="margin-top: 1rem;"><h:form><b:panelGrid colSpans="6,6" size="sm">
+                        <h:outputLabel value="Delete this announcement: " for="delete"/>
+                        <b:commandButton action="#{announcementController.delete(_announcement)}" value="Delete"
+                                         id="delete" iconAwesome="trash" look="danger"/>
+                    </b:panelGrid></h:form></b:well>
+                </h:form>
+            </b:panel>
         </c:forEach>
     </ui:define>
 </ui:composition>

@@ -18,7 +18,6 @@ import is.stma.beanpoll.service.parameterizer.HTTPParameterizer;
 import is.stma.beanpoll.util.DNSUtility;
 import is.stma.beanpoll.util.HTTPUtility;
 
-import javax.validation.ValidationException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -79,6 +78,7 @@ public class HTTPPoller extends AbstractPoller {
 
     /**
      * Use the specified DNS resolver to find the correct IP address for the given hostname.
+     *
      * @param resolver IP hostname or hostname of the DNS resolver to use
      * @param hostname hostname to resolve
      * @return a fully formatted HTTP query using the IP address resolved

@@ -10,12 +10,12 @@
 
 package is.stma.beanpoll.controller;
 
+import is.stma.beanpoll.model.Report;
 import is.stma.beanpoll.model.Team;
 import is.stma.beanpoll.rules.ReportRules;
 import is.stma.beanpoll.service.ReportService;
 import is.stma.beanpoll.service.TaskService;
 import is.stma.beanpoll.service.TeamService;
-import is.stma.beanpoll.model.Report;
 import org.apache.commons.io.IOUtils;
 import org.omnifaces.util.Faces;
 import org.omnifaces.util.Servlets;

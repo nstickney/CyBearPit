@@ -10,11 +10,11 @@
 
 package is.stma.beanpoll.controller.poller;
 
-import is.stma.beanpoll.service.parameterizer.DNSParameterizer;
 import is.stma.beanpoll.model.Parameter;
 import is.stma.beanpoll.model.Poll;
 import is.stma.beanpoll.model.Resource;
 import is.stma.beanpoll.model.Team;
+import is.stma.beanpoll.service.parameterizer.DNSParameterizer;
 import is.stma.beanpoll.util.DNSUtility;
 import org.xbill.DNS.Type;
 

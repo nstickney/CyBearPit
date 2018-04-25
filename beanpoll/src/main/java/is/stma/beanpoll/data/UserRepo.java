@@ -11,6 +11,7 @@
 package is.stma.beanpoll.data;
 
 import is.stma.beanpoll.model.User;
+import org.apache.deltaspike.data.api.Query;
 import org.apache.deltaspike.data.api.Repository;
 
 import java.util.List;
@@ -22,4 +23,10 @@ public interface UserRepo extends AbstractRepo<User> {
     User findByName(String name);
 
     List<User> findByAdmin(boolean admin);
+
+    @Query("select u.name from User u")
+    List<String> findAllNames();
+
+    @Query("select u from User u where u.team.id = ?1")
+    List<User> findByTeamId(String teamId);
 }

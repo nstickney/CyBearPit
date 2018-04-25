@@ -11,12 +11,11 @@
 package is.stma.beanpoll.test;
 
 import is.stma.beanpoll.controller.poller.AbstractPoller;
-import is.stma.beanpoll.controller.poller.PollerFactory;
 import is.stma.beanpoll.data.PollRepo;
 import is.stma.beanpoll.model.*;
 import is.stma.beanpoll.rules.PollRules;
 import is.stma.beanpoll.service.*;
-import is.stma.beanpoll.service.parameterizer.HTTPParameterizer;
+import is.stma.beanpoll.service.parameterizer.SMTPParameterizer;
 import is.stma.beanpoll.util.EMProducer;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -25,7 +24,6 @@ import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,7 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RunWith(Arquillian.class)
-public class HTTPPollerTest {
+public class SMTPPOPPollerTest {
 
     @Inject
     private ContestService contestService;
@@ -65,12 +63,12 @@ public class HTTPPollerTest {
         File[] files = Maven.resolver().loadPomFromFile("pom.xml")
                 .importRuntimeDependencies().resolve().withTransitivity().asFile();
 
-        return ShrinkWrap.create(WebArchive.class, "HTTPPollerTest.war")
+        return ShrinkWrap.create(WebArchive.class, "SMTPPOPPollerTest.war")
                 .addPackages(true, Poll.class.getPackage(),
                         PollRepo.class.getPackage(),
                         PollService.class.getPackage(),
                         PollRules.class.getPackage(),
-                        HTTPParameterizer.class.getPackage(),
+                        SMTPParameterizer.class.getPackage(),
                         AbstractPoller.class.getPackage(),
                         EMProducer.class.getPackage())
                 .addClass(TestUtility.class)
@@ -103,88 +101,12 @@ public class HTTPPollerTest {
             testContest = contestService.update(testContest);
         }
         if (null == testResource) {
-            testResource = TestUtility.makeResource(testContest, ResourceType.HTTP);
+            testResource = TestUtility.makeResource(testContest, ResourceType.SMTP_POP);
             testResource = resourceService.create(testResource);
         }
     }
 
     @Test
-    public void testHTTPPollWorks() {
-        testResource.setAddress("httpbin.org");
-        testResource.setPort(80);
-        testResource = resourceService.update(testResource);
-        testPoll = PollerFactory.getPoller(testResource).poll();
-        Assert.assertTrue(testPoll.getResults().contains("BONUSPOINTS"));
-        Assert.assertEquals(checkTeam, testPoll.getTeam());
-        Assert.assertEquals(testResource.getPointValue(), testPoll.getScore());
-    }
-
-    @Test
-    public void testHTTPPollFullURL() {
-        testResource.setAddress("https://www.baylor.edu/");
-        testResource.setPort(443);
-        testResource = resourceService.update(testResource);
-        testPoll = PollerFactory.getPoller(testResource).poll();
-        Assert.assertTrue(testPoll.getResults().contains("Baylor"));
-        Assert.assertEquals(testTeam, testPoll.getTeam());
-        Assert.assertEquals(testResource.getPointValue(), testPoll.getScore());
-    }
-
-    @Test
-    public void testHTTPPollNameResolutionFails() {
-        testResource.setAddress("http://thissitedoesnotexist.edu");
-        testResource.setPort(80);
-        testResource = resourceService.update(testResource);
-        testPoll = PollerFactory.getPoller(testResource).poll();
-        Assert.assertTrue(testPoll.getResults().startsWith("ERROR"));
-        Assert.assertNull(testPoll.getTeam());
-        Assert.assertEquals(0, testPoll.getScore());
-    }
-
-    @Test
-    public void testHTTPSpecificResolver() {
-        testResource.setAddress("https://github.com");
-        testResource.setPort(443);
-        TestUtility.setResourceParameter(parameterService, testResource, HTTPParameterizer.HTTP_RESOLVER, "1.1.1.1");
-        testResource = resourceService.update(testResource);
-        testPoll = PollerFactory.getPoller(testResource).poll();
-        Assert.assertTrue(testPoll.getResults().contains("Built for developers"));
-        Assert.assertNull(testPoll.getTeam());
-        Assert.assertEquals(0, testPoll.getScore());
-    }
-
-    @Test
-    public void testHTTPPollBadResolver() {
-        testResource.setAddress("http://httpbin.org");
-        testResource.setPort(80);
-        TestUtility.setResourceParameter(parameterService, testResource, HTTPParameterizer.HTTP_RESOLVER, "thissitedoesnotexist.edu");
-        testResource = resourceService.update(testResource);
-        testPoll = PollerFactory.getPoller(testResource).poll();
-        Assert.assertTrue(testPoll.getResults().startsWith("ERROR"));
-        Assert.assertNull(testPoll.getTeam());
-        Assert.assertEquals(0, testPoll.getScore());
-    }
-
-    @Test
-    public void testHTTPPollBadResolverIP() {
-        testResource.setAddress("httpbin.org");
-        testResource.setPort(80);
-        TestUtility.setResourceParameter(parameterService, testResource, HTTPParameterizer.HTTP_RESOLVER, "1.1.1.1.1");
-        testResource = resourceService.update(testResource);
-        testPoll = PollerFactory.getPoller(testResource).poll();
-        Assert.assertTrue(testPoll.getResults().startsWith("ERROR"));
-        Assert.assertNull(testPoll.getTeam());
-        Assert.assertEquals(0, testPoll.getScore());
-    }
-
-    @Test
-    public void testHTTPPollByIPAddress() {
-        testResource.setAddress("https://129.62.3.230");
-        testResource.setPort(443);
-        testResource = resourceService.update(testResource);
-        testPoll = PollerFactory.getPoller(testResource).poll();
-        Assert.assertTrue(testPoll.getResults().contains("Baylor"));
-        Assert.assertEquals(testTeam, testPoll.getTeam());
-        Assert.assertEquals(testResource.getPointValue(), testPoll.getScore());
+    public void testSMTPPOPPollWorks() {
     }
 }

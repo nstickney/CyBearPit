@@ -8,34 +8,41 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package is.stma.beanpoll.rules;
+package is.stma.beanpoll.controller.poller;
 
-import is.stma.beanpoll.data.AbstractRepo;
-import is.stma.beanpoll.data.ParameterRepo;
 import is.stma.beanpoll.model.Parameter;
+import is.stma.beanpoll.model.Poll;
+import is.stma.beanpoll.model.Resource;
+import is.stma.beanpoll.service.parameterizer.SMTPParameterizer;
 
-import javax.enterprise.inject.Model;
-import javax.inject.Inject;
-import javax.validation.ValidationException;
+public class SMTPPoller extends AbstractPoller {
 
-@Model
-public class ParameterRules extends AbstractRules<Parameter> {
-
-    @Inject
-    private ParameterRepo repo;
-
-    @Override
-    public AbstractRepo<Parameter> getRepo() {
-        return repo;
+    SMTPPoller(Resource resource) {
+        this.resource = resource;
     }
 
     @Override
-    public void runBusinessRules(Parameter entity, Target target)
-            throws ValidationException {
-    }
+    public Poll poll() {
 
-    @Override
-    void checkBeforeDelete(Parameter entity) throws ValidationException {
+        // Set values based on the resource parameters
+        String username = SMTPParameterizer.SMTP_DEFAULT_USERNAME;
+        String password = SMTPParameterizer.SMTP_DEFAULT_PASSWORD;
 
+        for (Parameter p : resource.getParameters()) {
+            switch (p.getTag()) {
+                case SMTPParameterizer.SMTP_USERNAME:
+                    username = p.getValue();
+                    break;
+                case SMTPParameterizer.SMTP_PASSWORD:
+                    password = p.getValue();
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        Poll newPoll = new Poll();
+        newPoll.setResource(resource);
+        return newPoll;
     }
 }

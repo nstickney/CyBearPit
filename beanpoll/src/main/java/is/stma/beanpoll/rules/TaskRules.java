@@ -10,8 +10,8 @@
 
 package is.stma.beanpoll.rules;
 
-import is.stma.beanpoll.data.TaskRepo;
 import is.stma.beanpoll.data.AbstractRepo;
+import is.stma.beanpoll.data.TaskRepo;
 import is.stma.beanpoll.model.Task;
 
 import javax.enterprise.inject.Model;

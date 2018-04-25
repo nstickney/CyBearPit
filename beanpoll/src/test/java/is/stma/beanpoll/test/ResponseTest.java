@@ -51,7 +51,7 @@ public class ResponseTest {
     private ContestService contestService;
 
     @Inject
-    private ResponseService responseservice;
+    private ResponseService responseService;
 
     @Inject
     private TaskService taskService;
@@ -70,6 +70,7 @@ public class ResponseTest {
 
     /**
      * Create a web archive (WAR) for deployment via Arquillian
+     *
      * @return the web archive
      */
     @Deployment
@@ -77,7 +78,7 @@ public class ResponseTest {
         File[] files = Maven.resolver().loadPomFromFile("pom.xml")
                 .importRuntimeDependencies().resolve().withTransitivity().asFile();
 
-        return ShrinkWrap.create(WebArchive.class, "ResponseRulesTest.war")
+        return ShrinkWrap.create(WebArchive.class, "ResponseTest.war")
                 .addPackages(true, Response.class.getPackage(),
                         ResponseRepo.class.getPackage(),
                         ResponseService.class.getPackage(),
@@ -112,13 +113,13 @@ public class ResponseTest {
         }
         if (null == testResponse) {
             testResponse = TestUtility.makeResponse(testTask, testTeam);
-            testResponse = responseservice.create(testResponse);
+            testResponse = responseService.create(testResponse);
         }
     }
 
     @Test
     public void testResponseCreation() {
-        checkResponse = responseservice.readById(testResponse.getId());
+        checkResponse = responseService.readById(testResponse.getId());
         Assert.assertTrue(testResponse.equalByUUID(checkResponse));
         Assert.assertEquals(testResponse, checkResponse);
     }
@@ -126,19 +127,19 @@ public class ResponseTest {
     @Test
     public void testResponseUpdate() {
         testResponse.setComments("UPDATED");
-        responseservice.update(testResponse);
+        responseService.update(testResponse);
         String UUID = testResponse.getId();
         testResponse = null;
-        testResponse = responseservice.readById(UUID);
+        testResponse = responseService.readById(UUID);
         Assert.assertEquals("UPDATED", testResponse.getComments());
     }
 
     @Test
     public void testResponseDeletion() {
-        responseservice.delete(testResponse);
+        responseService.delete(testResponse);
         String UUID = testResponse.getId();
         testResponse = null;
-        testResponse = responseservice.readById(UUID);
+        testResponse = responseService.readById(UUID);
         Assert.assertNull(testResponse);
     }
 
@@ -147,7 +148,7 @@ public class ResponseTest {
     public void testResponseUpdateNonexistent() {
         checkResponse = TestUtility.makeResponse(testTask, testTeam);
         checkResponse.setComments("Check Response");
-        responseservice.update(checkResponse);
+        responseService.update(checkResponse);
     }
 
     @Test(expected = EJBException.class)
@@ -155,6 +156,6 @@ public class ResponseTest {
     public void testResponseNonUniqueUUID() {
         checkResponse = testResponse;
         checkResponse.setComments("We Copied You!");
-        responseservice.create(checkResponse);
+        responseService.create(checkResponse);
     }
 }

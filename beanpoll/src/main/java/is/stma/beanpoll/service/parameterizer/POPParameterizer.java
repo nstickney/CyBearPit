@@ -8,15 +8,29 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package is.stma.beanpoll.data;
+package is.stma.beanpoll.service.parameterizer;
 
-import is.stma.beanpoll.model.Capturable;
-import org.apache.deltaspike.data.api.Repository;
+import is.stma.beanpoll.model.Parameter;
 
-@SuppressWarnings("CdiManagedBeanInconsistencyInspection")
-@Repository(forEntity = Capturable.class)
-public interface CapturableRepo extends AbstractRepo<Capturable> {
+import java.util.ArrayList;
+import java.util.List;
 
-    Capturable findByFlag(String flag);
+public class POPParameterizer {
+
+    // POP tag strings
+    public static final String POP_USERNAME = "POP_USERNAME";
+    public static final String POP_PASSWORD = "POP_PASSWORD";
+
+    // POP default value strings
+    public static final String POP_DEFAULT_USERNAME = "nobody";
+    public static final String POP_DEFAULT_PASSWORD = "nothing";
+
+
+    public static List<Parameter> createParameters() {
+        List<Parameter> parameters = new ArrayList<>();
+        parameters.add(new Parameter(POP_USERNAME, POP_DEFAULT_USERNAME));
+        parameters.add(new Parameter(POP_PASSWORD, POP_DEFAULT_PASSWORD));
+        return parameters;
+    }
 
 }

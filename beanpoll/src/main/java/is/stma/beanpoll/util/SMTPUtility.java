@@ -8,15 +8,7 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package is.stma.beanpoll.data;
+package is.stma.beanpoll.util;
 
-import is.stma.beanpoll.model.Capturable;
-import org.apache.deltaspike.data.api.Repository;
-
-@SuppressWarnings("CdiManagedBeanInconsistencyInspection")
-@Repository(forEntity = Capturable.class)
-public interface CapturableRepo extends AbstractRepo<Capturable> {
-
-    Capturable findByFlag(String flag);
-
+public class SMTPUtility {
 }

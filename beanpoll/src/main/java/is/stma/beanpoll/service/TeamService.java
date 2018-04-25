@@ -10,13 +10,12 @@
 
 package is.stma.beanpoll.service;
 
-import is.stma.beanpoll.data.TeamRepo;
 import is.stma.beanpoll.data.AbstractRepo;
+import is.stma.beanpoll.data.TeamRepo;
 import is.stma.beanpoll.model.Team;
 import is.stma.beanpoll.model.User;
 import is.stma.beanpoll.rules.AbstractRules;
 import is.stma.beanpoll.rules.TeamRules;
-import is.stma.beanpoll.util.PasswordUtility;
 import is.stma.beanpoll.util.StringUtility;
 
 import javax.ejb.Stateless;
@@ -61,6 +60,7 @@ public class TeamService extends AbstractService<Team, AbstractRepo<Team>,
     /**
      * This is overridden from AbstractService in order to create a user for the
      * Team and attach it after the Team is persisted.
+     *
      * @param entity Team to create
      * @return the created Team
      * @throws ValidationException if there is an error in the Team fields
@@ -71,13 +71,26 @@ public class TeamService extends AbstractService<Team, AbstractRepo<Team>,
         log.log(Level.INFO, "Creating " + entity.getName());
         entity = getRepo().save(entity);
         getEvent().fire(entity);
+
+        // The username (and password) of team user are based on team name
         String teamString = StringUtility.removeWhitespace(entity.getName());
         User user = new User();
-        user.setName(teamString);
-        StringBuilder buf = new StringBuilder();
-        while (! user.setPassword(buf.toString())) {
-            buf.append(teamString);
+
+        // Find an unused username
+        int iteration = 1;
+        StringBuilder buf1 = new StringBuilder().append(teamString);
+        while (userService.getAllUsernames().contains(buf1.toString())) {
+            buf1 = new StringBuilder().append(teamString);
+            buf1.append(iteration);
         }
+        user.setName(buf1.toString());
+
+        // Find a password
+        StringBuilder buf2 = new StringBuilder();
+        while (!user.setPassword(buf2.toString())) {
+            buf2.append(teamString);
+        }
+
         user.setTeam(entity);
         userService.create(user);
         return entity;
@@ -86,6 +99,7 @@ public class TeamService extends AbstractService<Team, AbstractRepo<Team>,
     /**
      * This is overridden here from AbstractService in order to delete team
      * users before the team is removed.
+     *
      * @param entity Team to delete
      * @throws ValidationException if the Team cannot be deleted
      */
@@ -93,7 +107,7 @@ public class TeamService extends AbstractService<Team, AbstractRepo<Team>,
     public void delete(Team entity) throws ValidationException {
         getRules().validate(entity, AbstractRules.Target.DELETE);
         log.log(Level.INFO, "Deleting " + entity.getName());
-        List<User> users = entity.getUsers();
+        List<User> users = userService.getByTeam(entity);
         for (User u : users) {
             userService.delete(u);
         }

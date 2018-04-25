@@ -10,8 +10,8 @@
 
 package is.stma.beanpoll.service;
 
-import is.stma.beanpoll.data.CapturableRepo;
 import is.stma.beanpoll.data.AbstractRepo;
+import is.stma.beanpoll.data.CapturableRepo;
 import is.stma.beanpoll.model.Capturable;
 import is.stma.beanpoll.rules.CapturableRules;
 

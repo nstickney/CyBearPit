@@ -10,18 +10,23 @@
 
 package is.stma.beanpoll.service;
 
-import is.stma.beanpoll.data.UserRepo;
 import is.stma.beanpoll.data.AbstractRepo;
+import is.stma.beanpoll.data.UserRepo;
+import is.stma.beanpoll.model.Team;
 import is.stma.beanpoll.model.User;
 import is.stma.beanpoll.rules.UserRules;
 
 import javax.ejb.Stateless;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
+import java.util.List;
 
 @Stateless
 public class UserService extends AbstractService<User, AbstractRepo<User>,
         UserRules> {
+
+    // Attempt to generate an unused username this many times before failing
+    private final int MAX_ATTEMPTS = 3;
 
     @SuppressWarnings("CdiInjectionPointsInspection")
     @Inject
@@ -50,5 +55,13 @@ public class UserService extends AbstractService<User, AbstractRepo<User>,
 
     public User getByName(String name) {
         return repo.findByName(name);
+    }
+
+    public List<User> getByTeam(Team team) {
+        return repo.findByTeamId(team.getId());
+    }
+
+    public List<String> getAllUsernames() {
+        return repo.findAllNames();
     }
 }

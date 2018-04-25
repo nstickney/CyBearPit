@@ -11,12 +11,22 @@
 package is.stma.beanpoll.test;
 
 import is.stma.beanpoll.model.*;
+import is.stma.beanpoll.service.ParameterService;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
 class TestUtility {
+
+    public static void setResourceParameter(ParameterService service, Resource resource, String tag, String value) {
+        for (Parameter p : resource.getParameters()) {
+            if (p.getTag().equals(tag)) {
+                p.setValue(value);
+                p = service.update(p);
+            }
+        }
+    }
 
     static Announcement makeAnnouncement(Contest contest) {
         Announcement announcement = new Announcement();
@@ -92,9 +102,10 @@ class TestUtility {
 
     static Task makeTask(Contest contest) {
         Task task = new Task();
+        task.setName(UUID.randomUUID().toString());
         task.setContest(contest);
         task.setPublished(LocalDateTime.now().minusMinutes(1));
-        task.setPublished(LocalDateTime.now().plusMinutes(1));
+        task.setDue(LocalDateTime.now().plusMinutes(1));
         return task;
     }
 
@@ -104,5 +115,12 @@ class TestUtility {
         team.setName(UUID.randomUUID().toString());
         team.setFlag(UUID.randomUUID().toString());
         return team;
+    }
+
+    static User makeUser() {
+        User user = new User();
+        user.setName(UUID.randomUUID().toString());
+        user.setPassword(UUID.randomUUID().toString());
+        return user;
     }
 }

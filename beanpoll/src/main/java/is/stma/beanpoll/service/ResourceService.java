@@ -10,8 +10,8 @@
 
 package is.stma.beanpoll.service;
 
-import is.stma.beanpoll.data.ResourceRepo;
 import is.stma.beanpoll.data.AbstractRepo;
+import is.stma.beanpoll.data.ResourceRepo;
 import is.stma.beanpoll.model.Parameter;
 import is.stma.beanpoll.model.Resource;
 import is.stma.beanpoll.rules.AbstractRules;
@@ -79,6 +79,7 @@ public class ResourceService extends AbstractService<Resource, AbstractRepo<Reso
     /**
      * Update a Resource. This is overridden here in order to attach a new set
      * of Parameters when the ResourceType of a Resource is changed.
+     *
      * @param entity Resource to update
      * @return the updated Resource
      * @throws ValidationException if validation of entity or Parameters fails
@@ -105,6 +106,7 @@ public class ResourceService extends AbstractService<Resource, AbstractRepo<Reso
     /**
      * Delete a Resource. This is overridden here to delete the Resource's
      * Parameters before the Resource itself is removed.
+     *
      * @param entity
      */
     @Override

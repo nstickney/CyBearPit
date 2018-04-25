@@ -16,25 +16,21 @@ import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
-import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.conn.ssl.TrustAllStrategy;
 import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.impl.client.HttpClients;
 import org.apache.http.ssl.SSLContextBuilder;
 import org.apache.http.util.EntityUtils;
 
-import javax.net.ssl.SSLContext;
-import java.io.IOException;
 import java.net.URI;
 
 public class HTTPUtility {
 
     /**
      * Make an HTTP request for the query given, on the given port, within the given timeout
-     * @param query http or https query URI
-     * @param port port number of the listening server
+     *
+     * @param query   http or https query URI
+     * @param port    port number of the listening server
      * @param timeout number of seconds to wait before timing out
      * @return the response to the given request
      */
@@ -78,6 +74,7 @@ public class HTTPUtility {
 
     /**
      * If the protocol of a query address is not given, assume it is http.
+     *
      * @param address the address to check for a protocol
      * @return the address, with a correct protocol string
      */

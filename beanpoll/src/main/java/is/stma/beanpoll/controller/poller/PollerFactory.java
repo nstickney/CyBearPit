@@ -18,6 +18,14 @@ public class PollerFactory {
         switch (resource.getType()) {
             case DNS:
                 return new DNSPoller(resource);
+            case HTTP:
+                return new HTTPPoller(resource);
+            case POP:
+                return new POPPoller(resource);
+            case SMTP:
+                return new SMTPPoller(resource);
+            case SMTP_POP:
+                return new SMTPPOPPoller(resource);
             default:
                 return new HTTPPoller(resource);
         }

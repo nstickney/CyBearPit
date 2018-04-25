@@ -10,12 +10,10 @@
 
 package is.stma.beanpoll.test;
 
-import is.stma.beanpoll.data.AnnouncementRepo;
-import is.stma.beanpoll.model.Announcement;
-import is.stma.beanpoll.model.Contest;
-import is.stma.beanpoll.rules.AnnouncementRules;
-import is.stma.beanpoll.service.AnnouncementService;
-import is.stma.beanpoll.service.ContestService;
+import is.stma.beanpoll.data.UserRepo;
+import is.stma.beanpoll.model.User;
+import is.stma.beanpoll.rules.UserRules;
+import is.stma.beanpoll.service.UserService;
 import is.stma.beanpoll.util.EMProducer;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -33,18 +31,12 @@ import javax.inject.Inject;
 import java.io.File;
 
 @RunWith(Arquillian.class)
-public class AnnouncementTest {
-
+public class UserTest {
     @Inject
-    private ContestService contestService;
+    private UserService Userservice;
 
-    @Inject
-    private AnnouncementService announcementservice;
-
-    private Contest testContest;
-
-    private Announcement testAnnouncement;
-    private Announcement checkAnnouncement;
+    private User testUser;
+    private User checkUser;
 
     /**
      * Create a web archive (WAR) for deployment via Arquillian
@@ -56,11 +48,11 @@ public class AnnouncementTest {
         File[] files = Maven.resolver().loadPomFromFile("pom.xml")
                 .importRuntimeDependencies().resolve().withTransitivity().asFile();
 
-        return ShrinkWrap.create(WebArchive.class, "AnnouncementTest.war")
-                .addPackages(true, Announcement.class.getPackage(),
-                        AnnouncementRepo.class.getPackage(),
-                        AnnouncementService.class.getPackage(),
-                        AnnouncementRules.class.getPackage(),
+        return ShrinkWrap.create(WebArchive.class, "UserTest.war")
+                .addPackages(true, User.class.getPackage(),
+                        UserRepo.class.getPackage(),
+                        UserService.class.getPackage(),
+                        UserRules.class.getPackage(),
                         EMProducer.class.getPackage())
                 .addClass(TestUtility.class)
                 .addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml")
@@ -71,59 +63,55 @@ public class AnnouncementTest {
     }
 
     /**
-     * Create a test contest and a test Announcement in that contest, and persist both
+     * Create a test contest and a test User in that contest, and persist both
      */
     @Before
     public void setUp() {
-        if (null == testContest) {
-            testContest = TestUtility.makeContest();
-            contestService.create(testContest);
-        }
-        if (null == testAnnouncement) {
-            testAnnouncement = TestUtility.makeAnnouncement(testContest);
-            announcementservice.create(testAnnouncement);
+        if (null == testUser) {
+            testUser = TestUtility.makeUser();
+            Userservice.create(testUser);
         }
     }
 
     @Test
-    public void testAnnouncementCreation() {
-        checkAnnouncement = announcementservice.readById(testAnnouncement.getId());
-        Assert.assertTrue(testAnnouncement.equalByUUID(checkAnnouncement));
-        Assert.assertEquals(testAnnouncement, checkAnnouncement);
+    public void testUserCreation() {
+        checkUser = Userservice.readById(testUser.getId());
+        Assert.assertTrue(testUser.equalByUUID(checkUser));
+        Assert.assertEquals(testUser, checkUser);
     }
 
     @Test
-    public void testAnnouncementUpdate() {
-        testAnnouncement.setName("UPDATED");
-        announcementservice.update(testAnnouncement);
-        String UUID = testAnnouncement.getId();
-        testAnnouncement = null;
-        testAnnouncement = announcementservice.readById(UUID);
-        Assert.assertEquals("UPDATED", testAnnouncement.getName());
+    public void testUserUpdate() {
+        testUser.setName("UPDATED");
+        Userservice.update(testUser);
+        String UUID = testUser.getId();
+        testUser = null;
+        testUser = Userservice.readById(UUID);
+        Assert.assertEquals("UPDATED", testUser.getName());
     }
 
     @Test
-    public void testAnnouncementDeletion() {
-        announcementservice.delete(testAnnouncement);
-        String UUID = testAnnouncement.getId();
-        testAnnouncement = null;
-        testAnnouncement = announcementservice.readById(UUID);
-        Assert.assertNull(testAnnouncement);
+    public void testUserDeletion() {
+        Userservice.delete(testUser);
+        String UUID = testUser.getId();
+        testUser = null;
+        testUser = Userservice.readById(UUID);
+        Assert.assertNull(testUser);
     }
 
     @Test(expected = EJBException.class)
     //@Test(expected = ValidationException.class)
-    public void testAnnouncementUpdateNonexistent() {
-        checkAnnouncement = TestUtility.makeAnnouncement(testContest);
-        checkAnnouncement.setName("Check Announcement");
-        announcementservice.update(checkAnnouncement);
+    public void testUserUpdateNonexistent() {
+        checkUser = TestUtility.makeUser();
+        checkUser.setName("Check User");
+        Userservice.update(checkUser);
     }
 
     @Test(expected = EJBException.class)
     //@Test(expected = ValidationException.class)
-    public void testAnnouncementNonUniqueUUID() {
-        checkAnnouncement = testAnnouncement;
-        checkAnnouncement.setName("We Copied You!");
-        announcementservice.create(checkAnnouncement);
+    public void testUserNonUniqueUUID() {
+        checkUser = testUser;
+        checkUser.setName("We Copied You!");
+        Userservice.create(checkUser);
     }
 }

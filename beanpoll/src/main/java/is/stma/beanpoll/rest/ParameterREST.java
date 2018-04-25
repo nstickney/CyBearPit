@@ -11,11 +11,11 @@
 
 package is.stma.beanpoll.rest;
 
+import is.stma.beanpoll.data.AbstractRepo;
 import is.stma.beanpoll.data.ParameterRepo;
 import is.stma.beanpoll.model.Parameter;
 import is.stma.beanpoll.rules.ParameterRules;
 import is.stma.beanpoll.service.ParameterService;
-import is.stma.beanpoll.data.AbstractRepo;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;

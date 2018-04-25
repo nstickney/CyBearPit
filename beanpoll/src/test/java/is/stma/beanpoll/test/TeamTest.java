@@ -48,6 +48,7 @@ public class TeamTest {
 
     /**
      * Create a web archive (WAR) for deployment via Arquillian
+     *
      * @return the web archive
      */
     @Deployment
@@ -55,7 +56,7 @@ public class TeamTest {
         File[] files = Maven.resolver().loadPomFromFile("pom.xml")
                 .importRuntimeDependencies().resolve().withTransitivity().asFile();
 
-        return ShrinkWrap.create(WebArchive.class, "TeamRulesTest.war")
+        return ShrinkWrap.create(WebArchive.class, "TeamTest.war")
                 .addPackages(true, Team.class.getPackage(),
                         TeamRepo.class.getPackage(),
                         TeamService.class.getPackage(),

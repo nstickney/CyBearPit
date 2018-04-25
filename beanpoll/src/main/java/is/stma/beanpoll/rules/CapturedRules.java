@@ -10,10 +10,10 @@
 
 package is.stma.beanpoll.rules;
 
-import is.stma.beanpoll.data.CapturedRepo;
-import is.stma.beanpoll.service.CapturedService;
 import is.stma.beanpoll.data.AbstractRepo;
+import is.stma.beanpoll.data.CapturedRepo;
 import is.stma.beanpoll.model.Captured;
+import is.stma.beanpoll.service.CapturedService;
 
 import javax.enterprise.inject.Model;
 import javax.inject.Inject;

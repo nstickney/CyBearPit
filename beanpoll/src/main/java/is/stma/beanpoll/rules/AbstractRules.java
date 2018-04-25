@@ -46,7 +46,11 @@ public abstract class AbstractRules<E extends AbstractEntity> {
         if (target == Target.DELETE) {
             checkBeforeDelete(entity);
         } else {
-            StringUtility.checkString(entity.getName());
+            try {
+                StringUtility.checkString(entity.getName());
+            } catch (ValidationException e) {
+                throw new ValidationException(entity.getLogName() + " has no name");
+            }
             runBusinessRules(entity, target);
         }
     }

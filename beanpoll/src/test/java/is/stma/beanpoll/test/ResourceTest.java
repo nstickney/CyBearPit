@@ -19,11 +19,11 @@ package is.stma.beanpoll.test;/*
  */
 
 import is.stma.beanpoll.data.ResourceRepo;
-import is.stma.beanpoll.model.Resource;
 import is.stma.beanpoll.model.Contest;
+import is.stma.beanpoll.model.Resource;
 import is.stma.beanpoll.rules.ResourceRules;
-import is.stma.beanpoll.service.ResourceService;
 import is.stma.beanpoll.service.ContestService;
+import is.stma.beanpoll.service.ResourceService;
 import is.stma.beanpoll.util.EMProducer;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -58,6 +58,7 @@ public class ResourceTest {
 
     /**
      * Create a web archive (WAR) for deployment via Arquillian
+     *
      * @return the web archive
      */
     @Deployment
@@ -65,7 +66,7 @@ public class ResourceTest {
         File[] files = Maven.resolver().loadPomFromFile("pom.xml")
                 .importRuntimeDependencies().resolve().withTransitivity().asFile();
 
-        return ShrinkWrap.create(WebArchive.class, "ResourceRulesTest.war")
+        return ShrinkWrap.create(WebArchive.class, "ResourceTest.war")
                 .addPackages(true, Resource.class.getPackage(),
                         ResourceRepo.class.getPackage(),
                         ResourceService.class.getPackage(),

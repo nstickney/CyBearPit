@@ -11,8 +11,8 @@
 package is.stma.beanpoll.test;
 
 import is.stma.beanpoll.util.EMProducer;
-import is.stma.beanpoll.util.HTTPUtility;
 import is.stma.beanpoll.util.LogProducer;
+import is.stma.beanpoll.util.POPUtility;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.Archive;
@@ -20,14 +20,13 @@ import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.io.File;
 
 @RunWith(Arquillian.class)
-public class HTTPUtilityTest {
+public class POPUtilityTest {
 
     @Deployment
     public static Archive<?> createTestArchive() {
@@ -36,7 +35,7 @@ public class HTTPUtilityTest {
                 .importRuntimeDependencies().resolve().withTransitivity().asFile();
 
         return ShrinkWrap.create(WebArchive.class, "testDNSUtility.war")
-                .addClasses(HTTPUtility.class, EMProducer.class, LogProducer.class)
+                .addClasses(POPUtility.class, EMProducer.class, LogProducer.class)
                 .addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml")
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsWebInfResource("test-ds.xml") // Deploy test datasource
@@ -44,38 +43,6 @@ public class HTTPUtilityTest {
     }
 
     @Test
-    public void testHTTPRequest() {
-        String response = HTTPUtility.get("http://httpbin.org/", 80, 3);
-        Assert.assertTrue(response.contains("BONUSPOINTS"));
-    }
-
-    @Test
-    public void testHTTPWithoutProtocol() {
-        String response = HTTPUtility.get("httpbin.org/", 80, 3);
-        Assert.assertTrue(response.contains("BONUSPOINTS"));
-    }
-
-    @Test
-    public void testHTTPSRequest() {
-        String response = HTTPUtility.get("https://www.baylor.edu/", 443, 3);
-        Assert.assertTrue(response.contains("Baylor"));
-    }
-
-    @Test
-    public void testHTTPSSelfSigned() {
-        String response = HTTPUtility.get("https://self-signed.badssl.com/", 443, 3);
-        Assert.assertTrue(response.contains("self-signed"));
-    }
-
-    @Test
-    public void testHTTPSBadCert() {
-        String response = HTTPUtility.get("https://expired.badssl.com//", 443, 3);
-        Assert.assertTrue(response.startsWith("ERROR"));
-    }
-
-    @Test
-    public void testHTTPNoSuchPage() {
-        String response = HTTPUtility.get("https://httpbin.org/", 80, 3);
-        Assert.assertTrue(response.startsWith("ERROR"));
+    public void testPOPRequest() {
     }
 }

@@ -50,13 +50,13 @@ public class Team extends AbstractComparableByContest {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @Override
     public int compareTo(AbstractComparableByContest o) {
         return compare(this, o);
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getFlag() {

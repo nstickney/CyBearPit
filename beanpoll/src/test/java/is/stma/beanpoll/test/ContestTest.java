@@ -41,6 +41,7 @@ public class ContestTest {
 
     /**
      * Create a web archive (WAR) for deployment via Arquillian
+     *
      * @return the web archive
      */
     @Deployment
@@ -48,7 +49,7 @@ public class ContestTest {
         File[] files = Maven.resolver().loadPomFromFile("pom.xml")
                 .importRuntimeDependencies().resolve().withTransitivity().asFile();
 
-        return ShrinkWrap.create(WebArchive.class, "contestRulesTest.war")
+        return ShrinkWrap.create(WebArchive.class, "contestTest.war")
                 .addPackages(true, Contest.class.getPackage(),
                         ContestRepo.class.getPackage(),
                         ContestService.class.getPackage(),
@@ -61,6 +62,7 @@ public class ContestTest {
                 .addAsWebInfResource("test-ds.xml") // Deploy test datasource
                 .addAsLibraries(files); // Add necessary stuff from pom.xml
     }
+
     /**
      * Create a test contest and persist it
      */

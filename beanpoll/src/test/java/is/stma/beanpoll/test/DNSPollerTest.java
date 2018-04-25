@@ -10,13 +10,13 @@
 
 package is.stma.beanpoll.test;
 
-import is.stma.beanpoll.model.*;
-import is.stma.beanpoll.service.*;
-import is.stma.beanpoll.service.parameterizer.DNSParameterizer;
 import is.stma.beanpoll.controller.poller.AbstractPoller;
 import is.stma.beanpoll.controller.poller.PollerFactory;
 import is.stma.beanpoll.data.PollRepo;
+import is.stma.beanpoll.model.*;
 import is.stma.beanpoll.rules.PollRules;
+import is.stma.beanpoll.service.*;
+import is.stma.beanpoll.service.parameterizer.DNSParameterizer;
 import is.stma.beanpoll.util.EMProducer;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -35,8 +35,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
-import static org.hamcrest.CoreMatchers.anyOf;
 
 @RunWith(Arquillian.class)
 public class DNSPollerTest {

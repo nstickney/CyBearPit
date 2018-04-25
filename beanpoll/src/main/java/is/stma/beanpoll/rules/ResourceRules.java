@@ -10,8 +10,8 @@
 
 package is.stma.beanpoll.rules;
 
-import is.stma.beanpoll.data.ResourceRepo;
 import is.stma.beanpoll.data.AbstractRepo;
+import is.stma.beanpoll.data.ResourceRepo;
 import is.stma.beanpoll.model.Resource;
 import is.stma.beanpoll.model.Team;
 

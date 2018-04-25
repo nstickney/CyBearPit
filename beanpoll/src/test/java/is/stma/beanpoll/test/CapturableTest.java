@@ -11,11 +11,11 @@
 package is.stma.beanpoll.test;
 
 import is.stma.beanpoll.data.CapturableRepo;
-import is.stma.beanpoll.model.Contest;
 import is.stma.beanpoll.model.Capturable;
+import is.stma.beanpoll.model.Contest;
 import is.stma.beanpoll.rules.CapturableRules;
-import is.stma.beanpoll.service.ContestService;
 import is.stma.beanpoll.service.CapturableService;
+import is.stma.beanpoll.service.ContestService;
 import is.stma.beanpoll.util.EMProducer;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -48,6 +48,7 @@ public class CapturableTest {
 
     /**
      * Create a web archive (WAR) for deployment via Arquillian
+     *
      * @return the web archive
      */
     @Deployment
@@ -55,7 +56,7 @@ public class CapturableTest {
         File[] files = Maven.resolver().loadPomFromFile("pom.xml")
                 .importRuntimeDependencies().resolve().withTransitivity().asFile();
 
-        return ShrinkWrap.create(WebArchive.class, "CapturableRulesTest.war")
+        return ShrinkWrap.create(WebArchive.class, "CapturableTest.war")
                 .addPackages(true, Capturable.class.getPackage(),
                         CapturableRepo.class.getPackage(),
                         CapturableService.class.getPackage(),

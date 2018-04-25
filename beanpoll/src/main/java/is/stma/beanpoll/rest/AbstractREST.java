@@ -10,10 +10,10 @@
 
 package is.stma.beanpoll.rest;
 
+import is.stma.beanpoll.data.AbstractRepo;
 import is.stma.beanpoll.model.AbstractEntity;
 import is.stma.beanpoll.rules.AbstractRules;
 import is.stma.beanpoll.service.AbstractService;
-import is.stma.beanpoll.data.AbstractRepo;
 
 import javax.inject.Inject;
 import javax.persistence.MappedSuperclass;

@@ -19,12 +19,12 @@ package is.stma.beanpoll.test;/*
  */
 
 import is.stma.beanpoll.data.ReportRepo;
-import is.stma.beanpoll.model.Report;
 import is.stma.beanpoll.model.Contest;
+import is.stma.beanpoll.model.Report;
 import is.stma.beanpoll.model.Team;
 import is.stma.beanpoll.rules.ReportRules;
-import is.stma.beanpoll.service.ReportService;
 import is.stma.beanpoll.service.ContestService;
+import is.stma.beanpoll.service.ReportService;
 import is.stma.beanpoll.service.TeamService;
 import is.stma.beanpoll.util.EMProducer;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -63,6 +63,7 @@ public class ReportTest {
 
     /**
      * Create a web archive (WAR) for deployment via Arquillian
+     *
      * @return the web archive
      */
     @Deployment
@@ -70,7 +71,7 @@ public class ReportTest {
         File[] files = Maven.resolver().loadPomFromFile("pom.xml")
                 .importRuntimeDependencies().resolve().withTransitivity().asFile();
 
-        return ShrinkWrap.create(WebArchive.class, "ReportRulesTest.war")
+        return ShrinkWrap.create(WebArchive.class, "ReportTest.war")
                 .addPackages(true, Report.class.getPackage(),
                         ReportRepo.class.getPackage(),
                         ReportService.class.getPackage(),

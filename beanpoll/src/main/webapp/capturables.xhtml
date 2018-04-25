@@ -60,7 +60,8 @@
 
         <!-- Existing capturables, grouped by contest -->
         <c:forEach var="_capturable" items="#{capturables}">
-            <b:panel title="#{_capturable.displayName}" iconAwesome="check" look="#{_capturable.look}" collapsed="#{true}">
+            <b:panel title="#{_capturable.displayName}" iconAwesome="check" look="#{_capturable.look}"
+                     collapsed="#{true}">
 
                 <!-- Capturable settings -->
                 <b:panel title="Settings" iconAwesome="cog" collapsed="#{true}">
@@ -92,7 +93,8 @@
                         </b:panelGrid>
                         <b:well style="margin-top: 1rem;"><h:form><b:panelGrid colSpans="6,6" size="sm">
                             <h:outputLabel value="Delete this capturable: " for="delete"/>
-                            <b:commandButton action="#{capturableController.delete(_capturable)}" value="Delete" id="delete"
+                            <b:commandButton action="#{capturableController.delete(_capturable)}" value="Delete"
+                                             id="delete"
                                              iconAwesome="trash" look="danger"/>
                         </b:panelGrid></h:form></b:well>
                     </h:form>
