@@ -39,7 +39,7 @@ if [ "$1" == "new" ] || [ "$1" == "build" ] || \
 	docker stop "$CONTAINER_NAME" > /dev/null 2>&1
 	docker rm "$CONTAINER_NAME" > /dev/null 2>&1
 
-	# Run the container, forwarding ports 80 and 443 (to 8443)
+	# Run the container, forwarding port 443 (to 8443)
 	docker run --name="$CONTAINER_NAME" \
 		-p 443:8443 \
 		-d "$IMAGE_NAME"

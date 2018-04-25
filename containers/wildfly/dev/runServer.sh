@@ -22,11 +22,14 @@ if [ "$1" == "build" ] || \
 		rm -rf mysql-connector-java-5.1.45
 	fi
 
+	# Get the latest build of the WAR
+	cp ../../../beanpoll/target/ROOT.war .
+
 	# Build the image
 	docker build --no-cache --force-rm -t "$IMAGE_NAME" .    
 fi
 
-# Create the container if "build" is specified, or it doesn't exist
+# Create the container if "new" or "build" is specified, or it doesn't exist
 if [ "$1" == "new" ] || [ "$1" == "build" ] || \
 	! docker ps -a | grep -q "$CONTAINER_NAME"; then
 
