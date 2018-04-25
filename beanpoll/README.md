@@ -83,7 +83,9 @@ Once you have tested your JDBC connection to beanpollDS, you can deploy the root
 
 ### Building Tests
 
-From the `CyBearPit/beanpoll` directory, you can use `mvn spotbugs:spotbugs` to check the code for errors, and `./runTests.sh` will build and run the Arquillian/JUnit tests in a purpose-built Docker container with an H2 datasource included.
+From the `CyBearPit/beanpoll` directory, you can use `mvn spotbugs:spotbugs` to check the code for errors, and `./runTests.sh` will build and run the Arquillian/JUnit tests in a purpose-built Docker container with an H2 datasource included. You can pass the class name of the test you want to run (e.g. `./runTests.sh SMTPUtilityTest`). It is preferred to run the tests this way, since the test server will not currently allow enough deployments for all the tests to run together.
+
+Please note that EmailUtilityTest and the email poller tests require access to an email address... not giving out the password. Sorry. You'll need to set them up with an email account you have access to - and remember not to commit the password!
 
 ## Usage
 

@@ -20,16 +20,19 @@ public class POPParameterizer {
     // POP tag strings
     public static final String POP_USERNAME = "POP_USERNAME";
     public static final String POP_PASSWORD = "POP_PASSWORD";
+    public static final String POP_RESOLVER = "POP_RESOLVER";
 
     // POP default value strings
     public static final String POP_DEFAULT_USERNAME = "nobody";
     public static final String POP_DEFAULT_PASSWORD = "nothing";
+    public static final String POP_DEFAULT_RESOLVER = null;
 
 
     public static List<Parameter> createParameters() {
         List<Parameter> parameters = new ArrayList<>();
         parameters.add(new Parameter(POP_USERNAME, POP_DEFAULT_USERNAME));
         parameters.add(new Parameter(POP_PASSWORD, POP_DEFAULT_PASSWORD));
+        parameters.add(new Parameter(POP_RESOLVER, POP_DEFAULT_RESOLVER));
         return parameters;
     }
 

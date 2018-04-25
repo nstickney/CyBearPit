@@ -20,16 +20,19 @@ public class SMTPParameterizer {
     // SMTP tag strings
     public static final String SMTP_USERNAME = "SMTP_USERNAME";
     public static final String SMTP_PASSWORD = "SMTP_PASSWORD";
+    public static final String SMTP_RESOLVER = "SMTP_RESOLVER";
 
     // SMTP default value strings
     public static final String SMTP_DEFAULT_USERNAME = "nobody";
     public static final String SMTP_DEFAULT_PASSWORD = "nothing";
+    public static final String SMTP_DEFAULT_RESOLVER = null;
 
 
     public static List<Parameter> createParameters() {
         List<Parameter> parameters = new ArrayList<>();
         parameters.add(new Parameter(SMTP_USERNAME, SMTP_DEFAULT_USERNAME));
         parameters.add(new Parameter(SMTP_PASSWORD, SMTP_DEFAULT_PASSWORD));
+        parameters.add(new Parameter(SMTP_RESOLVER, SMTP_DEFAULT_RESOLVER));
         return parameters;
     }
 

@@ -40,15 +40,8 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
     </properties>
 
-
     <dependencyManagement>
         <dependencies>
-            <!-- JBoss distributes a complete set of JavaEE 7 APIs including a Bill of Materials (BOM). A BOM specifies
-                the versions of a "stack" (or a collection) of artifacts. We use this here so that we always get the
-                correct versions of artifacts. Here we use the jboss-javaee-7.0-with-tools stack (you can read this as
-                the JBoss stack of the JavaEE 7 APIs, with some extras tools for your project, such as Arquillian for
-                testing) and the jboss-javaee-7.0-with-hibernate stack you can read this as the JBoss stack of the
-                JavaEE 7 APIs, with extras from the Hibernate family of projects) -->
             <dependency>
                 <groupId>org.wildfly.bom</groupId>
                 <artifactId>jboss-javaee-7.0-with-tools</artifactId>
@@ -263,6 +256,14 @@
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
             <version>4.5.5</version>
+        </dependency>
+
+        <!-- Used for checking SMTP resources -->
+        <!-- https://mvnrepository.com/artifact/javax.mail/mail -->
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>1.4.7</version>
         </dependency>
 
         <!-- Reset browser CSS to useful default baseline -->
