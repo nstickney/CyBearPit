@@ -1,6 +1,8 @@
 # CyBearPit
 
-[![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT "MIT License") [![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg)](https://github.com/RichardLitt/standard-readme "RichardLitt/standard-readme")
+[![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT "MIT License")
+[![Maintainability](https://api.codeclimate.com/v1/badges/c84e1942412adcf43a1e/maintainability)](https://codeclimate.com/github/nstickney/CyBearPit/maintainability)
+[![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg)](https://github.com/RichardLitt/standard-readme "RichardLitt/standard-readme")
 
 > A cyber defense training facility
 

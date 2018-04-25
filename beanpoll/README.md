@@ -1,6 +1,8 @@
 # BeanPoll
 
-[![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT "MIT License") [![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg)](https://github.com/RichardLitt/standard-readme "RichardLitt/standard-readme")
+[![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT "MIT License")
+[![Maintainability](https://api.codeclimate.com/v1/badges/c84e1942412adcf43a1e/maintainability)](https://codeclimate.com/github/nstickney/CyBearPit/maintainability)
+[![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg)](https://github.com/RichardLitt/standard-readme "RichardLitt/standard-readme")
 
 > A polling engine for network security contests, in Java EE
 
@@ -63,19 +65,39 @@ BeanPoll is the largest portion of the CyBearPit project, and builds most direct
 
 1) Now that you have read the instructions, there is a script called `runBeanPoll.sh` in the [CyBearPit](https://github.com/nstickney/CyBearPit "nstickney/CyBearPit") directory that will do everything but open a browser for you. Find out how it works by running `./runBeanPoll.sh help`.
 
-### Build and Install Notes
+### Manual Installation Guide
 
-`mvn clean install` in this folder will build the web application archive, which is then saved to [ROOT.war](target/ROOT.war "target/ROOT.war"). Deploy the application on a Wild**Fly** server with a preconfigured datasource called `java:/beanpollDS` (see [persistence.xml](src/main/resources/META-INF/persistence.xml "persistence.xml") for the required configuration).
+Running `mvn clean install` in this folder will build the web application archive, which is then saved to `CyBearPit/beanpoll/target/ROOT.war`. Deploy the application on a Wild**Fly** server with a preconfigured datasource called `java:/beanpollDS`. BeanPoll is developed using MySQL, but contains no MySQL-specific code and handles all database connections through JPA/Hibernate, so it *shouldn't* matter. Your mileage may vary.
 
-From the `CyBearPit/beanpoll` directory, you can also use `mvn spotbugs:spotbugs` to check the code for errors, and `./runTests.sh` will build and run the Arquillian/JUnit tests in a purpose-built Docker container with a built-in H2 datasource.
+Installing MySQL or another DBMS is out of the scope of this README; you can find the MySQL documentation [here](https://dev.mysql.com/doc/ "MySQL Documentation"), and it's generally a good idea to consult your operating system's documentation as well. Wild**Fly** installation is a similar matter; you can find the Wild**Fly** documentation [here](http://docs.wildfly.org/ "WildFly Documentation").
+
+If you have a running MySQL server and a running Wild**Fly** instance, you will need to create a datasource on Wild**Fly** which points to your MySQL database. You can download the MySQL JDBC driver [here](https://dev.mysql.com/downloads/connector/j/ "MySQL Connector/J"). You will need to either deploy it manually through the Wild**Fly** web interface (ensure you unzip the file first), then create a Non-XA datasource through the same interface, or adapt the commands found in the `CyBearPit/containers/wildfly/prod/config_wildfly.sh`, which are listed below.
+
+```
+module add --name=com.mysql --resources=/opt/jboss/wildfly/mysql-connector-java-5.1.45-bin.jar --dependencies=javax.api,javax.transaction.api
+/subsystem=datasources/jdbc-driver=mysql:add(driver-name=mysql,driver-module-name=com.mysql)
+data-source add --name=$beanpoll_DB --driver-name=mysql --jndi-name=$beanpoll_DS --connection-url=jdbc:mysql://$DB_HOST:$DB_PORT/$beanpoll_DB --user-name=$DB_USER --password=$DB_PWD
+```
+
+Once you have tested your JDBC connection to beanpollDS, you can deploy the root.war by adding it to the `$JBOSS_HOME/wildfly/standalone/deployments/` directory of your Wild**Fly** installation, or deploy it through the web interface.
+
+### Building Tests
+
+From the `CyBearPit/beanpoll` directory, you can use `mvn spotbugs:spotbugs` to check the code for errors, and `./runTests.sh` will build and run the Arquillian/JUnit tests in a purpose-built Docker container with an H2 datasource included.
 
 ## Usage
 
 All functionality of BeanPoll is available from the web interface. Once the application is deployed, open a browser and visit the server IP address or hostname (preferably over `https`) and log in. The default administrative user is `beanpoll`, and the default password is `beanpollpassword`.
 
+![BeanPoll Interface](BeanPollInterface.png "BeanPoll Interface Example")
+
+The screenshot above shows the BeanPoll user interface for administrative and judge users. The top navigation bar contains a link to the scoreboard page (`index.xhtml`), marked "BeanPoll", in the upper left. In the upper right are three links: "Controls", "Judging", and "beanpoll". "beanpoll" is the currently logged in user (both an administrator and a judge). Clicking that link takes the user to their account page. The "Judging" link is only available to judge users; it takes the user to a page (`grading.xhtml`) where they can view and enter scores and comments for task responses and incident reports. The "Controls" drop-down menu is only visible to administrative users; it contains options to manage Contests, Announcements, Capturables, Resources, Tasks, Teams, and Users.
+
+On each of the admin pages just listed, there is an option, highlighted in light blue, to create a new instance. Below the creation panel is a color key, and below the color key a list of existing instances which can be upodated or deleted; in the case of Contests, this is where an administrative user can schedule, start, and stop them.
+
 ## API
 
-TBP
+BeanPoll is planned to have a RESTful API in the future, but it is not yet implemented.
 
 ## Contribute
 
