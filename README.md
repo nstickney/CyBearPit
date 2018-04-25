@@ -6,43 +6,27 @@
 
 > A cyber defense training facility
 
-More to follow.
 
 ## Table of Contents
 
-- [Security](#security)
 - [Background](#background)
-- [Install](#install)
 - [Usage](#usage)
-- [API](#api)
 - [Contribute](#contribute)
 - [License](#license)
 
-## Security
-
-TBP
-
 ## Background
 
-TBP
-
-## Install
-
-TBP
+The CyBearPit is a piece of infrastructure at Baylor University used to host network defense competitions. This repository holds various configuration items related to that infrastructure, as well as the [BeanPoll](beanpoll "BeanPoll") scoring engine.
 
 ## Usage
 
-TBP
-
-## API
-
-TBP
+Using the actual CyBearPit is restricted, but you might be interested in [BeanPoll](beanpoll "BeanPoll"), which is the actual scoring engine used.
 
 ## Contribute
 
 > This project subscribes to the [Contributor Covenant](CODE_OF_CONDUCT.md "Code of Conduct").
 
-I welcome [issues](docs/issue_template.md "Issue template"), but I prefer [pull requests](dosc/pull_request_template.md "Pull request template")! See the [contribution guidelines](docs/contributing.md "Contributing") for more information.
+I welcome [issues](docs/issue_template.md "Issue template"), but I prefer [pull requests](docs/pull_request_template.md "Pull request template")! See the [contribution guidelines](docs/contributing.md "Contributing") for more information.
 
 ## License
 
