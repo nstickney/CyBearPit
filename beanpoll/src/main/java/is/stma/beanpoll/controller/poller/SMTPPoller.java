@@ -92,8 +92,8 @@ public class SMTPPoller extends AbstractPoller {
 
         // Send mail!
         try {
-            EmailUtility.sendSMTPMessage(username, password, resource.getAddress(),
-                    recipient, msg, msg, resource.getPort(), tls, ssl, resource.getTimeout());
+            EmailUtility.sendSMTPMessage(username, password, address, recipient,
+                    msg, msg, resource.getPort(), tls, ssl, resource.getTimeout());
         } catch (MessagingException e) {
             newPoll.setResults(e.getMessage());
             return newPoll;
@@ -103,12 +103,11 @@ public class SMTPPoller extends AbstractPoller {
         String results = "";
         if (auth) {
             try {
-                EmailUtility.sendSMTPMessage(msg, msg, resource.getAddress(), recipient, msg, msg,
-                        resource.getPort(), tls, ssl, resource.getTimeout());
+                EmailUtility.sendSMTPMessage(msg, msg, address, recipient, msg,
+                        msg, resource.getPort(), tls, ssl, resource.getTimeout());
                 newPoll.setResults("ERROR: User " + msg + " exists");
-                return newPoll;
             } catch (MessagingException e) {
-                results = " - user " + msg + " cannot send mail";
+                results = " - and user " + msg + " cannot send mail";
             }
         }
 

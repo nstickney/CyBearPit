@@ -185,10 +185,10 @@ public class EmailUtilityTest {
     public void testSMTPRequest() {
         setUpSMTP();
         try {
-            EmailUtility.sendSMTPMessage(username, password, host, recipient, subject, msg, port,
-                    tls, ssl, timeout);
+            EmailUtility.sendSMTPMessage(username, password, host, recipient,
+                    subject, msg, port, tls, ssl, timeout);
         } catch (MessagingException e) {
-            e.printStackTrace();
+            throw new ValidationException(e.getMessage());
         }
     }
 

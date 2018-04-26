@@ -19,7 +19,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 class TestUtility {
 
-    public static void setResourceParameter(ParameterService service, Resource resource, String tag, String value) {
+    static void setResourceParameter(ParameterService service, Resource resource, String tag, String value) {
         for (Parameter p : resource.getParameters()) {
             if (p.getTag().equals(tag)) {
                 p.setValue(value);

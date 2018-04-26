@@ -156,17 +156,16 @@ public class DNSUtility {
     }
 
     public static String getResolvedMailserver(String resolver, String hostname) {
-        String resolved = hostname;
         if (null != resolver && !resolver.equals("")) {
-            resolved = DNSUtility.lookup(resolver, hostname, MX);
-            if (resolved.startsWith("ERROR")) {
-                return resolved;
+            hostname = DNSUtility.lookup(resolver, hostname, MX);
+            if (hostname.startsWith("ERROR")) {
+                return hostname;
             }
-            if (resolved.contains("./")) {
-                resolved = resolved.substring(resolved.indexOf("./") + 2, resolved.length());
+            if (hostname.contains("./")) {
+                hostname = hostname.substring(hostname.indexOf("./") + 2, hostname.length());
             }
         }
-        return resolved;
+        return hostname;
     }
 
     /**
@@ -178,17 +177,16 @@ public class DNSUtility {
      * @throws URISyntaxException if the hostname is not a proper URI
      */
     public static String getResolvedWebServer(String resolver, String hostname) throws URISyntaxException {
-        String resolved = hostname;
         if (null != resolver && !resolver.equals("")) {
             hostname = HTTPUtility.setDefaultHTTPProtocol(hostname);
             java.net.URI uri = new URI(hostname);
-            resolved = DNSUtility.lookup(resolver, uri.getHost());
-            if (resolved.startsWith("ERROR")) {
-                return resolved;
+            hostname = DNSUtility.lookup(resolver, uri.getHost());
+            if (hostname.startsWith("ERROR")) {
+                return hostname;
             }
-            resolved = resolved.substring(resolved.indexOf("./") + 2, resolved.length());
-            resolved = uri.getScheme() + "://" + resolved + uri.getPath();
+            hostname = hostname.substring(hostname.indexOf("./") + 2, hostname.length());
+            hostname = uri.getScheme() + "://" + hostname + uri.getPath();
         }
-        return resolved;
+        return hostname;
     }
 }

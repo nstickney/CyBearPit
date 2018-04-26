@@ -30,7 +30,7 @@ public class SMTPParameterizer {
     public static final String SMTP_DEFAULT_USERNAME = "beanpoll@yandex.com";
     public static final String SMTP_DEFAULT_PASSWORD = "NOT_MY_PASSWORD";
     public static final String SMTP_DEFAULT_RECIPIENT = "beanpoll@yandex.com";
-    public static final String SMTP_DEFAULT_SSL = Parameter.FALSE;
+    public static final String SMTP_DEFAULT_SSL = Parameter.TRUE;
     public static final String SMTP_DEFAULT_TLS = Parameter.FALSE;
     public static final String SMTP_DEFAULT_TEST_AUTH = Parameter.TRUE;
     public static final String SMTP_DEFAULT_RESOLVER = null;

@@ -85,7 +85,8 @@ public class EmailPoller extends AbstractPoller {
 
         // Get mail!
         try {
-            Message[] messages = EmailUtility.getEmail(username, password, resource.getAddress(), protocol, resource.getPort(), tls, ssl, resource.getTimeout());
+            Message[] messages = EmailUtility.getEmail(username, password, address,
+                    protocol, resource.getPort(), tls, ssl, resource.getTimeout());
         } catch (MessagingException e) {
             newPoll.setResults(e.getMessage());
             return newPoll;

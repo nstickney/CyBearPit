@@ -52,6 +52,10 @@ public class DNSUtilityTest {
         Assert.assertEquals(query + "./129.62.3.230", DNSUtility.lookup(query));
     }
 
+    public void testMXRecordLookup() {
+        Assert.assertEquals("baylor-edu.mail.protection.outlook.com.", DNSUtility.lookup("baylor.edu", Type.MX));
+    }
+
     @Test
     public void testPTRRecordLookup() {
         Assert.assertEquals("a.ns.facebook.com.",
