@@ -22,7 +22,6 @@ import java.util.List;
 
 public class DNSPoller extends AbstractPoller {
 
-    // Set values based on the resource parameters
     private String query = DNSParameterizer.DNS_DEFAULT_QUERY;
     private String recordType = DNSParameterizer.DNS_DEFAULT_RECORD_TYPE;
     private String tcpString = DNSParameterizer.DNS_DEFAULT_TCP;
@@ -85,6 +84,7 @@ public class DNSPoller extends AbstractPoller {
     @Override
     void setParameters() {
 
+        // Set values based on the resource parameters
         for (Parameter p : resource.getParameters()) {
             switch (p.getTag()) {
                 case DNSParameterizer.DNS_QUERY:
@@ -117,6 +117,9 @@ public class DNSPoller extends AbstractPoller {
         recursive = recursiveString.equals(Parameter.TRUE);
 
         switch (recordType) {
+            case "A":
+                type = Type.A;
+                break;
             case "AAAA":
                 type = Type.AAAA;
                 break;

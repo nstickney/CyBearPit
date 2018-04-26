@@ -43,26 +43,19 @@ public class DNSPollerTest {
     private ContestService contestService;
 
     @Inject
-    private ParameterService parameterService;
-
-    @Inject
     private ResourceService resourceService;
 
     @Inject
     private TeamService teamService;
 
     private Contest testContest;
-    private String testContestId;
 
     private Poll testPoll;
 
     private Team testTeam;
     private Team checkTeam;
-    private String testTeamId;
-    private String checkTeamId;
 
     private Resource testResource;
-    private String testResourceId;
 
     @Deployment
     public static Archive<?> createTestArchive() {
@@ -108,7 +101,7 @@ public class DNSPollerTest {
             testContest = contestService.update(testContest);
         }
         if (null == testResource) {
-            testResource = TestUtility.makeResource(testContest, ResourceType.HTTP);
+            testResource = TestUtility.makeResource(testContest, ResourceType.DNS);
             testResource.setAddress("9.9.9.9");
             testResource.setPort(53);
             testResource = resourceService.create(testResource);
@@ -119,7 +112,6 @@ public class DNSPollerTest {
     public void testPollWorks() {
         AbstractPoller poller = PollerFactory.getPoller(testResource);
         testPoll = poller.poll();
-        Assert.assertEquals("", testPoll.getResults());
         Assert.assertTrue(testPoll.getResults().contains("129.62.3.230"));
         Assert.assertEquals(testPoll.getTeam(), checkTeam);
     }
@@ -130,7 +122,7 @@ public class DNSPollerTest {
         checkResource = resourceService.create(checkResource);
         AbstractPoller poller = PollerFactory.getPoller(checkResource);
         testPoll = poller.poll();
-        Assert.assertTrue(testPoll.getResults().contains(""));
+        Assert.assertTrue(testPoll.getResults().startsWith("ERROR"));
         Assert.assertNull(testPoll.getTeam());
     }
 }
