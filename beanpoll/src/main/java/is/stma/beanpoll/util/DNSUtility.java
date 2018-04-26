@@ -93,50 +93,63 @@ public class DNSUtility {
                 return "ERROR: no results returned";
             }
 
-            // Filter supported types
-            StringBuilder result = new StringBuilder();
-            for (Record r : records) {
-                switch (type) {
-                    case A:
-                        result.append(((ARecord) r).getAddress().toString());
-                        break;
-                    case AAAA:
-                        result.append(((AAAARecord) r).getAddress().toString());
-                        break;
-                    case CNAME:
-                        result.append(((CNAMERecord) r).getAlias().toString());
-                        break;
-                    case DNAME:
-                        result.append(((DNAMERecord) r).getAlias().toString());
-                        break;
-                    case MX:
-                        result.append(r.getAdditionalName().toString());
-                        break;
-                    case NS:
-                        result.append(r.getAdditionalName().toString());
-                        break;
-                    case PTR:
-                        result.append(((PTRRecord) r).getTarget().toString());
-                        break;
-                    case SOA:
-                        result.append(((SOARecord) r).getHost().toString());
-                        break;
-                    case TXT:
-                        result.append(((TXTRecord) r).getStrings().get(0));
-                        break;
-                    default:
-                        result.append(r.toString());
-                        break;
-                }
-                if (firstOnly && !"".equals(result.toString())) {
-                    return result.toString();
-                }
-            }
-            return result.toString();
+            // Filter the answers down to what we actually want
+            return filterSupportedTypes(records, type, firstOnly);
 
         } catch (UnknownHostException | TextParseException e) {
             return "ERROR: resolution failed (" + e.getMessage() + ")";
         }
+    }
+
+    /**
+     * Filter an array of DNS records down to a single String, which contains
+     * either just one record (if firstOnly specified), or all records found
+     * @param records Array of Records to filter
+     * @param type Type of Record to find
+     * @param firstOnly Whether to stop after the first Record of type is found
+     * @return the filtering results
+     */
+    private static String filterSupportedTypes(Record[] records, int type, boolean firstOnly) {
+        StringBuilder result = new StringBuilder();
+        for (Record r : records) {
+            switch (type) {
+                case A:
+                    result.append(((ARecord) r).getAddress().toString());
+                    break;
+                case AAAA:
+                    result.append(((AAAARecord) r).getAddress().toString());
+                    break;
+                case CNAME:
+                    result.append(((CNAMERecord) r).getAlias().toString());
+                    break;
+                case DNAME:
+                    result.append(((DNAMERecord) r).getAlias().toString());
+                    break;
+                case MX:
+                    result.append(r.getAdditionalName().toString());
+                    break;
+                case NS:
+                    result.append(r.getAdditionalName().toString());
+                    break;
+                case PTR:
+                    result.append(((PTRRecord) r).getTarget().toString());
+                    break;
+                case SOA:
+                    result.append(((SOARecord) r).getHost().toString());
+                    break;
+                case TXT:
+                    result.append(((TXTRecord) r).getStrings().get(0));
+                    break;
+                default:
+                    result.append(r.toString());
+                    break;
+            }
+            if (firstOnly && !"".equals(result.toString())) {
+                return result.toString();
+            }
+        }
+        return result.toString();
+
     }
 
     public static String lookup(String query) {

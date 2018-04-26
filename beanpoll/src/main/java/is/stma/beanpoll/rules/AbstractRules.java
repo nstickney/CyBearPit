@@ -12,6 +12,8 @@ package is.stma.beanpoll.rules;
 
 import is.stma.beanpoll.data.AbstractRepo;
 import is.stma.beanpoll.model.AbstractEntity;
+import is.stma.beanpoll.model.Contest;
+import is.stma.beanpoll.model.Team;
 import is.stma.beanpoll.util.StringUtility;
 
 import javax.inject.Inject;
@@ -22,6 +24,10 @@ import java.util.logging.Logger;
 public abstract class AbstractRules<E extends AbstractEntity> {
 
     final DateFormat df = DateFormat.getDateInstance();
+
+    public enum Target {
+        CREATE, UPDATE, DELETE
+    }
 
     @Inject
     Logger log;
@@ -59,7 +65,15 @@ public abstract class AbstractRules<E extends AbstractEntity> {
         return (getRepo().findBy(entity.getId()) == null);
     }
 
-    public enum Target {
-        CREATE, UPDATE, DELETE
+    void checkTeamIsInContest(Team entity, Contest contest) {
+        if (!entity.getContest().equalByUUID(contest)) {
+            throw new ValidationException("team " + entity.getName() + " is not in contest " + contest.getName());
+        }
+    }
+
+    void checkContestIsEnabledAndRunning(Contest entity) {
+        if (!(entity.isEnabled() && entity.isRunning())) {
+            throw new ValidationException("contest " + entity.getName() + " is not running");
+        }
     }
 }

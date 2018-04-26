@@ -39,10 +39,10 @@ public class CapturedRules extends AbstractRules<Captured> {
             throws ValidationException {
 
         // Capturable must be available
-        checkCapturableIsAvailable(entity);
+        checkContestIsEnabledAndRunning(entity.getCapturable().getContest());
 
         // Team must be from correct contest (same contest as capturable)
-        checkTeamIsInContest(entity);
+        checkTeamIsInContest(entity.getTeam(), entity.getCapturable().getContest());
 
         // Check this team hasn't already scored for this capturable
         checkSingleScoring(entity);
@@ -51,20 +51,6 @@ public class CapturedRules extends AbstractRules<Captured> {
     @Override
     void checkBeforeDelete(Captured entity) throws ValidationException {
 
-    }
-
-    private void checkCapturableIsAvailable(Captured entity) {
-        if (!entity.getCapturable().getContest().isEnabled() || !entity.getCapturable().getContest().isRunning()) {
-            throw new ValidationException("contest " + entity.getCapturable().getContest().getName()
-                    + " is not running");
-        }
-    }
-
-    private void checkTeamIsInContest(Captured entity) {
-        if (!entity.getTeam().getContest().equalByUUID(entity.getCapturable().getContest())) {
-            throw new ValidationException("team " + entity.getTeam().getName() + " is not in contest "
-                    + entity.getCapturable().getContest().getName());
-        }
     }
 
     private void checkSingleScoring(Captured entity) throws ValidationException {

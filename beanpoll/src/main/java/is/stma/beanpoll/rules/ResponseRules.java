@@ -37,7 +37,7 @@ public class ResponseRules extends AbstractRules<Response> {
         checkTaskIsAvailable(entity);
 
         // Team must be from correct contest
-        checkTeamIsInContest(entity);
+        checkTeamIsInContest(entity.getTeam(), entity.getTask().getContest());
 
         // Check score is within allowable range
         checkScoreWithinTaskPointValue(entity);
@@ -49,20 +49,12 @@ public class ResponseRules extends AbstractRules<Response> {
     }
 
     private void checkTaskIsAvailable(Response entity) {
-        if (!entity.getTask().getContest().isEnabled() || !entity.getTask().getContest().isRunning()) {
-            throw new ValidationException("contest " + entity.getTask().getContest().getName() + " is not running");
-        }
+        checkContestIsEnabledAndRunning(entity.getTask().getContest());
         if (entity.getTask().getPublished().isAfter(entity.getTimestamp())) {
             throw new ValidationException("task " + entity.getTask().getName() + " is not yet available");
         }
         if (entity.getTask().getDue().isBefore(entity.getTimestamp())) {
             throw new ValidationException("task " + entity.getTask().getName() + " has expired");
-        }
-    }
-
-    private void checkTeamIsInContest(Response entity) {
-        if (!entity.getTeam().getContest().equalByUUID(entity.getTask().getContest())) {
-            throw new ValidationException("team " + entity.getTeam().getName() + " is not in contest " + entity.getTask().getContest().getName());
         }
     }
 
