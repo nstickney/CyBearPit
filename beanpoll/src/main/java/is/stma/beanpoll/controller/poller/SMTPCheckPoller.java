@@ -18,19 +18,26 @@ import is.stma.beanpoll.service.parameterizer.SMTPParameterizer;
 
 public class SMTPCheckPoller extends AbstractPoller {
 
+    // Set values based on the resource parameters
+    private String popUsername = EmailParameterizer.EMAIL_DEFAULT_USERNAME;
+    private String popPassword = EmailParameterizer.EMAIL_DEFAULT_PASSWORD;
+    private String smtpUsername = SMTPParameterizer.SMTP_DEFAULT_USERNAME;
+    private String smtpPassword = SMTPParameterizer.SMTP_DEFAULT_PASSWORD;
+
     SMTPCheckPoller(Resource resource) {
         this.resource = resource;
     }
 
     @Override
-    public Poll poll() {
+    public Poll doPoll() {
 
-        // Set values based on the resource parameters
-        String popUsername = EmailParameterizer.EMAIL_DEFAULT_USERNAME;
-        String popPassword = EmailParameterizer.EMAIL_DEFAULT_PASSWORD;
-        String smtpUsername = SMTPParameterizer.SMTP_DEFAULT_USERNAME;
-        String smtpPassword = SMTPParameterizer.SMTP_DEFAULT_PASSWORD;
+        Poll newPoll = new Poll();
+        newPoll.setResource(resource);
+        return newPoll;
+    }
 
+    @Override
+    void setParameters() {
         for (Parameter p : resource.getParameters()) {
             switch (p.getTag()) {
                 case EmailParameterizer.EMAIL_USERNAME:
@@ -49,9 +56,5 @@ public class SMTPCheckPoller extends AbstractPoller {
                     break;
             }
         }
-
-        Poll newPoll = new Poll();
-        newPoll.setResource(resource);
-        return newPoll;
     }
 }

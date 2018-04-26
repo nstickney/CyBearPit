@@ -13,6 +13,7 @@ package is.stma.beanpoll.service;
 import is.stma.beanpoll.data.AbstractRepo;
 import is.stma.beanpoll.data.ResourceRepo;
 import is.stma.beanpoll.model.Parameter;
+import is.stma.beanpoll.model.Poll;
 import is.stma.beanpoll.model.Resource;
 import is.stma.beanpoll.rules.AbstractRules;
 import is.stma.beanpoll.rules.ResourceRules;
@@ -41,6 +42,9 @@ public class ResourceService extends AbstractService<Resource, AbstractRepo<Reso
 
     @Inject
     private ParameterService parameterService;
+
+    @Inject
+    private PollService pollService;
 
     @Override
     AbstractRepo<Resource> getRepo() {
@@ -106,9 +110,9 @@ public class ResourceService extends AbstractService<Resource, AbstractRepo<Reso
 
     /**
      * Delete a Resource. This is overridden here to delete the Resource's
-     * Parameters before the Resource itself is removed.
+     * Parameters and any existing Poll data before the Resource is removed.
      *
-     * @param entity
+     * @param entity the Resource to delete
      */
     @Override
     public void delete(Resource entity) {
@@ -117,6 +121,10 @@ public class ResourceService extends AbstractService<Resource, AbstractRepo<Reso
         List<Parameter> parameters = entity.getParameters();
         for (Parameter p : parameters) {
             parameterService.delete(p);
+        }
+        List<Poll> polls = entity.getPolls();
+        for (Poll p : polls) {
+            pollService.delete(p);
         }
         getRepo().remove(em.contains(entity) ? entity : em.merge(entity));
         getEvent().fire(entity);

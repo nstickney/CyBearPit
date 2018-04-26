@@ -151,16 +151,16 @@
                         <b:commandButton action="#{resourceController.update(_resource)}"
                                          value="Update" iconAwesome="retweet" look="info"/>
                     </b:panelGrid>
-                    <b:well style="margin-top: 1rem;"><h:form><b:panelGrid colSpans="6,6" size="sm">
+                    <b:well style="margin-top: 1rem;"><b:panelGrid colSpans="6,6" size="sm">
                         <h:outputLabel value="Clone this resource: " for="clone"/>
                         <b:commandButton action="#{resourceController.clone(_resource)}" value="Clone" id="clone"
                                          iconAwesome="copy" look="success"/>
-                    </b:panelGrid></h:form></b:well>
-                    <b:well style="margin-top: 1rem;"><h:form><b:panelGrid colSpans="6,6" size="sm">
+                    </b:panelGrid></b:well>
+                    <b:well style="margin-top: 1rem;"><b:panelGrid colSpans="6,6" size="sm">
                         <h:outputLabel value="Delete this resource: " for="delete"/>
                         <b:commandButton action="#{resourceController.delete(_resource)}" value="Delete" id="delete"
                                          iconAwesome="trash" look="danger"/>
-                    </b:panelGrid></h:form></b:well>
+                    </b:panelGrid></b:well>
                 </h:form></b:panel>
 
                 <!-- Resource parameters -->

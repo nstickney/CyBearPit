@@ -24,41 +24,19 @@ import javax.validation.ValidationException;
 
 public class EmailPoller extends AbstractPoller {
 
+    // Set values based on the resource parameters
+    private String username = EmailParameterizer.EMAIL_DEFAULT_USERNAME;
+    private String password = EmailParameterizer.EMAIL_DEFAULT_PASSWORD;
+    private String resolver = EmailParameterizer.EMAIL_DEFAULT_RESOLVER;
+    private String ssl_string = EmailParameterizer.EMAIL_DEFAULT_SSL;
+    private String tls_string = EmailParameterizer.EMAIL_DEFAULT_TLS;
+
     EmailPoller(Resource resource) {
         this.resource = resource;
     }
 
     @Override
-    public Poll poll() {
-
-        // Set values based on the resource parameters
-        String username = EmailParameterizer.EMAIL_DEFAULT_USERNAME;
-        String password = EmailParameterizer.EMAIL_DEFAULT_PASSWORD;
-        String resolver = EmailParameterizer.EMAIL_DEFAULT_RESOLVER;
-        String ssl_string = EmailParameterizer.EMAIL_DEFAULT_SSL;
-        String tls_string = EmailParameterizer.EMAIL_DEFAULT_TLS;
-
-        for (Parameter p : resource.getParameters()) {
-            switch (p.getTag()) {
-                case EmailParameterizer.EMAIL_USERNAME:
-                    username = p.getValue();
-                    break;
-                case EmailParameterizer.EMAIL_PASSWORD:
-                    password = p.getValue();
-                    break;
-                case EmailParameterizer.EMAIL_RESOLVER:
-                    resolver = p.getValue();
-                    break;
-                case EmailParameterizer.EMAIL_SSL:
-                    ssl_string = p.getValue();
-                    break;
-                case EmailParameterizer.EMAIL_TLS:
-                    tls_string = p.getValue();
-                    break;
-                default:
-                    break;
-            }
-        }
+    public Poll doPoll() {
 
         Poll newPoll = new Poll();
         newPoll.setResource(resource);
@@ -96,5 +74,31 @@ public class EmailPoller extends AbstractPoller {
         newPoll.setScore(resource.getPointValue());
         newPoll.setResults("Success");
         return newPoll;
+    }
+
+    @Override
+    void setParameters() {
+
+        for (Parameter p : resource.getParameters()) {
+            switch (p.getTag()) {
+                case EmailParameterizer.EMAIL_USERNAME:
+                    username = p.getValue();
+                    break;
+                case EmailParameterizer.EMAIL_PASSWORD:
+                    password = p.getValue();
+                    break;
+                case EmailParameterizer.EMAIL_RESOLVER:
+                    resolver = p.getValue();
+                    break;
+                case EmailParameterizer.EMAIL_SSL:
+                    ssl_string = p.getValue();
+                    break;
+                case EmailParameterizer.EMAIL_TLS:
+                    tls_string = p.getValue();
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 }

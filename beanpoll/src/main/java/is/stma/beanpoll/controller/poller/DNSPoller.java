@@ -22,74 +22,26 @@ import java.util.List;
 
 public class DNSPoller extends AbstractPoller {
 
+    // Set values based on the resource parameters
+    private String query = DNSParameterizer.DNS_DEFAULT_QUERY;
+    private String recordType = DNSParameterizer.DNS_DEFAULT_RECORD_TYPE;
+    private String tcpString = DNSParameterizer.DNS_DEFAULT_TCP;
+    private String recursiveString = DNSParameterizer.DNS_DEFAULT_RECURSIVE;
+    private String expected = DNSParameterizer.DNS_DEFAULT_EXPECTED;
+
+    private int type = Type.A;
+
+    private boolean tcp = false;
+    private boolean recursive = true;
+
     DNSPoller(Resource resource) {
         this.resource = resource;
     }
 
     @Override
-    public Poll poll() {
+    public Poll doPoll() {
 
-        // Set values based on the resource parameters
-        String query = DNSParameterizer.DNS_DEFAULT_QUERY;
-        String recordType = DNSParameterizer.DNS_DEFAULT_RECORD_TYPE;
-        String tcpString = DNSParameterizer.DNS_DEFAULT_TCP;
-        String recursiveString = DNSParameterizer.DNS_DEFAULT_RECURSIVE;
-        String expected = DNSParameterizer.DNS_DEFAULT_EXPECTED;
-
-        for (Parameter p : resource.getParameters()) {
-            switch (p.getTag()) {
-                case DNSParameterizer.DNS_QUERY:
-                    query = p.getValue();
-                    break;
-                case DNSParameterizer.DNS_RECORD_TYPE:
-                    recordType = p.getValue();
-                    break;
-                case DNSParameterizer.DNS_TCP:
-                    tcpString = p.getValue();
-                    break;
-                case DNSParameterizer.DNS_RECURSIVE:
-                    recursiveString = p.getValue();
-                    break;
-                case DNSParameterizer.DNS_EXPECTED:
-                    expected = p.getValue();
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        // Convert string parameters to typed parameters
-        int type = Type.A;
-        switch (recordType) {
-            case "AAAA":
-                type = Type.AAAA;
-                break;
-            case "CNAME":
-                type = Type.CNAME;
-                break;
-            case "DNAME":
-                type = Type.DNAME;
-                break;
-            case "MX":
-                type = Type.MX;
-                break;
-            case "NS":
-                type = Type.NS;
-                break;
-            case "PTR":
-                type = Type.PTR;
-                break;
-            case "SOA":
-                type = Type.SOA;
-                break;
-            case "TXT":
-                type = Type.TXT;
-                break;
-            default:
-                break;
-        }
-        boolean tcp = tcpString.equals(Parameter.TRUE);
-        boolean recursive = recursiveString.equals(Parameter.TRUE);
+        convertStrings();
 
         Poll newPoll = new Poll();
         newPoll.setResource(resource);
@@ -128,5 +80,70 @@ public class DNSPoller extends AbstractPoller {
             }
         }
         return newPoll;
+    }
+
+    @Override
+    void setParameters() {
+
+        for (Parameter p : resource.getParameters()) {
+            switch (p.getTag()) {
+                case DNSParameterizer.DNS_QUERY:
+                    query = p.getValue();
+                    break;
+                case DNSParameterizer.DNS_RECORD_TYPE:
+                    recordType = p.getValue();
+                    break;
+                case DNSParameterizer.DNS_TCP:
+                    tcpString = p.getValue();
+                    break;
+                case DNSParameterizer.DNS_RECURSIVE:
+                    recursiveString = p.getValue();
+                    break;
+                case DNSParameterizer.DNS_EXPECTED:
+                    expected = p.getValue();
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    /**
+     * Set the object's typed parameters from its String parameters
+     */
+    private void convertStrings() {
+
+        tcp = tcpString.equals(Parameter.TRUE);
+        recursive = recursiveString.equals(Parameter.TRUE);
+
+        switch (recordType) {
+            case "AAAA":
+                type = Type.AAAA;
+                break;
+            case "CNAME":
+                type = Type.CNAME;
+                break;
+            case "DNAME":
+                type = Type.DNAME;
+                break;
+            case "MX":
+                type = Type.MX;
+                break;
+            case "NS":
+                type = Type.NS;
+                break;
+            case "PTR":
+                type = Type.PTR;
+                break;
+            case "SOA":
+                type = Type.SOA;
+                break;
+            case "TXT":
+                type = Type.TXT;
+                break;
+            default:
+                break;
+        }
+
     }
 }

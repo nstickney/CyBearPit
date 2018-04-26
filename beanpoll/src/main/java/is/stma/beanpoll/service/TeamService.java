@@ -12,6 +12,7 @@ package is.stma.beanpoll.service;
 
 import is.stma.beanpoll.data.AbstractRepo;
 import is.stma.beanpoll.data.TeamRepo;
+import is.stma.beanpoll.model.Poll;
 import is.stma.beanpoll.model.Team;
 import is.stma.beanpoll.model.User;
 import is.stma.beanpoll.rules.AbstractRules;
@@ -38,6 +39,9 @@ public class TeamService extends AbstractService<Team, AbstractRepo<Team>,
 
     @Inject
     private TeamRules rules;
+
+    @Inject
+    private PollService pollService;
 
     @Inject
     private UserService userService;
@@ -98,7 +102,7 @@ public class TeamService extends AbstractService<Team, AbstractRepo<Team>,
 
     /**
      * This is overridden here from AbstractService in order to delete team
-     * users before the team is removed.
+     * users and any existing Polls before the team is removed.
      *
      * @param entity Team to delete
      * @throws ValidationException if the Team cannot be deleted
@@ -110,6 +114,10 @@ public class TeamService extends AbstractService<Team, AbstractRepo<Team>,
         List<User> users = userService.getByTeam(entity);
         for (User u : users) {
             userService.delete(u);
+        }
+        List<Poll> polls = entity.getPolls();
+        for (Poll p : polls) {
+            pollService.delete(p);
         }
         getRepo().remove(em.contains(entity) ? entity : em.merge(entity));
         getEvent().fire(entity);

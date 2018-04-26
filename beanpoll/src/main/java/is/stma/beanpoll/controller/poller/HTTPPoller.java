@@ -24,23 +24,16 @@ import java.util.List;
 
 public class HTTPPoller extends AbstractPoller {
 
+    // Set values based on the resource parameters
+    private String resolver = HTTPParameterizer.HTTP_DEFAULT_RESOLVER;
+    private String expected = HTTPParameterizer.HTTP_DEFAULT_EXPECTED;
+
     HTTPPoller(Resource resource) {
         this.resource = resource;
     }
 
     @Override
-    public Poll poll() {
-
-        // Set values based on the resource parameters
-        String resolver = HTTPParameterizer.HTTP_DEFAULT_RESOLVER;
-        String expected = HTTPParameterizer.HTTP_DEFAULT_EXPECTED;
-        for (Parameter p : resource.getParameters()) {
-            if (HTTPParameterizer.HTTP_RESOLVER.equals(p.getTag())) {
-                resolver = p.getValue();
-            } else if (HTTPParameterizer.HTTP_EXPECTED.equals(p.getTag())) {
-                expected = p.getValue();
-            }
-        }
+    public Poll doPoll() {
 
         Poll newPoll = new Poll();
         newPoll.setResource(resource);
@@ -80,5 +73,16 @@ public class HTTPPoller extends AbstractPoller {
         }
 
         return newPoll;
+    }
+
+    @Override
+    void setParameters() {
+        for (Parameter p : resource.getParameters()) {
+            if (HTTPParameterizer.HTTP_RESOLVER.equals(p.getTag())) {
+                resolver = p.getValue();
+            } else if (HTTPParameterizer.HTTP_EXPECTED.equals(p.getTag())) {
+                expected = p.getValue();
+            }
+        }
     }
 }

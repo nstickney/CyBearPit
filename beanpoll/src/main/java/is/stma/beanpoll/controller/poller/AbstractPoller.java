@@ -21,7 +21,13 @@ public abstract class AbstractPoller {
 
     Resource resource;
 
-    public abstract Poll poll();
+    public Poll poll() {
+        setParameters();
+        return doPoll();
+    }
+
+    abstract void setParameters();
+    public abstract Poll doPoll();
 
     List<Team> checkTeams(List<Team> resourceTeams, String response) {
         List<Team> foundTeams = new ArrayList<>();

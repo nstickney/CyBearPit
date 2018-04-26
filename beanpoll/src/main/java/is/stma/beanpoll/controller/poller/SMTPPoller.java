@@ -22,49 +22,23 @@ import java.util.UUID;
 
 public class SMTPPoller extends AbstractPoller {
 
+    // Set values based on the resource parameters
+    private String username = SMTPParameterizer.SMTP_DEFAULT_USERNAME;
+    private String password = SMTPParameterizer.SMTP_DEFAULT_PASSWORD;
+    private String recipient = SMTPParameterizer.SMTP_DEFAULT_RECIPIENT;
+    private String ssl_string = SMTPParameterizer.SMTP_DEFAULT_SSL;
+    private String tls_string = SMTPParameterizer.SMTP_DEFAULT_TLS;
+    private String test_auth = SMTPParameterizer.SMTP_DEFAULT_TEST_AUTH;
+    private String resolver = SMTPParameterizer.SMTP_DEFAULT_RESOLVER;
+
     SMTPPoller(Resource resource) {
         this.resource = resource;
     }
 
     @Override
-    public Poll poll() {
+    public Poll doPoll() {
 
-        // Set values based on the resource parameters
-        String username = SMTPParameterizer.SMTP_DEFAULT_USERNAME;
-        String password = SMTPParameterizer.SMTP_DEFAULT_PASSWORD;
-        String recipient = SMTPParameterizer.SMTP_DEFAULT_RECIPIENT;
-        String ssl_string = SMTPParameterizer.SMTP_DEFAULT_SSL;
-        String tls_string = SMTPParameterizer.SMTP_DEFAULT_TLS;
-        String test_auth = SMTPParameterizer.SMTP_DEFAULT_TEST_AUTH;
-        String resolver = SMTPParameterizer.SMTP_DEFAULT_RESOLVER;
-
-        for (Parameter p : resource.getParameters()) {
-            switch (p.getTag()) {
-                case SMTPParameterizer.SMTP_USERNAME:
-                    username = p.getValue();
-                    break;
-                case SMTPParameterizer.SMTP_PASSWORD:
-                    password = p.getValue();
-                    break;
-                case SMTPParameterizer.SMTP_RECIPIENT:
-                    recipient = p.getValue();
-                    break;
-                case SMTPParameterizer.SMTP_SSL:
-                    ssl_string = p.getValue();
-                    break;
-                case SMTPParameterizer.SMTP_TLS:
-                    tls_string = p.getValue();
-                    break;
-                case SMTPParameterizer.SMTP_TEST_AUTH:
-                    test_auth = p.getValue();
-                    break;
-                case SMTPParameterizer.SMTP_RESOLVER:
-                    resolver = p.getValue();
-                    break;
-                default:
-                    break;
-            }
-        }
+        setParameters();
 
         Poll newPoll = new Poll();
         newPoll.setResource(resource);
@@ -115,5 +89,36 @@ public class SMTPPoller extends AbstractPoller {
         newPoll.setScore(resource.getPointValue());
         newPoll.setResults("Success" + results);
         return newPoll;
+    }
+
+    @Override
+    void setParameters() {
+        for (Parameter p : resource.getParameters()) {
+            switch (p.getTag()) {
+                case SMTPParameterizer.SMTP_USERNAME:
+                    username = p.getValue();
+                    break;
+                case SMTPParameterizer.SMTP_PASSWORD:
+                    password = p.getValue();
+                    break;
+                case SMTPParameterizer.SMTP_RECIPIENT:
+                    recipient = p.getValue();
+                    break;
+                case SMTPParameterizer.SMTP_SSL:
+                    ssl_string = p.getValue();
+                    break;
+                case SMTPParameterizer.SMTP_TLS:
+                    tls_string = p.getValue();
+                    break;
+                case SMTPParameterizer.SMTP_TEST_AUTH:
+                    test_auth = p.getValue();
+                    break;
+                case SMTPParameterizer.SMTP_RESOLVER:
+                    resolver = p.getValue();
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 }

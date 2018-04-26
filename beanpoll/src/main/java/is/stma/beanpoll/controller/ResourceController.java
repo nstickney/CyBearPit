@@ -30,9 +30,6 @@ public class ResourceController extends AbstractEntityController<Resource, Resou
     @Inject
     private ResourceService service;
 
-    @Inject
-    private ParameterController parameterController;
-
     private Resource newResource;
 
     private Team addThisTeam;
