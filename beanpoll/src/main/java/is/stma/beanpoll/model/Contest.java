@@ -32,6 +32,9 @@ public class Contest extends AbstractEntity {
     @Column
     private LocalDateTime ends;
 
+    @Column
+    private int pollingInterval = 60;
+
     @Column(nullable = false)
     private boolean running = false;
 
@@ -94,6 +97,14 @@ public class Contest extends AbstractEntity {
 
     public void setEnds(LocalDateTime end) {
         this.ends = end;
+    }
+
+    public int getPollingInterval() {
+        return pollingInterval;
+    }
+
+    public void setPollingInterval(int pollingInterval) {
+        this.pollingInterval = pollingInterval;
     }
 
     public boolean isRunning() {

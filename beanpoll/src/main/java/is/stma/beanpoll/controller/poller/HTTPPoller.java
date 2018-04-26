@@ -34,9 +34,12 @@ public class HTTPPoller extends AbstractPoller {
 
         // Set values based on the resource parameters
         String resolver = HTTPParameterizer.HTTP_DEFAULT_RESOLVER;
+        String expected = HTTPParameterizer.HTTP_DEFAULT_EXPECTED;
         for (Parameter p : resource.getParameters()) {
             if (HTTPParameterizer.HTTP_RESOLVER.equals(p.getTag())) {
                 resolver = p.getValue();
+            } else if (HTTPParameterizer.HTTP_EXPECTED.equals(p.getTag())) {
+                expected = p.getValue();
             }
         }
 
@@ -54,6 +57,10 @@ public class HTTPPoller extends AbstractPoller {
 
         // Find the results
         newPoll.setResults(HTTPUtility.get(address, resource.getPort(), resource.getTimeout()));
+
+        if (!newPoll.getResults().contains(expected)) {
+            return newPoll;
+        }
 
         // Credit a team
         List<Team> teams = resource.getTeams().isEmpty() ? resource.getContest().getTeams() : resource.getTeams();

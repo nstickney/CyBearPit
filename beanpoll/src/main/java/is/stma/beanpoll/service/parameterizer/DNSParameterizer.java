@@ -27,7 +27,7 @@ public class DNSParameterizer {
     // DNS default value strings
     public static final String DNS_DEFAULT_QUERY = "baylor.edu";
     public static final String DNS_DEFAULT_RECORD_TYPE = "A";
-    public static final String DNS_DEFAULT_TCP = Parameter.TRUE;
+    public static final String DNS_DEFAULT_TCP = Parameter.FALSE;
     public static final String DNS_DEFAULT_RECURSIVE = Parameter.FALSE;
     public static final String DNS_DEFAULT_EXPECTED = "129.62.3.230";
 

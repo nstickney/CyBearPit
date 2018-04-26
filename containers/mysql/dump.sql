@@ -114,6 +114,7 @@ CREATE TABLE `Contest` (
   `enabled` bit(1) NOT NULL,
   `ends` datetime DEFAULT NULL,
   `name` varchar(255) NOT NULL,
+  `pollingInterval` int(11) DEFAULT NULL,
   `running` bit(1) NOT NULL,
   `starts` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -127,7 +128,7 @@ CREATE TABLE `Contest` (
 
 LOCK TABLES `Contest` WRITE;
 /*!40000 ALTER TABLE `Contest` DISABLE KEYS */;
-INSERT INTO `Contest` VALUES ('a51c930e-ea6a-4c27-8764-06ee921dca3b','\0','2018-05-31 18:00:00','TestContest','\0','2018-01-01 08:00:00');
+INSERT INTO `Contest` VALUES ('a51c930e-ea6a-4c27-8764-06ee921dca3b','\0','2018-05-31 18:00:00','TestContest',60,'\0','2018-01-01 08:00:00');
 /*!40000 ALTER TABLE `Contest` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -418,4 +419,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-04-24 16:36:48
+-- Dump completed on 2018-04-25 22:05:01

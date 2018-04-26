@@ -15,7 +15,7 @@ import is.stma.beanpoll.data.PollRepo;
 import is.stma.beanpoll.model.*;
 import is.stma.beanpoll.rules.PollRules;
 import is.stma.beanpoll.service.*;
-import is.stma.beanpoll.service.parameterizer.POPParameterizer;
+import is.stma.beanpoll.service.parameterizer.EmailParameterizer;
 import is.stma.beanpoll.util.EMProducer;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RunWith(Arquillian.class)
-public class POPPollerTest {
+public class EmailPollerTest {
 
     @Inject
     private ContestService contestService;
@@ -63,12 +63,12 @@ public class POPPollerTest {
         File[] files = Maven.resolver().loadPomFromFile("pom.xml")
                 .importRuntimeDependencies().resolve().withTransitivity().asFile();
 
-        return ShrinkWrap.create(WebArchive.class, "POPPollerTest.war")
+        return ShrinkWrap.create(WebArchive.class, "EmailPollerTest.war")
                 .addPackages(true, Poll.class.getPackage(),
                         PollRepo.class.getPackage(),
                         PollService.class.getPackage(),
                         PollRules.class.getPackage(),
-                        POPParameterizer.class.getPackage(),
+                        EmailParameterizer.class.getPackage(),
                         AbstractPoller.class.getPackage(),
                         EMProducer.class.getPackage())
                 .addClass(TestUtility.class)

@@ -15,24 +15,31 @@ import is.stma.beanpoll.model.Parameter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class POPParameterizer {
+public class EmailParameterizer {
 
-    // POP tag strings
-    public static final String POP_USERNAME = "POP_USERNAME";
-    public static final String POP_PASSWORD = "POP_PASSWORD";
-    public static final String POP_RESOLVER = "POP_RESOLVER";
+    // EMAIL tag strings
+    public static final String EMAIL_USERNAME = "EMAIL_USERNAME";
+    public static final String EMAIL_PASSWORD = "EMAIL_PASSWORD";
+    public static final String EMAIL_RESOLVER = "EMAIL_RESOLVER";
+    public static final String EMAIL_SSL = "EMAIL_SSL";
+    public static final String EMAIL_TLS = "EMAIL_TLS";
 
-    // POP default value strings
-    public static final String POP_DEFAULT_USERNAME = "nobody";
-    public static final String POP_DEFAULT_PASSWORD = "nothing";
-    public static final String POP_DEFAULT_RESOLVER = null;
+    // EMAIL default value strings
+    public static final String EMAIL_DEFAULT_USERNAME = "nobody";
+    public static final String EMAIL_DEFAULT_PASSWORD = "nothing";
+    public static final String EMAIL_DEFAULT_RESOLVER = null;
+    public static final String EMAIL_DEFAULT_SSL = Parameter.FALSE;
+    public static final String EMAIL_DEFAULT_TLS = Parameter.FALSE;
+
 
 
     public static List<Parameter> createParameters() {
         List<Parameter> parameters = new ArrayList<>();
-        parameters.add(new Parameter(POP_USERNAME, POP_DEFAULT_USERNAME));
-        parameters.add(new Parameter(POP_PASSWORD, POP_DEFAULT_PASSWORD));
-        parameters.add(new Parameter(POP_RESOLVER, POP_DEFAULT_RESOLVER));
+        parameters.add(new Parameter(EMAIL_USERNAME, EMAIL_DEFAULT_USERNAME));
+        parameters.add(new Parameter(EMAIL_PASSWORD, EMAIL_DEFAULT_PASSWORD));
+        parameters.add(new Parameter(EMAIL_RESOLVER, EMAIL_DEFAULT_RESOLVER));
+        parameters.add(new Parameter(EMAIL_SSL, EMAIL_DEFAULT_SSL));
+        parameters.add(new Parameter(EMAIL_TLS, EMAIL_DEFAULT_TLS));
         return parameters;
     }
 

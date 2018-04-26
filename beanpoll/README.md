@@ -79,13 +79,13 @@ module add --name=com.mysql --resources=/opt/jboss/wildfly/mysql-connector-java-
 data-source add --name=$beanpoll_DB --driver-name=mysql --jndi-name=$beanpoll_DS --connection-url=jdbc:mysql://$DB_HOST:$DB_PORT/$beanpoll_DB --user-name=$DB_USER --password=$DB_PWD
 ```
 
-Once you have tested your JDBC connection to beanpollDS, you can deploy the root.war by adding it to the `$JBOSS_HOME/wildfly/standalone/deployments/` directory of your Wild**Fly** installation, or deploy it through the web interface.
+Once you have tested your JDBC connection to beanpollDS, you can deploy `ROOT.war` by adding it to the `$JBOSS_HOME/wildfly/standalone/deployments/` directory of your Wild**Fly** installation, or deploy it through the web interface.
 
 ### Building Tests
 
 From the `CyBearPit/beanpoll` directory, you can use `mvn spotbugs:spotbugs` to check the code for errors, and `./runTests.sh` will build and run the Arquillian/JUnit tests in a purpose-built Docker container with an H2 datasource included. You can pass the class name of the test you want to run (e.g. `./runTests.sh SMTPUtilityTest`). It is preferred to run the tests this way, since the test server will not currently allow enough deployments for all the tests to run together.
 
-Please note that EmailUtilityTest and the email poller tests require access to an email address... not giving out the password. Sorry. You'll need to set them up with an email account you have access to - and remember not to commit the password!
+Please note that EmailUtilityTest and the email poller tests require access to an email address... not giving out the password. Sorry. You'll need to set them up with an email account you have access to — and remember not to commit the password!
 
 ## Usage
 
@@ -95,7 +95,65 @@ All functionality of BeanPoll is available from the web interface. Once the appl
 
 The screenshot above shows the BeanPoll user interface for administrative and judge users. The top navigation bar contains a link to the scoreboard page (`index.xhtml`), marked "BeanPoll", in the upper left. In the upper right are three links: "Controls", "Judging", and "beanpoll". "beanpoll" is the currently logged in user (both an administrator and a judge). Clicking that link takes the user to their account page. The "Judging" link is only available to judge users; it takes the user to a page (`grading.xhtml`) where they can view and enter scores and comments for task responses and incident reports. The "Controls" drop-down menu is only visible to administrative users; it contains options to manage Contests, Announcements, Capturables, Resources, Tasks, Teams, and Users.
 
-On each of the admin pages just listed, there is an option, highlighted in light blue, to create a new instance. Below the creation panel is a color key, and below the color key a list of existing instances which can be upodated or deleted; in the case of Contests, this is where an administrative user can schedule, start, and stop them.
+On each of the admin pages just listed, there is an option, highlighted in light blue, to create a new instance. Below the creation panel is a color key, and below the color key a list of existing instances which can be updated or deleted; in the case of Contests, this is where an administrative user can schedule, start, and stop them.
+
+### Poller Parameters
+
+Each ResourceType corresponds to a type of server that will be scored. The system automatically generates a set of all possible parameters for a service when a Resource is created, replaces them if the ResourceType is changed, and deletes them if the Resource is deleted. You can investigate the way Parameters are used by reading through the corresponding Poller implementations; they are also listed below.
+
+#### DNS Resource
+
+A DNS Resource is a Domain Name Server. The Poller does a lookup for the specified query (`DNS_QUERY`) against the specified server (`addresss`), for the specified record type (`DNS_RECORD_TYPE`) . If the response contains the expected value (`DNS_EXPECTED`), then the check passes. If exactly one Team is assigned to the Resource, the Poll is awarded to that Team. Otherwise, a second DNS request is made to the same server, for the same query, for `TXT` records, which are then matched to Team flags (either all Teams assigned to the Resource, or all Teams in Contest if none is assigned). If exactly one Team flag matches, that Team is awarded the Poll. Otherwise, the Poll scores zero points and is not awarded to any Team.
+
+| Tag | Use | Default |
+|:---:|:---:|:---:|
+| DNS_QUERY | What host to ask the server to resolve | `baylor.edu` |
+| DNS_RECORD_TYPE | Type of record to ask for | `A` |
+| DNS_TCP | Whether to use TCP | `false` |
+| DNS_RECURSIVE | Whether to request recursion | `false` |
+| DNS_EXPECTED | Correct response for DNS_QUERY | `129.62.3.230` |
+
+#### HTTP Resource
+
+An HTTP Resource is an HTTP or HTTPS server. If a DNS server is specified (`HTTP_RESOLVER`), it is used to resolve the given server (`address`), otherwise the system's DNS resolution defaults are used. The Poller then does a request to the specified resolver on its resolved address. If the response contains the expected string (`HTTP_EXPECTED`), then the check passes. If exactly one Team is assigned to the Resource, that Team is awarded the Poll. Otherwise, the response is searched for all Team flags (either all Teams assigned to the Resource, or all Teams in Contest if none is assigned). If exactly one Team flag is found in the Response, that Team is awarded the Poll. Otherwise, the Poll scores zero points and is not awarded to any Team.
+
+| Tag | Use | Default |
+|:---:|:---:|:---:|
+| HTTP_RESOLVER | (Optional) DNS server to resolve the HTTP server address | `null` |
+| HTTP_EXPECTED | String expected to be found in the page | `Baylor` |
+
+#### IMAP/POP Resource
+
+**Note that IMAP and POP Resources MUST be assigned to exactly one Team!**
+
+An IMAP or POP Resource is an IMAP or POP email server, respectively. If a DNS server is specified (`EMAIL_RESOLVER`), it is used to resolve the given server (`address`), otherwise the system's DNS resolution defaults are used. The Poller then attempts to connect to that server and download all email. If the connection and download are successful, the check passes, and the Poll scores the point value of the Resource. The Poll is always awarded to the assigned Team; if the Resource is not assigned exactly one Team, the check is not performed, the Poll scores zero points, and it is not awarded to any Team.
+
+| Tag | Use | Default |
+|:---:|:---:|:---:|
+| EMAIL_RESOLVER | (Optional) DNS server to resolve the EMAIL server address | `null` |
+| EMAIL_USERNAME | Username to log in and check mail with | `null` |
+| EMAIL_PASSWORD | Password for EMAIL_USERNAME | `null` |
+| EMAIL_SSL | Use SSL/TLS to make the EMAIL connection | `false` |
+| EMAIL_TLS | Use StartTLS before authenticating | `false` |
+
+#### SMTP Resource
+
+**Note that SMTP, SMTP_IMAP, and SMTP_POP Resources MUST be assigned to exactly one Team!**
+
+An SMTP Resource is an SMTP email server, respectively. If a DNS server is specified (`EMAIL_RESOLVER`), it is used to resolve the given server (`address`), otherwise the system's DNS resolution defaults are used. The Poller then attempts to connect to that server and send an email with a randomly-generated subject and message. If the connection and sending are successful, the check passes, and the Poll scores the point value of the Resource. The Poll is always awarded to the assigned Team; if the Resource is not assigned exactly one Team, the check is not performed, the Poll scores zero points, and it is not awarded to any Team.
+
+If the Resource is an SMTP_IMAP or SMTP_POP Resource, the Poll is not scored until 
+
+| Tag | Use | Default |
+|:---:|:---:|:---:|
+| SMTP_RESOLVER | (Optional) DNS server to resolve the SMTP server address | `null` |
+| SMTP_USERNAME | Username to log in and send mail with | `null` |
+| SMTP_PASSWORD | Password for SMTP_USERNAME | `null` |
+| SMTP_SSL | Use SSL/TLS to make the SMTP connection | `false` |
+| SMTP_TLS | Use StartTLS before authenticating | `false` |
+| SMTP_TEST_AUTH | Whether the poller should check to ensure the server isn't just accepting any incoming mail, without authentication | `true` |
+
+Note that SMTP_IMAP and SMTP_POP Resources will simply use a combination of EMAIL and SMTP Parameters.
 
 ## API
 

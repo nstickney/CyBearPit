@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RunWith(Arquillian.class)
-public class SMTPPOPPollerTest {
+public class SMTPCheckPollerTest {
 
     @Inject
     private ContestService contestService;
@@ -63,7 +63,7 @@ public class SMTPPOPPollerTest {
         File[] files = Maven.resolver().loadPomFromFile("pom.xml")
                 .importRuntimeDependencies().resolve().withTransitivity().asFile();
 
-        return ShrinkWrap.create(WebArchive.class, "SMTPPOPPollerTest.war")
+        return ShrinkWrap.create(WebArchive.class, "SMTPCheckPollerTest.war")
                 .addPackages(true, Poll.class.getPackage(),
                         PollRepo.class.getPackage(),
                         PollService.class.getPackage(),

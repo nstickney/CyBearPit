@@ -13,12 +13,11 @@ package is.stma.beanpoll.controller.poller;
 import is.stma.beanpoll.model.Parameter;
 import is.stma.beanpoll.model.Poll;
 import is.stma.beanpoll.model.Resource;
-import is.stma.beanpoll.service.parameterizer.POPParameterizer;
-import is.stma.beanpoll.service.parameterizer.SMTPParameterizer;
+import is.stma.beanpoll.service.parameterizer.EmailParameterizer;
 
-public class SMTPPOPPoller extends AbstractPoller {
+public class EmailPoller extends AbstractPoller {
 
-    SMTPPOPPoller(Resource resource) {
+    EmailPoller(Resource resource) {
         this.resource = resource;
     }
 
@@ -26,24 +25,16 @@ public class SMTPPOPPoller extends AbstractPoller {
     public Poll poll() {
 
         // Set values based on the resource parameters
-        String popUsername = POPParameterizer.POP_DEFAULT_USERNAME;
-        String popPassword = POPParameterizer.POP_DEFAULT_PASSWORD;
-        String smtpUsername = SMTPParameterizer.SMTP_DEFAULT_USERNAME;
-        String smtpPassword = SMTPParameterizer.SMTP_DEFAULT_PASSWORD;
+        String username = EmailParameterizer.EMAIL_DEFAULT_USERNAME;
+        String password = EmailParameterizer.EMAIL_DEFAULT_PASSWORD;
 
         for (Parameter p : resource.getParameters()) {
             switch (p.getTag()) {
-                case POPParameterizer.POP_USERNAME:
-                    popUsername = p.getValue();
+                case EmailParameterizer.EMAIL_USERNAME:
+                    username = p.getValue();
                     break;
-                case POPParameterizer.POP_PASSWORD:
-                    popPassword = p.getValue();
-                    break;
-                case SMTPParameterizer.SMTP_USERNAME:
-                    smtpUsername = p.getValue();
-                    break;
-                case SMTPParameterizer.SMTP_PASSWORD:
-                    smtpPassword = p.getValue();
+                case EmailParameterizer.EMAIL_PASSWORD:
+                    password = p.getValue();
                     break;
                 default:
                     break;

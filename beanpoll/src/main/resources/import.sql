@@ -9,7 +9,7 @@ INSERT INTO User (id, admin, judge, name, salt, secret, team_id) VALUES ('UBA', 
 INSERT INTO User (id, admin, judge, name, salt, secret, team_id) VALUES ('UBJ', false, true, 'beanjudge', 'b7cb9d0b-bdd1-41f7-ba03-702462f129a3', '$argon2id$v=19$m=1024,t=2,p=2$6JmQTLgp2EwfJ/10htuLWw$vvn79tSS5RdaZSCZV9oaZybaDm5BcYXR3RDthUufH9U', NULL);
 
 -- TestContest
-INSERT INTO Contest (id, enabled, ends, name, running, starts) VALUES ('a51c930e-ea6a-4c27-8764-06ee921dca3b', false, '2018-05-31 18:00:00', 'TestContest', false, '2018-01-01 08:00:00');
+INSERT INTO Contest (id, enabled, ends, name, running, starts, pollingInterval) VALUES ('a51c930e-ea6a-4c27-8764-06ee921dca3b', false, '2018-05-31 18:00:00', 'TestContest', false, '2018-01-01 08:00:00', 60);
 
 -- TestTeam
 INSERT INTO Team (id, flag, name, contest_id) VALUES ('744dce04-1126-4d65-a2f9-daebb8cfec5b', 'BONUSPOINTS', 'TestTeam', 'a51c930e-ea6a-4c27-8764-06ee921dca3b');

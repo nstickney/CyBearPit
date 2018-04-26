@@ -12,6 +12,8 @@ package is.stma.beanpoll.controller.poller;
 
 import is.stma.beanpoll.model.Resource;
 
+import javax.validation.ValidationException;
+
 public class PollerFactory {
 
     public static AbstractPoller getPoller(Resource resource) {
@@ -21,13 +23,17 @@ public class PollerFactory {
             case HTTP:
                 return new HTTPPoller(resource);
             case POP:
-                return new POPPoller(resource);
+                return new EmailPoller(resource);
+            case IMAP:
+                return new EmailPoller(resource);
             case SMTP:
                 return new SMTPPoller(resource);
+            case SMTP_IMAP:
+                return new SMTPCheckPoller(resource);
             case SMTP_POP:
-                return new SMTPPOPPoller(resource);
+                return new SMTPCheckPoller(resource);
             default:
-                return new HTTPPoller(resource);
+                throw new ValidationException("unknown resource type " + resource.getType());
         }
     }
 

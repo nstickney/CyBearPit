@@ -26,8 +26,6 @@ import java.util.logging.Logger;
 
 public class JudgeCallable implements Callable<String> {
 
-    private static final int POLLING_INTERVAL = 5;
-
     private Contest contest;
     private ContestService contestService;
     private PollService pollService;
@@ -85,7 +83,7 @@ public class JudgeCallable implements Callable<String> {
 
             // Wait one polling interval
             try {
-                Thread.sleep(TimeUnit.SECONDS.toMillis(POLLING_INTERVAL));
+                Thread.sleep(TimeUnit.SECONDS.toMillis(contest.getPollingInterval()));
             } catch (Exception e) {
                 log.log(Level.WARNING, contest.getLogName() + ": Polling interrupted");
             }
@@ -105,13 +103,15 @@ public class JudgeCallable implements Callable<String> {
         log.log(Level.INFO, "Polling " + contest.getLogName());
 
         // Check each competition resource
-        for (Resource r : contest.getResources()) {
-            AbstractPoller poller = PollerFactory.getPoller(r);
-            Poll thisPoll = poller.poll();
-            log.log(Level.INFO, thisPoll.getName());
-            pollService.create(thisPoll);
-        }
+        contest.getResources().stream().parallel().forEach(this::doResourcePoll);
 
         log.log(Level.INFO, "Poll complete for " + contest.getLogName());
+    }
+
+    private void doResourcePoll(Resource resource) {
+        AbstractPoller poller = PollerFactory.getPoller(resource);
+        Poll thisPoll = poller.poll();
+        log.log(Level.INFO, thisPoll.getName());
+        pollService.create(thisPoll);
     }
 }

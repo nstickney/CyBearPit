@@ -19,13 +19,16 @@ public class HTTPParameterizer {
 
     // DNS tag strings
     public static final String HTTP_RESOLVER = "HTTP_RESOLVER";
+    public static final String HTTP_EXPECTED = "HTTP_EXPECTED";
 
     // DNS default value strings
     public static final String HTTP_DEFAULT_RESOLVER = null;
+    public static final String HTTP_DEFAULT_EXPECTED = "</head>";
 
     public static List<Parameter> createParameters() {
         List<Parameter> parameters = new ArrayList<>();
         parameters.add(new Parameter(HTTP_RESOLVER, HTTP_DEFAULT_RESOLVER));
+        parameters.add(new Parameter(HTTP_EXPECTED, HTTP_DEFAULT_EXPECTED));
         return parameters;
     }
 

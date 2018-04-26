@@ -21,11 +21,17 @@ public class SMTPParameterizer {
     public static final String SMTP_USERNAME = "SMTP_USERNAME";
     public static final String SMTP_PASSWORD = "SMTP_PASSWORD";
     public static final String SMTP_RESOLVER = "SMTP_RESOLVER";
+    public static final String SMTP_SSL = "SMTP_SSL";
+    public static final String SMTP_TLS = "SMTP_TLS";
+    public static final String SMTP_TEST_AUTH = "SMTP_TEST_AUTH";
 
     // SMTP default value strings
     public static final String SMTP_DEFAULT_USERNAME = "nobody";
     public static final String SMTP_DEFAULT_PASSWORD = "nothing";
     public static final String SMTP_DEFAULT_RESOLVER = null;
+    public static final String SMTP_DEFAULT_SSL = Parameter.FALSE;
+    public static final String SMTP_DEFAULT_TLS = Parameter.FALSE;
+    public static final String SMTP_DEFAULT_TEST_AUTH = Parameter.TRUE;
 
 
     public static List<Parameter> createParameters() {
@@ -33,6 +39,9 @@ public class SMTPParameterizer {
         parameters.add(new Parameter(SMTP_USERNAME, SMTP_DEFAULT_USERNAME));
         parameters.add(new Parameter(SMTP_PASSWORD, SMTP_DEFAULT_PASSWORD));
         parameters.add(new Parameter(SMTP_RESOLVER, SMTP_DEFAULT_RESOLVER));
+        parameters.add(new Parameter(SMTP_SSL, SMTP_DEFAULT_SSL));
+        parameters.add(new Parameter(SMTP_TLS, SMTP_DEFAULT_TLS));
+        parameters.add(new Parameter(SMTP_TEST_AUTH, SMTP_DEFAULT_TEST_AUTH));
         return parameters;
     }
 
