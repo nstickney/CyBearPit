@@ -15,29 +15,19 @@ import is.stma.beanpoll.model.Parameter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EmailParameterizer {
+public class SMTPCHECKParameterizer {
 
-    // EMAIL tag strings
-    public static final String EMAIL_USERNAME = "EMAIL_USERNAME";
-    public static final String EMAIL_PASSWORD = "EMAIL_PASSWORD";
-    public static final String EMAIL_RESOLVER = "EMAIL_RESOLVER";
-    public static final String EMAIL_SSL = "EMAIL_SSL";
-    public static final String EMAIL_TLS = "EMAIL_TLS";
+    // SMTPCHECK tag strings
+    public static final String SMTPCHECK_HOST = "SMTPCHECK_HOST";
 
-    // EMAIL default value strings
-    public static final String EMAIL_DEFAULT_USERNAME = "beanpoll@yandex.com";
-    public static final String EMAIL_DEFAULT_PASSWORD = "NOT_MY_PASSWORD";
-    public static final String EMAIL_DEFAULT_RESOLVER = null;
-    public static final String EMAIL_DEFAULT_SSL = Parameter.TRUE;
-    public static final String EMAIL_DEFAULT_TLS = Parameter.FALSE;
+    // SMTPCHECK default value strings
+    public static final String SMTPCHECK_DEFAULT_HOST = null;
 
     public static List<Parameter> createParameters() {
         List<Parameter> parameters = new ArrayList<>();
-        parameters.add(new Parameter(EMAIL_USERNAME, EMAIL_DEFAULT_USERNAME));
-        parameters.add(new Parameter(EMAIL_PASSWORD, EMAIL_DEFAULT_PASSWORD));
-        parameters.add(new Parameter(EMAIL_RESOLVER, EMAIL_DEFAULT_RESOLVER));
-        parameters.add(new Parameter(EMAIL_SSL, EMAIL_DEFAULT_SSL));
-        parameters.add(new Parameter(EMAIL_TLS, EMAIL_DEFAULT_TLS));
+        parameters.add(new Parameter(SMTPCHECK_HOST, SMTPCHECK_DEFAULT_HOST));
+        parameters.addAll(EmailParameterizer.createParameters());
+        parameters.addAll(SMTPParameterizer.createParameters());
         return parameters;
     }
 

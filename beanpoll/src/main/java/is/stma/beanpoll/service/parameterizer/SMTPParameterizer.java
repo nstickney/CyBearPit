@@ -20,28 +20,29 @@ public class SMTPParameterizer {
     // SMTP tag strings
     public static final String SMTP_USERNAME = "SMTP_USERNAME";
     public static final String SMTP_PASSWORD = "SMTP_PASSWORD";
-    public static final String SMTP_RESOLVER = "SMTP_RESOLVER";
+    public static final String SMTP_RECIPIENT = "SMTP_RECIPIENT";
     public static final String SMTP_SSL = "SMTP_SSL";
     public static final String SMTP_TLS = "SMTP_TLS";
     public static final String SMTP_TEST_AUTH = "SMTP_TEST_AUTH";
+    public static final String SMTP_RESOLVER = "SMTP_RESOLVER";
 
     // SMTP default value strings
-    public static final String SMTP_DEFAULT_USERNAME = "nobody";
-    public static final String SMTP_DEFAULT_PASSWORD = "nothing";
-    public static final String SMTP_DEFAULT_RESOLVER = null;
+    public static final String SMTP_DEFAULT_USERNAME = "beanpoll@yandex.com";
+    public static final String SMTP_DEFAULT_PASSWORD = "NOT_MY_PASSWORD";
+    public static final String SMTP_DEFAULT_RECIPIENT = "beanpoll@yandex.com";
     public static final String SMTP_DEFAULT_SSL = Parameter.FALSE;
     public static final String SMTP_DEFAULT_TLS = Parameter.FALSE;
     public static final String SMTP_DEFAULT_TEST_AUTH = Parameter.TRUE;
-
+    public static final String SMTP_DEFAULT_RESOLVER = null;
 
     public static List<Parameter> createParameters() {
         List<Parameter> parameters = new ArrayList<>();
         parameters.add(new Parameter(SMTP_USERNAME, SMTP_DEFAULT_USERNAME));
         parameters.add(new Parameter(SMTP_PASSWORD, SMTP_DEFAULT_PASSWORD));
-        parameters.add(new Parameter(SMTP_RESOLVER, SMTP_DEFAULT_RESOLVER));
         parameters.add(new Parameter(SMTP_SSL, SMTP_DEFAULT_SSL));
         parameters.add(new Parameter(SMTP_TLS, SMTP_DEFAULT_TLS));
         parameters.add(new Parameter(SMTP_TEST_AUTH, SMTP_DEFAULT_TEST_AUTH));
+        parameters.add(new Parameter(SMTP_RESOLVER, SMTP_DEFAULT_RESOLVER));
         return parameters;
     }
 

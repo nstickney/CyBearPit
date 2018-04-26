@@ -13,7 +13,14 @@ package is.stma.beanpoll.controller.poller;
 import is.stma.beanpoll.model.Parameter;
 import is.stma.beanpoll.model.Poll;
 import is.stma.beanpoll.model.Resource;
+import is.stma.beanpoll.model.ResourceType;
 import is.stma.beanpoll.service.parameterizer.EmailParameterizer;
+import is.stma.beanpoll.util.DNSUtility;
+import is.stma.beanpoll.util.EmailUtility;
+
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.validation.ValidationException;
 
 public class EmailPoller extends AbstractPoller {
 
@@ -27,6 +34,9 @@ public class EmailPoller extends AbstractPoller {
         // Set values based on the resource parameters
         String username = EmailParameterizer.EMAIL_DEFAULT_USERNAME;
         String password = EmailParameterizer.EMAIL_DEFAULT_PASSWORD;
+        String resolver = EmailParameterizer.EMAIL_DEFAULT_RESOLVER;
+        String ssl_string = EmailParameterizer.EMAIL_DEFAULT_SSL;
+        String tls_string = EmailParameterizer.EMAIL_DEFAULT_TLS;
 
         for (Parameter p : resource.getParameters()) {
             switch (p.getTag()) {
@@ -36,6 +46,15 @@ public class EmailPoller extends AbstractPoller {
                 case EmailParameterizer.EMAIL_PASSWORD:
                     password = p.getValue();
                     break;
+                case EmailParameterizer.EMAIL_RESOLVER:
+                    resolver = p.getValue();
+                    break;
+                case EmailParameterizer.EMAIL_SSL:
+                    ssl_string = p.getValue();
+                    break;
+                case EmailParameterizer.EMAIL_TLS:
+                    tls_string = p.getValue();
+                    break;
                 default:
                     break;
             }
@@ -43,6 +62,38 @@ public class EmailPoller extends AbstractPoller {
 
         Poll newPoll = new Poll();
         newPoll.setResource(resource);
+
+        // Check that exactly one team is assigned
+        if (1 != resource.getTeams().size()) {
+            newPoll.setResults("ERROR: Resource does not have exactly one assigned Team");
+            return newPoll;
+        }
+
+        // Get the address of the server
+        String address = DNSUtility.getResolvedMailserver(resolver, resource.getAddress());
+        if (address.startsWith("ERROR")) {
+            newPoll.setResults(address);
+            return newPoll;
+        }
+
+        // Decide whether to use IMAP or POP; default to POP
+        String protocol = (resource.getType().equals(ResourceType.IMAP)) ? "imap" : "pop3";
+
+        // Find the values of the non-string parameters
+        boolean ssl = ssl_string.equals(Parameter.TRUE);
+        boolean tls = tls_string.equals(Parameter.TRUE);
+
+        // Get mail!
+        try {
+            Message[] messages = EmailUtility.getEmail(username, password, resource.getAddress(), protocol, resource.getPort(), tls, ssl, resource.getTimeout());
+        } catch (MessagingException e) {
+            newPoll.setResults(e.getMessage());
+            return newPoll;
+        }
+
+        newPoll.setTeam(resource.getTeams().get(0));
+        newPoll.setScore(resource.getPointValue());
+        newPoll.setResults("Success");
         return newPoll;
     }
 }

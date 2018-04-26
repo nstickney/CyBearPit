@@ -12,6 +12,8 @@ package is.stma.beanpoll.util;
 
 import org.xbill.DNS.*;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.UnknownHostException;
 
 import static org.xbill.DNS.ReverseMap.fromAddress;
@@ -151,5 +153,42 @@ public class DNSUtility {
 
     public static String lookup(String hostAddress, String query, int type) {
         return lookup(hostAddress, DEFAULT_DNS_PORT, query, type, DEFAULT_DNS_TCP, DEFAULT_DNS_RECURSIVE, DEFAULT_DNS_TIMEOUT, DEFAULT_DNS_FIRST_ONLY);
+    }
+
+    public static String getResolvedMailserver(String resolver, String hostname) {
+        String resolved = hostname;
+        if (null != resolver && !resolver.equals("")) {
+            resolved = DNSUtility.lookup(resolver, hostname, MX);
+            if (resolved.startsWith("ERROR")) {
+                return resolved;
+            }
+            if (resolved.contains("./")) {
+                resolved = resolved.substring(resolved.indexOf("./") + 2, resolved.length());
+            }
+        }
+        return resolved;
+    }
+
+    /**
+     * Use the specified DNS resolver to find the correct IP address for the
+     * given hostname.
+     * @param resolver IP hostname or hostname of the DNS resolver to use
+     * @param hostname hostname to resolve
+     * @return a fully formatted HTTP query using the IP address resolved
+     * @throws URISyntaxException if the hostname is not a proper URI
+     */
+    public static String getResolvedWebServer(String resolver, String hostname) throws URISyntaxException {
+        String resolved = hostname;
+        if (null != resolver && !resolver.equals("")) {
+            hostname = HTTPUtility.setDefaultHTTPProtocol(hostname);
+            java.net.URI uri = new URI(hostname);
+            resolved = DNSUtility.lookup(resolver, uri.getHost());
+            if (resolved.startsWith("ERROR")) {
+                return resolved;
+            }
+            resolved = resolved.substring(resolved.indexOf("./") + 2, resolved.length());
+            resolved = uri.getScheme() + "://" + resolved + uri.getPath();
+        }
+        return resolved;
     }
 }

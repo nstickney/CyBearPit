@@ -14,6 +14,11 @@ import is.stma.beanpoll.model.Parameter;
 import is.stma.beanpoll.model.Poll;
 import is.stma.beanpoll.model.Resource;
 import is.stma.beanpoll.service.parameterizer.SMTPParameterizer;
+import is.stma.beanpoll.util.DNSUtility;
+import is.stma.beanpoll.util.EmailUtility;
+
+import javax.mail.MessagingException;
+import java.util.UUID;
 
 public class SMTPPoller extends AbstractPoller {
 
@@ -27,6 +32,11 @@ public class SMTPPoller extends AbstractPoller {
         // Set values based on the resource parameters
         String username = SMTPParameterizer.SMTP_DEFAULT_USERNAME;
         String password = SMTPParameterizer.SMTP_DEFAULT_PASSWORD;
+        String recipient = SMTPParameterizer.SMTP_DEFAULT_RECIPIENT;
+        String ssl_string = SMTPParameterizer.SMTP_DEFAULT_SSL;
+        String tls_string = SMTPParameterizer.SMTP_DEFAULT_TLS;
+        String test_auth = SMTPParameterizer.SMTP_DEFAULT_TEST_AUTH;
+        String resolver = SMTPParameterizer.SMTP_DEFAULT_RESOLVER;
 
         for (Parameter p : resource.getParameters()) {
             switch (p.getTag()) {
@@ -36,6 +46,21 @@ public class SMTPPoller extends AbstractPoller {
                 case SMTPParameterizer.SMTP_PASSWORD:
                     password = p.getValue();
                     break;
+                case SMTPParameterizer.SMTP_RECIPIENT:
+                    recipient = p.getValue();
+                    break;
+                case SMTPParameterizer.SMTP_SSL:
+                    ssl_string = p.getValue();
+                    break;
+                case SMTPParameterizer.SMTP_TLS:
+                    tls_string = p.getValue();
+                    break;
+                case SMTPParameterizer.SMTP_TEST_AUTH:
+                    test_auth = p.getValue();
+                    break;
+                case SMTPParameterizer.SMTP_RESOLVER:
+                    resolver = p.getValue();
+                    break;
                 default:
                     break;
             }
@@ -43,6 +68,53 @@ public class SMTPPoller extends AbstractPoller {
 
         Poll newPoll = new Poll();
         newPoll.setResource(resource);
+
+        // Check that exactly one team is assigned
+        if (1 != resource.getTeams().size()) {
+            newPoll.setResults("ERROR: Resource does not have exactly one assigned Team");
+            return newPoll;
+        }
+
+        // Get the address of the server
+        String address = DNSUtility.getResolvedMailserver(resolver, resource.getAddress());
+        if (address.startsWith("ERROR")) {
+            newPoll.setResults(address);
+            return newPoll;
+        }
+
+        // Find the values of the non-string parameters
+        boolean ssl = ssl_string.equals(Parameter.TRUE);
+        boolean tls = tls_string.equals(Parameter.TRUE);
+        boolean auth = test_auth.equals(Parameter.TRUE);
+
+        // Write up an easily recognizable message
+        String msg = UUID.randomUUID().toString();
+
+        // Send mail!
+        try {
+            EmailUtility.sendSMTPMessage(username, password, resource.getAddress(),
+                    recipient, msg, msg, resource.getPort(), tls, ssl, resource.getTimeout());
+        } catch (MessagingException e) {
+            newPoll.setResults(e.getMessage());
+            return newPoll;
+        }
+
+        // Make sure the server isn't just letting anyone send mail
+        String results = "";
+        if (auth) {
+            try {
+                EmailUtility.sendSMTPMessage(msg, msg, resource.getAddress(), recipient, msg, msg,
+                        resource.getPort(), tls, ssl, resource.getTimeout());
+                newPoll.setResults("ERROR: User " + msg + " exists");
+                return newPoll;
+            } catch (MessagingException e) {
+                results = " - user " + msg + " cannot send mail";
+            }
+        }
+
+        newPoll.setTeam(resource.getTeams().get(0));
+        newPoll.setScore(resource.getPointValue());
+        newPoll.setResults("Success" + results);
         return newPoll;
     }
 }

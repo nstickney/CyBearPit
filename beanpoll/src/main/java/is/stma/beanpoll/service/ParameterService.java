@@ -15,10 +15,7 @@ import is.stma.beanpoll.data.ParameterRepo;
 import is.stma.beanpoll.model.Parameter;
 import is.stma.beanpoll.model.Resource;
 import is.stma.beanpoll.rules.ParameterRules;
-import is.stma.beanpoll.service.parameterizer.DNSParameterizer;
-import is.stma.beanpoll.service.parameterizer.EmailParameterizer;
-import is.stma.beanpoll.service.parameterizer.HTTPParameterizer;
-import is.stma.beanpoll.service.parameterizer.SMTPParameterizer;
+import is.stma.beanpoll.service.parameterizer.*;
 
 import javax.ejb.Stateless;
 import javax.enterprise.event.Event;
@@ -77,12 +74,10 @@ public class ParameterService extends AbstractService<Parameter, AbstractRepo<Pa
                 parameters = SMTPParameterizer.createParameters();
                 break;
             case SMTP_IMAP:
-                parameters = EmailParameterizer.createParameters();
-                parameters.addAll(SMTPParameterizer.createParameters());
+                parameters = SMTPCHECKParameterizer.createParameters();
                 break;
             case SMTP_POP:
-                parameters = EmailParameterizer.createParameters();
-                parameters.addAll(SMTPParameterizer.createParameters());
+                parameters = SMTPCHECKParameterizer.createParameters();
                 break;
             default:
                 throw new ValidationException("unknown resource type " + resource.getType());

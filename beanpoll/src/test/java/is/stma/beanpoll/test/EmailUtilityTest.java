@@ -36,7 +36,7 @@ import java.util.UUID;
 public class EmailUtilityTest {
 
     private static final String DEFAULT_USERNAME = "beanpoll@yandex.com";
-    private static final String DEFAULT_PASSWORD = "";
+    private static final String DEFAULT_PASSWORD = "NOT_MY_PASSWORD";
     private static final int DEFAULT_TIMEOUT = 3;
 
     // IMAP3

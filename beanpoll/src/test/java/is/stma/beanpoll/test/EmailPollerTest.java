@@ -11,6 +11,7 @@
 package is.stma.beanpoll.test;
 
 import is.stma.beanpoll.controller.poller.AbstractPoller;
+import is.stma.beanpoll.controller.poller.PollerFactory;
 import is.stma.beanpoll.data.PollRepo;
 import is.stma.beanpoll.model.*;
 import is.stma.beanpoll.rules.PollRules;
@@ -24,6 +25,7 @@ import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -100,13 +102,98 @@ public class EmailPollerTest {
             testContest.setTeams(teams);
             testContest = contestService.update(testContest);
         }
-        if (null == testResource) {
-            testResource = TestUtility.makeResource(testContest, ResourceType.POP);
-            testResource = resourceService.create(testResource);
-        }
+    }
+
+    private void setUpResource(ResourceType type, String address, int port) {
+        testResource = TestUtility.makeResource(testContest, type);
+        testResource.setAddress(address);
+        testResource.setPort(port);
+        List<Team> teams = new ArrayList<>();
+        teams.add(testTeam);
+        testResource.setTeams(teams);
+        testResource = resourceService.create(testResource);
+    }
+
+    @Test
+    public void testIMAPPollWorks() {
+        setUpResource(ResourceType.IMAP, "imap.yandex.com", 993);
+        AbstractPoller poller = PollerFactory.getPoller(testResource);
+        Poll poll = poller.poll();
+        Assert.assertTrue(poll.getTeam().equalByUUID(testTeam));
+        Assert.assertEquals(testResource.getPointValue(), poll.getScore());
     }
 
     @Test
     public void testPOPPollWorks() {
+        setUpResource(ResourceType.POP, "pop.yandex.com", 995);
+        AbstractPoller poller = PollerFactory.getPoller(testResource);
+        Poll poll = poller.poll();
+        Assert.assertTrue(poll.getTeam().equalByUUID(testTeam));
+        Assert.assertEquals(testResource.getPointValue(), poll.getScore());
+    }
+
+    @Test
+    public void testIMAPPollNoTeam() {
+        setUpResource(ResourceType.IMAP, "imap.yandex.com", 993);
+        testResource.setTeams(new ArrayList<>());
+        resourceService.update(testResource);
+        AbstractPoller poller = PollerFactory.getPoller(testResource);
+        testPoll = poller.poll();
+        Assert.assertNull(testPoll.getTeam());
+        Assert.assertEquals(0, testPoll.getScore());
+    }
+
+    @Test
+    public void testIMAPPollTwoTeams() {
+        setUpResource(ResourceType.IMAP, "imap.yandex.com", 993);
+        List<Team> teams = new ArrayList<>();
+        teams.add(testTeam);
+        teams.add(checkTeam);
+        testResource.setTeams(teams);
+        testResource = resourceService.update(testResource);
+        AbstractPoller poller = PollerFactory.getPoller(testResource);
+        testPoll = poller.poll();
+        Assert.assertNull(testPoll.getTeam());
+        Assert.assertEquals(0, testPoll.getScore());
+    }
+
+    @Test
+    public void testIMAPPollFails() {
+        setUpResource(ResourceType.IMAP, "blue.com", 993);
+        AbstractPoller poller = PollerFactory.getPoller(testResource);
+        testPoll = poller.poll();
+        Assert.assertNull(testPoll.getTeam());
+        Assert.assertEquals(0, testPoll.getScore());
+    }
+
+    @Test
+    public void testPOPPollFails() {
+        setUpResource(ResourceType.IMAP, "blue.com", 995);
+        AbstractPoller poller = PollerFactory.getPoller(testResource);
+        testPoll = poller.poll();
+        Assert.assertNull(testPoll.getTeam());
+        Assert.assertEquals(0, testPoll.getScore());
+    }
+
+    // Yandex does not use MX records, so I have no way of testing this without
+    // setting up my own DNS and email servers... which, no.
+//    @Test
+//    public void testIMAPSpecificResolver() {
+//        setUpResource(ResourceType.IMAP, "imap.yandex.com", 993);
+//        TestUtility.setResourceParameter(parameterService, testResource, EmailParameterizer.EMAIL_RESOLVER, "1.1.1.1");
+//        testResource = resourceService.update(testResource);
+//        testPoll = PollerFactory.getPoller(testResource).poll();
+//        Assert.assertTrue(testPoll.getTeam().equalByUUID(testTeam));
+//        Assert.assertEquals(testResource.getPointValue(), testPoll.getScore());
+//    }
+
+    @Test
+    public void testIMAPResolverFails() {
+        setUpResource(ResourceType.IMAP, "imap.yandex.com", 993);
+        TestUtility.setResourceParameter(parameterService, testResource, EmailParameterizer.EMAIL_RESOLVER, "1.1.1.1");
+        testResource = resourceService.update(testResource);
+        testPoll = PollerFactory.getPoller(testResource).poll();
+        Assert.assertNull(testPoll.getTeam());
+        Assert.assertEquals(0, testPoll.getScore());
     }
 }

@@ -11,11 +11,12 @@
 package is.stma.beanpoll.test;
 
 import is.stma.beanpoll.controller.poller.AbstractPoller;
+import is.stma.beanpoll.controller.poller.PollerFactory;
 import is.stma.beanpoll.data.PollRepo;
 import is.stma.beanpoll.model.*;
 import is.stma.beanpoll.rules.PollRules;
 import is.stma.beanpoll.service.*;
-import is.stma.beanpoll.service.parameterizer.SMTPParameterizer;
+import is.stma.beanpoll.service.parameterizer.EmailParameterizer;
 import is.stma.beanpoll.util.EMProducer;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -24,6 +25,7 @@ import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -63,12 +65,12 @@ public class SMTPPollerTest {
         File[] files = Maven.resolver().loadPomFromFile("pom.xml")
                 .importRuntimeDependencies().resolve().withTransitivity().asFile();
 
-        return ShrinkWrap.create(WebArchive.class, "SMTPPollerTest.war")
+        return ShrinkWrap.create(WebArchive.class, "EmailPollerTest.war")
                 .addPackages(true, Poll.class.getPackage(),
                         PollRepo.class.getPackage(),
                         PollService.class.getPackage(),
                         PollRules.class.getPackage(),
-                        SMTPParameterizer.class.getPackage(),
+                        EmailParameterizer.class.getPackage(),
                         AbstractPoller.class.getPackage(),
                         EMProducer.class.getPackage())
                 .addClass(TestUtility.class)
@@ -100,13 +102,80 @@ public class SMTPPollerTest {
             testContest.setTeams(teams);
             testContest = contestService.update(testContest);
         }
-        if (null == testResource) {
-            testResource = TestUtility.makeResource(testContest, ResourceType.SMTP);
-            testResource = resourceService.create(testResource);
-        }
+    }
+
+    private void setUpResource(ResourceType type, String address, int port) {
+        testResource = TestUtility.makeResource(testContest, type);
+        testResource.setAddress(address);
+        testResource.setPort(port);
+        List<Team> teams = new ArrayList<>();
+        teams.add(testTeam);
+        testResource.setTeams(teams);
+        testResource = resourceService.create(testResource);
     }
 
     @Test
     public void testSMTPPollWorks() {
+        setUpResource(ResourceType.SMTP, "smtp.yandex.com", 465);
+        AbstractPoller poller = PollerFactory.getPoller(testResource);
+        Poll poll = poller.poll();
+        Assert.assertTrue(poll.getTeam().equalByUUID(testTeam));
+        Assert.assertEquals(testResource.getPointValue(), poll.getScore());
+    }
+
+    @Test
+    public void testSMTPPollNoTeam() {
+        setUpResource(ResourceType.SMTP, "smtp.yandex.com", 465);
+        testResource.setTeams(new ArrayList<>());
+        resourceService.update(testResource);
+        AbstractPoller poller = PollerFactory.getPoller(testResource);
+        testPoll = poller.poll();
+        Assert.assertNull(testPoll.getTeam());
+        Assert.assertEquals(0, testPoll.getScore());
+    }
+
+    @Test
+    public void testSMTPPollTwoTeams() {
+        setUpResource(ResourceType.SMTP, "smtp.yandex.com", 465);
+        List<Team> teams = new ArrayList<>();
+        teams.add(testTeam);
+        teams.add(checkTeam);
+        testResource.setTeams(teams);
+        testResource = resourceService.update(testResource);
+        AbstractPoller poller = PollerFactory.getPoller(testResource);
+        testPoll = poller.poll();
+        Assert.assertNull(testPoll.getTeam());
+        Assert.assertEquals(0, testPoll.getScore());
+    }
+
+    @Test
+    public void testSMTPPollFails() {
+        setUpResource(ResourceType.SMTP, "blue.com", 465);
+        AbstractPoller poller = PollerFactory.getPoller(testResource);
+        testPoll = poller.poll();
+        Assert.assertNull(testPoll.getTeam());
+        Assert.assertEquals(0, testPoll.getScore());
+    }
+
+    // Yandex does not use MX records, so I have no way of testing this without
+    // setting up my own DNS and email servers... which, no.
+//    @Test
+//    public void testSMTPSpecificResolver() {
+//        setUpResource(ResourceType.SMTP, "smtp.yandex.com", 465);
+//        TestUtility.setResourceParameter(parameterService, testResource, EmailParameterizer.EMAIL_RESOLVER, "1.1.1.1");
+//        testResource = resourceService.update(testResource);
+//        testPoll = PollerFactory.getPoller(testResource).poll();
+//        Assert.assertTrue(testPoll.getTeam().equalByUUID(testTeam));
+//        Assert.assertEquals(testResource.getPointValue(), testPoll.getScore());
+//    }
+
+    @Test
+    public void testSMTPResolverFails() {
+        setUpResource(ResourceType.SMTP, "smtp.yandex.com", 465);
+        TestUtility.setResourceParameter(parameterService, testResource, EmailParameterizer.EMAIL_RESOLVER, "1.1.1.1");
+        testResource = resourceService.update(testResource);
+        testPoll = PollerFactory.getPoller(testResource).poll();
+        Assert.assertNull(testPoll.getTeam());
+        Assert.assertEquals(0, testPoll.getScore());
     }
 }

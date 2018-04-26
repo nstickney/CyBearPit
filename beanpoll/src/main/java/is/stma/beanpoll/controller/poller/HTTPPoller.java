@@ -18,7 +18,6 @@ import is.stma.beanpoll.service.parameterizer.HTTPParameterizer;
 import is.stma.beanpoll.util.DNSUtility;
 import is.stma.beanpoll.util.HTTPUtility;
 
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +48,7 @@ public class HTTPPoller extends AbstractPoller {
         // Resolve the address if necessary
         String address = resource.getAddress();
         try {
-            address = getResolvedAddress(resolver, address);
+            address = DNSUtility.getResolvedWebServer(resolver, address);
         } catch (URISyntaxException e) {
             newPoll.setResults("ERROR: Malformed request " + address);
             return newPoll;
@@ -81,28 +80,5 @@ public class HTTPPoller extends AbstractPoller {
         }
 
         return newPoll;
-    }
-
-    /**
-     * Use the specified DNS resolver to find the correct IP address for the given hostname.
-     *
-     * @param resolver IP hostname or hostname of the DNS resolver to use
-     * @param hostname hostname to resolve
-     * @return a fully formatted HTTP query using the IP address resolved
-     * @throws URISyntaxException if the hostname is not a proper URI
-     */
-    private String getResolvedAddress(String resolver, String hostname) throws URISyntaxException {
-        String resolved = hostname;
-        if (null != resolver && !resolver.equals("")) {
-            hostname = HTTPUtility.setDefaultHTTPProtocol(hostname);
-            URI uri = new URI(hostname);
-            resolved = DNSUtility.lookup(resolver, uri.getHost());
-            if (resolved.startsWith("ERROR")) {
-                return resolved;
-            }
-            resolved = resolved.substring(resolved.indexOf("./") + 2, resolved.length());
-            resolved = uri.getScheme() + "://" + resolved + uri.getPath();
-        }
-        return resolved;
     }
 }

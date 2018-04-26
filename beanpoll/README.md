@@ -142,18 +142,23 @@ An IMAP or POP Resource is an IMAP or POP email server, respectively. If a DNS s
 
 An SMTP Resource is an SMTP email server, respectively. If a DNS server is specified (`EMAIL_RESOLVER`), it is used to resolve the given server (`address`), otherwise the system's DNS resolution defaults are used. The Poller then attempts to connect to that server and send an email with a randomly-generated subject and message. If the connection and sending are successful, the check passes, and the Poll scores the point value of the Resource. The Poll is always awarded to the assigned Team; if the Resource is not assigned exactly one Team, the check is not performed, the Poll scores zero points, and it is not awarded to any Team.
 
-If the Resource is an SMTP_IMAP or SMTP_POP Resource, the Poll is not scored until 
+If the Resource is an SMTP_IMAP or SMTP_POP Resource, the Poll is not scored until the email is retrieved at the corresponding service. You must ensure that the `EMAIL_USERNAME` and `SMTP_RECIPIENT` Parameters match, so that the mailbox which is supposed to receive the email does. The receive check works the same way as a usual IMAP or POP Resource check, except that the messages are examined to see if one of them matches (by subject) the email that was sent during the SMTP check. If so, the check passes. There is a 30-second delay between the sending check and the receiving check.
 
 | Tag | Use | Default |
 |:---:|:---:|:---:|
 | SMTP_RESOLVER | (Optional) DNS server to resolve the SMTP server address | `null` |
 | SMTP_USERNAME | Username to log in and send mail with | `null` |
 | SMTP_PASSWORD | Password for SMTP_USERNAME | `null` |
+| SMTP_RECIPIENT | Who to send the message to | `null` |
 | SMTP_SSL | Use SSL/TLS to make the SMTP connection | `false` |
 | SMTP_TLS | Use StartTLS before authenticating | `false` |
 | SMTP_TEST_AUTH | Whether the poller should check to ensure the server isn't just accepting any incoming mail, without authentication | `true` |
 
-Note that SMTP_IMAP and SMTP_POP Resources will simply use a combination of EMAIL and SMTP Parameters.
+Note that SMTP_IMAP and SMTP_POP Resources will simply use a combination of EMAIL and SMTP Parameters, along with the SMTPCHECK Parameters.
+
+| Tag | Use | Default |
+|:---:|:---:|:---:|
+| SMTPCHECK_HOST | (Optional) Hostname of server to check mail on | `null` |
 
 ## API
 
