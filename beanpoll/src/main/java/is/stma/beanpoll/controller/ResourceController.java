@@ -15,8 +15,10 @@ import is.stma.beanpoll.model.Team;
 import is.stma.beanpoll.rules.ResourceRules;
 import is.stma.beanpoll.service.ResourceService;
 
+import javax.ejb.EJBException;
 import javax.enterprise.inject.Model;
 import javax.enterprise.inject.Produces;
+import javax.faces.application.FacesMessage;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.validation.ValidationException;
@@ -71,6 +73,26 @@ public class ResourceController extends AbstractEntityController<Resource, Resou
     @Override
     public void delete(Resource entity) {
         doDelete(entity);
+    }
+
+    /**
+     * Call the service to create a complete clone of a Resource, including its
+     * Parameters
+     * @param entity the Resource to clone
+     */
+    public void clone(Resource entity) {
+        try {
+            Resource clone = getService().clone(entity);
+            facesContext.addMessage(null, new FacesMessage(
+                    FacesMessage.SEVERITY_INFO, clone.getLogName() + " created.",
+                    "")
+            );
+            setNew(null);
+        } catch (EJBException | ValidationException e) {
+            errorOut(e, "Failed to clone " + entity.getLogName() + ": ");
+        } catch (Exception e) {
+            errorOut(e, entity.getLogName() + " cloning failed: ");
+        }
     }
 
     public void addTeam(Resource entity) {

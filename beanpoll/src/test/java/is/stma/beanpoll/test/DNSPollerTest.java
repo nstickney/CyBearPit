@@ -88,78 +88,38 @@ public class DNSPollerTest {
 
     @Before
     public void setUp() {
-        try {
-            testContest = contestService.readById(testContestId);
-        } catch (Exception e) {
-            buildContest();
+        if (null == testContest) {
+            testContest = TestUtility.makeContest();
+            testContest = contestService.create(testContest);
+            List<Team> teams = new ArrayList<>();
+            if (null == testTeam) {
+                testTeam = TestUtility.makeTeam(testContest);
+                testTeam.setFlag("httpbin.org.herokudns.com");
+                testTeam = teamService.create(testTeam);
+                teams.add(testTeam);
+            }
+            if (null == checkTeam) {
+                checkTeam = TestUtility.makeTeam(testContest);
+                checkTeam.setFlag("adobe-idp-site-verification=e7f6f050-70cd-41a6-8ace-2ca8dcabbd26");
+                checkTeam = teamService.create(checkTeam);
+                teams.add(checkTeam);
+            }
+            testContest.setTeams(teams);
+            testContest = contestService.update(testContest);
         }
-
-        try {
-            testTeam = teamService.readById(testTeamId);
-            checkTeam = teamService.readById(checkTeamId);
-        } catch (Exception e) {
-            buildTeams();
+        if (null == testResource) {
+            testResource = TestUtility.makeResource(testContest, ResourceType.HTTP);
+            testResource.setAddress("9.9.9.9");
+            testResource.setPort(53);
+            testResource = resourceService.create(testResource);
         }
-
-        try {
-            testResource = resourceService.readById(testResourceId);
-        } catch (Exception e) {
-            buildResource("9.9.9.9", "baylor.edu", "129.62.3.230");
-        }
-    }
-
-    private void buildContest() {
-        testContest = TestUtility.makeContest();
-        testContest = contestService.create(testContest);
-        testContestId = testContest.getId();
-    }
-
-    private void buildTeams() {
-        testTeam = new Team();
-        testTeam.setContest(testContest);
-        testTeam.setName(UUID.randomUUID().toString());
-        testTeam.setFlag("httpbin.org.herokudns.com");
-        testTeam = teamService.create(testTeam);
-        testTeamId = testTeam.getId();
-        checkTeam = new Team();
-        checkTeam.setContest(testContest);
-        checkTeam.setName(UUID.randomUUID().toString());
-        checkTeam.setFlag("adobe-idp-site-verification=e7f6f050-70cd-41a6-8ace-2ca8dcabbd26");
-        checkTeam = teamService.create(checkTeam);
-        checkTeamId = testTeam.getId();
-        testContest = contestService.readById(testContestId);
-    }
-
-    private void buildResource(String address, String query, String expected) {
-        testResource = TestUtility.makeResource(testContest, ResourceType.DNS);
-        testResource.setAddress(address);
-        testResource.setPort(53);
-        testResource.setAvailable(true);
-        Parameter testQueryParameter = new Parameter();
-        testQueryParameter.setTag(DNSParameterizer.DNS_QUERY);
-        testQueryParameter.setValue(query);
-        testQueryParameter = parameterService.create(testQueryParameter);
-        List<Parameter> parameters = new ArrayList<>();
-        parameters.add(testQueryParameter);
-        Parameter testExpectedParameter = new Parameter();
-        testExpectedParameter.setTag(DNSParameterizer.DNS_EXPECTED);
-        testExpectedParameter.setValue(expected);
-        testExpectedParameter = parameterService.create(testExpectedParameter);
-        parameters.add(testExpectedParameter);
-        testResource.setParameters(parameters);
-        testResource = resourceService.create(testResource);
-        for (Parameter p : parameters) {
-            p.setResource(testResource);
-            parameterService.update(p);
-        }
-        testResourceId = testResource.getId();
-        testContest = contestService.readById(testContestId);
     }
 
     @Test
     public void testPollWorks() {
         AbstractPoller poller = PollerFactory.getPoller(testResource);
         testPoll = poller.poll();
+        Assert.assertEquals("", testPoll.getResults());
         Assert.assertTrue(testPoll.getResults().contains("129.62.3.230"));
         Assert.assertEquals(testPoll.getTeam(), checkTeam);
     }

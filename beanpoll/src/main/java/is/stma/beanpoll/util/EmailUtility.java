@@ -56,6 +56,13 @@ public class EmailUtility {
         });
     }
 
+    private static Properties addSSLProperties(Properties properties, String protocol, int port) {
+        properties.put(String.format(SSLSFC, protocol), SSLSSLSF);
+        properties.put(String.format(SSLPORT, protocol), Integer.toString(port));
+        properties.put(String.format(SSLFB, protocol), "false");
+        return properties;
+    }
+
     public static Message[] getEmail(String username, String password, String host, String protocol,
                                      int port, boolean tls, boolean ssl, int timeout)
             throws MessagingException {
@@ -68,9 +75,7 @@ public class EmailUtility {
             properties.put(String.format(START_TLS, protocol), "true");
         }
         if (ssl) {
-            properties.put(String.format(SSLSFC, protocol), SSLSSLSF);
-            properties.put(String.format(SSLPORT, protocol), Integer.toString(port));
-            properties.put(String.format(SSLFB, protocol), "false");
+            properties = addSSLProperties(properties, protocol, port);
         }
 
         // Get the mailbox
@@ -113,9 +118,7 @@ public class EmailUtility {
             properties.put(TLS, "true");
         }
         if (ssl) {
-            properties.put(String.format(SSLSFC, protocol), SSLSSLSF);
-            properties.put(String.format(SSLPORT, protocol), Integer.toString(port));
-            properties.put(String.format(SSLFB, protocol), "false");
+            properties = addSSLProperties(properties, protocol, port);
         }
 
         // Create the session

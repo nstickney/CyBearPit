@@ -21,6 +21,7 @@ import javax.ejb.Stateless;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.validation.ValidationException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -119,5 +120,38 @@ public class ResourceService extends AbstractService<Resource, AbstractRepo<Reso
         }
         getRepo().remove(em.contains(entity) ? entity : em.merge(entity));
         getEvent().fire(entity);
+    }
+
+    public Resource clone(Resource entity) {
+
+        // Make the resource and set its fields
+        Resource clone = new Resource();
+        clone.setName(entity.getName() + " CLONE");
+        clone.setType(entity.getType());
+        clone.setAddress(entity.getAddress());
+        clone.setPort(entity.getPort());
+        clone.setTimeout(entity.getTimeout());
+        clone.setAvailable(entity.isAvailable());
+        clone.setPointValue(entity.getPointValue());
+        clone.setContest(entity.getContest());
+        create(clone);
+
+        // Remove the pre-generated parameters
+        List<Parameter> badParameters = clone.getParameters();
+        for (Parameter p : badParameters) {
+            parameterService.delete(p);
+        }
+        List<Parameter> parameters = new ArrayList<>();
+        clone.setParameters(parameters);
+        clone = update(clone);
+
+        // Copy the desired parameters
+        for (Parameter p : entity.getParameters()) {
+            parameters.add(parameterService.clone(p, clone));
+        }
+        clone.setParameters(parameters);
+        clone = update(clone);
+
+        return clone;
     }
 }

@@ -53,6 +53,13 @@ public class ParameterService extends AbstractService<Parameter, AbstractRepo<Pa
         return rules;
     }
 
+    /**
+     * Create the necessary default Parameters for a Resource to function.
+     * @param resource Resource for which to create default Parameters
+     * @return List of Parameters attached to that Resource
+     * @throws ValidationException if Parameter creation fails
+     */
+    // MUST BE PUBLIC to be called by other EJBs
     public List<Parameter> createParameters(Resource resource) throws ValidationException {
 
         // Create the correct parameters for the resource
@@ -102,6 +109,14 @@ public class ParameterService extends AbstractService<Parameter, AbstractRepo<Pa
 
         // Return the created list
         return createdParameters;
+    }
+
+    public Parameter clone(Parameter entity, Resource resource) {
+        Parameter clone = new Parameter();
+        clone.setResource(resource);
+        clone.setTag(entity.getTag());
+        clone.setValue(entity.getValue());
+        return create(clone);
     }
 
 }

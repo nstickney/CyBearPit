@@ -105,6 +105,17 @@ public class ParameterTest {
     }
 
     @Test
+    public void testParameterCloning() {
+        Resource checkResource = TestUtility.makeResource(testContest, ResourceType.DNS);
+        checkResource = resourceService.create(checkResource);
+        checkParameter = parameterService.clone(testParameter, checkResource);
+        Assert.assertEquals(checkResource, checkParameter.getResource());
+        Assert.assertEquals(testParameter.getTag(), checkParameter.getTag());
+        Assert.assertEquals(testParameter.getValue(), checkParameter.getValue());
+        Assert.assertNotEquals(testParameter, checkParameter);
+    }
+
+    @Test
     public void testParameterUpdate() {
         testParameter.setValue("UPDATED");
         parameterService.update(testParameter);

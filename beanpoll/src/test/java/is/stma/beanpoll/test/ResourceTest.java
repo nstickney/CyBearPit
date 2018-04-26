@@ -20,6 +20,7 @@ package is.stma.beanpoll.test;/*
 
 import is.stma.beanpoll.data.ResourceRepo;
 import is.stma.beanpoll.model.Contest;
+import is.stma.beanpoll.model.Parameter;
 import is.stma.beanpoll.model.Resource;
 import is.stma.beanpoll.rules.ResourceRules;
 import is.stma.beanpoll.service.ContestService;
@@ -38,6 +39,7 @@ import org.junit.runner.RunWith;
 
 import javax.ejb.EJBException;
 import javax.inject.Inject;
+import javax.validation.constraints.AssertTrue;
 import java.io.File;
 
 import static is.stma.beanpoll.model.ResourceType.DNS;
@@ -100,6 +102,28 @@ public class ResourceTest {
         checkResource = resourceService.readById(testResource.getId());
         Assert.assertTrue(testResource.equalByUUID(checkResource));
         Assert.assertEquals(testResource, checkResource);
+    }
+
+    @Test
+    public void testResourceCloning() {
+        checkResource = resourceService.clone(testResource);
+        Assert.assertEquals(testResource.getName() + " CLONE", checkResource.getName());
+        Assert.assertEquals(testResource.getType(), checkResource.getType());
+        Assert.assertEquals(testResource.getAddress(), checkResource.getAddress());
+        Assert.assertEquals(testResource.getPort(), checkResource.getPort());
+        Assert.assertEquals(testResource.getTimeout(), checkResource.getTimeout());
+        Assert.assertEquals(testResource.isAvailable(), checkResource.isAvailable());
+        Assert.assertEquals(testResource.getPointValue(), checkResource.getPointValue());
+        for (Parameter p : testResource.getParameters()) {
+            boolean found = false;
+            for (Parameter c : checkResource.getParameters()) {
+                if (p.getTag().equals(c.getTag())) {
+                    found = true;
+                    Assert.assertEquals(p.getValue(), c.getValue());
+                }
+            }
+            Assert.assertTrue(found);
+        }
     }
 
     @Test
