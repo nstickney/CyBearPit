@@ -10,8 +10,8 @@
 
 package is.stma.beanpoll.test;
 
-import is.stma.beanpoll.controller.poller.AbstractPoller;
-import is.stma.beanpoll.controller.poller.PollerFactory;
+import is.stma.beanpoll.poller.AbstractPoller;
+import is.stma.beanpoll.poller.PollerFactory;
 import is.stma.beanpoll.data.PollRepo;
 import is.stma.beanpoll.model.*;
 import is.stma.beanpoll.rules.PollRules;

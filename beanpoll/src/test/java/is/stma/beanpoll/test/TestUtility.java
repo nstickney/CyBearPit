@@ -19,15 +19,6 @@ import java.util.concurrent.ThreadLocalRandom;
 
 class TestUtility {
 
-    static void setResourceParameter(ParameterService service, Resource resource, String tag, String value) {
-        for (Parameter p : resource.getParameters()) {
-            if (p.getTag().equals(tag)) {
-                p.setValue(value);
-                p = service.update(p);
-            }
-        }
-    }
-
     static Announcement makeAnnouncement(Contest contest) {
         Announcement announcement = new Announcement();
         announcement.setContest(contest);
@@ -122,5 +113,14 @@ class TestUtility {
         user.setName(UUID.randomUUID().toString());
         user.setPassword(UUID.randomUUID().toString());
         return user;
+    }
+
+    static void setResourceParameter(ParameterService service, Resource resource, String tag, String value) {
+        for (Parameter p : resource.getParameters()) {
+            if (p.getTag().equals(tag)) {
+                p.setValue(value);
+                p = service.update(p);
+            }
+        }
     }
 }

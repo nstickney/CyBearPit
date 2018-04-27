@@ -8,21 +8,20 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package is.stma.beanpoll.controller.poller;
+package is.stma.beanpoll.poller;
 
 import is.stma.beanpoll.model.Parameter;
 import is.stma.beanpoll.model.Poll;
 import is.stma.beanpoll.model.Resource;
 import is.stma.beanpoll.service.parameterizer.EmailParameterizer;
+import is.stma.beanpoll.service.parameterizer.SMTPCHECKParameterizer;
 import is.stma.beanpoll.service.parameterizer.SMTPParameterizer;
+
+import java.util.concurrent.TimeUnit;
 
 public class SMTPCheckPoller extends AbstractPoller {
 
-    // Set values based on the resource parameters
-    private String popUsername = EmailParameterizer.EMAIL_DEFAULT_USERNAME;
-    private String popPassword = EmailParameterizer.EMAIL_DEFAULT_PASSWORD;
-    private String smtpUsername = SMTPParameterizer.SMTP_DEFAULT_USERNAME;
-    private String smtpPassword = SMTPParameterizer.SMTP_DEFAULT_PASSWORD;
+    private String delay_string = SMTPCHECKParameterizer.SMTPCHECK_DEFAULT_DELAY;
 
     SMTPCheckPoller(Resource resource) {
         this.resource = resource;
@@ -33,6 +32,38 @@ public class SMTPCheckPoller extends AbstractPoller {
 
         Poll newPoll = new Poll();
         newPoll.setResource(resource);
+
+        // Send an email
+        Poll sendPoll = new SMTPPoller(resource).doPoll();
+        if (sendPoll.getResults().startsWith("ERROR")) {
+            newPoll.setResults(sendPoll.getResults());
+            return newPoll;
+        }
+
+        // Get the subject of the email we sent
+        String msg = sendPoll.getResults().split(" ", 1)[0];
+
+        // Wait for it to propagate
+        try {
+            TimeUnit.SECONDS.sleep(Integer.valueOf(delay_string));
+        } catch (InterruptedException e) {
+        }
+
+        // Retrieve the email
+        Poll recvPoll = new EmailPoller(resource).doPoll();
+        if (recvPoll.getResults().startsWith("ERROR")) {
+            newPoll.setResults(recvPoll.getResults());
+            return newPoll;
+        }
+
+        // Check that the message we sent is found
+        if (recvPoll.getResults().contains(msg)) {
+            newPoll.setScore(resource.getPointValue());
+            newPoll.setResults(msg);
+        } else {
+            newPoll.setResults("ERROR (" + msg + ") not in (" + recvPoll.getResults() + ")");
+        }
+
         return newPoll;
     }
 
@@ -40,17 +71,8 @@ public class SMTPCheckPoller extends AbstractPoller {
     void setParameters() {
         for (Parameter p : resource.getParameters()) {
             switch (p.getTag()) {
-                case EmailParameterizer.EMAIL_USERNAME:
-                    popUsername = p.getValue();
-                    break;
-                case EmailParameterizer.EMAIL_PASSWORD:
-                    popPassword = p.getValue();
-                    break;
-                case SMTPParameterizer.SMTP_USERNAME:
-                    smtpUsername = p.getValue();
-                    break;
-                case SMTPParameterizer.SMTP_PASSWORD:
-                    smtpPassword = p.getValue();
+                case SMTPCHECKParameterizer.SMTPCHECK_DELAY:
+                    delay_string = p.getValue();
                     break;
                 default:
                     break;

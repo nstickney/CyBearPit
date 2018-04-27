@@ -10,8 +10,8 @@
 
 package is.stma.beanpoll.test;
 
-import is.stma.beanpoll.controller.poller.AbstractPoller;
-import is.stma.beanpoll.controller.poller.PollerFactory;
+import is.stma.beanpoll.poller.AbstractPoller;
+import is.stma.beanpoll.poller.PollerFactory;
 import is.stma.beanpoll.data.PollRepo;
 import is.stma.beanpoll.model.*;
 import is.stma.beanpoll.rules.PollRules;
@@ -153,7 +153,6 @@ public class EmailPollerTest {
         AbstractPoller poller = PollerFactory.getPoller(testResource);
         testPoll = poller.poll();
         Assert.assertEquals(0, testPoll.getScore());
-        Assert.assertNull(testPoll.getTeam());
     }
 
     @Test
@@ -175,7 +174,6 @@ public class EmailPollerTest {
         AbstractPoller poller = PollerFactory.getPoller(testResource);
         testPoll = poller.poll();
         Assert.assertEquals(0, testPoll.getScore());
-        Assert.assertNull(testPoll.getTeam());
     }
 
     @Test
@@ -208,7 +206,6 @@ public class EmailPollerTest {
         testResource = resourceService.update(testResource);
         testPoll = PollerFactory.getPoller(testResource).poll();
         Assert.assertEquals(0, testPoll.getScore());
-        Assert.assertNull(testPoll.getTeam());
     }
 
     @Test
@@ -229,7 +226,6 @@ public class EmailPollerTest {
         AbstractPoller poller = PollerFactory.getPoller(testResource);
         testPoll = poller.poll();
         Assert.assertEquals(0, testPoll.getScore());
-        Assert.assertNull(testPoll.getTeam());
     }
 
     @Test
@@ -252,7 +248,6 @@ public class EmailPollerTest {
         AbstractPoller poller = PollerFactory.getPoller(testResource);
         testPoll = poller.poll();
         Assert.assertEquals(0, testPoll.getScore());
-        Assert.assertNull(testPoll.getTeam());
     }
 
     // Yandex does not use MX records, so I have no way of testing this without
@@ -275,6 +270,27 @@ public class EmailPollerTest {
         testResource = resourceService.update(testResource);
         testPoll = PollerFactory.getPoller(testResource).poll();
         Assert.assertEquals(0, testPoll.getScore());
-        Assert.assertNull(testPoll.getTeam());
+    }
+
+    @Test
+    public void testSMTPIMAPPollWorks() {
+        setUpResource(ResourceType.SMTP_IMAP, SMTP_HOST, SMTP_PORT);
+        AbstractPoller poller = PollerFactory.getPoller(testResource);
+        testPoll = poller.poll();
+        Assert.assertEquals("", testPoll.getResults());
+        Assert.assertEquals(testResource.getPointValue(), testPoll.getScore());
+        Assert.assertNotNull(testPoll.getTeam());
+        Assert.assertTrue(testPoll.getTeam().equalByUUID(testTeam));
+    }
+
+    @Test
+    public void testSMTPPOPPollWorks() {
+        setUpResource(ResourceType.SMTP_POP, SMTP_HOST, SMTP_PORT);
+        AbstractPoller poller = PollerFactory.getPoller(testResource);
+        testPoll = poller.poll();
+        Assert.assertEquals("", testPoll.getResults());
+        Assert.assertEquals(testResource.getPointValue(), testPoll.getScore());
+        Assert.assertNotNull(testPoll.getTeam());
+        Assert.assertTrue(testPoll.getTeam().equalByUUID(testTeam));
     }
 }

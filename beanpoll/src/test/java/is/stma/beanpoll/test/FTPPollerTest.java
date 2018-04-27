@@ -10,11 +10,14 @@
 
 package is.stma.beanpoll.test;
 
-import is.stma.beanpoll.controller.poller.AbstractPoller;
 import is.stma.beanpoll.data.PollRepo;
 import is.stma.beanpoll.model.*;
+import is.stma.beanpoll.poller.AbstractPoller;
+import is.stma.beanpoll.poller.PollerFactory;
 import is.stma.beanpoll.rules.PollRules;
 import is.stma.beanpoll.service.*;
+import is.stma.beanpoll.service.parameterizer.EmailParameterizer;
+import is.stma.beanpoll.service.parameterizer.FTPParameterizer;
 import is.stma.beanpoll.service.parameterizer.SMTPParameterizer;
 import is.stma.beanpoll.util.EMProducer;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -24,6 +27,7 @@ import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,7 +38,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RunWith(Arquillian.class)
-public class SMTPCheckPollerTest {
+public class FTPPollerTest {
+
+    private final int FTP_PORT = 21;
 
     @Inject
     private ContestService contestService;
@@ -63,12 +69,12 @@ public class SMTPCheckPollerTest {
         File[] files = Maven.resolver().loadPomFromFile("pom.xml")
                 .importRuntimeDependencies().resolve().withTransitivity().asFile();
 
-        return ShrinkWrap.create(WebArchive.class, "SMTPCheckPollerTest.war")
+        return ShrinkWrap.create(WebArchive.class, "EmailPollerTest.war")
                 .addPackages(true, Poll.class.getPackage(),
                         PollRepo.class.getPackage(),
                         PollService.class.getPackage(),
                         PollRules.class.getPackage(),
-                        SMTPParameterizer.class.getPackage(),
+                        EmailParameterizer.class.getPackage(),
                         AbstractPoller.class.getPackage(),
                         EMProducer.class.getPackage())
                 .addClass(TestUtility.class)
@@ -100,13 +106,28 @@ public class SMTPCheckPollerTest {
             testContest.setTeams(teams);
             testContest = contestService.update(testContest);
         }
-        if (null == testResource) {
-            testResource = TestUtility.makeResource(testContest, ResourceType.SMTP_POP);
-            testResource = resourceService.create(testResource);
-        }
+    }
+
+    private void setUpResource(ResourceType type, String address, int port) {
+        testResource = TestUtility.makeResource(testContest, type);
+        testResource.setAddress(address);
+        testResource.setPort(port);
+        List<Team> teams = new ArrayList<>();
+        teams.add(testTeam);
+        testResource.setTeams(teams);
+        testResource = resourceService.create(testResource);
     }
 
     @Test
-    public void testSMTPPOPPollWorks() {
+    public void testFTPPollWorks() {
+        setUpResource(ResourceType.FTP, "test.rebex.net", 21);
+        TestUtility.setResourceParameter(parameterService, testResource, FTPParameterizer.FTP_USERNAME, "demo");
+        TestUtility.setResourceParameter(parameterService, testResource, FTPParameterizer.FTP_PASSWORD, "password");
+        TestUtility.setResourceParameter(parameterService, testResource, FTPParameterizer.FTP_READFILE, "readme.txt");
+        AbstractPoller poller = PollerFactory.getPoller(testResource);
+        testPoll = poller.poll();
+        Assert.assertEquals(testResource.getPointValue(), testPoll.getScore());
+        Assert.assertNotNull(testPoll.getTeam());
+        Assert.assertTrue(testPoll.getTeam().equalByUUID(testTeam));
     }
 }

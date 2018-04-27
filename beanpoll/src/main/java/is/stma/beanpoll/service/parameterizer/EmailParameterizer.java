@@ -23,6 +23,7 @@ public class EmailParameterizer {
     public static final String EMAIL_RESOLVER = "EMAIL_RESOLVER";
     public static final String EMAIL_SSL = "EMAIL_SSL";
     public static final String EMAIL_TLS = "EMAIL_TLS";
+    public static final String EMAIL_HOST = "EMAIL_HOST";
 
     // EMAIL default value strings
     public static final String EMAIL_DEFAULT_USERNAME = "beanpoll@yandex.com";
@@ -30,6 +31,7 @@ public class EmailParameterizer {
     public static final String EMAIL_DEFAULT_RESOLVER = null;
     public static final String EMAIL_DEFAULT_SSL = Parameter.TRUE;
     public static final String EMAIL_DEFAULT_TLS = Parameter.FALSE;
+    public static final String EMAIL_DEFAULT_HOST = null;
 
     public static List<Parameter> createParameters() {
         List<Parameter> parameters = new ArrayList<>();
@@ -38,6 +40,7 @@ public class EmailParameterizer {
         parameters.add(new Parameter(EMAIL_RESOLVER, EMAIL_DEFAULT_RESOLVER));
         parameters.add(new Parameter(EMAIL_SSL, EMAIL_DEFAULT_SSL));
         parameters.add(new Parameter(EMAIL_TLS, EMAIL_DEFAULT_TLS));
+        parameters.add(new Parameter(EMAIL_HOST, EMAIL_DEFAULT_HOST));
         return parameters;
     }
 

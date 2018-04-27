@@ -8,10 +8,8 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package is.stma.beanpoll.controller;
+package is.stma.beanpoll.poller;
 
-import is.stma.beanpoll.controller.poller.AbstractPoller;
-import is.stma.beanpoll.controller.poller.PollerFactory;
 import is.stma.beanpoll.model.Contest;
 import is.stma.beanpoll.model.Poll;
 import is.stma.beanpoll.model.Resource;
@@ -31,7 +29,7 @@ public class JudgeCallable implements Callable<String> {
     private PollService pollService;
     private Logger log;
 
-    JudgeCallable(Contest contest, ContestService contestService, PollService pollService, Logger log) {
+    public JudgeCallable(Contest contest, ContestService contestService, PollService pollService, Logger log) {
         super();
         this.contest = contest;
         this.contestService = contestService;

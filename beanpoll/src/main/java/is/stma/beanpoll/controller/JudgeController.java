@@ -11,6 +11,7 @@
 package is.stma.beanpoll.controller;
 
 import is.stma.beanpoll.model.Contest;
+import is.stma.beanpoll.poller.JudgeCallable;
 import is.stma.beanpoll.service.ContestService;
 import is.stma.beanpoll.service.PollService;
 

@@ -12,6 +12,6 @@ package is.stma.beanpoll.model;
 
 public enum ResourceType {
 
-    DNS, HTTP, IMAP, POP, SMTP, SMTP_POP, SMTP_IMAP
+    DNS, FTP, HTTP, IMAP, POP, SMTP, SMTP_IMAP, SMTP_POP
 
 }

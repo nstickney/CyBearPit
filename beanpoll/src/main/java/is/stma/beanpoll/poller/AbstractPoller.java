@@ -8,33 +8,35 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package is.stma.beanpoll.controller.poller;
+package is.stma.beanpoll.poller;
 
+import is.stma.beanpoll.model.Poll;
 import is.stma.beanpoll.model.Resource;
+import is.stma.beanpoll.model.Team;
 
-import javax.validation.ValidationException;
+import java.util.ArrayList;
+import java.util.List;
 
-public class PollerFactory {
+public abstract class AbstractPoller {
 
-    public static AbstractPoller getPoller(Resource resource) {
-        switch (resource.getType()) {
-            case DNS:
-                return new DNSPoller(resource);
-            case HTTP:
-                return new HTTPPoller(resource);
-            case POP:
-                return new EmailPoller(resource);
-            case IMAP:
-                return new EmailPoller(resource);
-            case SMTP:
-                return new SMTPPoller(resource);
-            case SMTP_IMAP:
-                return new SMTPCheckPoller(resource);
-            case SMTP_POP:
-                return new SMTPCheckPoller(resource);
-            default:
-                throw new ValidationException("unknown resource type " + resource.getType());
+    Resource resource;
+
+    public Poll poll() {
+        setParameters();
+        return doPoll();
+    }
+
+    abstract void setParameters();
+    public abstract Poll doPoll();
+
+    List<Team> checkTeams(List<Team> resourceTeams, String response) {
+        List<Team> foundTeams = new ArrayList<>();
+        for (Team t : resourceTeams) {
+            if (response.contains(t.getFlag())) {
+                foundTeams.add(t);
+            }
         }
+        return foundTeams;
     }
 
 }

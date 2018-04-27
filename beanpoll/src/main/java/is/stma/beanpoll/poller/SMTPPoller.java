@@ -8,7 +8,7 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package is.stma.beanpoll.controller.poller;
+package is.stma.beanpoll.poller;
 
 import is.stma.beanpoll.model.Parameter;
 import is.stma.beanpoll.model.Poll;
@@ -47,6 +47,8 @@ public class SMTPPoller extends AbstractPoller {
         if (1 != resource.getTeams().size()) {
             newPoll.setResults("ERROR: Resource does not have exactly one assigned Team");
             return newPoll;
+        } else {
+            newPoll.setTeam(resource.getTeams().get(0));
         }
 
         // Get the address of the server
@@ -85,9 +87,8 @@ public class SMTPPoller extends AbstractPoller {
             }
         }
 
-        newPoll.setTeam(resource.getTeams().get(0));
         newPoll.setScore(resource.getPointValue());
-        newPoll.setResults("Success" + results);
+        newPoll.setResults(msg + " SUCCESS " + results);
         return newPoll;
     }
 

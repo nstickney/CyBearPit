@@ -266,6 +266,15 @@
             <version>1.4.7</version>
         </dependency>
 
+        <!-- Used for checking FTP resources -->
+        <!-- https://mvnrepository.com/artifact/commons-net/commons-net -->
+        <dependency>
+            <groupId>commons-net</groupId>
+            <artifactId>commons-net</artifactId>
+            <version>3.6</version>
+        </dependency>
+
+
         <!-- Reset browser CSS to useful default baseline -->
         <dependency>
             <groupId>org.webjars.npm</groupId>

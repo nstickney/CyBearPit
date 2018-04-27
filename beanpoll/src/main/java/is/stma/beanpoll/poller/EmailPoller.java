@@ -8,7 +8,7 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package is.stma.beanpoll.controller.poller;
+package is.stma.beanpoll.poller;
 
 import is.stma.beanpoll.model.Parameter;
 import is.stma.beanpoll.model.Poll;
@@ -20,7 +20,6 @@ import is.stma.beanpoll.util.EmailUtility;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
-import javax.validation.ValidationException;
 
 public class EmailPoller extends AbstractPoller {
 
@@ -30,6 +29,7 @@ public class EmailPoller extends AbstractPoller {
     private String resolver = EmailParameterizer.EMAIL_DEFAULT_RESOLVER;
     private String ssl_string = EmailParameterizer.EMAIL_DEFAULT_SSL;
     private String tls_string = EmailParameterizer.EMAIL_DEFAULT_TLS;
+    private String host = EmailParameterizer.EMAIL_DEFAULT_HOST;
 
     EmailPoller(Resource resource) {
         this.resource = resource;
@@ -48,31 +48,51 @@ public class EmailPoller extends AbstractPoller {
         }
 
         // Get the address of the server
-        String address = DNSUtility.getResolvedMailserver(resolver, resource.getAddress());
+        String address = resource.getAddress();
+        if (null != host && !host.equals("")) {
+            address = host;
+        }
+        address = DNSUtility.getResolvedMailserver(resolver, address);
         if (address.startsWith("ERROR")) {
             newPoll.setResults(address);
             return newPoll;
+        } else {
+            newPoll.setTeam(resource.getTeams().get(0));
         }
 
         // Decide whether to use IMAP or POP; default to POP
-        String protocol = (resource.getType().equals(ResourceType.IMAP)) ? "imap" : "pop3";
+        String protocol;
+        if (resource.getType().equals(ResourceType.IMAP) || resource.getType().equals(ResourceType.SMTP_IMAP)) {
+            protocol = "imap";
+        } else {
+            protocol = "pop3";
+        }
 
         // Find the values of the non-string parameters
         boolean ssl = ssl_string.equals(Parameter.TRUE);
         boolean tls = tls_string.equals(Parameter.TRUE);
 
         // Get mail!
+        Message[] messages;
         try {
-            Message[] messages = EmailUtility.getEmail(username, password, address,
+            messages = EmailUtility.getEmail(username, password, address,
                     protocol, resource.getPort(), tls, ssl, resource.getTimeout());
         } catch (MessagingException e) {
             newPoll.setResults(e.getMessage());
             return newPoll;
         }
 
-        newPoll.setTeam(resource.getTeams().get(0));
+        // Write the results
+        StringBuilder results = new StringBuilder().append("Success");
+        for (Message m : messages) {
+            try {
+                results.append(" ").append(m.getSubject());
+            } catch (MessagingException e) {
+            }
+        }
+
         newPoll.setScore(resource.getPointValue());
-        newPoll.setResults("Success");
+        newPoll.setResults(results.toString());
         return newPoll;
     }
 
@@ -95,6 +115,9 @@ public class EmailPoller extends AbstractPoller {
                     break;
                 case EmailParameterizer.EMAIL_TLS:
                     tls_string = p.getValue();
+                    break;
+                case EmailParameterizer.EMAIL_HOST:
+                    host = p.getValue();
                     break;
                 default:
                     break;
