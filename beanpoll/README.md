@@ -21,10 +21,10 @@ BeanPoll is a contest management system and polling engine developed as part of 
 ## Security
 
 As with any web application, security must be considered from the perspectives of both the application itself and the  server(s) it runs on. As BeanPoll is meant for Wild**Fly** and requires a database backend, it is imperative that Wild**Fly** be properly secured, along with its database connection.
-* Disable the Wild**Fly** management interface by blocking off ports 9990 and 9993
-* Secure connections from clients to Wild**Fly** using TLS
-* Secure the connection from Wild**Fly** to the database using TLS
-* Secure the database server and host system
+    * Disable the Wild**Fly** management interface by blocking off ports 9990 and 9993
+    * Secure connections from clients to Wild**Fly** using TLS
+    * Secure the connection from Wild**Fly** to the database using TLS
+    * Secure the database server and host system
 
 The Docker image [beanpoll-wildfly](../containers/wildfly/prod "beanpoll-wildfly") is set up to only expose port 8443, on the host port 443. This corresponds to `https`-only access to the application listener only. It is also set up to use TLSv1.2 or higher with a (default, dynamically-generated) self-signed certificate. The Docker image [beanpoll-mysql](../containers/mysql "beanpoll-mysql") is not yet set up to secure connections over TLS; it currently runs the default [mysql/mysql-server](https://hub.docker.com/r/mysql/mysql-server/ "Docker: mysql/mysql-server") image, using Docker environment variables to set up a database, non-root user, and non-root password.
 
@@ -97,6 +97,40 @@ The screenshot above shows the BeanPoll user interface for administrative and ju
 
 On each of the admin pages just listed, there is an option, highlighted in light blue, to create a new instance. Below the creation panel is a color key, and below the color key a list of existing instances which can be updated or deleted; in the case of Contests, this is where an administrative user can schedule, start, and stop them.
 
+### Managed Entities
+
+#### Contests
+
+Contests are ...well, contests. They have a (unique) name, start and end date/time fields, and a (boolean) marker for whether they are enabled or not. Administrators can assign Capturables, Resources, Tasks, and Teams to Contests.
+
+#### Announcements
+
+Announcements are simply a way for administrators to make information available to all teams simultaneously.
+
+#### Capturables
+
+A Capturable represents a Capture-The-Flag flag - a string of text which teams can find on the network and submit for points. Each Team can only submit Capturables which belong to the same Contest they do, and each Team can only gain points for any given Capturable once.
+
+#### Resources
+
+A Resource represents a scored service in CCDC or Panoply style. Each resource has a type, which determines how it will be scored (see "Poller Parameters" below), a name, an address and port, and a (boolean) marker for whether it is being scored or not. Administrators can assign Teams to Resources; if a single Team is assigned, that Team will automatically receive points any time the Resource service check is positive. If multiple Teams are assigned, only those teams will be allowed to score on that Resource (based on which Team's flag is found in the Resource Poll results), and if no Teams are assigned, then any Team assigned to the same Contest as the Resource may score.
+
+#### Reports
+
+Incident Reports provide a way for Blue Teams in a CCDC environment to gain points back after Red Team activity. Each Team's webpage provides a way to submit Reports as .pdf files, which are then graded by judges on the "Judging" page.
+
+#### Tasks
+
+Tasks represent CCDC-style business injects — tasks which Teams may accomplish in order to receive more points. Each task has a name and some content; Teams create Responses, which are .pdf files, and upload these Responses for grading. From the "Judging" page, judge users may then download the .pdf files and enter a score and comment for each Response, the same way that they grade Reports.
+
+#### Teams
+
+A Team is a competing entity; there are no restrictions in the system about how teams are composed. In some contests, a Team may be a single person; in others, it may be a large group working together. All scoring is at Team level. A Team has a name which must be unique among all Teams in the same Contest, as well as a flag (string) which the scoring engine uses to determine whether a Team owns a certain Resource or not.
+
+#### Users
+
+BeanPoll Users fall into at least one of three categories: administrators, judges, and Team users. Team users have access to their Team's information and can submit Task Responses or Incident Reports for their Team. Team users *cannot* also be administrators or judges. Judges have access to the "Judging" page, where Responses and Reports are graded. Administrators have access to the entire Control panel and full access to all Contests.
+
 ### Poller Parameters
 
 Each ResourceType corresponds to a type of server that will be scored. The system automatically generates a set of all possible parameters for a service when a Resource is created, replaces them if the ResourceType is changed, and deletes them if the Resource is deleted. You can investigate the way Parameters are used by reading through the corresponding Poller implementations; they are also listed below.
@@ -166,9 +200,11 @@ BeanPoll is planned to have a RESTful API in the future, but it is not yet imple
 
 ## Contribute
 
-> This project subscribes to the [Contributor Covenant](CODE_OF_CONDUCT.md "Code of Conduct").
+[comment]: # (> This project subscribes to the [Contributor Covenant](CODE_OF_CONDUCT.md "Code of Conduct").)
 
-I welcome [issues](../docs/issue_template.md "Issue template"), but I prefer [pull requests](../docs/pull_request_template.md "Pull request template")! See the [contribution guidelines](../docs/contributing.md "Contributing") for more information.
+[comment]: # (I welcome [issues](../docs/issue_template.md "Issue template"), but I prefer [pull requests](../docs/pull_request_template.md "Pull request template")! See the [contribution guidelines](../docs/contributing.md "Contributing") for more information.)
+
+Developer documentation is [available](../docs/beanpoll.md "BeanPoll Developer Documentation") in the [docs](../docs/ "CyBearPit Documentation") folder.
 
 ## License
 
